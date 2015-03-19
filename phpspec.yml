@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: APOSite
+        psr4_prefix: APOSite
+        src_path: app

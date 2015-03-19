@@ -1,0 +1,6 @@
+@CHARSET "UTF-8";
+
+#home .ui.inverted.page.grid.masthead.segment{
+	height:100%;
+	overflow-y: scroll;
+}
