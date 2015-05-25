@@ -1,64 +1,86 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<!-- Standard Meta -->
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <!-- Standard Meta -->
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0"/>
 
-<!-- Site Properities -->
-<title>Alpha Phi Omega at Case Western Reserve University</title>
+    <!-- Site Properities -->
+    <title>Alpha Phi Omega at Case Western Reserve University</title>
 
-<link
-	href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700'
-	rel='stylesheet' type='text/css'>
-
-<link rel="stylesheet" type="text/css"
-	href="/dist/semantic.css">
-<link rel="stylesheet" type="text/css" href="/packages/css/homepage.css">
-@yield('stylesheets')
-
-<script
-	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
-<script src="/dist/semantic.js"></script>
-<script src="/packages/javascript/homepage.js"></script>
-@yield('scripts')
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    {!!Html::style('css/bootstrap-theme.min.css')!!}
+    {!!Html::style('css/mobile-master.css')!!}
+    @yield('stylesheets')
 </head>
 
 <body id="home">
-	<div class="ui inverted page grid masthead segment">
-		<div class="column">
-			<div class="inverted primary tiered pointing ui menu">
-			<div class="menu">
-				<div class="left menu">@yield('left_menu_items')</div>
-				<div class="right menu">
-					@yield('right_menu_items')
-					<div class="item vertical divider"></div>
-					@if(null == LoginController::currentUser()) 
-					@if(0 == Config::get('app.debug'))
-						<a class="item" href="/login">Login via Case SSO</a>
-					@else
-						{{Form::open()}}
-					<form action="/login_debug" method="POST">
-						Username: <input type="text" name="debug_username"> <input
-							type="hidden" name="redirect_url" value="{{{Request::url()}}}" /> <input
-							type="submit" value="Login">
-					</form>
-					@endif 
-					@else 
-					@include('userAuth') 
-					@endif
-					</div>
-				</div>
-				<div class="ui submenu">
-					
-				</div>
-			</div>
-			@yield('masthead')
-		</div>
-	</div>
-	@yield('content') @yield('footer')
+<nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
 
+        <!-- Title -->
+        <div class="navbar-header pull-left">
+            <a href="/" class="navbar-brand">APO @ CWRU</a>
+        </div>
+
+        <!-- 'Sticky' (non-collapsing) right-side menu item(s) -->
+        <div class="navbar-header pull-right">
+            <ul class="nav pull-left">
+                @if(LoginController::currentUser() != null)
+                <!-- This works well for static text, like a username -->
+                <li class="navbar-text pull-left">{{LoginController::currentUser()->firstName}} {{LoginController::currentUser()->lastName}}</li>
+                <!-- Add any additional bootstrap header items.  This is a drop-down from an icon -->
+                <li class="dropdown pull-right">
+                        <a href="#" data-toggle="dropdown" style="color:#777; margin-top: 5px;" class="dropdown-toggle"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/users/{{LoginController::currentUser()->cwruID}}}" title="Profile">Profile</a>
+                            </li>
+                            <li>
+                                <a href="/logout" title="Logout">Logout </a>
+                            </li>
+                        </ul>
+                    </li>
+                @else
+                    <li class="dropdown pull-right">
+                        <a href="/login" style="color:#777; margin-top: 5px;" class="dropdown-toggle"><span
+                                    class="glyphicon glyphicon-user"></span><b> Login</b></a>
+                    </li>
+                @endif
+            </ul>
+
+            <!-- Required bootstrap placeholder for the collapsed menu -->
+            <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+        </div>
+
+        <!-- The Collapsing items            navbar-left or navbar-right -->
+        <div class="collapse navbar-collapse navbar-left">
+            <!--                      pull-right keeps the drop-down in line -->
+            <ul class="nav navbar-nav pull-left">
+                @yield('left_menu_items')
+            </ul>
+        </div>
+
+        <!-- Additional navbar items -->
+        <div class="collapse navbar-collapse navbar-right">
+            <!--                      pull-right keeps the drop-down in line -->
+            <ul class="nav navbar-nav pull-right">
+                @yield('right_menu_items')
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<p>This is some text.</p>
+<!-- jQuery library
+    Loaded last to speed up page loading times.
+-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+@yield('scripts')
 </body>
 
 </html>
