@@ -91,11 +91,3 @@ Route::get('/logout',function(){
 Route::get('/login',array('as'=>'login','before'=>'casAuth',function(){
 	return Redirect::route('home');
 }));
-
-Route::post('login/exchange', function(){
-
-});
-
-Route::get('/welcome',function(){
-    return view('welcome');
-});

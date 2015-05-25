@@ -1,11 +1,7 @@
 $(document)
-  .ready(function() {
-	  $('.ui.dropdown')
-      .dropdown({
-        on: 'click'
-      })
-    ;
-	  $('.masthead .information')
-      .transition('scale in')
-    ;
-  });
+    .ready(function () {
+        $('#myCarousel').carousel({
+            interval: 5000,
+            pause: 'false'
+        });
+    });

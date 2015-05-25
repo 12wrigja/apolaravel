@@ -7,6 +7,10 @@
     @endif
 @stop
 
+@section('scripts')
+    {!!Html::script('javascript/homepage.js')!!}
+@stop
+
 @section('left_menu_items')
     <li><a class="item" href="/">About APO</a></li>
     <li class="dropdown">
@@ -40,16 +44,20 @@
                         active
                         @endif
                     ">
-                        <img class="slide"
+                        <!-- <img class="slide"
                              src="{!!$cItem->background_img!!}"
-                             alt="Slide # {{$index}}">
+                             alt="Slide # {{$index}}"> -->
 
+                        <div class="background" style="background:url({!!$cItem->background_img!!}) center center; background-size: cover">
+
+                        </div>
                         @if($cItem->title != null)
                             <div class="container">
                                 <div class="carousel-caption">
                                     <h1>{{$cItem->title}}</h1>
-
+                                    @if($cItem->caption != null)
                                     <p>{{$cItem->caption}}</p>
+                                    @endif
                                     @if($cItem->action_text != null && $cItem->action_url != null)
                                         <p><a class="btn btn-lg btn-primary" href="{!! $cItem->action_url !!}" role="button" target="_blank">{{$cItem->action_text}}</a></p>
                                     @endif
