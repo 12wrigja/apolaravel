@@ -1,4 +1,4 @@
-@extends('master')
+@extends('master_clean')
 
 @section('stylesheets')
     {!!Html::style('css/homepage.css')!!}
@@ -10,7 +10,8 @@
 @section('left_menu_items')
     <li><a class="item" href="/">About APO</a></li>
     <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Theta Upsilon Chapter <span
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Theta Upsilon
+            Chapter <span
                     class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
             <li><a class="item">Chapter History</a></li>
@@ -23,65 +24,92 @@
 @stop
 
 @section('masthead')
-    <div class="ui two column stackable grid">
-        <div class="six wide centered column">
-            <img src="../packages/images/torch-logo.png" class="ui medium image">
-        </div>
-        <div class="ten wide column">
-            <div class="ui">
-                <h1 class="ui inverted header">Welcome to APO - Theta Upsilon!</h1>
+    <div class="masthead">
 
-                <p class="inverted">Awesome APO tagline here!</p>
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                @foreach($carouselItems as $index => $cItem)
+                    <li data-target="#myCarousel" data-slide-to="{{$index}}" @if($index==0) class="active" @endif></li>
+                @endforeach
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                @foreach($carouselItems as $index => $cItem)
+                    <div class="item
+                        @if($index==0)
+                        active
+                        @endif
+                    ">
+                        <img class="slide"
+                             src="{!!$cItem->background_img!!}"
+                             alt="Slide # {{$index}}">
 
-                <div class="large basic inverted ui button">
-                    <div class="visible content">Learn More!</div>
-                </div>
+                        @if($cItem->title != null)
+                            <div class="container">
+                                <div class="carousel-caption">
+                                    <h1>{{$cItem->title}}</h1>
+
+                                    <p>{{$cItem->caption}}</p>
+                                    @if($cItem->action_text != null && $cItem->action_url != null)
+                                        <p><a class="btn btn-lg btn-primary" href="{!! $cItem->action_url !!}" role="button" target="_blank">{{$cItem->action_text}}</a></p>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                @endforeach
             </div>
+            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
     </div>
 @stop
 
 @section('content')
-    <div class="ui page grid overview segment">
-        <h2 class="ui header center">What is APO all about?</h2>
-
-        <div class="ui two wide column"></div>
-        <div class="twelve wide column">
-            <div class="ui three column center aligned stackable divided grid">
-                <div class="column">
-                    <div class="ui icon header">
-                        <img class="ui image small link" src="../packages/images/leadership-image.png"></img>
-                        Leadership
+    <div class="text-center">
+        <h1>What is APO all about?</h1>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="row text-center">
+                <div class="col-sm-4">
+                    <div class="homepage-icon-container">
+                        {!!Html::image('css/images/leadership-image.png','APO Leadership
+                        Icon',array('class'=>'img-responsive homepage-icon'))!!}
                     </div>
+                    <h3>Leadership</h3>
+
                     <p>Through LEADS courses and various executive positions, APO provides many opportunities to enhance
                         your leadership skills.</p>
-
-                    <p><a class="ui teal right labeled icon button" href="#">Lead <i class="right chevron icon"></i></a>
-                    </p>
                 </div>
-                <div class="column">
-                    <div class="ui icon header">
-                        <img class="ui image small link" src="../packages/images/friendship.png"></img>
-                        Friendship
+                <div class="col-sm-4">
+                    <div class="homepage-icon-container">
+                        {!!Html::image('css/images/friendship-image.png','APO Friendship Icon',
+                        array('class'=>'img-responsive homepage-icon'))!!}
                     </div>
+                    <h3>Friendship</h3>
+
                     <p>Members of Theta Upsilon know this phrase: "Come for the service, stay for the friendship." Learn
                         more about making friendships that last a lifetime through APO.</p>
-
-                    <p><a class="ui teal right labeled icon button" href="#">Find Friends<i
-                                    class="right chevron icon"></i></a></p>
                 </div>
-                <div class="column">
-                    <div class="ui icon header">
-                        <img class="ui image small link" src="../packages/images/service-image.png"></img>
-                        Service
+                <div class="col-sm-4">
+                    <div class="homepage-icon-container">
+                        {!!Html::image('css/images/service-image.png','APO Service Icon', array('class'=>'img-responsive
+                        homepage-icon'))!!}
                     </div>
+                    <h3>Service</h3>
+
                     <p>Theta Upsilon is commited to helping their chapter, campus, community and nation through
                         volunteering.</p>
-
-                    <p><a class="ui teal right labeled icon button" href="#">Serve <i
-                                    class="right chevron icon"></i></a></p>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="col-sm-2"></div>
 @stop

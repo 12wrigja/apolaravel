@@ -68,7 +68,7 @@ Route::group(array('before'=>'casAuth|webmaster'),function(){
 
 //Route for the homepage
 Route::get('/',array('as'=>'home',function(){
-	return View::make('home');
+	return View::make('home')->with('carouselItems',CarouselItems::all());
 }));
 
 //Route for logging in when debugging the application
@@ -94,4 +94,8 @@ Route::get('/login',array('as'=>'login','before'=>'casAuth',function(){
 
 Route::post('login/exchange', function(){
 
+});
+
+Route::get('/welcome',function(){
+    return view('welcome');
 });
