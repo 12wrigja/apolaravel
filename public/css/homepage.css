@@ -3,7 +3,10 @@
 }
 
 .homepage-icon{
-    height: 10%;
+    height: 150px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .homepage-icon-container{
