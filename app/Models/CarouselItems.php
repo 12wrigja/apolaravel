@@ -1,6 +1,8 @@
-<?php
+<?php namespace APOSite\Models;
 
-class CarouselItems extends Eloquent {
+use Illuminate\Database\Eloquent\Model;
+
+class CarouselItems extends Model {
 
 	/**
 	 * The database table used by the model.

@@ -1,8 +1,12 @@
-<?php
+<?php namespace APOSite\Models;
 
+use APOSite\Http\Controllers\AccessController;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
 
-
-class User extends Eloquent{
+class User extends Model{
 
 	/**
 	 * The database table used by the model.
@@ -75,4 +79,16 @@ class User extends Eloquent{
 	public function pictureURL($size = 500){
 		return "http://www.gravatar.com/avatar/".md5($this->picture)."?s=$size&d=mm";
 	}
+
+    public function getFullDisplayName(){
+        return $this->getDisplayName()." ".$this->lastName;
+    }
+
+    public function getDisplayName(){
+        if($this->nickName != null){
+            return $this->nickName;
+        } else {
+            return $this->firstName;
+        }
+    }
 }

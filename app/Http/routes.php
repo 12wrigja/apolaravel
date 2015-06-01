@@ -1,5 +1,7 @@
 <?php
-
+use APOSite\Models\CarouselItems;
+use APOSite\Http\Controllers\LoginController;
+use APOSite\Http\Controllers\AccessController;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -34,6 +36,13 @@ Route::filter('webmaster',function(){
 	}
 });
 
+//Routes for the officer pages
+Route::get('officers','Officers\OfficerPageController@index');
+
+//Route for testing JSON input on post
+Route::get('/api/testpost','JSONController@get');
+Route::post('/api/testpost','JSONController@post');
+
 //Routes for managing the users of the users, including creating and storing users.
 Route::group(array('before'=>'casAuth|webmaster'),function(){
 	Route::get('/users/create','UserController@create');
@@ -41,10 +50,6 @@ Route::group(array('before'=>'casAuth|webmaster'),function(){
 	Route::delete('/users/{id}','UserController@destroy');
 	Route::get('/users/manage','UserController@manage');
 });
-
-//Route for testing JSON input on post
-Route::get('/api/testpost','JSONController@get');
-Route::post('/api/testpost','JSONController@post');
 
 //Route for searching users.
 Route::get('/users/search',array('uses'=>'UserController@search','as'=>'users.search'));

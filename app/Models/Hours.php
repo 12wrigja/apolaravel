@@ -1,6 +1,8 @@
-<?php
+<?php namespace APOSite\Models;
 
-class Hours extends Eloquent {
+use Illuminate\Database\Eloquent\Model;
+
+class Hours extends Model {
 
 	/**
 	 * The database table used by the model.

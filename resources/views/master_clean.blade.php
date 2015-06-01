@@ -30,9 +30,9 @@
         <!-- 'Sticky' (non-collapsing) right-side menu item(s) -->
         <div class="navbar-header pull-right">
             <ul class="nav pull-left">
-                @if(LoginController::currentUser() != null)
+                @if($currentUser != null)
                     <!-- This works well for static text, like a username -->
-                    <li class="navbar-text pull-left">Signed in as: {{LoginController::currentUser()->firstName}} {{LoginController::currentUser()->lastName}}</li>
+                    <li class="navbar-text pull-left">Signed in as: {{$currentUser->firstName}} {{$currentUser->lastName}}</li>
                     <!-- Add any additional bootstrap header items.  This is a drop-down from an icon -->
                     <li class="dropdown pull-right">
                         <a href="#" data-toggle="dropdown" style="color:#777; margin-top: 5px;"
@@ -40,7 +40,7 @@
                                     class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="/users/{{LoginController::currentUser()->cwruID}}}"
+                                <a href="/users/{{$currentUser->cwruID}}"
                                    title="Profile">Profile</a>
                             </li>
                             <li>

@@ -1,4 +1,4 @@
-<?php
+<?php namespace APOSite\Http\Controllers;
 
 class BaseController extends Controller {
 

@@ -1,4 +1,13 @@
-<?php
+<?php namespace APOSite\Http\Controllers;
+
+use APOSite\Models\MemberStatus;
+use APOSite\Models\User;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\View;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 class UserController extends Controller {
 	
 	/**
@@ -102,7 +111,7 @@ class UserController extends Controller {
 		if($user != null){
 			return View::make('users.profile')->with('user',$user)->with('permissions',$user->permissions());
 		}else{
-			throw new Symfony\Component\HttpKernel\Exception\NotFoundHttpException('User not found');
+			throw new NotFoundHttpException("User Not Found!");
 		}
 	}
 	
@@ -138,7 +147,7 @@ class UserController extends Controller {
 			User::destroy($id);
 			return Redirect::to('users/manage')->with('message','Successfully deleted the user.');
 		}else{
-			throw new Symfony\Component\HttpKernel\Exception\NotFoundHttpException('User not found');
+			throw new NotFoundHttpException('User not found');
 		}
 	}
 	

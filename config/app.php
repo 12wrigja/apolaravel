@@ -146,8 +146,10 @@ return [
 		'APOSite\Providers\RouteServiceProvider',
 
 		//Forms and HTML macro provider
-		'Illuminate\Html\HtmlServiceProvider'
+		'Illuminate\Html\HtmlServiceProvider',
 
+        //SSO User Binding provider
+        'APOSite\Providers\SSOUserProvider'
 	],
 
 	/*

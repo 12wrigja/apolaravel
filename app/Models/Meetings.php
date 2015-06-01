@@ -1,6 +1,8 @@
-<?php
+<?php namespace APOSite\Models;
 
-class Meetings extends Eloquent {
+use Illuminate\Database\Eloquent\Model;
+
+class Meetings extends Model {
 	
 	protected $table = 'tblattendance';
 	

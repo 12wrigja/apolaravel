@@ -1,6 +1,8 @@
-<?php
+<?php namespace APOSite\Models;
 
-class MemberStatus extends Eloquent {
+use Illuminate\Database\Eloquent\Model;
+
+class MemberStatus extends Model {
 	
 	protected $table = 'tblstatus';
 	

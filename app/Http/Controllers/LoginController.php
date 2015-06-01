@@ -1,6 +1,15 @@
-<?php
+<?php namespace APOSite\Http\Controllers;
+
+use APOSite\Models\User;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
+
 class LoginController extends Controller {
-	
+
+
 	/**
 	 * Authenticates the user.
 	 * Returns a username if the user is already authenticated, or redirects them to SSO if not.
@@ -48,7 +57,6 @@ class LoginController extends Controller {
 		} else {
 			return null;
 		}
-		return $output;
 	}
 	
 	public static function logout(){

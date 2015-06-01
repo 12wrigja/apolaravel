@@ -1,4 +1,7 @@
-<?php
+<?php namespace APOSite\Http\Controllers;
+
+use Illuminate\Support\Facades\DB;
+
 class AccessController extends Controller {
 	
 	public static function retrieveUsersOfGroup($groupName){

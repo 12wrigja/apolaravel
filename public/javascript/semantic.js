@@ -506,9 +506,8 @@ $.extend($.expr[ ":" ], {
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-$.fn.form = function(fields, parameters) {
+(function ($, window, document, undefined) {
+     $.fn.form = function(fields, parameters) {
   var
     $allModules     = $(this),
 
@@ -1330,9 +1329,8 @@ $.fn.form.settings = {
  *
  */
 
-;(function ($, window, document, undefined) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.accordion = function(parameters) {
   var
@@ -1836,9 +1834,8 @@ $.extend( $.easing, {
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.checkbox = function(parameters) {
   var
@@ -2343,9 +2340,8 @@ $.fn.checkbox.settings = {
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-$.fn.dimmer = function(parameters) {
+(function ($, window, document, undefined) {
+     $.fn.dimmer = function(parameters) {
   var
     $allModules     = $(this),
 
@@ -2970,9 +2966,8 @@ $.fn.dimmer.settings = {
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.dropdown = function(parameters) {
   var
@@ -4588,9 +4583,8 @@ $.extend( $.easing, {
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.modal = function(parameters) {
   var
@@ -5000,7 +4994,7 @@ $.fn.modal = function(parameters) {
           }
           else {
             module.debug('Dimmer is not visible cannot hide');
-            return;
+
           }
         },
 
@@ -5449,9 +5443,8 @@ $.fn.modal.settings = {
  *
  */
 
-;(function ($, window, document, undefined) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.nag = function(parameters) {
   var
@@ -5642,7 +5635,7 @@ $.fn.nag = function(parameters) {
             }
             else {
               module.error(error.noCookieStorage);
-              return;
+
             }
           },
           get: function(key, value) {
@@ -5927,9 +5920,8 @@ $.fn.nag.settings = {
  *
  */
 
-;(function ($, window, document, undefined) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.popup = function(parameters) {
   var
@@ -7063,9 +7055,8 @@ $.extend( $.easing, {
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.progress = function(parameters) {
   var
@@ -7842,9 +7833,8 @@ $.fn.progress.settings = {
  *
  */
 
-;(function ($, window, document, undefined) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.rating = function(parameters) {
   var
@@ -8294,9 +8284,8 @@ $.fn.rating.settings = {
  *
  */
 
-;(function ($, window, document, undefined) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.search = function(parameters) {
   var
@@ -9181,9 +9170,8 @@ $.fn.search.settings = {
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.shape = function(parameters) {
   var
@@ -10011,9 +9999,8 @@ $.fn.shape.settings = {
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.sidebar = function(parameters) {
   var
@@ -11062,9 +11049,8 @@ $.extend( $.easing, {
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.sticky = function(parameters) {
   var
@@ -11834,9 +11820,8 @@ $.fn.sticky.settings = {
  *
  */
 
-;(function ($, window, document, undefined) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.tab = function(parameters) {
 
@@ -12621,9 +12606,8 @@ $.fn.tab.settings = {
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.transition = function() {
   var
@@ -13546,9 +13530,8 @@ $.fn.transition.settings = {
  *
  */
 
-;(function ($, window, document, undefined) {
-
-"use strict";
+(function ($, window, document, undefined) {
+     "use strict";
 
 $.fn.video = function(parameters) {
 
@@ -14087,9 +14070,8 @@ $.fn.video.settings.templates = {
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-$.api = $.fn.api = function(parameters) {
+(function ($, window, document, undefined) {
+     $.api = $.fn.api = function(parameters) {
 
   var
     // use window context if none specified
@@ -14927,9 +14909,8 @@ $.api.settings.api = {};
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-$.fn.form = function(fields, parameters) {
+(function ($, window, document, undefined) {
+     $.fn.form = function(fields, parameters) {
   var
     $allModules     = $(this),
 
@@ -15751,9 +15732,8 @@ $.fn.form.settings = {
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-$.fn.state = function(parameters) {
+(function ($, window, document, undefined) {
+     $.fn.state = function(parameters) {
   var
     $allModules     = $(this),
 
@@ -16442,9 +16422,8 @@ $.fn.state.settings = {
  *
  */
 
-;(function ( $, window, document, undefined ) {
-
-$.fn.visibility = function(parameters) {
+(function ($, window, document, undefined) {
+     $.fn.visibility = function(parameters) {
   var
     $allModules    = $(this),
     moduleSelector = $allModules.selector || '',

@@ -1,6 +1,10 @@
-<?php
+<?php namespace APOSite\Models;
 
-class SiteStatistics extends Eloquent {
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Request;
+use DateTime;
+
+class SiteStatistics extends Model {
 
 	/**
 	 * The database table used by the model.
@@ -16,7 +20,8 @@ class SiteStatistics extends Eloquent {
 	public static function logRequest($request){
 		$stat = new SiteStatistics();
 		$stat->routeName = Request::path();
-		$stat->timestamp = DateTime::getTimeStamp();
-		$stat->save(); 
+        $now = new DateTime();
+		$stat->timestamp = $now->getTimeStamp();
+		$stat->save();
 	}
 }
