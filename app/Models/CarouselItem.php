@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class CarouselItems extends Model {
+class CarouselItem extends Model {
 
 	/**
 	 * The database table used by the model.

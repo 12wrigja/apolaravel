@@ -16,10 +16,10 @@ class HomepageCarousel extends Migration {
 		{
 			$table->increments('id');
             $table->char('title',140);
-            $table->char('background_image',400);
-            $table->char('caption',500);
-            $table->char('action_text',200);
-            $table->char('action_url',500);
+            $table->text('background_image',400);
+            $table->text('caption',500)->nullable();
+            $table->char('action_text',200)->nullable();
+            $table->text('action_url',500)->nullable();
 			$table->timestamps();
 		});
 	}
