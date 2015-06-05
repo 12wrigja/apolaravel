@@ -12,7 +12,5 @@ class CarouselItem extends Model {
 	protected $table = 'homepage_carousel';
 	
 	protected $primaryKey = 'id';
-	
-	public $timestamps = false;
 
 }
