@@ -149,7 +149,10 @@ return [
 		'Illuminate\Html\HtmlServiceProvider',
 
         //SSO User Binding provider
-        'APOSite\Providers\SSOUserProvider'
+        'APOSite\Providers\SSOUserProvider',
+
+        //Macro service provider
+        'APOSite\Providers\MacroProvider'
 	],
 
 	/*
