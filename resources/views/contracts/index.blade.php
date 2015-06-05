@@ -8,6 +8,7 @@
     </div>
 
 
+
     <table class="table table-hover">
 
         <thead>
@@ -21,7 +22,7 @@
             Last Changed
         </th>
         <th>
-
+            <a href="{!! route('contract_create') !!}" role="button" class="btn btn-success">Create a new Contract</a>
         </th>
         </thead>
         <tbody>
@@ -45,7 +46,7 @@
                     {{$contract->updated_at}}
                 </td>
                 <td>
-                    {!! Form::delete('contracts',$contract->id,'Delete this Contract', null, array('class'=>'btn btn-danger')) !!}
+                    {!! Form::delete('contracts/'.$contract->id,'Delete this Contract',array(),array('class'=>'btn btn-danger')) !!}
                 </td>
             </tr>
         @endforeach

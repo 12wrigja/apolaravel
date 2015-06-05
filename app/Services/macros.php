@@ -2,6 +2,7 @@
 namespace APOSite\Services;
 
 use Illuminate\Html\FormBuilder;
+use Illuminate\Html\FormFacade as Form;
 
 class Macros extends FormBuilder
 {

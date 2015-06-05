@@ -40,7 +40,8 @@ class ContractController extends Controller {
         if(Request::wantsJson()){
             return $contract;;
         } else {
-            return Redirect::route('contract_view');
+            flash()->success('Contract successfully created!');
+            return Redirect::route('contract_view')->with('alert',array('type'=>'success','message'=>'The contract was stored successfully'));
         }
 
 	}
@@ -88,7 +89,13 @@ class ContractController extends Controller {
 	{
 		$contract = Contract::findOrFail($id);
         $contract->delete();
-        return response('Contract successfully deleted.',204);
+        if(Request::wantsJson()){
+            return response('Contract successfully deleted.',204);
+        } else {
+            flash()->success('Contract successfully deleted!');
+            return Redirect::route('contract_view');
+        }
+
 	}
 
 }
