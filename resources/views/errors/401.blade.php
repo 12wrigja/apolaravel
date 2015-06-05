@@ -1,10 +1,10 @@
-@extends('home')
+@extends('master_clean')
 
 @section('stylesheets')
 <link rel="stylesheet" type="text/css" href="../packages/css/masthead_full.css">
 @stop
 
-@section('masthead')
+@section('content')
 
 <div class="ui two column grid">
 	<div class="six wide column">
@@ -23,7 +23,4 @@
 	</div>
 </div>
 
-@stop
-
-@section('content')
 @stop

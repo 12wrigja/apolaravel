@@ -19,7 +19,7 @@
 
 <body id="home">
 
-<nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+<nav role="navigation" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
 
         <!-- Title -->
@@ -32,7 +32,7 @@
             <ul class="nav pull-left">
                 @if($currentUser != null)
                     <!-- This works well for static text, like a username -->
-                    <li class="navbar-text pull-left">Signed in as: {{$currentUser->firstName}} {{$currentUser->lastName}}</li>
+                    <li class="navbar-text pull-left">Signed in as: {{$currentUser->first_name}} {{$currentUser->last_name}}</li>
                     <!-- Add any additional bootstrap header items.  This is a drop-down from an icon -->
                     <li class="dropdown pull-right">
                         <a href="#" data-toggle="dropdown" style="color:#777; margin-top: 5px;"
@@ -40,7 +40,7 @@
                                     class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="/users/{{$currentUser->cwruID}}"
+                                <a href="/users/{{$currentUser->cwru_idx}}"
                                    title="Profile">Profile</a>
                             </li>
                             <li>
@@ -82,7 +82,6 @@
         @endif
     </div>
 </nav>
-@yield('masthead')
 @yield('content')
 <!-- jQuery library
     Loaded last to speed up page loading times.

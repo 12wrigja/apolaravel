@@ -11,7 +11,7 @@
     {!!Html::script('javascript/homepage.js')!!}
 @stop
 
-@section('masthead')
+@section('content')
     <div class="masthead">
 
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -28,11 +28,7 @@
                         active
                         @endif
                     ">
-                        <!-- <img class="slide"
-                             src="{!!$cItem->background_img!!}"
-                             alt="Slide # {{$index}}"> -->
-
-                        <div class="background" style="background:url({!!$cItem->background_img!!}) center center; background-size: cover">
+                        <div class="background" style="background:url({!! $cItem->background_image !!}) center center; background-size: cover">
 
                         </div>
                         @if($cItem->title != null)
@@ -61,9 +57,6 @@
             </a>
         </div>
     </div>
-@stop
-
-@section('content')
     <div class="text-center">
         <h1>What is APO all about?</h1>
     </div>

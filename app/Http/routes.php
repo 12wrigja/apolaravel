@@ -1,5 +1,5 @@
 <?php
-use APOSite\Models\CarouselItems;
+use APOSite\Models\CarouselItem;
 use APOSite\Http\Controllers\LoginController;
 use APOSite\Http\Controllers\AccessController;
 /*
@@ -71,9 +71,18 @@ Route::group(array('before'=>'casAuth|webmaster'),function(){
 	Route::post('/permissions','PermissionController@store');
 });
 
+Route::group(array('before'=>'casAuth'),function(){
+    Route::get('contracts',['uses'=>'ContractController@index','as'=>'contract_view']);
+    Route::get('contracts/create',['uses'=>'ContractController@create', 'as'=>'contract_create']);
+    Route::get('contracts/delete/{id}',['uses'=>'ContractController@destroy', 'as'=>'contract_delete'])->where('id','[0-9]+');
+    Route::post('contracts/store',['uses'=>'ContractController@store', 'as'=>'contract_store']);
+    Route::get('contracts/{name}/','ContractController@show');
+    Route::get('contractreqs/{id}','ContractController@showRequirement');
+});
+
 //Route for the homepage
 Route::get('/',array('as'=>'home',function(){
-	return View::make('home')->with('carouselItems',CarouselItems::all());
+	return View::make('home')->with('carouselItems',CarouselItem::all());
 }));
 
 //Route for logging in when debugging the application
