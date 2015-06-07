@@ -2,27 +2,28 @@
 
 @section('scripts')
     @parent
-    {!! Html::script('js/contract_create.js') !!}
+    {!! Html::script('js/contract_edit.js') !!}
 @endsection
 
 @section('metadata')
     <meta name="requirement_url" content="{!! route('contractreq_view')!!}">
     <meta name="contract_index_url" content="{!! route('contract_view') !!}">
+    <meta name="contract_requirements" contents = "{{ $contract_requirements }}">
 @endsection
 
 @section('crud_form')
 
     @include('contracts.partials.existing_requirements_modal')
     @include('contracts.partials.create_requirement_modal')
-    <h1>Create a new APO Contract</h1>
-
-    {!! Form::open(['route'=>'contract_store','v-on'=>'submit: createContract','id'=>'create_contract_form','class'=>'collapse in']) !!}
+    <h1>Edit {{$contract->display_name}}</h1>
+    <p>Update the contracts properties here. Note that no changes will be made until you click update.</p>
+    {!! Form::open(['route'=>array('contract_update',$contract->id),'v-on'=>'submit: updateContract','id'=>'edit_contract_form','class'=>'collapse in']) !!}
 
     <div class="form-group">
 
         {!! Form::label('display_name','Display Name:') !!}
         <p class="help-block"></p>
-        {!! Form::text('display_name', null, ['class'=>'form-control','v-model'=>'contract.display_name']) !!}
+        {!! Form::text('display_name', $contract->display_name, ['class'=>'form-control','v-model'=>'contract.display_name']) !!}
         <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
     </div>
 
@@ -30,7 +31,7 @@
         {!! Form::label('description','Description:') !!}
         <p class="help-block"></p>
         <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-        {!! Form::textarea('description', null, ['class'=>'form-control','v-model'=>'contract.description']) !!}
+        {!! Form::textarea('description', $contract->description, ['class'=>'form-control','v-model'=>'contract.description']) !!}
     </div>
 
     <div class="form-group">
@@ -44,7 +45,6 @@
                     data-target="#existingRequirements">Link an Existing Requirement
             </button>
         </p>
-
 
         <table class="table table-hover">
             <thead>
@@ -85,19 +85,24 @@
             </tr>
             </tbody>
         </table>
+
     </div>
 
     <div class="form-group">
-        {!! Form::submit('Create Contract', ['class'=>'btn btn-primary form-control']) !!}
+        {!! Form::submit('Update Contract', ['class'=>'btn btn-primary form-control']) !!}
     </div>
 
     {!! Form::close() !!}
 
     <div id="loadingArea" class="alert alert-info alert-important collapse" role="alert">
-        <h3 class="text-center">Creating Contract...</h3>
+        <h3 class="text-center">Updating Contract...</h3>
         <div class="progress">
             <div class="progress-bar  progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
         </div>
+    </div>
+
+    <div id="completeArea" class="collapse">
+        <h2 class=""></h2>
     </div>
 
 @endsection

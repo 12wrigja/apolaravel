@@ -76,8 +76,9 @@ Route::group(array('before'=>'casAuth'),function(){
     Route::get('contracts/create',['uses'=>'ContractController@create', 'as'=>'contract_create']);
     Route::post('contracts/store',['uses'=>'ContractController@store', 'as'=>'contract_store']);
     Route::get('contracts/{id}/edit',['uses'=>'ContractController@edit','as'=>'contract_edit']);
+    Route::put('contracts/{id}',['uses'=>'ContractController@update','as'=>'contract_update'])->where('id','[0-9]+');
     Route::delete('contracts/{id}',['uses'=>'ContractController@destroy', 'as'=>'contract_delete'])->where('id','[0-9]+');
-    Route::get('contracts/{id}/','ContractController@show');
+    Route::get('contracts/{id}/','ContractController@show')->where('id','[0-9]+');
 });
 
 Route::group(array('before'=>'casAuth'),function(){

@@ -1,5 +1,6 @@
 <?php namespace APOSite\Http\Controllers;
 
+use APOSite\Http\Requests\EditContractRequest;
 use APOSite\Http\Requests\StoreContractRequest;
 use APOSite\Models\Contract;
 use APOSite\Models\ContractRequirement;
@@ -52,7 +53,6 @@ class ContractController extends Controller {
         } else {
             return Redirect::route('contract_view');
         }
-
 	}
 
 	/**
@@ -75,18 +75,40 @@ class ContractController extends Controller {
 	public function edit($id)
 	{
 		$contract = Contract::findOrFail($id);
-        return view('contracts.edit')->with('contract',$contract);
+        $requirements = $contract->requirements()->get();
+        $ids = [];
+        foreach($requirements as $requirement){
+            $ids[] = $requirement->id;
+        }
+        return view('contracts.edit')->with('contract',$contract)->with('contract_requirements',json_encode($ids));
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param EditContractRequest $request
+     * @param  int $id
+     * @return Response
+     */
+	public function update(EditContractRequest $request, $id)
 	{
-		//
+        $input = Request::all();
+        $contract = Contract::findOrFail($id);
+        $contract->fill($input);
+        $requirements = Request::input('requirements');
+        if($requirements != null){
+            $contract->requirements()->detach();
+            foreach($requirements as $id){
+                $requirement = ContractRequirement::findOrFail($id);
+                $contract->requirements()->attach($requirement);
+            }
+        }
+        flash()->success($contract->display_name.' successfully edited!');
+        if(Request::wantsJson()){
+            return $contract;
+        } else {
+            return Redirect::route('contract_view');
+        }
 	}
 
 	/**
