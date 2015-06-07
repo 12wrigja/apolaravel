@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContractRequirementEventPivotTable extends Migration
+class CreateContractRequirementContractEventPivotTable extends Migration
 {
     /**
      * Run the migrations.

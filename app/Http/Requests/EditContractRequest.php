@@ -23,8 +23,8 @@ class EditContractRequest extends Request {
 	public function rules()
 	{
         $rules = [
-            'display_name'=>['sometimes','min:10'],
-            'description'=>['sometimes','min:40']
+            'display_name'=>['sometimes','required','min:10'],
+            'description'=>['sometimes','required','min:40']
         ];
         //TODO add in validation of new contract requirements.
         return $rules;

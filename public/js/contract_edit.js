@@ -16,8 +16,7 @@ var mainView = new Vue({
             threshold: "",
             comparison: "GEQ",
             _token: ""
-        },
-        comparisons: {}
+        }
     },
 
     methods: {
@@ -42,9 +41,6 @@ var mainView = new Vue({
     },
 
     filters: {
-        prettyComparison: function (value) {
-            return this.comparisons[value];
-        },
         contractCreate: function (contract) {
             var formData = Vue.util.extend({}, contract);
             formData['requirements'] = minimizeToIDs(contract.requirements);
@@ -52,12 +48,6 @@ var mainView = new Vue({
         }
     }
 });
-
-function setupComparisons() {
-    $('#create_requirement_form select option').each(function () {
-        mainView.$data.comparisons[$(this).val()] = $(this).text();
-    });
-}
 
 function queryRequirements() {
     var xmlHttp = new XMLHttpRequest();
@@ -111,7 +101,7 @@ function createNewRequirement(formData) {
 function updateContract(contractData) {
     var form = $('#edit_contract_form');
     var url = form.attr('action');
-    collapseForm();
+    collapseSwap('#loadingArea','#edit_contract_form');
     cleanupErrors('edit_contract_form');
     $.ajax({
         url:url,
@@ -126,59 +116,12 @@ function updateContract(contractData) {
             document.write(error.responseText);
             document.close();
         } else {
-            expandForm();
             renderErrors('edit_contract_form', error.responseJSON);
+            collapseSwap('#edit_contract_form','#loadingArea');
         }
     });
 }
 
-function collapseForm() {
-    var form = $('#edit_contract_form');
-    var loading = $('#loadingArea');
-    form.collapse('hide');
-    loading.collapse('show');
-}
-
-function expandForm() {
-    var form = $('#edit_contract_form');
-    var loading = $('#loadingArea');
-    form.collapse('show');
-    loading.collapse('hide');
-}
-
-function cleanupErrors(formID) {
-    var formGroups = $('#' + formID + " .form-group.has-error");
-    $.each(formGroups, function (index,group) {
-        $(group).removeClass('has-error');
-        $(group).children(".help-block").text('');
-    });
-}
-
-function renderErrors(formID, jsonErrors) {
-    $.each(jsonErrors, function (fieldName, error) {
-        var field = $('#' + formID + ' [name="' + fieldName + '"]')[0];
-        var parent = $(field).parent('.form-group')[0];
-        $(parent).addClass('has-error');
-        var errorBlock = $(parent).children(".help-block");
-        $(errorBlock).text(error[0]);
-    });
-}
-
-function minimizeToIDs(collection) {
-    var result = [];
-    for (var i = 0; i < collection.length; i++) {
-        result.push(collection[i].id);
-    }
-    return result;
-}
-
-$(document).ready(function () {
-    setupComparisons();
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            'Accept': 'application/json'
-        }
-    });
+$(document).ready(function(){
     queryRequirements();
 });

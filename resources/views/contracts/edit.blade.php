@@ -2,6 +2,8 @@
 
 @section('scripts')
     @parent
+    {!! Html::script('js/helpers.js') !!}
+    {!! Html::script('js/comparisons.js') !!}
     {!! Html::script('js/contract_edit.js') !!}
 @endsection
 
@@ -101,8 +103,6 @@
         </div>
     </div>
 
-    <div id="completeArea" class="collapse">
-        <h2 class=""></h2>
-    </div>
+    <pre>@{{contract | contractCreate | json}}</pre>
 
 @endsection
