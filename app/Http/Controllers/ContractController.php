@@ -46,9 +46,9 @@ class ContractController extends Controller {
                 $contract->requirements()->attach($requirement);
             }
         }
-        flash()->success('Contract successfully created!');
+        flash()->success($contract->display_name.' successfully created!');
         if(Request::wantsJson()){
-            return $contract;;
+            return $contract;
         } else {
             return Redirect::route('contract_view');
         }
@@ -74,7 +74,8 @@ class ContractController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$contract = Contract::findOrFail($id);
+        return view('contracts.edit')->with('contract',$contract);
 	}
 
 	/**

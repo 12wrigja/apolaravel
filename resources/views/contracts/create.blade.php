@@ -23,11 +23,13 @@
         {!! Form::label('display_name','Display Name:') !!}
         <p class="help-block"></p>
         {!! Form::text('display_name', null, ['class'=>'form-control','v-model'=>'contract.display_name']) !!}
+        <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
     </div>
 
     <div class="form-group">
         {!! Form::label('description','Description:') !!}
         <p class="help-block"></p>
+        <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
         {!! Form::textarea('description', null, ['class'=>'form-control','v-model'=>'contract.description']) !!}
     </div>
 

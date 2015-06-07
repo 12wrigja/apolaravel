@@ -34,11 +34,9 @@ var mainView = new Vue({
             createNewRequirement(this.$data.create_form);
         },
         createContract: function (event) {
-            console.log('creating contract.');
             event.preventDefault();
             var contractData = Vue.util.extend({}, this.contract);
             contractData['requirements'] = minimizeToIDs(this.contract.requirements);
-            console.log(contractData);
             createContract(contractData);
         }
     },
@@ -101,9 +99,8 @@ function createContract(contractData) {
     var form = $('#create_contract_form');
     var url = form.attr('action');
     collapseForm();
-    //cleanupErrors('create_contract_form');
+    cleanupErrors('create_contract_form');
     $.post(url, contractData, null).done(function (data) {
-        console.log(data);
         window.location = $('meta[name="contract_index_url"]').attr('content');
     }).fail(function (error) {
         if (error.status >= 500) {
@@ -133,12 +130,11 @@ function expandForm() {
 }
 
 function cleanupErrors(formID) {
-    var formGroups = $('#' + formID + " .form-group");
-    $.each(formGroups, function (group) {
+    var formGroups = $('#' + formID + " .form-group.has-error");
+    $.each(formGroups, function (index,group) {
         $(group).removeClass('has-error');
-        $(group).child(".error-block").addClass('hidden');
+        $(group).children(".help-block").text('');
     });
-    console.log(formGroups);
 }
 
 function renderErrors(formID, jsonErrors) {
