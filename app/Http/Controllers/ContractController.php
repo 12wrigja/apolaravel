@@ -50,7 +50,7 @@ class ContractController extends Controller {
         if(Request::wantsJson()){
             return $contract;;
         } else {
-            return Redirect::route('contract_view')->with('alert',array('type'=>'success','message'=>'The contract was stored successfully'));
+            return Redirect::route('contract_view');
         }
 
 	}

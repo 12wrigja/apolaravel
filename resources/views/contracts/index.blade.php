@@ -34,12 +34,7 @@
                     <h2>
                         {{$contract->display_name}}
                     </h2>
-
-                    <h3>
-                        Requirements:
-                    </h3>
-
-                    <p>Requirements go here!</p>
+                    <h4>Description: </h4><p>{{$contract->description}}</p>
                 </td>
                 <td>
                     {{$contract->created_at}}

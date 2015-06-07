@@ -3,8 +3,8 @@ var mainView = new Vue({
     el: "#crud_form_container",
 
     data: {
-        contract:{
-            display_name:"",
+        contract: {
+            display_name: "",
             description: "",
             requirements: []
         },
@@ -33,10 +33,10 @@ var mainView = new Vue({
             event.preventDefault();
             createNewRequirement(this.$data.create_form);
         },
-        createContract: function(event){
+        createContract: function (event) {
             console.log('creating contract.');
             event.preventDefault();
-            var contractData = Vue.util.extend({},this.contract);
+            var contractData = Vue.util.extend({}, this.contract);
             contractData['requirements'] = minimizeToIDs(this.contract.requirements);
             console.log(contractData);
             createContract(contractData);
@@ -47,8 +47,8 @@ var mainView = new Vue({
         prettyComparison: function (value) {
             return this.comparisons[value];
         },
-        contractCreate: function(contract){
-            var formData = Vue.util.extend({},contract);
+        contractCreate: function (contract) {
+            var formData = Vue.util.extend({}, contract);
             formData['requirements'] = minimizeToIDs(contract.requirements);
             return formData;
         }
@@ -97,26 +97,63 @@ function createNewRequirement(formData) {
         });
 }
 
-function createContract(contractData){
+function createContract(contractData) {
     var form = $('#create_contract_form');
-    var loading = $('#loadingArea');
     var url = form.attr('action');
-    form.collapse('hide');
-    loading.collapse('show');
-    $.post(url,contractData,null).done(function(data){
+    collapseForm();
+    //cleanupErrors('create_contract_form');
+    $.post(url, contractData, null).done(function (data) {
         console.log(data);
         window.location = $('meta[name="contract_index_url"]').attr('content');
-    }).fail(function(error){
-        console.log(error);
-        document.open();
-        document.write(error.responseText);
-        document.close();
+    }).fail(function (error) {
+        if (error.status >= 500) {
+            console.log(error);
+            document.open();
+            document.write(error.responseText);
+            document.close();
+        } else {
+            expandForm();
+            renderErrors('create_contract_form', error.responseJSON);
+        }
     });
 }
 
-function minimizeToIDs(collection){
+function collapseForm() {
+    var form = $('#create_contract_form');
+    var loading = $('#loadingArea');
+    form.collapse('hide');
+    loading.collapse('show');
+}
+
+function expandForm() {
+    var form = $('#create_contract_form');
+    var loading = $('#loadingArea');
+    form.collapse('show');
+    loading.collapse('hide');
+}
+
+function cleanupErrors(formID) {
+    var formGroups = $('#' + formID + " .form-group");
+    $.each(formGroups, function (group) {
+        $(group).removeClass('has-error');
+        $(group).child(".error-block").addClass('hidden');
+    });
+    console.log(formGroups);
+}
+
+function renderErrors(formID, jsonErrors) {
+    $.each(jsonErrors, function (fieldName, error) {
+        var field = $('#' + formID + ' [name="' + fieldName + '"]')[0];
+        var parent = $(field).parent('.form-group')[0];
+        $(parent).addClass('has-error');
+        var errorBlock = $(parent).children(".help-block");
+        $(errorBlock).text(error[0]);
+    });
+}
+
+function minimizeToIDs(collection) {
     var result = [];
-    for(var i=0; i<collection.length; i++){
+    for (var i = 0; i < collection.length; i++) {
         result.push(collection[i].id);
     }
     return result;
@@ -127,7 +164,7 @@ $(document).ready(function () {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            'Accept':'application/json'
+            'Accept': 'application/json'
         }
     });
     queryRequirements();

@@ -6,6 +6,8 @@
 .env.php
 .env
 
+#OS Stuff
+.DS_Store
 
 #PHPStorm stuff
 ### PhpStorm ###

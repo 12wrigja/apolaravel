@@ -1,6 +1,7 @@
 <?php namespace APOSite\Http\Requests;
 
 use APOSite\Http\Requests\Request;
+use Illuminate\Support\Facades\Validator;
 
 class StoreContractRequest extends Request {
 
@@ -22,10 +23,12 @@ class StoreContractRequest extends Request {
 	 */
 	public function rules()
 	{
-		return [
+		$rules = [
             'display_name'=>['required','min:10'],
             'description'=>['required','min:40']
         ];
+        return $rules;
+        //TODO finish validation rules to validate all incoming requirement id's
 	}
 
 }

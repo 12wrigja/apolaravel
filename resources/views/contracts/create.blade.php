@@ -19,17 +19,21 @@
     {!! Form::open(['route'=>'contract_store','v-on'=>'submit: createContract','id'=>'create_contract_form','class'=>'collapse in']) !!}
 
     <div class="form-group">
+
         {!! Form::label('display_name','Display Name:') !!}
+        <p class="help-block"></p>
         {!! Form::text('display_name', null, ['class'=>'form-control','v-model'=>'contract.display_name']) !!}
     </div>
 
     <div class="form-group">
         {!! Form::label('description','Description:') !!}
+        <p class="help-block"></p>
         {!! Form::textarea('description', null, ['class'=>'form-control','v-model'=>'contract.description']) !!}
     </div>
 
-    <h2>Requirements</h2>
     <div class="form-group">
+        <h2>Requirements</h2>
+        <p class="help-block"></p>
         <p>
             <button class="btn btn-success" type="button" id="reqCreate" data-toggle="modal"
                     data-target="#createRequirement">Create a new Requirement
@@ -62,6 +66,7 @@
             <tr v-repeat="requirement: contract.requirements | orderBy 'display_name'">
                 <td>
                     @{{ requirement.display_name }}
+                    <input type="hidden" name="requirements[]" value="@{{ requirement.id }}">
                 </td>
                 <td>
                     @{{ requirement.description }}
@@ -87,7 +92,7 @@
 
     {!! Form::close() !!}
 
-    <div id="loadingArea" class="alert alert-info collapse" role="alert">
+    <div id="loadingArea" class="alert alert-info alert-important collapse" role="alert">
         <h3 class="text-center">Creating Contract...</h3>
         <div class="progress">
             <div class="progress-bar  progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
