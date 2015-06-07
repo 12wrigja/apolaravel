@@ -16,7 +16,9 @@ class ContractRequirements extends Migration {
 		{
 			$table->increments('id');
             $table->char('display_name');
+            $table->longText('description');
             $table->integer('threshold');
+            $table->enum('comparison',['LT','LEQ','EQ','GEQ','GT']);
 			$table->timestamps();
 		});
 	}

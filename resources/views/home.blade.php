@@ -1,4 +1,4 @@
-@extends('master_clean')
+@extends('master_full')
 
 @section('stylesheets')
     {!!Html::style('css/homepage.css')!!}
@@ -8,7 +8,7 @@
 @stop
 
 @section('scripts')
-    {!!Html::script('javascript/homepage.js')!!}
+    {!!Html::script('js/homepage.js')!!}
 @stop
 
 @section('content')
@@ -91,7 +91,7 @@
                     </div>
                     <h3>Service</h3>
 
-                    <p>Theta Upsilon is commited to helping their chapter, campus, community and nation through
+                    <p>Theta Upsilon is committed to helping their chapter, campus, community and nation through
                         volunteering.</p>
                 </div>
             </div>

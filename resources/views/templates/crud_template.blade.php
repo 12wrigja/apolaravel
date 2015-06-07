@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container" id="crud_form_container">
         @include('flash::message')
         @yield('crud_form')
     </div>
@@ -10,6 +10,6 @@
 
 @section('scripts')
     <script type="text/javascript">
-        $('div.alert').not('.alert-important').delay(3000).slideUp();
+        $('div.alert').not('.alert-important').delay(5000).slideUp();
     </script>
 @endsection

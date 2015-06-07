@@ -1,8 +1,11 @@
 <?php namespace APOSite\Http\Controllers;
 
+use APOSite\Http\Requests\StoreContractRequest;
 use APOSite\Models\Contract;
+use APOSite\Models\ContractRequirement;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Log;
 
 class ContractController extends Controller {
 
@@ -23,24 +26,30 @@ class ContractController extends Controller {
 	 */
 	public function create()
 	{
-		return view('contracts.create');
+		return view('contracts.create')->with('requirements',ContractRequirement::all());
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param StoreContractRequest $request
+     * @return Response
+     */
+	public function store(StoreContractRequest $request)
 	{
 		$input = Request::all();
-
         $contract = Contract::create($input);
-
+        $requirements = Request::input('requirements');
+        if($requirements != null){
+            foreach($requirements as $id){
+                $requirement = ContractRequirement::findOrFail($id);
+                $contract->requirements()->attach($requirement);
+            }
+        }
+        flash()->success('Contract successfully created!');
         if(Request::wantsJson()){
             return $contract;;
         } else {
-            flash()->success('Contract successfully created!');
             return Redirect::route('contract_view')->with('alert',array('type'=>'success','message'=>'The contract was stored successfully'));
         }
 

@@ -6,12 +6,12 @@ use Illuminate\Database\Seeder;
 use Laracasts\TestDummy\Factory as TestDummy;
 use APOSite\Models\User as User;
 
-class MemberTableSeeder extends Seeder
+class UserTableSeeder extends Seeder
 {
     public function run()
     {
         $admin = new User();
-        $admin->cwruID = 'jow5';
+        $admin->id = 'jow5';
         $admin->first_name = 'James';
         $admin->last_name = 'Wright';
         $admin->save();

@@ -16,6 +16,7 @@ class Contracts extends Migration {
 		{
 			$table->increments('id');
             $table->char('display_name');
+            $table->longText('description');
 			$table->timestamps();
 		});
 	}

@@ -5,6 +5,9 @@
     <meta charset="utf-8"/>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0" user-scalable="no"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    @yield('metadata')
 
     <!-- Site Properities -->
     <title>Alpha Phi Omega at Case Western Reserve University</title>
@@ -40,7 +43,7 @@
                                     class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="/users/{{$currentUser->cwru_idx}}"
+                                <a href="/users/{{$currentUser->cwru_id}}"
                                    title="Profile">Profile</a>
                             </li>
                             <li>
@@ -89,6 +92,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<!-- vue.js -->
+{!! Html::script('js/vue.js') !!}
 @yield('scripts')
 </body>
 

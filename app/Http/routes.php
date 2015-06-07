@@ -74,10 +74,15 @@ Route::group(array('before'=>'casAuth|webmaster'),function(){
 Route::group(array('before'=>'casAuth'),function(){
     Route::get('contracts',['uses'=>'ContractController@index','as'=>'contract_view']);
     Route::get('contracts/create',['uses'=>'ContractController@create', 'as'=>'contract_create']);
-    Route::delete('contracts/{id}',['uses'=>'ContractController@destroy', 'as'=>'contract_delete'])->where('id','[0-9]+');
     Route::post('contracts/store',['uses'=>'ContractController@store', 'as'=>'contract_store']);
-    Route::get('contracts/{name}/','ContractController@show');
-    Route::get('contractreqs/{id}','ContractController@showRequirement');
+    Route::get('contracts/{id}/edit',['uses'=>'ContractController@edit','as'=>'contract_edit']);
+    Route::delete('contracts/{id}',['uses'=>'ContractController@destroy', 'as'=>'contract_delete'])->where('id','[0-9]+');
+    Route::get('contracts/{id}/','ContractController@show');
+});
+
+Route::group(array('before'=>'casAuth'),function(){
+    Route::get('contractreqs',['uses'=>'ContractRequirementController@index', 'as'=>'contractreq_view']);
+    Route::post('contractreqs',['uses'=>'ContractRequirementController@store', 'as'=>'contractreq_store']);
 });
 
 //Route for the homepage

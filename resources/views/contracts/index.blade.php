@@ -7,7 +7,9 @@
         </div>
     </div>
 
-
+    <p>Displayed here are all of the contracts, both past and present, that the website understands. In order to create
+        a new contract you must either be a web administrator, or the Membership VP. In order to delete a contract, you
+        must be a web admin and understand the consequences of deleting the contract.</p>
 
     <table class="table table-hover">
 
@@ -46,7 +48,11 @@
                     {{$contract->updated_at}}
                 </td>
                 <td>
-                    {!! Form::delete('contracts/'.$contract->id,'Delete this Contract',array(),array('class'=>'btn btn-danger')) !!}
+                    <a href="{!! route('contract_edit',$contract->id) !!}" role="button" class="btn btn-default">Edit
+                        Contract</a>
+                    <br><br/>
+                    {!! Form::delete('contracts/'.$contract->id,'Delete this Contract',array(),array('class'=>'btn
+                    btn-danger')) !!}
                 </td>
             </tr>
         @endforeach
