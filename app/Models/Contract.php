@@ -9,13 +9,12 @@ class Contract extends Model {
         'description'
     ];
 
-    protected static $rules = [
-        'display_name'=>['required','min:10'],
-        'description'=>['required','min:40']
-    ];
-
     public function Requirements(){
         return $this->belongsToMany('APOSite\Models\ContractRequirement');
+    }
+
+    public function getDates(){
+        return ['created_at','updated_at'];
     }
 
 }

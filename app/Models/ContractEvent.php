@@ -6,7 +6,8 @@ class ContractEvent extends Model {
 
     protected $fillable = [
         'display_name',
-        'description'
+        'description',
+        'event_date'
     ];
 
 }

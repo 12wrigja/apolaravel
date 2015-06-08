@@ -26,6 +26,39 @@ function renderErrors(formID, jsonErrors) {
     });
 }
 
+function collapseSwap(obj1, obj2) {
+    var obj1 = $(obj1);
+    var obj2 = $(obj2);
+    obj1.collapse('show');
+    obj2.collapse('hide');
+}
+
+function createEntity(url, formData){
+    return $.ajax({
+        url:url,
+        type:'post',
+        data: formData
+    });
+}
+
+function updateEntity(url, formData){
+    return $.ajax({
+        url:url,
+        type:'post',
+        data:formData
+    });
+}
+
+function setupDebug(){
+    $('.debug-block').addClass('hide');
+    $(document).keypress(function( event ) {
+        if ( event.which == 126 && event.shiftKey == true) {
+            event.preventDefault();
+            $('.debug-block').collapse('toggle').removeClass('hidden');
+        }
+    });
+}
+
 $(document).ready(function () {
     $.ajaxSetup({
         headers: {
@@ -33,12 +66,5 @@ $(document).ready(function () {
             'Accept': 'application/json'
         }
     });
-
+    setupDebug();
 });
-
-function collapseSwap(obj1, obj2) {
-    var obj1 = $(obj1);
-    var obj2 = $(obj2);
-    obj1.collapse('show');
-    obj2.collapse('hide');
-}

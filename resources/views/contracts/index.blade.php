@@ -1,4 +1,4 @@
-@extends('contracts.base')
+@extends('templates.crud_template')
 
 @section('crud_form')
     <div class="row">
@@ -46,7 +46,7 @@
                     <a href="{!! route('contract_edit',$contract->id) !!}" role="button" class="btn btn-default">Edit
                         Contract</a>
                     <br><br/>
-                    {!! Form::delete('contracts/'.$contract->id,'Delete this Contract',array(),array('class'=>'btn
+                    {!! Form::delete(route('contract_delete').$contract->id,'Delete this Contract',array(),array('class'=>'btn
                     btn-danger')) !!}
                 </td>
             </tr>

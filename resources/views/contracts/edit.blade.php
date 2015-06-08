@@ -15,8 +15,8 @@
 
 @section('crud_form')
 
-    @include('contracts.partials.existing_requirements_modal')
-    @include('contracts.partials.create_requirement_modal')
+    @include('contracts.requirements.partials.existing_requirements_modal')
+    @include('contracts.requirements.partials.create_requirement_modal')
     <h1>Edit {{$contract->display_name}}</h1>
     <p>Update the contracts properties here. Note that no changes will be made until you click update.</p>
     {!! Form::open(['route'=>array('contract_update',$contract->id),'v-on'=>'submit: updateContract','id'=>'edit_contract_form','class'=>'collapse in']) !!}

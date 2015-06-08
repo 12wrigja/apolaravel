@@ -4,7 +4,7 @@
     @parent
     {!! Html::script('js/helpers.js') !!}
     {!! Html::script('js/comparisons.js') !!}
-    {!! Html::script('js/contract_create.js') !!}
+    {!! Html::script('js/contracts/contract_create.js') !!}
 @endsection
 
 @section('metadata')
@@ -14,9 +14,9 @@
 
 @section('crud_form')
 
-    @include('contracts.partials.existing_requirements_modal')
-    @include('contracts.partials.create_requirement_modal')
-    <h1>Create a new APO Contract</h1>
+    @include('contracts.requirements.partials.existing_requirements_modal')
+    @include('contracts.requirements.partials.create_requirement_modal')
+    <h1 class="page-header">Create a new APO Contract</h1>
 
     {!! Form::open(['route'=>'contract_store','v-on'=>'submit: createContract','id'=>'create_contract_form','class'=>'collapse in']) !!}
 
@@ -102,6 +102,6 @@
         </div>
     </div>
 
-    <pre>@{{create_form | contractCreate | json}}</pre>
+    <pre class="debug-block">@{{create_form | contractCreate | json}}</pre>
 
 @endsection

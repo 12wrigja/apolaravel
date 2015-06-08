@@ -15,3 +15,7 @@ comparisonVue = new Vue({
 Vue.filter('prettyComparison', function (value) {
     return comparisonVue.comparisons[value];
 });
+
+function prettyComparison(value){
+    return comparisonVue.comparisons[value];
+}

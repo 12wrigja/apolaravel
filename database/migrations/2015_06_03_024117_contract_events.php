@@ -15,6 +15,10 @@ class ContractEvents extends Migration {
 		Schema::create('contract_events', function(Blueprint $table)
 		{
 			$table->increments('id');
+            $table->char('display_name');
+            $table->longText('description');
+            $table->date('event_date');
+            $table->morphs('event_type');
 			$table->timestamps();
 		});
 	}

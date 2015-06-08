@@ -11,4 +11,8 @@ class ContractRequirement extends Model {
         'comparison'
     ];
 
+    public function SatisfyingEvents(){
+        return $this->belongsToMany('APOSite\Models\ContractEvent');
+    }
+
 }
