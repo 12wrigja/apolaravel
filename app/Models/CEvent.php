@@ -2,12 +2,16 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class ContractEvent extends Model {
+class CEvent extends Model {
 
     protected $fillable = [
         'display_name',
         'description',
         'event_date'
     ];
+
+    public function EventType(){
+        return $this->morphTo();
+    }
 
 }

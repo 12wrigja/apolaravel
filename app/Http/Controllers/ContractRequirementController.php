@@ -1,6 +1,6 @@
 <?php namespace APOSite\Http\Controllers;
 
-use APOSite\Models\ContractRequirement;
+use APOSite\Models\CRequirement;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -14,7 +14,7 @@ class ContractRequirementController extends Controller
      */
     public function index()
     {
-        return view('contracts.requirements.index')->with('contractReqs', ContractRequirement::all());
+        return view('contracts.requirements.index')->with('contractReqs', CRequirement::all());
     }
 
 
@@ -31,7 +31,7 @@ class ContractRequirementController extends Controller
     public function store()
     {
         $input = Request::all();
-        $contract_req = ContractRequirement::create($input);
+        $contract_req = CRequirement::create($input);
         return $contract_req;
 
     }
@@ -44,7 +44,7 @@ class ContractRequirementController extends Controller
      */
     public function show($id)
     {
-        return ContractRequirement::findOrFail($id);
+        return CRequirement::findOrFail($id);
     }
 
     /**

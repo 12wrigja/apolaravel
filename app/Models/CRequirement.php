@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class ContractRequirement extends Model {
+class CRequirement extends Model {
 
 	protected $fillable = [
         'display_name',

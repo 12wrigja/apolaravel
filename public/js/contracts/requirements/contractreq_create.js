@@ -56,5 +56,5 @@ function createRequirement(requirementData) {
 }
 
 $(document).ready(function () {
-    
+
 });

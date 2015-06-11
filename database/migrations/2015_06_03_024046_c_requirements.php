@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ContractRequirements extends Migration {
+class CRequirements extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class ContractRequirements extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('contract_requirements', function(Blueprint $table)
+		Schema::create('c_requirements', function(Blueprint $table)
 		{
 			$table->increments('id');
             $table->char('display_name');
@@ -30,7 +30,7 @@ class ContractRequirements extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('contract_requirements');
+		Schema::drop('c_requirements');
 	}
 
 }
