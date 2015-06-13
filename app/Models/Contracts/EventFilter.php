@@ -1,0 +1,35 @@
+<?php namespace APOSite\Models;
+
+use Illuminate\Console\AppNamespaceDetectorTrait;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
+
+
+class EventFilter extends Model {
+
+    use AppNamespaceDetectorTrait;
+
+    protected $filterNamespace = "Http\\Controllers\\Filters\\";
+    protected $fillable = [
+        'display_name',
+        'controller',
+        'method'
+    ];
+
+    public function validate($user, $event){
+        //Fill in the auto-validate call here.
+        $className = $this->getAppNamespace();
+        $className = $className . $this->filterNamespace;
+        $className = $className . $this->controller;
+        try {
+
+            $app = app();
+            //Now to call a controller and method with the given user and event
+            $controller = $app->make($className);
+            return $controller->callAction($this->method, [$user, $event]);
+        }catch(\ReflectionException $e){
+            return null;
+        }
+    }
+
+}

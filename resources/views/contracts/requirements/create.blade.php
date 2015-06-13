@@ -39,11 +39,10 @@
     </div>
 
     <div class="form-group">
-        <h2>Satisfying Events</h2>
+        <h2>Event Filters</h2>
         <p class="help-block"></p>
         <p>
-            <button class="btn btn-info" type="button" id="reqPick" data-toggle="modal"
-                    data-target="#existingEvent">Link an Existing Event Type
+            <button class="btn btn-info" type="button" v-on="click: createFilter">Create New Validator
             </button>
         </p>
 
@@ -51,25 +50,41 @@
         <table class="table table-hover">
             <thead>
             <th>
-                Event Name
+                Display Name
             </th>
             <th>
-                Description
+                Controller
+            </th>
+            <th>
+                Method
+            </th>
+            <th>
+                Execution Order
             </th>
             <th>
 
             </th>
             </thead>
-            <tbody class="hidden">
-            <tr v-repeat="contract_event: requirement.contract_events | orderBy 'display_name'">
+            <tbody class="">
+            <tr v-repeat="filter: create_form.filters | orderBy 'execution_order'">
                 <td>
-                    @{{ requirement.display_name }}
+                    {!! Form::text('Threshold', null, ['class'=>'form-control','v-model'=>'filter.description
+                    ']) !!}
                 </td>
                 <td>
-                    @{{ requirement.description }}
+                    {!! Form::text('Threshold', null, ['class'=>'form-control','v-model'=>'filter.controller
+                    ']) !!}
                 </td>
                 <td>
-                    <button class="btn btn-danger" type="button" v-on="click: removeContractEvent(requirement)">Remove
+                    {!! Form::text('Threshold', null, ['class'=>'form-control','v-model'=>'filter.method
+                    ']) !!}
+                </td>
+                <td>
+                    {!! Form::text('Execution Order', null, ['class'=>'form-control','v-model'=>'filter.execution_order
+                    ','lazy','number','v-on'=>'change: clearIfNotNumber(filter.execution_order)']) !!}
+                </td>
+                <td>
+                    <button class="btn btn-danger" type="button" v-on="click: removeFilter(filter)">Remove
                     </button>
                 </td>
             </tr>
@@ -83,6 +98,6 @@
 
     {!! Form::close() !!}
 
-    <pre class="debug-block">@{{create_form | contractCreate | json}}</pre>
+    <pre>@{{create_form | json}}</pre>
 
 @endsection

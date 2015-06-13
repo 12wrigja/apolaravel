@@ -1,10 +1,10 @@
-@extends('contracts.base')
+@extends('templates.crud_template')
 
 @section('scripts')
     @parent
     {!! Html::script('js/helpers.js') !!}
     {!! Html::script('js/comparisons.js') !!}
-    {!! Html::script('js/contract_edit.js') !!}
+    {!! Html::script('js/contracts/contract_edit.js') !!}
 @endsection
 
 @section('metadata')

@@ -1,4 +1,4 @@
-@extends('contracts.base')
+@extends('templates.crud_template')
 
 @section('scripts')
     @parent
@@ -10,6 +10,7 @@
 @section('metadata')
     <meta name="requirement_url" content="{!! route('contractreq_view')!!}">
     <meta name="contract_index_url" content="{!! route('contract_view') !!}">
+    <meta name="requirement_create_url" content="{!! route('contractreq_store') !!}">
 @endsection
 
 @section('crud_form')
@@ -37,7 +38,9 @@
 
     <div class="form-group">
         <h2>Requirements</h2>
+
         <p class="help-block"></p>
+
         <p>
             <button class="btn btn-success" type="button" id="reqCreate" data-toggle="modal"
                     data-target="#createRequirement">Create a new Requirement
@@ -97,11 +100,14 @@
 
     <div id="loadingArea" class="alert alert-info alert-important collapse" role="alert">
         <h3 class="text-center">Creating Contract...</h3>
+
         <div class="progress">
-            <div class="progress-bar  progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
+            <div class="progress-bar  progress-bar-striped active" role="progressbar" aria-valuenow="100"
+                 aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
         </div>
     </div>
 
-    <pre class="debug-block">@{{create_form | contractCreate | json}}</pre>
-
+    <pre>@{{create_form | json}}</pre>
+    <pre>@{{contract | contractCreate | json}}</pre>
+    <pre>@{{ requirements | json }}</pre>
 @endsection

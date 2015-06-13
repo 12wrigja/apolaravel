@@ -17,6 +17,7 @@ class CreateCEventCRequirementPivotTable extends Migration
             $table->foreign('c_event_id')->references('id')->on('c_events')->onDelete('cascade');
             $table->integer('c_requirement_id')->unsigned()->index();
             $table->foreign('c_requirement_id')->references('id')->on('c_requirements')->onDelete('cascade');
+            $table->primary(['c_event_id','c_requirement_id']);
         });
     }
 

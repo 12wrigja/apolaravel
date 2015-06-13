@@ -53,7 +53,7 @@
                     </li>
                 @else
                     <li class="dropdown pull-right">
-                        <a href="/login" style="color:#777; margin-top: 5px;" class="dropdown-toggle"><span
+                        <a href="/login?redirect_url={{ Request::url() }}" style="color:#777; margin-top: 5px;" class="dropdown-toggle"><span
                                     class="glyphicon glyphicon-user"></span><b> Login</b></a>
                     </li>
                 @endif

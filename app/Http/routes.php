@@ -21,12 +21,7 @@ Route::filter('sameid',function($route){
 });
 
 Route::filter('casAuth',function(){
-	$username = LoginController::getCaseUsername();
-	if (null == $username){
-		return LoginController::directToAuthPage();
-	}else if(LoginController::currentUser()==null){
-		return View::make('errors.401')->with('message','You do not have permission to access this page.');
-	}
+	return LoginController::authenticate();
 });
 
 Route::filter('webmaster',function(){

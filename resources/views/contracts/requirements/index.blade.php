@@ -1,5 +1,10 @@
 @extends('templates.crud_template')
 
+@section('scripts')
+    @parent
+    {!! Html::script('js/comparisons.js') !!}
+@endsection
+
 @section('crud_form')
     <div class="row">
         <div class="col-lg-12">
@@ -41,7 +46,7 @@
                     {{ $contractReq->description }}
                 </td>
                 <td>
-                    {{ $contractReq -> comparison }}
+                    {{ $contractReq->prettyComparison() }}
                 </td>
                 <td>
                     {{ $contractReq -> threshold }}

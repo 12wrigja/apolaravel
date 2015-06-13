@@ -4,33 +4,40 @@ var mainView = new Vue({
 
     data: {
         create_form: {
-            display_name: "",
-            description: "",
-            contract_events: []
-        },
-        contract_events: []
-    },
-
-    methods: {
-        chooseExistingRequirement: function (requirement) {
-
-        },
-        removeRequirement: function (requirement) {
-
-        },
-        createRequirement: function (event) {
-            event.preventDefault();
-            var contractData = Vue.util.extend({}, this.requirement);
-            contractData['contract_events'] = minimizeToIDs(this.requirement.contract_events);
-            createRequirement(contractData);
+            display_name: '',
+            description: '',
+            comparison: '',
+            threshold: '',
+            filters: []
         }
     },
 
-    filters: {
-        contractCreate: function (contract) {
-            var formData = Vue.util.extend({}, contract);
-            formData['requirements'] = minimizeToIDs(contract.requirements);
-            return formData;
+    methods: {
+        removeFilter: function (filter) {
+            this.create_form.filters.$remove(filter);
+        },
+        createFilter: function () {
+            var count = this.create_form.filters.length;
+            console.log(count);
+            this.create_form.filters.push({
+                id: '',
+                description: '',
+                controller: '',
+                method: '',
+                execution_order: count + 1
+            });
+        },
+        clearIfNotNumber: function(field){
+            console.log($.isNumeric(field));
+            if(!$.isNumeric(field)){
+                console.log('reassigning');
+                field = '';
+            }
+        },
+        createRequirement: function (event) {
+            event.preventDefault();
+            var contractData = Vue.util.extend({}, this.create_form);
+            createRequirement(contractData);
         }
     }
 });
@@ -38,7 +45,7 @@ var mainView = new Vue({
 function createRequirement(requirementData) {
     var form = $('#create_contractreq_form');
     var url = form.attr('action');
-    collapseSwap('#loadingArea','#create_contractreq_form');
+    collapseSwap('#loadingArea', '#create_contractreq_form');
     cleanupErrors('create_contract_form');
     $.post(url, requirementData, null).done(function (data) {
         window.location = $('meta[name="contractreq_index_url"]').attr('content');
@@ -49,12 +56,8 @@ function createRequirement(requirementData) {
             document.write(error.responseText);
             document.close();
         } else {
-            collapseSwap('#create_contractreq_form','#loadingArea');
+            collapseSwap('#create_contractreq_form', '#loadingArea');
             renderErrors('create_contractreq_form', error.responseJSON);
         }
     });
 }
-
-$(document).ready(function () {
-
-});

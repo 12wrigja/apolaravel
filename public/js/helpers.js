@@ -41,7 +41,7 @@ function createEntity(url, formData){
     });
 }
 
-function updateEntity(url, formData){
+function updateEntity(url, formData, formID){
     return $.ajax({
         url:url,
         type:'post',
@@ -59,12 +59,13 @@ function setupDebug(){
     });
 }
 
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'Accept': 'application/json'
+    }
+});
+
 $(document).ready(function () {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            'Accept': 'application/json'
-        }
-    });
     setupDebug();
 });

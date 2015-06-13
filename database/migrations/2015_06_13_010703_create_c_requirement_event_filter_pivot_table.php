@@ -1,9 +1,9 @@
-R<?php
+<?php
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContractCRequirementPivotTable extends Migration
+class CreateCRequirementEventFilterPivotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,12 @@ class CreateContractCRequirementPivotTable extends Migration
      */
     public function up()
     {
-        Schema::create('contract_c_requirement', function(Blueprint $table) {
-            $table->integer('contract_id')->unsigned()->index();
-            $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade');
+        Schema::create('c_requirement_event_filter', function(Blueprint $table) {
             $table->integer('c_requirement_id')->unsigned()->index();
             $table->foreign('c_requirement_id')->references('id')->on('c_requirements')->onDelete('cascade');
-            $table->primary(['contract_id','c_requirement_id'],'contract_requirement_primary_key');
+            $table->integer('event_filter_id')->unsigned()->index();
+            $table->foreign('event_filter_id')->references('id')->on('event_filters')->onDelete('cascade');
+            $table->primary(['c_requirement_id','event_filter_id'],'c_requirement_event_filter_primary_key');
         });
     }
 
@@ -28,6 +28,6 @@ class CreateContractCRequirementPivotTable extends Migration
      */
     public function down()
     {
-        Schema::drop('contract_c_requirement');
+        Schema::drop('c_requirement_event_filter');
     }
 }

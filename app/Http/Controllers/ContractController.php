@@ -3,7 +3,7 @@
 use APOSite\Http\Requests\EditContractRequest;
 use APOSite\Http\Requests\StoreContractRequest;
 use APOSite\Models\Contract;
-use APOSite\Models\CRequirement;
+use APOSite\Models\ContractRequirement;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Log;
@@ -27,7 +27,7 @@ class ContractController extends Controller {
 	 */
 	public function create()
 	{
-		return view('contracts.create')->with('requirements',CRequirement::all());
+		return view('contracts.create')->with('requirements',ContractRequirement::all());
 	}
 
     /**
@@ -43,7 +43,7 @@ class ContractController extends Controller {
         $requirements = Request::input('requirements');
         if($requirements != null){
             foreach($requirements as $id){
-                $requirement = CRequirement::findOrFail($id);
+                $requirement = ContractRequirement::findOrFail($id);
                 $contract->requirements()->attach($requirement);
             }
         }
@@ -99,7 +99,7 @@ class ContractController extends Controller {
         if($requirements != null){
             $contract->requirements()->detach();
             foreach($requirements as $id){
-                $requirement = CRequirement::findOrFail($id);
+                $requirement = ContractRequirement::findOrFail($id);
                 $contract->requirements()->attach($requirement);
             }
         }
