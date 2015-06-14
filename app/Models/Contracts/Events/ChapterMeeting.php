@@ -4,15 +4,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class ChapterMeeting extends Model {
 
-    protected $fillable = [
-        'display_name',
-        'description',
-        'event_date',
-        'location'
-    ];
+    public static function createMeeting($attributes = array()){
+        $meeting = new ChapterMeeting;
+        $meeting->fill($attributes);
+        $meeting->save();
+        $eventData = new ContractEvent;
+        $eventData->fill($attributes);
+        $eventData->EventType()->associate($meeting);
+        $eventData->save();
+        return $meeting;
+    }
 
     public function ContractEvent(){
-        return $this->morphMany('APOSite\Models\ContractEvent','event_type');
+        return $this->morphOne('APOSite\Models\ContractEvent','event_type');
     }
 
 }

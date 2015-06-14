@@ -11,10 +11,23 @@ class ContractEvent extends Model {
         'description',
         'event_date'
     ];
+
     public $timestamps = false;
 
     public function EventType(){
-        return $this->morphTo();
+        return $this->morphTo('event_type');
     }
+//
+//    public function getDisplayName(){
+//        return $this->display_name;
+//    }
+//
+//    public function getDescription(){
+//        return $this->description;
+//    }
+//
+//    public function getEventDate(){
+//        return $this->event_date;
+//    }
 
 }

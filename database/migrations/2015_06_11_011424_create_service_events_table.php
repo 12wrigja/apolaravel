@@ -18,7 +18,7 @@ class CreateServiceEventsTable extends Migration {
             $table->enum('service_type',['chapter','country','community','campus']);
             $table->string('location');
             $table->enum('project_type',['inside','outside']);
-            $table->boolean('offCampus');
+            $table->boolean('off_campus');
             $table->integer('travel_time');
 			$table->timestamps();
 		});
