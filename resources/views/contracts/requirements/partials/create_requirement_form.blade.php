@@ -2,13 +2,13 @@
 <div class="form-group">
     {!! Form::label('display_name','Display Name') !!}
     {!! Form::text('display_name', null,
-    ['class'=>'form-control','v-model'=>'create_form.display_name']) !!}
+    ['class'=>'form-control','v-model'=>'form.display_name']) !!}
 </div>
 
 <div class="form-group">
     {!! Form::label('description','Description') !!}
     {!! Form::textarea('description', null,
-    ['class'=>'form-control','v-model'=>'create_form.description']) !!}
+    ['class'=>'form-control','v-model'=>'form.description']) !!}
 </div>
 
 <div class="form-group">
@@ -18,16 +18,14 @@
     'LEQ'=>'Less Than or Equal To',
     'EQ'=>'Equal To',
     'GEQ'=>'Greater Than or Equal To',
-    'GT'=>'Greater Than'], 'GEQ' ,['class'=>'form-control','v-model'=>'create_form.comparison']) !!}
+    'GT'=>'Greater Than'], 'GEQ' ,['class'=>'form-control','v-model'=>'form.comparison']) !!}
 </div>
 
 <div class="form-group">
     {!! Form::label('Threshold','Threshold') !!}
-    {!! Form::text('Threshold', null, ['class'=>'form-control','v-model'=>'create_form.threshold
+    {!! Form::text('Threshold', null, ['class'=>'form-control','v-model'=>'form.threshold
     ','number']) !!}
 </div>
-
-
 <div class="form-group">
     {!! Form::submit('Create Contract Requirement', ['class'=>'btn btn-primary form-control']) !!}
 </div>

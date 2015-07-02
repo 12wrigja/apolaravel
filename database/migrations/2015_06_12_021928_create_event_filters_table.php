@@ -15,6 +15,8 @@ class CreateEventFiltersTable extends Migration {
 		Schema::create('event_filters', function(Blueprint $table)
 		{
 			$table->increments('id');
+            $table->integer('c_requirement_id')->unsigned()->index();
+            $table->foreign('c_requirement_id')->references('id')->on('c_requirements')->onDelete('cascade');
             $table->string('display_name');
             $table->string('controller');
             $table->string('method');

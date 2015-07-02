@@ -8,8 +8,8 @@
 
 @section('crud_form')
 
-    <h1 class="'page-header">Create a new Contract Requirement</h1>
-    {!! Form::open(['route'=>'contractreq_store','v-on'=>'submit: createRequirement($event)','id'=>'create_requirement_form']) !!}
+    <h1 class="'page-header">Edit {{ $requirement->display_name }}</h1>
+    {!! Form::model($requirement,['route'=>'contractreq_store','v-on'=>'submit: createRequirement($event)','id'=>'create_requirement_form']) !!}
     <div class="form-group">
         {!! Form::label('display_name','Display Name') !!}
         {!! Form::text('display_name', null,
@@ -42,7 +42,7 @@
         <h2>Event Filters</h2>
         <p class="help-block"></p>
         <p>
-            <button class="btn btn-info" type="button" v-on="click: createFilter">Create New Validator
+            <button class="btn btn-info" type="button" v-on="click: createFilter">Create New Filter
             </button>
         </p>
 
@@ -57,9 +57,6 @@
             </th>
             <th>
                 Method
-            </th>
-            <th>
-                Execution Order
             </th>
             <th>
 
@@ -80,10 +77,6 @@
                     ']) !!}
                 </td>
                 <td>
-                    {!! Form::text('Execution Order', null, ['class'=>'form-control','v-model'=>'filter.execution_order
-                    ','lazy','number','v-on'=>'change: clearIfNotNumber(filter.execution_order)']) !!}
-                </td>
-                <td>
                     <button class="btn btn-danger" type="button" v-on="click: removeFilter(filter)">Remove
                     </button>
                 </td>
@@ -93,7 +86,7 @@
     </div>
 
     <div class="form-group">
-        {!! Form::submit('Create Contract Requirement', ['class'=>'btn btn-primary form-control']) !!}
+        {!! Form::submit('Update Contract Requirement', ['class'=>'btn btn-primary form-control']) !!}
     </div>
 
     {!! Form::close() !!}

@@ -42,18 +42,17 @@
                         <!-- This works well for static text, like a username -->
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-expanded="false">{{$currentUser->first_name}} {{$currentUser->last_name}}
-                            @if($currentUser->menu_items != null)
                             <span class="caret"></span></a>
-                            @endif
-                        @if($currentUser->menu_items != null)
-                            <ul class="dropdown-menu" role="menu">
-
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="item"><a href="/users/{{$currentUser->id}}">View Profile</a></li>
+                            @if($currentUser->menu_items != null)
                                 @foreach($currentUser->menu_items as $item)
                                     <li><a class="item" href="{!! $item->url !!}">{{$item->text}}</a></li>
                                 @endforeach
+                            @endif
+                            <li class="item"><a href="/logout">Log Out</a></li>
+                        </ul>
 
-                            </ul>
-                        @endif
                     </li>
                     <!-- Add any additional bootstrap header items.  This is a drop-down from an icon -->
                 @else

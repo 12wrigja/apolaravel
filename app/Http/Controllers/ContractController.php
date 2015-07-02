@@ -17,7 +17,11 @@ class ContractController extends Controller {
 	 */
 	public function index()
 	{
-		return view('contracts.index')->with('contracts',Contract::all());
+        if(Request::wantsJSON()){
+            return Contract::with('Requirements')->get();
+        } else {
+            return view('contracts.index')->with('contracts', Contract::all());
+        }
 	}
 
 	/**
@@ -103,6 +107,7 @@ class ContractController extends Controller {
                 $contract->requirements()->attach($requirement);
             }
         }
+        $contract->save();
         flash()->success($contract->display_name.' successfully edited!');
         if(Request::wantsJson()){
             return $contract;

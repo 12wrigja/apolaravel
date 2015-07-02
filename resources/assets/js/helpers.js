@@ -27,8 +27,8 @@ function renderErrors(formID, jsonErrors) {
 }
 
 function collapseSwap(obj1, obj2) {
-    var obj1 = $(obj1);
-    var obj2 = $(obj2);
+    var obj1 = $('#'+obj1);
+    var obj2 = $('#'+obj2);
     obj1.collapse('show');
     obj2.collapse('hide');
 }
@@ -44,7 +44,7 @@ function createEntity(url, formData){
 function updateEntity(url, formData, formID){
     return $.ajax({
         url:url,
-        type:'post',
+        type:'put',
         data:formData
     });
 }

@@ -1,6 +1,6 @@
-@extends('master_clean')
+@extends('master_scrub')
 
-@section('left_menu_items')
+@section('nav_menu_items')
     <li><a class="item" href="/">About APO</a></li>
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Theta Upsilon

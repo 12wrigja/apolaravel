@@ -4,6 +4,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contract extends Model {
 
+    public $timestamps = true;
+
+    protected $hidden = ['pivot'];
+
 	protected $fillable = [
         'display_name',
         'description'

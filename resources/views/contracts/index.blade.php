@@ -37,10 +37,10 @@
                     <h4>Description: </h4><p>{{$contract->description}}</p>
                 </td>
                 <td>
-                    {{$contract->created_at->toDateTimeString()}}
+                    {{$contract->created_at->diffForHumans()}}
                 </td>
                 <td>
-                    {{$contract->updated_at->toDateTimeString()}}
+                    {{$contract->updated_at->diffForHumans()}}
                 </td>
                 <td>
                     <a href="{!! route('contract_edit',$contract->id) !!}" role="button" class="btn btn-default">Edit

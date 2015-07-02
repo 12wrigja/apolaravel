@@ -1,7 +1,9 @@
 <?php namespace APOSite\Http\Controllers;
 
+use APOSite\Models\EventFilter;
 use Illuminate\Support\Facades\Request;
 use APOSite\Models\ContractRequirement;
+use Illuminate\Support\Facades\Input;
 
 class ContractRequirementController extends Controller {
 
@@ -39,11 +41,15 @@ class ContractRequirementController extends Controller {
         $input = Request::all();
         $contract_req = ContractRequirement::create($input);
         if(Input::has('filters')){
-            $filters = Input::has('filters');
-            foreach($filters as $filter){
-
+            $filterData = Input::has('filters');
+            foreach($filterData as $data){
+                $filter = new EventFilter;
+                $filter->fill($data);
+                $filter->Requirement()->associate($contract_req);
+                $filter->save();
             }
         }
+        $contract_req->save();
         return $contract_req;
 	}
 
@@ -66,7 +72,7 @@ class ContractRequirementController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		return view('contracts.requirements.edit')->with('requirement',ContractRequirement::findOrFail($id));
 	}
 
 	/**

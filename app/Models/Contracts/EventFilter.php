@@ -32,4 +32,8 @@ class EventFilter extends Model {
         }
     }
 
+    public function Requirement(){
+        return $this->belongsTo('APOSite\Models\ContractRequirement','c_requirement_id');
+    }
+
 }

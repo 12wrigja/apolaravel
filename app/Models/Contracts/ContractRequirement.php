@@ -6,6 +6,10 @@ class ContractRequirement extends Model {
 
     protected $table = 'c_requirements';
 
+    protected $touches = ['Contract'];
+
+    protected $hidden = ['pivot'];
+
     private static $comparisons = [
         'LT'=>'Less Than',
         'LEQ'=>'Less Than or Equal To',
@@ -21,6 +25,10 @@ class ContractRequirement extends Model {
         'comparison'
     ];
 
+    public function Contract(){
+        return $this->belongsToMany('APOSite\Models\Contracts\Contract','contract_c_requirement');
+    }
+
     public function prettyComparison(){
         return ContractRequirement::$comparisons[$this->comparison];
     }
@@ -30,7 +38,7 @@ class ContractRequirement extends Model {
     }
 
     public function EventFilters(){
-        return $this->belongsToMany('APOSite\Models\Contracts\EventFilter','c_requirement_event_filter');
+        return $this->hasMany('APOSite\Models\EventFilter','c_requirement_id');
     }
 
 }
