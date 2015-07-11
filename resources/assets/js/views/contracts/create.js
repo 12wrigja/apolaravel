@@ -1,3 +1,6 @@
+var $ = require('jquery');
+window.$ = $;
+require('bootstrap');
 var Vue = require('vue');
 Vue.use(require('vue-resource'));
 var form = require('../../forms.js')(Vue);
@@ -13,12 +16,12 @@ var contract_create_form = form.extend({
                 requirements: []
             }
         }
-    }//,
-    //
-    //components: {
-    //    'requirementpicker' : require('../../components/RequirementPicker/RequirementPicker.js'),
-    //    'createrequirementmodal' : require('../../components/ContractRequirementCreateForm/ContractCreateModal.js')
-    //}
+    },
+
+    components: {
+        'requirementpicker' : require('../../components/RequirementPicker/RequirementPicker.js'),
+        //'createrequirementmodal' : require('../../components/ContractRequirementCreateForm/ContractCreateModal.js')
+    }
 });
 Vue.component('contract-create-form',contract_create_form);
 Vue.component('create-requirement-modal',form.extend(require('../../components/ContractRequirementCreateForm/ContractCreateModal.js')));

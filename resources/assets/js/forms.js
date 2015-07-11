@@ -42,8 +42,8 @@ module.exports = function (Vue) {
                 },
                 setupDebug: function () {
                     var that = this;
-                    $(this.$el).append('<pre> test </pre>');
-                    $(document).keydown(function (event) {
+                    $(this.$el).after('<pre v-show="debug"> {{ $data | json }} </pre>');
+                    $(this.$el).keydown(function (event) {
                         if (event.which == 192) {
                             if (event.shiftKey == true && event.ctrlKey == true) {
                                 console.log('Changing Debug.');
@@ -55,8 +55,7 @@ module.exports = function (Vue) {
                     });
                 }
             },
-
-            ready: function () {
+            beforeCompile: function(){
                 this.setupDebug();
             }
         });

@@ -1,4 +1,4 @@
-<requirementpicker inline-template>
+<requirementpicker inline-template url="{{ route('contractreq_view') }}">
     <div class="modal fade" id="existingRequirements" tabindex="-1" role="dialog" aria-labelledby="largeModal"
          aria-hidden="true">
         <div class="modal-dialog modal-lg">

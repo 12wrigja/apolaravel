@@ -5,9 +5,18 @@ module.exports = {
 
     data : function(){
         return {
-            requirements: []
+            requirements: [],
+            comparisons: {
+            'LT': 'Less Than',
+            'LEQ': 'Less Than or Equal To',
+            'EQ': 'Equal To',
+            'GEQ': 'Greater Than or Equal To',
+            'GT': 'Greater Than'
+           }
         }
     },
+
+    props: ['url'],
 
     methods: {
         getRequirements: function () {
@@ -21,13 +30,14 @@ module.exports = {
         }
     },
 
-    computed : {
-        url: function(){
-            return $('.REQUIREMENT_PICKER').attr('url');
+    filters: {
+        'prettyComparison' : function(value){
+            return this.comparisons[value];
         }
     },
 
     ready: function(){
+        console.log(this.url);
         this.getRequirements();
         console.log('RequirementPicker booted.');
     }
