@@ -24,7 +24,7 @@ module.exports = function (resources) {
             successFunction: function (data) {
                 console.log('Succeeded in creating contract!');
                 window.location = $('meta[name=contract_index_url]').attr('content');
-            }
+            },
         },
 
         ready: function () {

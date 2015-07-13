@@ -6,18 +6,45 @@ var $ = require('jquery');
 window.$ = $;
 window.jQuery = $;
 require('bootstrap');
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
 //Setup Vue and Vue Resource
 var Vue = require('vue');
 Vue.use(require('vue-resource'));
 //Set default headers for all Vue requests
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
-var Resources = {
-    Vue: Vue,
-    form: require('./components/forms/forms.js')(Vue),
-    ContractRequirement: Vue.resource('/contractreqs/:id'),
-    Contract: Vue.resource('/contracts/:id')
-};
+var Resources = function () {
+
+    var defaultActions = {
+        get: {
+            method: 'GET'
+        },
+        save: {
+            method: 'POST'
+        },
+        update: {
+            method: 'PUT'
+        },
+        delete: {
+            method: 'DELETE'
+        }
+    }
+
+    return {
+        Vue: Vue,
+        form: require('./components/forms/forms.js')(Vue),
+        ContractRequirement: function (instance) {
+            return instance.$resource('/contractreqs/:id');
+        },
+        Contract: function (instance) {
+            return instance.$resource('/contracts/:id',{},defaultActions);
+        }
+    }
+}();
 module.exports = Resources;
 //Initialize a new Vue instance here
 var main = new Vue({
@@ -32,12 +59,14 @@ var main = new Vue({
         prettyComparison: function (value) {
             var comparisons = {
                 'LT': 'Less Than',
-                    'LEQ': 'Less Than or Equal To',
-                    'EQ': 'Equal To',
-                    'GEQ': 'Greater Than or Equal To',
-                    'GT': 'Greater Than'
+                'LEQ': 'Less Than or Equal To',
+                'EQ': 'Equal To',
+                'GEQ': 'Greater Than or Equal To',
+                'GT': 'Greater Than'
             };
-            return comparisons[value];
+            return function (val) {
+                return comparisons[val];
+            }(value);
         }
     },
 });

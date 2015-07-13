@@ -16,9 +16,8 @@ module.exports = function (resources) {
 
             methods: {
                 getRequirements: function () {
-                    resources.ContractRequirement.get({},function(data) {
+                    resources.ContractRequirement(this).get({},function(data,status,request) {
                         if (status == 200) {
-                            console.log(data);
                             this.requirements = data;
                             this.$dispatch('get-requirements',data);
                         } else {
@@ -41,6 +40,9 @@ module.exports = function (resources) {
                 this.$on('remove-requirement',function(requirement){
                     that.requirements.push(requirement);
                 });
+                this.$on('choose-requirement',function(requirement){
+                    that.requirements.$remove(requirement);
+                })
             }
 
         })

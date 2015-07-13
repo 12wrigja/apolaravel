@@ -8,7 +8,7 @@ module.exports = function (resources) {
                     description: '',
                     requirements: []
                 },
-                allRequirements: []
+                method: 'PUT'
             }
         },
 
@@ -18,14 +18,14 @@ module.exports = function (resources) {
                 this.$broadcast('remove-requirement', requirement);
             },
             getForm: function () {
-                var data = Vue.util.extend({}, this.form);
+                var data = resources.Vue.util.extend({}, this.form);
                 data.requirements = this.minimizeToIDs(data.requirements);
                 return data;
             },
             successFunction: function (data) {
                 console.log('Succeeded in creating contract!');
                 window.location = $('meta[name=contract_index_url]').attr('content');
-            }
+            },
         },
 
         ready: function () {
@@ -35,36 +35,22 @@ module.exports = function (resources) {
             this.$on('pick-requirement', function (data) {
                 this.form.requirements.push(data);
             });
-            //this.$on('get-requirements', function (requirements) {
-            //    console.log(requirements);
-            //    //Load existing requirements into the table
-            //    var ereqs = JSON.parse($('meta[name="contract_requirements"]').attr('content'));
-            //    var that = this;
-            //    var req;
-            //    for (req in ereqs) {
-            //        var key;
-            //        for (key in requirements) {
-            //            var requirement = requirements[key];
-            //            console.log(requirement);
-            //            console.log(requirement.id);
-            //            if (requirement.id == req) {
-            //                console.log('Found match.');
-            //                that.$broadcast('remove-requirement', requirement);
-            //                that.$emit('pick-requirement', requirement);
-            //            }
-            //        }
-            //    }
-
-                //$.each(ereqs,function(index,value){
-                //    $.each(requirements, function(index, requirement){
-                //       if(requirement.id == value){
-                //           that.$broadcast('remove-requirement',requirement);
-                //           that.$emit('pick-requirement',requirement);
-                //       }
-                //    });
-                //});
-            //});
-
+            this.$on('get-requirements', function (requirements) {
+                //Load the requirements that match into the table, leave the rest in the requirement picker.
+                var contractRequirements = JSON.parse($('meta[name=contract_requirements]').attr('content'));
+                var key1;
+                for (key1 in contractRequirements) {
+                    var id = contractRequirements[key1];
+                    var key2;
+                    for (key2 in requirements) {
+                        var requirement = requirements[key2];
+                        if (requirement.id == id) {
+                            this.$emit('pick-requirement',requirement);
+                            this.$broadcast('choose-requirement',requirement);
+                        }
+                    }
+                }
+            });
         },
 
         components: {

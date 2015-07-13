@@ -62,7 +62,7 @@
 
                 </th>
                 </thead>
-                <tbody class="hidden">
+                <tbody>
                 <tr v-repeat="requirement: form.requirements | orderBy 'display_name'">
                     <td>
                         @{{ requirement.display_name }}

@@ -22,6 +22,7 @@ module.exports = function (Vue) {
                 },
                 submitForm: function (event) {
                     console.log('Submitting form.');
+                    console.log(this.formURL);
                     event.preventDefault();
                     this.setLoading();
                     this.cleanupErrors();
@@ -110,6 +111,5 @@ module.exports = function (Vue) {
                 this.register();
             }
         });
-    //Vue.component('form', form);
     return form;
 }
