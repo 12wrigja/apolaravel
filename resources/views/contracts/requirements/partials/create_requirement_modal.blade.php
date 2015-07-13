@@ -1,4 +1,3 @@
-<create-requirement-modal inline-template>
     <div class="modal fade" id="createRequirement" tabindex="-1" role="dialog" aria-labelledby="largeModal"
          aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -18,7 +17,3 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-success" type="button" id="reqCreate" data-toggle="modal"
-            data-target="#createRequirement">Create a new Requirement
-    </button>
-</create-requirement-modal>

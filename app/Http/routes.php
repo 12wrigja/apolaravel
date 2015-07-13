@@ -69,7 +69,7 @@ Route::group(array('before'=>'casAuth|webmaster'),function(){
 Route::group(array('before'=>'casAuth'),function(){
     Route::get('contracts',['uses'=>'ContractController@index','as'=>'contract_view']);
     Route::get('contracts/create',['uses'=>'ContractController@create', 'as'=>'contract_create']);
-    Route::post('contracts/store',['uses'=>'ContractController@store', 'as'=>'contract_store']);
+    Route::post('contracts',['uses'=>'ContractController@store', 'as'=>'contract_store']);
     Route::get('contracts/{id}/edit',['uses'=>'ContractController@edit','as'=>'contract_edit']);
     Route::put('contracts/{id}',['uses'=>'ContractController@update','as'=>'contract_update'])->where('id','[0-9]+');
     Route::delete('contracts/{id}',['uses'=>'ContractController@destroy', 'as'=>'contract_delete'])->where('id','[0-9]+');
@@ -80,7 +80,7 @@ Route::group(array('before'=>'casAuth'),function(){
 Route::group(array('before'=>'casAuth'),function(){
     Route::get('contractreqs',['uses'=>'ContractRequirementController@index','as'=>'contractreq_view']);
     Route::get('contractreqs/create',['uses'=>'ContractRequirementController@create', 'as'=>'contractreq_create']);
-    Route::post('contractreqs/store',['uses'=>'ContractRequirementController@store', 'as'=>'contractreq_store']);
+    Route::post('contractreqs',['uses'=>'ContractRequirementController@store', 'as'=>'contractreq_store']);
     Route::get('contractreqs/{id}/edit',['uses'=>'ContractRequirementController@edit','as'=>'contractreq_edit']);
     Route::put('contractreqs/{id}',['uses'=>'ContractRequirementController@update','as'=>'contractreq_update'])->where('id','[0-9]+');
     Route::delete('contractreqs/{id}',['uses'=>'ContractRequirementController@destroy', 'as'=>'contractreq_delete'])->where('id','[0-9]+');

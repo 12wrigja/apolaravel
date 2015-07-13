@@ -1,4 +1,4 @@
-<requirementpicker inline-template url="{{ route('contractreq_view') }}">
+<requirement-picker inline-template url="{{ route('contractreq_view') }}">
     <div class="modal fade" id="existingRequirements" tabindex="-1" role="dialog" aria-labelledby="largeModal"
          aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -43,7 +43,7 @@
                             </td>
                             <td>
                                 <button class="btn btn-primary" type="button" data-dismiss="modal"
-                                        v-on="click: chooseExistingRequirement(requirement)">Choose
+                                        v-on="click: chooseRequirement(requirement)">Choose
                                 </button>
                             </td>
                         </tr>
@@ -53,7 +53,4 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-primary" type="button" data-toggle="modal"
-            data-target="#existingRequirements">Link an Existing Requirement
-    </button>
-</requirementpicker>
+</requirement-picker>

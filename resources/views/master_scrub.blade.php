@@ -68,14 +68,7 @@
 </nav>
 
 @yield('content')
-<!-- jQuery library
-    Loaded last to speed up page loading times.
--->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<!-- Latest compiled JavaScript -->
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<!-- vue.js -->
-{!! Html::script('js/vue.js') !!}
+{!!Html::script('js/bundle.js')!!}
 @yield('scripts')
 </body>
 

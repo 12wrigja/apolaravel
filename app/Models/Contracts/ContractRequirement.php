@@ -26,7 +26,7 @@ class ContractRequirement extends Model {
     ];
 
     public function Contract(){
-        return $this->belongsToMany('APOSite\Models\Contracts\Contract','contract_c_requirement');
+        return $this->belongsToMany('APOSite\Models\Contract','contract_c_requirement','c_requirement_id');
     }
 
     public function prettyComparison(){
@@ -34,7 +34,7 @@ class ContractRequirement extends Model {
     }
 
     public function SatisfyingEvents(){
-        return $this->belongsToMany('APOSite\Models\Contracts\ContractEvent','c_event_c_requirement');
+        return $this->belongsToMany('APOSite\Models\ContractEvent','c_event_c_requirement','c_requirement_id');
     }
 
     public function EventFilters(){

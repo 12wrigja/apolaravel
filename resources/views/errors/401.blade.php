@@ -1,4 +1,4 @@
-@extends('master_clean')
+@extends('master_scrub')
 
 @section('stylesheets')
 <link rel="stylesheet" type="text/css" href="../packages/css/masthead_full.css">
