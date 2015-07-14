@@ -67,7 +67,12 @@ class ContractController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+        $contract = Contract::findOrFail($id);
+        if(Request::wantsJson()){
+            return $contract;
+        } else {
+            return view('contracts.show')->with('contract', $contract);
+        }
 	}
 
 	/**
@@ -132,7 +137,6 @@ class ContractController extends Controller {
             flash()->success('Contract successfully deleted!');
             return Redirect::route('contract_view');
         }
-
 	}
 
 }

@@ -66,6 +66,8 @@ Route::group(array('before'=>'casAuth|webmaster'),function(){
 	Route::post('/permissions','PermissionController@store');
 });
 
+
+
 Route::group(array('before'=>'casAuth'),function(){
     Route::get('contracts',['uses'=>'ContractController@index','as'=>'contract_view']);
     Route::get('contracts/create',['uses'=>'ContractController@create', 'as'=>'contract_create']);
