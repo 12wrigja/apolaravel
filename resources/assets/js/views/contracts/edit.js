@@ -8,7 +8,8 @@ module.exports = function (resources) {
                     description: '',
                     requirements: []
                 },
-                method: 'PUT'
+                method: 'PUT',
+                loaded: false
             }
         },
 
@@ -24,7 +25,7 @@ module.exports = function (resources) {
             },
             successFunction: function (data) {
                 console.log('Succeeded in creating contract!');
-                window.location = $('meta[name=contract_index_url]').attr('content');
+                //window.location = $('meta[name=contract_index_url]').attr('content');
             },
         },
 
@@ -50,6 +51,7 @@ module.exports = function (resources) {
                         }
                     }
                 }
+                this.loaded = true;
             });
         },
 

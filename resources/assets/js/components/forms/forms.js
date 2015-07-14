@@ -18,6 +18,7 @@ module.exports = function (Vue) {
             methods: {
                 register: function () {
                     console.log('Registering form.');
+                    console.log(this.formURL);
                     this.$$.iform.addEventListener('submit', this.submitForm);
                 },
                 submitForm: function (event) {
@@ -30,8 +31,9 @@ module.exports = function (Vue) {
                     $.ajax({
                         url: this.formURL,
                         type: this.method,
-                        data: this.getForm()
+                        data: JSON.stringify(this.getForm())
                     }).done(function (data) {
+                        console.log("Successful call to " + this.formURL);
                         instance.successFunction(data);
                     }).fail(function (error) {
                         if (error.status >= 500) {

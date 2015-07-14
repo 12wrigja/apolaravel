@@ -20,6 +20,7 @@ module.exports = function (resources) {
 
         methods: {
             successFunction: function(data){
+                console.log('Created Contract Requirement.');
                 this.$dispatch('create-requirement',data);
                 this.$broadcast('create-requirement',data);
                 var modal = $(this.$el).closest('modal');

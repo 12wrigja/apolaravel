@@ -62,7 +62,7 @@
 
                 </th>
                 </thead>
-                <tbody>
+                <tbody v-show="loaded">
                 <tr v-repeat="requirement: form.requirements | orderBy 'display_name'">
                     <td>
                         @{{ requirement.display_name }}

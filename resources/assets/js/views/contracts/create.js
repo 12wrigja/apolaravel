@@ -8,6 +8,7 @@ module.exports = function (resources) {
                     description: '',
                     requirements: []
                 },
+                loaded: false
             }
         },
 

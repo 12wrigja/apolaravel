@@ -8,7 +8,9 @@ window.jQuery = $;
 require('bootstrap');
 $.ajaxSetup({
     headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'Accept': 'application/json',
+        'Content-Type' : 'application/json'
     }
 });
 
@@ -42,6 +44,13 @@ var Resources = function () {
         },
         Contract: function (instance) {
             return instance.$resource('/contracts/:id',{},defaultActions);
+        },
+        utils: {
+            loadUnhide: function(rootElement){
+                console.log(rootElement);
+                console.log($(rootElement).find('.loadhidden'));
+                $(rootElement).find('.loadhidden').removeClass('loadhidden').removeClass('hidden');
+            }
         }
     }
 }();
