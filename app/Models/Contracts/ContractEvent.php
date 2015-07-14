@@ -17,17 +17,4 @@ class ContractEvent extends Model {
     public function EventType(){
         return $this->morphTo('event_type');
     }
-//
-//    public function getDisplayName(){
-//        return $this->display_name;
-//    }
-//
-//    public function getDescription(){
-//        return $this->description;
-//    }
-//
-//    public function getEventDate(){
-//        return $this->event_date;
-//    }
-
 }

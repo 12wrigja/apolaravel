@@ -22,7 +22,6 @@ class EventFilter extends Model {
         $className = $className . $this->filterNamespace;
         $className = $className . $this->controller;
         try {
-
             $app = app();
             //Now to call a controller and method with the given user and event
             $controller = $app->make($className);

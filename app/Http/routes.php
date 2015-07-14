@@ -34,10 +34,6 @@ Route::filter('webmaster',function(){
 //Routes for the officer pages
 Route::get('officers','Officers\OfficerPageController@index');
 
-//Route for testing JSON input on post
-Route::get('/api/testpost','JSONController@get');
-Route::post('/api/testpost','JSONController@post');
-
 //Routes for managing the users of the users, including creating and storing users.
 Route::group(array('before'=>'casAuth|webmaster'),function(){
 	Route::get('/users/create','UserController@create');
@@ -66,7 +62,8 @@ Route::group(array('before'=>'casAuth|webmaster'),function(){
 	Route::post('/permissions','PermissionController@store');
 });
 
-
+Route::post('/events/{type}','EventPipelineController@submitEvent');
+Route::get('events/{type}/{id}/','EventPipeline@showEvent')->where('id','[0-9]+')->where('type','[a-z]+');
 
 Route::group(array('before'=>'casAuth'),function(){
     Route::get('contracts',['uses'=>'ContractController@index','as'=>'contract_view']);
@@ -78,7 +75,7 @@ Route::group(array('before'=>'casAuth'),function(){
     Route::get('contracts/{id}/','ContractController@show')->where('id','[0-9]+');
 });
 
-//Route group for
+//Route group for Contract Requirements
 Route::group(array('before'=>'casAuth'),function(){
     Route::get('contractreqs',['uses'=>'ContractRequirementController@index','as'=>'contractreq_view']);
     Route::get('contractreqs/create',['uses'=>'ContractRequirementController@create', 'as'=>'contractreq_create']);
@@ -96,11 +93,11 @@ Route::get('/',array('as'=>'home',function(){
 	return View::make('home')->with('carouselItems',CarouselItem::all());
 }));
 
-//Route for logging in when debugging the application
-Route::post('login_debug',function(){
-	LoginController::debugLogin();
-	return Redirect::route('home');
-});
+////Route for logging in when debugging the application
+//Route::post('login_debug',function(){
+//	LoginController::debugLogin();
+//	return Redirect::route('home');
+//});
 
 //Route for logging out
 Route::get('/logout',function(){

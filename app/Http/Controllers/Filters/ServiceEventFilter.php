@@ -8,7 +8,7 @@ use APOSite\Http\Controllers\Controller;
 class ServiceEventFilter extends Controller{
 
     public function validateServiceEvent($user, $event){
-        return $user->id;
+        return $event->event_type_type == 'servicereport';
     }
 
 }
