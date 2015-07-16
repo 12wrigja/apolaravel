@@ -14,7 +14,7 @@ class EventPipelineController extends Controller {
 	protected $filterNamespace = "Models\\";
 
     public function showEvent($id,$type){
-        $controller = $app->make($className);
+//        $controller = $app->make($className);
     }
 
 	public function submitEvent($type){
@@ -24,13 +24,24 @@ class EventPipelineController extends Controller {
 		$modelName = $modelName . $eventType;
 		$method = new \ReflectionMethod($modelName,'createEvent');
 		$event = $method->invoke(null,Input::all());
-		return $event;
+        $coreEvent = $event->coreEvent()->first();
+		return $this->combineEventData($coreEvent,$event);
 	}
 
 	private function snakeToCamelCase($val) {
+        $val = rtrim($val,'s');
 		return str_replace(' ', '', ucwords(str_replace('_', ' ', $val)));
 	}
 
-
+    private function combineEventData($coreEvent,$event){
+        $arr = $event->toArray();
+        $arr2 = $coreEvent->toArray();
+        foreach($arr2 as $key=>$value){
+            if($key != 'event_type_type' && $key != 'event_type_id') {
+                $arr[$key] = $value;
+            }
+        }
+        return $arr;
+    }
 
 }

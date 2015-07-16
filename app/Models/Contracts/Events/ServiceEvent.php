@@ -23,4 +23,9 @@ class ServiceEvent extends Model {
         return $meeting;
     }
 
+    public function coreEvent(){
+        $coreEvent = $this->morphMany('APOSite\Models\ContractEvent','event_type');
+        return $coreEvent;
+    }
+
 }
