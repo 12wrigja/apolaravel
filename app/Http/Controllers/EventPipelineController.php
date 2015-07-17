@@ -1,11 +1,10 @@
 <?php namespace APOSite\Http\Controllers;
 
 use APOSite\Http\Requests;
-use APOSite\Http\Controllers\Controller;
 use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Support\Facades\Input;
-
-use Illuminate\Http\Request;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Item;
 
 class EventPipelineController extends Controller {
 
@@ -13,35 +12,35 @@ class EventPipelineController extends Controller {
 
 	protected $filterNamespace = "Models\\";
 
+    //protected $fractal;
+
+    function __construct()
+    {
+        $fractal = new Manager();
+    }
+
+
     public function showEvent($id,$type){
 //        $controller = $app->make($className);
     }
 
 	public function submitEvent($type){
+        //Convert type to CamelCase and append the namepspace to get the class to instantiate
 		$eventType = $this->snakeToCamelCase($type);
 		$modelName = $this->getAppNamespace();
 		$modelName = $modelName . $this->filterNamespace;
 		$modelName = $modelName . $eventType;
-		$method = new \ReflectionMethod($modelName,'createEvent');
+
+        //Use reflection to instantiate the class
+		$method = new \ReflectionMethod($modelName,'create');
 		$event = $method->invoke(null,Input::all());
-        $coreEvent = $event->coreEvent()->first();
-		return $this->combineEventData($coreEvent,$event);
+        $fractal = new Manager();
+		return $fractal->createData(new Item($event,$event->transformer))->toJson();
 	}
 
 	private function snakeToCamelCase($val) {
         $val = rtrim($val,'s');
 		return str_replace(' ', '', ucwords(str_replace('_', ' ', $val)));
 	}
-
-    private function combineEventData($coreEvent,$event){
-        $arr = $event->toArray();
-        $arr2 = $coreEvent->toArray();
-        foreach($arr2 as $key=>$value){
-            if($key != 'event_type_type' && $key != 'event_type_id') {
-                $arr[$key] = $value;
-            }
-        }
-        return $arr;
-    }
 
 }

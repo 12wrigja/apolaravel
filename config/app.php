@@ -155,7 +155,8 @@ return [
         'APOSite\Providers\MacroProvider',
 
         //Laracasts Flash Provider
-        'Laracasts\Flash\FlashServiceProvider'
+        'Laracasts\Flash\FlashServiceProvider',
+
 	],
 
 	/*
