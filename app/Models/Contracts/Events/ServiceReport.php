@@ -2,10 +2,10 @@
 
 namespace APOSite\Models;
 
-use APOSite\Http\Transformers\ServiceEventTransformer;
 use League\Fractal\Manager;
+use APOSite\Http\Transformers\ServiceReportTransformer;
 
-class ServiceEvent extends BaseModel
+class ServiceReport extends BaseModel
 {
 
     public function __construct(array $attributes = array())
@@ -22,6 +22,6 @@ class ServiceEvent extends BaseModel
     ];
 
     public function transformer(Manager $manager){
-        return new ServiceEventTransformer($manager);
+        return new ServiceReportTransformer($manager);
     }
 }

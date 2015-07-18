@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateServiceEventsTable extends Migration {
+class CreateServiceReportsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreateServiceEventsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('service_events', function(Blueprint $table)
+		Schema::create('service_reports', function(Blueprint $table)
 		{
 			$table->increments('id');
             $table->enum('service_type',['chapter','country','community','campus']);
@@ -31,7 +31,7 @@ class CreateServiceEventsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('service_events');
+		Schema::drop('service_reports');
 	}
 
 }

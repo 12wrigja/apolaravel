@@ -1,6 +1,6 @@
 <?php namespace APOSite\Http\Controllers;
 
-use APOSite\Models\ServiceEvent;
+use APOSite\Models\ServiceReport;
 
 class SiteStatisticsController extends Controller {
 
@@ -9,6 +9,6 @@ class SiteStatisticsController extends Controller {
 	}
 
 	public function getserviceevent($id){
-		return ServiceEvent::findOrFail($id);
+		return ServiceReport::findOrFail($id);
 	}
 }

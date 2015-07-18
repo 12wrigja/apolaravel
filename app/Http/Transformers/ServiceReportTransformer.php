@@ -9,12 +9,12 @@
 namespace APOSite\Http\Transformers;
 
 
-use APOSite\Models\ServiceEvent;
+use APOSite\Models\ServiceReport;
 use League\Fractal\Manager;
 use League\Fractal\TransformerAbstract;
 use League\Fractal\Resource\Item;
 
-class ServiceEventTransformer extends TransformerAbstract{
+class ServiceReportTransformer extends TransformerAbstract{
 
     protected $manager;
 
@@ -24,8 +24,8 @@ class ServiceEventTransformer extends TransformerAbstract{
     }
 
 
-    public function transform(ServiceEvent $event){
-        $coreEventData = $this->manager->createData(new Item($event->coreEvent, new ContractEventTransformer()))->toArray();
+    public function transform(ServiceReport $event){
+        $coreEventData = $this->manager->createData(new Item($event->coreEvent, new ReportTransformer()))->toArray()['data'];
         $hrefArr = [
             'href' => route('event_show',['id'=>$event->id, 'type'=>'service_events']),
         ];

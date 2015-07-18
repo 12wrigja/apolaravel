@@ -8,14 +8,12 @@
 
 namespace APOSite\Http\Transformers;
 
-
-use APOSite\Models\Contract;
-use APOSite\Models\ContractEvent;
+use APOSite\Models\Report;
 use League\Fractal\TransformerAbstract;
 
-class ContractEventTransformer extends TransformerAbstract{
+class ReportTransformer extends TransformerAbstract{
 
-    public function transform(ContractEvent $event){
+    public function transform(Report $event){
         return [
             'display_name' => $event->display_name,
             'description' => $event->description,

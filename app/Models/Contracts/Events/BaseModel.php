@@ -25,7 +25,7 @@ abstract class BaseModel extends Model
     public static function create(array $attributes=[])
     {
         $specific = parent::create($attributes);
-        $coreEvent = ContractEvent::create($attributes);
+        $coreEvent = Report::create($attributes);
         $coreEvent->EventType()->associate($specific);
         $coreEvent->save();
         return $specific;
@@ -34,8 +34,7 @@ abstract class BaseModel extends Model
 
     public function coreEvent()
     {
-        $coreEvent = $this->morphOne('APOSite\Models\ContractEvent', 'event_type');
-        return $coreEvent;
+        return $this->morphOne('APOSite\Models\Report', 'report_type');
     }
 
 }

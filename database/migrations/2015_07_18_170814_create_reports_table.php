@@ -17,6 +17,7 @@ class CreateReportsTable extends Migration
             $table->char('display_name');
             $table->longText('description');
             $table-> date('event_date');
+            $table->morphs('report_type');
             $table->timestamps();
             $table->softDeletes();
         });

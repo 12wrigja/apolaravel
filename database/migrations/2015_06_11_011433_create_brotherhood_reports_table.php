@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBrotherhoodEventsTable extends Migration {
+class CreateBrotherhoodReportsTable extends Migration {
 
 	/**
 	 * Run the migrations.
