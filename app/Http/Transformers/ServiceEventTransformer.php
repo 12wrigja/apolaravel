@@ -35,8 +35,7 @@ class ServiceEventTransformer extends TransformerAbstract{
             'project_type' => $event->project_type,
             'service_type' => $event->service_type,
             'location' => $event->location,
-            'off_campus' => (boolean)$event->off_campus,
-            'testthing' => '/'
+            'off_campus' => (boolean)$event->off_campus
         ];
         $travelTime = ((boolean)$event->off_campus)?[
             'travel_time' => $event->travel_time
