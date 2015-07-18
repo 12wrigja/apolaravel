@@ -36,7 +36,7 @@ class CreateUsersTable extends Migration {
             $table->integer('grad_semester')->nullable();
             $table->char('hometown')->nullable();
             $table->timestamps();
-			$table->rememberToken();
+            $table->primary('id');
 		});
 	}
 

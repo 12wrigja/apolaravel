@@ -1,9 +1,9 @@
-R<?php
+<?php
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContractCRequirementPivotTable extends Migration
+class CreateContractRequirementPivotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,11 @@ class CreateContractCRequirementPivotTable extends Migration
      */
     public function up()
     {
-        Schema::create('contract_c_requirement', function(Blueprint $table) {
+        Schema::create('contract_requirement', function(Blueprint $table) {
             $table->integer('contract_id')->unsigned()->index();
             $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade');
-            $table->integer('c_requirement_id')->unsigned()->index();
-            $table->foreign('c_requirement_id')->references('id')->on('c_requirements')->onDelete('cascade');
-            $table->primary(['contract_id','c_requirement_id'],'contract_requirement_primary_key');
+            $table->integer('requirement_id')->unsigned()->index();
+            $table->foreign('requirement_id')->references('id')->on('requirements')->onDelete('cascade');
         });
     }
 
@@ -28,6 +27,6 @@ class CreateContractCRequirementPivotTable extends Migration
      */
     public function down()
     {
-        Schema::drop('contract_c_requirement');
+        Schema::drop('contract_requirement');
     }
 }

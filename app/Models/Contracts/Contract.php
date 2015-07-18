@@ -14,7 +14,7 @@ class Contract extends Model {
     ];
 
     public function Requirements(){
-        return $this->belongsToMany('APOSite\Models\ContractRequirement','contract_c_requirement','contract_id','c_requirement_id');
+        return $this->belongsToMany('APOSite\Models\Requirement');
     }
 
     public function getDates(){

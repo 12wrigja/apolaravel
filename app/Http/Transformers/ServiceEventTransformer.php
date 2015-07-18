@@ -27,7 +27,7 @@ class ServiceEventTransformer extends TransformerAbstract{
     public function transform(ServiceEvent $event){
         $coreEventData = $this->manager->createData(new Item($event->coreEvent, new ContractEventTransformer()))->toArray();
         $hrefArr = [
-            'href' => str_replace("\\","",route('event_show',['id'=>$event->id, 'type'=>'service_events'])),
+            'href' => route('event_show',['id'=>$event->id, 'type'=>'service_events']),
         ];
 
 

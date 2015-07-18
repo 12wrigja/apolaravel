@@ -13,18 +13,16 @@ use League\Fractal\Manager;
 
 abstract class BaseModel extends Model
 {
-    protected $fractal;
 
     public $transformer;
 
     public function __construct(array $attributes = array())
     {
         parent::__construct($attributes);
-        $fractal = new Manager();
     }
 
 
-    public static function create(array $attributes)
+    public static function create(array $attributes=[])
     {
         $specific = parent::create($attributes);
         $coreEvent = ContractEvent::create($attributes);

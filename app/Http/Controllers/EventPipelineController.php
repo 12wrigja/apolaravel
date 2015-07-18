@@ -19,21 +19,15 @@ class EventPipelineController extends Controller {
         $this->fractal = new Manager();
     }
 
-
-    public function showEvent($id,$type){
-//        $controller = $app->make($className);
+    public function showEvent($type,$id){
+		$event = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
+		$resource = new Item($event,$event->transformer($this->fractal));
+		return $this->fractal->createData($resource)->toJson();
     }
 
 	public function submitEvent($type){
-        //Convert type to CamelCase and append the namespace to get the class to instantiate
-		$eventType = $this->snakeToCamelCase($type);
-		$modelName = $this->getAppNamespace();
-		$modelName = $modelName . $this->filterNamespace;
-		$modelName = $modelName . $eventType;
-
-        //Use reflection to instantiate the class
-		$method = new \ReflectionMethod($modelName,'create');
-		$event = $method->invoke(null,Input::all());
+		//Create and save the event
+        $event = $this->getClass($type)->getMethod('create')->invoke(null,Input::all());
 		$resource = new Item($event,$event->transformer($this->fractal));
 		return $this->fractal->createData($resource)->toJson();
 	}
@@ -43,4 +37,11 @@ class EventPipelineController extends Controller {
 		return str_replace(' ', '', ucwords(str_replace('_', ' ', $val)));
 	}
 
+	private function getClass($type){
+		$eventType = $this->snakeToCamelCase($type);
+		$modelName = $this->getAppNamespace();
+		$modelName = $modelName . $this->filterNamespace;
+		$modelName = $modelName . $eventType;
+		return new \ReflectionClass($modelName);
+	}
 }
