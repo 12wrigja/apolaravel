@@ -12,11 +12,11 @@ class EventPipelineController extends Controller {
 
 	protected $filterNamespace = "Models\\";
 
-    //protected $fractal;
+    protected $fractal;
 
     function __construct()
     {
-        $fractal = new Manager();
+        $this->fractal = new Manager();
     }
 
 
@@ -25,7 +25,7 @@ class EventPipelineController extends Controller {
     }
 
 	public function submitEvent($type){
-        //Convert type to CamelCase and append the namepspace to get the class to instantiate
+        //Convert type to CamelCase and append the namespace to get the class to instantiate
 		$eventType = $this->snakeToCamelCase($type);
 		$modelName = $this->getAppNamespace();
 		$modelName = $modelName . $this->filterNamespace;
@@ -34,8 +34,8 @@ class EventPipelineController extends Controller {
         //Use reflection to instantiate the class
 		$method = new \ReflectionMethod($modelName,'create');
 		$event = $method->invoke(null,Input::all());
-        $fractal = new Manager();
-		return $fractal->createData(new Item($event,$event->transformer))->toJson();
+		$resource = new Item($event,$event->transformer($this->fractal));
+		return $this->fractal->createData($resource)->toJson();
 	}
 
 	private function snakeToCamelCase($val) {

@@ -17,7 +17,7 @@ class ContractEventTransformer extends TransformerAbstract{
 
     public function transform(ContractEvent $event){
         return [
-          'display_name' => $event->display_name,
+            'display_name' => $event->display_name,
             'description' => $event->description,
             'date' => $event->event_date
         ];

@@ -63,7 +63,7 @@ Route::group(array('before'=>'casAuth|webmaster'),function(){
 });
 
 Route::post('/events/{type}','EventPipelineController@submitEvent');
-Route::get('events/{type}/{id}/','EventPipeline@showEvent')->where('id','[0-9]+')->where('type','[a-z]+');
+Route::get('events/{type}/{id}/',['uses'=>'EventPipeline@showEvent','as'=>'event_show'])->where('id','[0-9]+')->where('type','[a-z]+');
 
 Route::group(array('before'=>'casAuth'),function(){
     Route::get('contracts',['uses'=>'ContractController@index','as'=>'contract_view']);
