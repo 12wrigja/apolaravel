@@ -2,10 +2,11 @@
 
 namespace APOSite\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use APOSite\Models\Reports\ValidatingModel;
 
-class Report extends Model
+class Report extends ValidatingModel
 {
+
     protected $fillable = [
         'display_name',
         'description',
@@ -13,7 +14,6 @@ class Report extends Model
     ];
 
     public $timestamps = false;
-
 
     public function EventType(){
         return $this->morphTo('report_type');

@@ -14,6 +14,10 @@ $.ajaxSetup({
     }
 });
 
+var typeahead = require('typeahead.js');
+console.log(typeahead);
+var Bloodhound = typeahead.bloodhound;
+
 //Setup Vue and Vue Resource
 var Vue = require('vue');
 Vue.use(require('vue-resource'));
@@ -51,7 +55,9 @@ var Resources = function () {
                 console.log($(rootElement).find('.loadhidden'));
                 $(rootElement).find('.loadhidden').removeClass('loadhidden').removeClass('hidden');
             }
-        }
+        },
+        typeahead: typeahead,
+        Bloodhound: Bloodhound
     }
 }();
 module.exports = Resources;

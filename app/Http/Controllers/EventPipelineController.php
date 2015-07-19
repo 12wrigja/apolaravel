@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Input;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use Illuminate\Support\Facades\Response;
-use APOSite\Http\Requests\StoreReportRequest;
 
 class EventPipelineController extends Controller
 {
@@ -42,13 +41,18 @@ class EventPipelineController extends Controller
         }
     }
 
-    public function submitEvent(StoreReportRequest $request, $type)
+    public function submitEvent($type)
     {
         try {
             //Create and save the event
-            $event = $this->getClass($type)->getMethod('create')->invoke(null, Input::all());
-            $resource = new Item($event, $event->transformer($this->fractal));
-            return $this->fractal->createData($resource)->toJson();
+            $method =$this->getClass($type)->getMethod('create');
+            $event = $method->invoke(null, Input::all(),false);
+            if(!$event->errors->isEmpty()) {
+                return Response::json($event->errors,422);
+            } else {
+                $resource = new Item($event, $event->transformer($this->fractal));
+                return $this->fractal->createData($resource)->toJson();
+            }
         } catch (\ReflectionException $e) {
             return $e;
 //            return Response::json([

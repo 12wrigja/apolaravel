@@ -79,9 +79,9 @@ module.exports = function (Vue) {
                     var instance = this;
                     $.each(jsonErrors, function (fieldName, error) {
                         var field = $(instance.$$.iform).find('[name="' + fieldName + '"]')[0];
-                        var parent = $(field).parent('.form-group')[0];
+                        var parent = $(field).closest('.form-group')[0];
                         $(parent).addClass('has-error');
-                        var errorBlock = $(parent).children(".help-block");
+                        var errorBlock = $(parent).find(".help-block");
                         $(errorBlock).text(error[0]);
                     });
                 },
@@ -89,7 +89,7 @@ module.exports = function (Vue) {
                     var formGroups = $(this.$$.iform).find(".form-group.has-error");
                     $.each(formGroups, function (index, group) {
                         $(group).removeClass('has-error');
-                        $(group).children(".help-block").text('');
+                        $(group).find(".help-block").text('');
                     });
                 },
                 successFunction: function (data) {
