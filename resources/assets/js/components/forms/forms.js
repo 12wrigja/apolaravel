@@ -44,8 +44,8 @@ module.exports = function (Vue) {
                             document.close();
                         } else {
                             console.log(error);
+                            //instance.setNotLoading();
                             instance.renderErrors(error.responseJSON);
-                            instance.setNotLoading();
                         }
                     });
                 },
@@ -53,7 +53,7 @@ module.exports = function (Vue) {
                   return this.form;
                 },
                 setupLoading: function () {
-                    $(this.$el).after('<div class="alert alert-info alert-important collapse loading" role="alert">' +
+                    this.$$.iform.insertAdjacentHTML('afterend','<div class="alert alert-info alert-important collapse" role="alert" v-el="loadingArea">' +
                         '<h3 class="text-center">Creating Contract...</h3>' +
                         '<div class="progress">' +
                         '<div class="progress-bar  progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>' +
@@ -61,14 +61,14 @@ module.exports = function (Vue) {
                         '</div>');
                 },
                 setupDebug: function () {
-                    $(this.$el).after('<pre v-show="debug"> {{ getForm() | json }} </pre>');
+                    this.$$.iform.insertAdjacentHTML('afterend','<pre v-show="debug"> {{ getForm() | json }} </pre>');
                 },
                 setLoading: function () {
                     $(this.$$.loadingArea).collapse('show');
-                    $(this.$el).collapse('hide');
+                    //$(this.$$.iform).collapse('hide');
                 },
                 setNotLoading: function () {
-                    $(this.$el).collapse('show');
+                    $(this.$$.iform).collapse('show');
                     $(this.$$.loadingArea).collapse('hide');
                 },
                 collapseSwap: function (obj1, obj2) {
@@ -78,7 +78,7 @@ module.exports = function (Vue) {
                 renderErrors: function (jsonErrors) {
                     var instance = this;
                     $.each(jsonErrors, function (fieldName, error) {
-                        var field = $(instance.$el).find('[name="' + fieldName + '"]')[0];
+                        var field = $(instance.$$.iform).find('[name="' + fieldName + '"]')[0];
                         var parent = $(field).parent('.form-group')[0];
                         $(parent).addClass('has-error');
                         var errorBlock = $(parent).children(".help-block");
@@ -86,7 +86,7 @@ module.exports = function (Vue) {
                     });
                 },
                 cleanupErrors: function () {
-                    var formGroups = $(this.$el).find(".form-group.has-error");
+                    var formGroups = $(this.$$.iform).find(".form-group.has-error");
                     $.each(formGroups, function (index, group) {
                         $(group).removeClass('has-error');
                         $(group).children(".help-block").text('');
@@ -105,11 +105,9 @@ module.exports = function (Vue) {
                     return result;
                 }
             },
-            beforeCompile: function () {
-                this.setupDebug();
-                this.setupLoading();
-            },
             ready: function () {
+                //this.setupDebug();
+                this.setupLoading();
                 this.register();
             }
         });

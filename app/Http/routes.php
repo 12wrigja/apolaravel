@@ -12,6 +12,11 @@ use APOSite\Http\Controllers\AccessController;
 | and give it the Closure to execute when that URI is requested.
 |
 */
+
+Route::pattern('type','[a-z_]+');
+Route::pattern('id','[0-9]+');
+Route::pattern('cwruid','[a-z]{3}[0-9}*');
+
 Route::filter('sameid',function($route){
 	$username = LoginController::getCaseUsername();
 	$id = $route->getParameter('id');
@@ -62,17 +67,17 @@ Route::group(array('before'=>'casAuth|webmaster'),function(){
 	Route::post('/permissions','PermissionController@store');
 });
 
-Route::get('service_events/{id}','SiteStatisticsController@getserviceevent');
-Route::post('/events/{type}','EventPipelineController@submitEvent');
-Route::get('/events/{type}/{id}',['uses'=>'EventPipelineController@showEvent','as'=>'event_show'])->where('id','[0-9]+')->where('type','[a-z_]+');
+Route::post('/reports/{type}',['uses'=>'EventPipelineController@submitEvent','as'=>'report_store']);
+Route::get('reports/{type}/create',['uses'=>'EventPipelineController@createEvent','as'=>'report_create']);
+Route::get('/reports/{type}/{id}',['uses'=>'EventPipelineController@showEvent','as'=>'report_show']);
 
 Route::group(array('before'=>'casAuth'),function(){
     Route::get('contracts',['uses'=>'ContractController@index','as'=>'contract_view']);
     Route::get('contracts/create',['uses'=>'ContractController@create', 'as'=>'contract_create']);
     Route::post('contracts',['uses'=>'ContractController@store', 'as'=>'contract_store']);
     Route::get('contracts/{id}/edit',['uses'=>'ContractController@edit','as'=>'contract_edit']);
-    Route::put('contracts/{id}',['uses'=>'ContractController@update','as'=>'contract_update'])->where('id','[0-9]+');
-    Route::delete('contracts/{id}',['uses'=>'ContractController@destroy', 'as'=>'contract_delete'])->where('id','[0-9]+');
+    Route::put('contracts/{id}',['uses'=>'ContractController@update','as'=>'contract_update']);
+    Route::delete('contracts/{id}',['uses'=>'ContractController@destroy', 'as'=>'contract_delete']);
     Route::get('contracts/{id}/','ContractController@show')->where('id','[0-9]+');
 });
 

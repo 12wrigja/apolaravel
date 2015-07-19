@@ -6,15 +6,13 @@
  * Time: 8:37 PM
  */
 
-namespace APOSite\Models;
+namespace APOSite\Models\Reports;
 
 use Illuminate\Database\Eloquent\Model;
-use League\Fractal\Manager;
+use APOSite\Models\Report;
 
 abstract class BaseModel extends Model
 {
-
-    public $transformer;
 
     public function __construct(array $attributes = array())
     {

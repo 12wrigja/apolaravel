@@ -1,17 +1,12 @@
 <?php
 
-namespace APOSite\Models;
+namespace APOSite\Models\Reports;
 
 use League\Fractal\Manager;
 use APOSite\Http\Transformers\ServiceReportTransformer;
 
 class ServiceReport extends BaseModel
 {
-
-    public function __construct(array $attributes = array())
-    {
-        parent::__construct($attributes);
-    }
 
     protected $fillable = [
         'service_type',
@@ -21,7 +16,8 @@ class ServiceReport extends BaseModel
         'travel_time'
     ];
 
-    public function transformer(Manager $manager){
+    public function transformer(Manager $manager)
+    {
         return new ServiceReportTransformer($manager);
     }
 }

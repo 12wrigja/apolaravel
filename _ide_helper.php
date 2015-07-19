@@ -1320,7 +1320,7 @@ namespace {
         /**
          * Set the event dispatcher instance.
          *
-         * @param \Illuminate\Contracts\Events\Dispatcher
+         * @param \Illuminate\Contracts\Reports\Dispatcher
          * @return void 
          * @static 
          */
@@ -1855,7 +1855,7 @@ namespace {
         /**
          * Set the event dispatcher instance.
          *
-         * @param \Illuminate\Contracts\Events\Dispatcher
+         * @param \Illuminate\Contracts\Reports\Dispatcher
          * @return void 
          * @static 
          */
@@ -3049,7 +3049,7 @@ namespace {
         /**
          * Set the event dispatcher instance on the connection.
          *
-         * @param \Illuminate\Contracts\Events\Dispatcher
+         * @param \Illuminate\Contracts\Reports\Dispatcher
          * @return void 
          * @static 
          */
@@ -6966,7 +6966,7 @@ namespace {
         /**
          * Set the event dispatcher instance.
          *
-         * @param \Illuminate\Contracts\Events\Dispatcher
+         * @param \Illuminate\Contracts\Reports\Dispatcher
          * @return void 
          * @static 
          */
@@ -11444,7 +11444,7 @@ namespace {
         /**
          * Set the event dispatcher instance.
          *
-         * @param \Illuminate\Contracts\Events\Dispatcher
+         * @param \Illuminate\Contracts\Reports\Dispatcher
          * @return void 
          * @static 
          */

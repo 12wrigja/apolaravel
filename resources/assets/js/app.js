@@ -61,7 +61,8 @@ var main = new Vue({
 
     components: {
         'contract-create-form': require('./views/contracts/create.js')(Resources),
-        'contract-edit-form': require('./views/contracts/edit.js')(Resources)
+        'contract-edit-form': require('./views/contracts/edit.js')(Resources),
+        'create_service_report_form' : require('./components/reports/servicereport/create.js')(Resources)
     },
 
     filters: {

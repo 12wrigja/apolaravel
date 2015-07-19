@@ -1,8 +1,8 @@
-<?php namespace APOSite\Models;
+<?php namespace APOSite\Models\Reports;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BrotherhoodEvent extends Model {
+class BrotherhoodEvent extends BaseModel {
 
 	protected $fillable = ['location'];
 

@@ -9,7 +9,7 @@
 namespace APOSite\Http\Transformers;
 
 
-use APOSite\Models\ServiceReport;
+use APOSite\Models\Reports\ServiceReport;
 use League\Fractal\Manager;
 use League\Fractal\TransformerAbstract;
 use League\Fractal\Resource\Item;
@@ -24,24 +24,19 @@ class ServiceReportTransformer extends TransformerAbstract{
     }
 
 
-    public function transform(ServiceReport $event){
-        $coreEventData = $this->manager->createData(new Item($event->coreEvent, new ReportTransformer()))->toArray()['data'];
+    public function transform(ServiceReport $report){
+        $coreEventData = $this->manager->createData(new Item($report->coreEvent, new ReportTransformer()))->toArray()['data'];
         $hrefArr = [
-            'href' => route('event_show',['id'=>$event->id, 'type'=>'service_events']),
+            'href' => route('report_show',['id'=>$report->id, 'type'=>'service_reports']),
         ];
-
-
         $otherData = [
-            'project_type' => $event->project_type,
-            'service_type' => $event->service_type,
-            'location' => $event->location,
-            'off_campus' => (boolean)$event->off_campus
+            'project_type' => $report->project_type,
+            'service_type' => $report->service_type,
+            'location' => $report->location,
+            'off_campus' => (boolean)$report->off_campus,
+            'travel_time' => $report->travel_time
         ];
-        $travelTime = ((boolean)$event->off_campus)?[
-            'travel_time' => $event->travel_time
-        ]:[];
-
-        return array_merge($hrefArr,$coreEventData,$otherData,$travelTime);
+        return array_merge($hrefArr,$coreEventData,$otherData);
     }
 
 }
