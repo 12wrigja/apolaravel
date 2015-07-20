@@ -99,6 +99,14 @@ Route::get('/',array('as'=>'home',function(){
 	return View::make('home')->with('carouselItems',CarouselItem::all());
 }));
 
+Route::get('mailtest',function(){
+	Mail::queue('welcome',[],function($message){
+		$message->to('jow5@case.edu');
+		$message->subject('Test email from the laravel system.');
+	});
+	return 'Mail Queued!';
+});
+
 ////Route for logging in when debugging the application
 //Route::post('login_debug',function(){
 //	LoginController::debugLogin();

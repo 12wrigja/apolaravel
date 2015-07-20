@@ -2,9 +2,9 @@
 
 namespace APOSite\Models;
 
-use APOSite\Models\Reports\ValidatingModel;
+use Illuminate\Database\Eloquent\Model;
 
-class Report extends ValidatingModel
+class Report extends Model
 {
 
     protected $fillable = [
@@ -20,7 +20,7 @@ class Report extends ValidatingModel
     }
 
     public function linkedUsers(){
-        return $this->belongsToMany('APOSite\Models\User');
+        return $this->belongsToMany('APOSite\Models\User')->withPivot('value');
     }
 
 }

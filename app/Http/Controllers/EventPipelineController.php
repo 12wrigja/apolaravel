@@ -41,18 +41,17 @@ class EventPipelineController extends Controller
         }
     }
 
-    public function submitEvent($type)
+    public function submitEvent(Requests\StoreReportRequest $request, $type)
     {
         try {
             //Create and save the event
-            $method =$this->getClass($type)->getMethod('create');
-            $event = $method->invoke(null, Input::all(),false);
-            if(!$event->errors->isEmpty()) {
-                return Response::json($event->errors,422);
-            } else {
-                $resource = new Item($event, $event->transformer($this->fractal));
-                return $this->fractal->createData($resource)->toJson();
-            }
+            $method = $this->getClass($type)->getMethod('create');
+            $event = $method->invoke(null, Input::all(), false);
+            //Queue up the processing job
+
+            //Return the data in json form
+            $resource = new Item($event, $event->transformer($this->fractal));
+            return $this->fractal->createData($resource)->toJson();
         } catch (\ReflectionException $e) {
             return $e;
 //            return Response::json([

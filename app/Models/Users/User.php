@@ -21,4 +21,8 @@ class User extends Model
             return $this->firstName;
         }
     }
+
+    public function reports(){
+        return $this->belongsToMany('APOSite\Models\Report')->withPivot('value');
+    }
 }
