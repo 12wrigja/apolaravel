@@ -3,7 +3,7 @@
 use App;
 use Illuminate\Console\AppNamespaceDetectorTrait;
 
-class StoreReportRequest extends Request
+class UpdateReportRequest extends Request
 {
 
     use AppNamespaceDetectorTrait;
@@ -29,7 +29,7 @@ class StoreReportRequest extends Request
     {
         $type = $this->route('type');
         try {
-            return App::call($this->getAppNamespace() . $this->filterNamespace . $this->snakeToCamelCase($type) . '@createRules');
+            return App::call($this->getAppNamespace() . $this->filterNamespace . $this->snakeToCamelCase($type) . '@updateRules');
         } catch (\ReflectionException $e) {
             return [];
         }
@@ -44,6 +44,7 @@ class StoreReportRequest extends Request
             return [];
         }
     }
+
 
     private function snakeToCamelCase($val)
     {

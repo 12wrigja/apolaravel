@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
-use Illuminate\Support\Facades\Response;
+use App;
 
 class EventPipelineController extends Controller
 {
@@ -20,12 +20,6 @@ class EventPipelineController extends Controller
     function __construct()
     {
         $this->fractal = new Manager();
-    }
-
-    public function createEvent($type)
-    {
-        $cleanType = $this->snakeToSpace($type);
-        return view('reports.' . 'servicereports' . '.create');
     }
 
     public function showEvent($type, $id)
@@ -47,11 +41,24 @@ class EventPipelineController extends Controller
             //Create and save the event
             $method = $this->getClass($type)->getMethod('create');
             $event = $method->invoke(null, Input::all(), false);
-            //Queue up the processing job
 
             //Return the data in json form
             $resource = new Item($event, $event->transformer($this->fractal));
             return $this->fractal->createData($resource)->toJson();
+        } catch (\ReflectionException $e) {
+            return $e;
+//            return Response::json([
+//                'general_error'=>'Unable to process request.'
+//            ],422);
+        }
+    }
+
+    public function updateEvent(Requests\UpdateReportRequest $request, $type, $id){
+        try {
+            $report = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
+            $report->update(Input::all());
+            //Return the data in json form
+            return "Success";
         } catch (\ReflectionException $e) {
             return $e;
 //            return Response::json([

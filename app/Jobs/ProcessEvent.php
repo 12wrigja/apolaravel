@@ -2,14 +2,16 @@
 
 namespace APOSite\Jobs;
 
-use APOSite\Http\Controllers\EventPipelineController;
-use APOSite\Jobs\Job;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Mail\Mailer;
+use Illuminate\Support\Facades\App;
+use APOSite\Models\Requirement;
+use APOSite\Models\Filter;
+use Mail;
 
 class ProcessEvent extends Job implements SelfHandling, ShouldQueue
 {
@@ -34,17 +36,29 @@ class ProcessEvent extends Job implements SelfHandling, ShouldQueue
      *
      * @return void
      */
-    public function handle(Mailer $mailer)
+    public function handle()
     {
-        $eventController = new EventPipelineController();
-        $class = $eventController->getClass($this->reportType);
-        $report = $class->getMethod('find')->invoke(null,$this->reportID);
+        $report = App::call($this->reportType.'@query')->find($this->reportID);
         if($report == null){
-            Log::error('Unable to process report of type '.$this->reportType . ' with id ' . $this->reportID);
-
+            $errorText = 'Unable to process report of type '.$this->reportType . ' with id ' . $this->reportID;
+            Log::error($errorText);
+            Mail::raw($errorText,function($message){
+                $message->to(env('ADMIN_EMAIL','webmaster@apo.case.edu'));
+                $message->subject('Report Processing Error');
+            });
         } else {
             //Process the event for the contract that each connected user is currently on.
-
+            $requirements = Requirement::all();
+            foreach($requirements as $requirementIndex=>$requirement){
+                $filters = $requirement->filters;
+                foreach($filters as $filterIndex=>$filter){
+                    if($filter->validate($report)){
+                        $requirement->Reports()->attach($report);
+                    }
+                }
+            }
         }
+
+
     }
 }

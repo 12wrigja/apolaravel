@@ -16,7 +16,7 @@ class Filter extends Model
         'method'
     ];
 
-    public function validate($user, $event)
+    public function validate($event)
     {
         //Fill in the auto-validate call here.
         $className = $this->getAppNamespace();
@@ -26,7 +26,7 @@ class Filter extends Model
             $app = app();
             //Now to call a controller and method with the given user and event
             $controller = $app->make($className);
-            return $controller->callAction($this->method, [$user, $event]);
+            return $controller->callAction($this->method, [$event]);
         } catch (\ReflectionException $e) {
             return null;
         }
@@ -34,7 +34,7 @@ class Filter extends Model
 
     public function Requirement()
     {
-        return $this->belongsTo('APOSite\Models\Requirement');
+        return $this->belongsToMany('APOSite\Models\Requirement');
     }
 
 }

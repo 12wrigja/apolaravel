@@ -19,66 +19,6 @@ abstract class BaseModel extends Eloquent
 {
 
     public $errors;
-    protected $rules;
-    protected $messages;
-
-//    /**
-//     * Listen for save event
-//     *
-//     * @return void
-//     */
-//    public static function boot()
-//    {
-//        parent::boot();
-//
-//        static::creating(function($model)
-//        {
-//            return $model->validate();
-//        });
-//    }
-//
-//    /**
-//     * Validates current attributes against rules
-//     *
-//     * @return boolean
-//     */
-//    public function validate()
-//    {
-//        $rules = property_exists($this, 'rules') ? static::$rules : array();
-//        $messages = property_exists($this, 'messages') ? static::$messages : array();
-//
-//
-//        if (!empty($rules))
-//        {
-//            $replace = ($this->getKey() > 0) ? $this->getKey() : null;
-//            foreach ($rules as $key => $rule)
-//            {
-//                $rules[$key] = str_replace(':id', $replace, $rule);
-//            }
-//            //Validate the core report first if it has been assigned
-//            $errors = new MessageBag();
-//            if($this->core != null){
-//                $this->core->validate();
-//                $coreErrors = $this->core->getErrors();
-//                dd($coreErrors);
-//                if(!$coreErrors->isEmpty()){
-//                    $errors = $coreErrors;
-//                }
-//            }
-//
-//            //Validate the other part
-//            $validation = Validator::make($this->attributes, $rules, $messages);
-//            if ($validation->fails())
-//            {
-//                $errors = $validation->messages()->merge($errors);
-//            }
-//            $this->errors = $errors;
-//            if(!$errors->isEmpty()){
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
 
     public static function create(array $attributes = [])
     {
@@ -92,15 +32,34 @@ abstract class BaseModel extends Eloquent
         foreach ($brothers as $index=>$brother) {
             try {
                 $value = $specific->computeValue($brother);
-                $coreEvent->linkedUsers()->attach($brother['name'],['value'=>$value]);
+                $coreEvent->linkedUsers()->attach($brother['id'],['value'=>$value]);
             } catch (Exception $e) {
-                Log::error("Unable to link brother " . $brother . " to report with ID " . $coreEvent->getKey());
+                Log::error("Unable to link brother " . $brother['id'] . " to report with ID " . $coreEvent->getKey());
                 DB::rollBack();
             }
         }
         $coreEvent->save();
+        $specific->save();
         DB::commit();
+        $updateMethod = 'onCreate';
+        if(method_exists($specific,$updateMethod)){
+            $specific->$updateMethod();
+        }
         return $specific;
+    }
+
+    public function update(array $attributes = []){
+        $updatable = method_exists($this,'updatable')?$this->updatable(): array();
+        foreach($attributes as $key=>$value){
+            if(in_array($key,$updatable)){
+                $this->setAttribute($key,$value);
+            }
+        }
+        $this->save();
+        $updateMethod = 'onUpdate';
+        if(method_exists($this,$updateMethod)){
+            $this->$updateMethod();
+        }
     }
 
     public function core()
@@ -108,13 +67,4 @@ abstract class BaseModel extends Eloquent
         return $this->morphOne('APOSite\Models\Report', 'report_type');
     }
 
-    public function rules()
-    {
-        return $this->rules;
-    }
-
-    public function errorMessages()
-    {
-        return $this->messages;
-    }
 }

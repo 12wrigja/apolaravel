@@ -22,6 +22,6 @@ class Requirement extends Model
     }
 
     public function Filters(){
-        return $this->hasMany('APOSite\Models\Filter');
+        return $this->belongsToMany('APOSite\Models\Filter');
     }
 }

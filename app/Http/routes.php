@@ -70,6 +70,7 @@ Route::group(array('before'=>'casAuth|webmaster'),function(){
 Route::post('/reports/{type}',['uses'=>'EventPipelineController@submitEvent','as'=>'report_store']);
 Route::get('reports/{type}/create',['uses'=>'EventPipelineController@createEvent','as'=>'report_create']);
 Route::get('/reports/{type}/{id}',['uses'=>'EventPipelineController@showEvent','as'=>'report_show']);
+Route::put('/reports/{type}/{id}',['uses'=>'EventPipelineController@updateEvent','as'=>'report_update']);
 
 Route::group(array('before'=>'casAuth'),function(){
     Route::get('contracts',['uses'=>'ContractController@index','as'=>'contract_view']);

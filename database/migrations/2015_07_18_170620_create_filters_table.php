@@ -18,8 +18,6 @@ class CreateFiltersTable extends Migration
             $table->longText('description');
             $table->string('controller');
             $table->string('method');
-            $table->integer('requirement_id')->unsigned()->index();
-            $table->foreign('requirement_id')->references('id')->on('requirements');
             $table->softdeletes();
             $table->timestamps();
         });
