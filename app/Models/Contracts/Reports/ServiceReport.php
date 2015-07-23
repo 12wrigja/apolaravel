@@ -102,4 +102,11 @@ class ServiceReport extends BaseModel
         }
     }
 
+    public function scopeNotApproved($query){
+        return $query->whereApproved(false);
+    }
+    public function scopeApproved($query){
+        return $query->whereApproved(true);
+    }
+
 }

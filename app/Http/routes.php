@@ -67,8 +67,13 @@ Route::group(array('before'=>'casAuth|webmaster'),function(){
 	Route::post('/permissions','PermissionController@store');
 });
 
+Route::get('servicereports/manage',function(){
+	return view('management.servicereports')->with('reports',\APOSite\Models\Reports\ServiceReport::NotApproved()->get());
+});
+
 Route::post('/reports/{type}',['uses'=>'EventPipelineController@submitEvent','as'=>'report_store']);
 Route::get('reports/{type}/create',['uses'=>'EventPipelineController@createEvent','as'=>'report_create']);
+Route::get('/reports/{type}/',['uses'=>'EventPipelineController@showAllEvents','as'=>'report_list']);
 Route::get('/reports/{type}/{id}',['uses'=>'EventPipelineController@showEvent','as'=>'report_show']);
 Route::put('/reports/{type}/{id}',['uses'=>'EventPipelineController@updateEvent','as'=>'report_update']);
 

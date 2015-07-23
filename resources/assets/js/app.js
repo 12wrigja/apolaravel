@@ -14,9 +14,9 @@ $.ajaxSetup({
     }
 });
 
-var typeahead = require('typeahead.js');
-console.log(typeahead);
-var Bloodhound = typeahead.bloodhound;
+//var typeahead = require('typeahead.js');
+//console.log(typeahead);
+//var Bloodhound = typeahead.bloodhound;
 
 //Setup Vue and Vue Resource
 var Vue = require('vue');
@@ -38,7 +38,7 @@ var Resources = function () {
         delete: {
             method: 'DELETE'
         }
-    }
+   };
 
     return {
         Vue: Vue,
@@ -49,15 +49,38 @@ var Resources = function () {
         Contract: function (instance) {
             return instance.$resource('/contracts/:id',{},defaultActions);
         },
+        ServiceReport: function(instance) {
+            return instance.$resource('/reports/service_reports/:id',{},{
+                list: {
+                    method: 'GET'
+                },
+                listApproved: {
+                    method: 'GET',
+                    params: {
+                        approved: false
+                    }
+                },
+                listNotApproved: {
+                    method: 'GET',
+                    params: {
+                        approved: false
+                    }
+                },
+                approve: {
+                    method: 'PUT',
+                    data: {
+                        approved: true
+                    }
+                }
+            });
+        },
         utils: {
             loadUnhide: function(rootElement){
                 console.log(rootElement);
                 console.log($(rootElement).find('.loadhidden'));
                 $(rootElement).find('.loadhidden').removeClass('loadhidden').removeClass('hidden');
             }
-        },
-        typeahead: typeahead,
-        Bloodhound: Bloodhound
+        }
     }
 }();
 module.exports = Resources;
@@ -68,7 +91,8 @@ var main = new Vue({
     components: {
         'contract-create-form': require('./views/contracts/create.js')(Resources),
         'contract-edit-form': require('./views/contracts/edit.js')(Resources),
-        'create_service_report_form' : require('./components/reports/servicereport/create.js')(Resources)
+        'create_service_report_form' : require('./components/reports/servicereport/create.js')(Resources),
+        'manage-service-reports-view' : require('./views/reports/servicereports/manage.js')(Resources)
     },
 
     filters: {

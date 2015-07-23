@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
-use App;
+use League\Fractal\Resource\Collection;
+use Illuminate\Support\Facades\Response;
 
 class EventPipelineController extends Controller
 {
@@ -35,6 +36,36 @@ class EventPipelineController extends Controller
         }
     }
 
+    public function showAllEvents($type)
+    {
+        try {
+            $class = $this->getClass($type);
+            $query = $class->getMethod('query')->invoke(null);
+            if (Input::has('approved')) {
+                if (Input::get('approved') == 'true') {
+                    $query = $query->Approved();
+                } else if (Input::get('approved') == 'false'){
+                    $query = $query->NotApproved();
+                }
+            }
+            $query = $query->orderBy('id','DESC');
+            $reports = $query->get();
+            if (!$reports->isEmpty()) {
+                $transformer = $reports->first()->transformer($this->fractal);
+                $resource = new Collection($reports, $transformer);
+                return $this->fractal->createData($resource)->toJson();
+            } else {
+                return Response::json([
+                    'data' => []
+                ], 200);
+            }
+        } catch (\ReflectionException $e) {
+            return $e;
+        } catch (ModelNotFoundException $e) {
+            return "Model not found.";
+        }
+    }
+
     public function submitEvent(Requests\StoreReportRequest $request, $type)
     {
         try {
@@ -53,7 +84,8 @@ class EventPipelineController extends Controller
         }
     }
 
-    public function updateEvent(Requests\UpdateReportRequest $request, $type, $id){
+    public function updateEvent(Requests\UpdateReportRequest $request, $type, $id)
+    {
         try {
             $report = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
             $report->update(Input::all());

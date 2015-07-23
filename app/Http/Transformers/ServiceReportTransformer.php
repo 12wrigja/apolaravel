@@ -25,6 +25,7 @@ class ServiceReportTransformer extends TransformerAbstract{
 
 
     public function transform(ServiceReport $report){
+        $id = ['id'=>$report->id];
         $coreEventData = $this->manager->createData(new Item($report->core, new ReportTransformer()))->toArray()['data'];
         $hrefArr = [
             'href' => route('report_show',['id'=>$report->id, 'type'=>'service_reports']),
@@ -37,7 +38,7 @@ class ServiceReportTransformer extends TransformerAbstract{
             'travel_time' => $report->travel_time,
             'submission_date'=>$report->created_at->toDateTimeString()
         ];
-        return array_merge($hrefArr,$coreEventData,$otherData);
+        return array_merge($id,$hrefArr,$coreEventData,$otherData);
     }
 
 }
