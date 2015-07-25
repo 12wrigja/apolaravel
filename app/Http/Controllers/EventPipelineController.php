@@ -36,6 +36,11 @@ class EventPipelineController extends Controller
         }
     }
 
+    public function createEvent($type)
+    {
+        return view('reports.' . str_replace('_', '', $type) . '.create');
+    }
+
     public function showAllEvents($type)
     {
         try {
@@ -44,11 +49,11 @@ class EventPipelineController extends Controller
             if (Input::has('approved')) {
                 if (Input::get('approved') == 'true') {
                     $query = $query->Approved();
-                } else if (Input::get('approved') == 'false'){
+                } else if (Input::get('approved') == 'false') {
                     $query = $query->NotApproved();
                 }
             }
-            $query = $query->orderBy('id','DESC');
+            $query = $query->orderBy('id', 'DESC');
             $reports = $query->get();
             if (!$reports->isEmpty()) {
                 $transformer = $reports->first()->transformer($this->fractal);

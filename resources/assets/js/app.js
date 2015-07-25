@@ -23,6 +23,17 @@ var Vue = require('vue');
 Vue.use(require('vue-resource'));
 //Set default headers for all Vue requests
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+Vue.transition('collapse',{
+   enter: function(el){
+       $(el).addClass('in');
+   },
+    leave: function(el){
+        $(el).removeClass('in');
+    }
+});
+Vue.filter('not',function(value){
+    return !value;
+});
 var Resources = function () {
 
     var defaultActions = {
@@ -68,9 +79,6 @@ var Resources = function () {
                 },
                 approve: {
                     method: 'PUT',
-                    data: {
-                        approved: true
-                    }
                 }
             });
         },
