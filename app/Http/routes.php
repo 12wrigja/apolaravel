@@ -13,13 +13,20 @@ use APOSite\Http\Controllers\AccessController;
 |
 */
 
-Route::pattern('type','[a-z_]+');
+Route::pattern('type','[a-z][a-z_]*');
 Route::pattern('id','[0-9]+');
-Route::pattern('cwruid','[a-z]{3}[0-9}*');
+Route::pattern('cwruid','[a-z]{3}[0-9]*');
+
+Route::post('/reports/{type}',['uses'=>'EventPipelineController@submitEvent','as'=>'report_store']);
+Route::get('reports/{type}/create',['uses'=>'EventPipelineController@createEvent','as'=>'report_create']);
+Route::get('reports/{type}/manage',['uses'=>'EventPipelineController@manageEvent','as'=>'report_manage']);
+Route::get('/reports/{type}/',['uses'=>'EventPipelineController@showAllEvents','as'=>'report_list']);
+Route::get('/reports/{type}/{id}',['uses'=>'EventPipelineController@showEvent','as'=>'report_show']);
+Route::put('/reports/{type}/{id}',['uses'=>'EventPipelineController@updateEvent','as'=>'report_update']);
 
 Route::filter('sameid',function($route){
 	$username = LoginController::getCaseUsername();
-	$id = $route->getParameter('id');
+	$id = $route->getParameter('cwruid');
 	if($id != $username){
 		return View::make('errors.401')->with('message','You do not have permission to access this page.');
 	}
@@ -36,6 +43,10 @@ Route::filter('webmaster',function(){
 	}
 });
 
+Route::get('/users/{cwruid}/status',function(){
+    return 'Looking at user with id: ';
+});
+
 //Routes for the officer pages
 Route::get('officers','Officers\OfficerPageController@index');
 
@@ -43,7 +54,7 @@ Route::get('officers','Officers\OfficerPageController@index');
 Route::group(array('before'=>'casAuth|webmaster'),function(){
 	Route::get('/users/create','UserController@create');
 	Route::post('/users','UserController@store');
-	Route::delete('/users/{id}','UserController@destroy');
+	Route::delete('/users/{cwruid}','UserController@destroy');
 	Route::get('/users/manage','UserController@manage');
 });
 
@@ -52,12 +63,13 @@ Route::get('/users/search',array('uses'=>'UserController@search','as'=>'users.se
 
 //Routes for displaying all users and individual user profiles
 Route::get('/users','UserController@index');
-Route::get('/users/{id}','UserController@show');
+Route::get('/users/{cwruid}','UserController@show');
 
 //Routes for allowing users to update their profiles.
 Route::group(array('before'=>'casAuth|sameid'),function(){
-	Route::get('/users/{id}/edit','UserController@edit');
-	Route::put('/users/{id}','UserController@update');
+	Route::get('/users/{cwruid}/edit','UserController@edit');
+    Route::get('/users/{cwruid}/status','UserController@statusPage');
+	Route::put('/users/cwruid}','UserController@update');
 });
 
 //Routes for managing permissions of users
@@ -67,15 +79,7 @@ Route::group(array('before'=>'casAuth|webmaster'),function(){
 	Route::post('/permissions','PermissionController@store');
 });
 
-Route::get('servicereports/manage',function(){
-	return view('management.servicereports')->with('reports',\APOSite\Models\Reports\ServiceReport::NotApproved()->get());
-});
 
-Route::post('/reports/{type}',['uses'=>'EventPipelineController@submitEvent','as'=>'report_store']);
-Route::get('reports/{type}/create',['uses'=>'EventPipelineController@createEvent','as'=>'report_create']);
-Route::get('/reports/{type}/',['uses'=>'EventPipelineController@showAllEvents','as'=>'report_list']);
-Route::get('/reports/{type}/{id}',['uses'=>'EventPipelineController@showEvent','as'=>'report_show']);
-Route::put('/reports/{type}/{id}',['uses'=>'EventPipelineController@updateEvent','as'=>'report_update']);
 
 Route::group(array('before'=>'casAuth'),function(){
     Route::get('contracts',['uses'=>'ContractController@index','as'=>'contract_view']);
@@ -133,3 +137,4 @@ Route::get('/logout',function(){
 Route::get('/login',array('as'=>'login','before'=>'casAuth',function(){
 	return Redirect::route('home');
 }));
+

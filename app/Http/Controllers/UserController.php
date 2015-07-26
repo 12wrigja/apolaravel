@@ -147,4 +147,13 @@ class UserController extends Controller
         return $users;
     }
 
+    public function statusPage($id){
+        $user = User::find($id);
+        if ($user != null) {
+            return view('contracts.status')->with('contract',$user->currentContract());
+        } else {
+            throw new NotFoundHttpException('User not found');
+        }
+    }
+
 }

@@ -4,9 +4,9 @@
     "laravel-elixir": "*"
   },
   "dependencies": {
+    "Select2": "git+https://github.com/leftmostcat/select2.git",
     "bootstrap": "^3.3.5",
     "jquery": "^2.1.4",
-    "typeahead.js": "^0.11.1",
     "vue": "^0.12.0",
     "vue-resource": "^0.1.3"
   }

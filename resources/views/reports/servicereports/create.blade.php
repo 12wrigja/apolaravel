@@ -120,27 +120,26 @@
                 </div>
             </div>
         </div>
-
-
-
+        <pre>@{{ form | json }}</pre>
         <div class="form-horizontal">
             <h2>Brothers in Report</h2>
-            <input type="text" placeholder="Search for a Brother..." class="typeahead form-control">
-
             <p class="help-block"></p>
+            <td><select id="brotherselecter" placeholder="Search for a Brother..." class="form-control"></select></td>
             <!-- Brothers listing -->
             <table class="table table-hover">
                 <thead>
                 <th>Brother</th>
                 <th>CWRU ID</th>
                 <th>Hours</th>
+                <th>Minutes</th>
                 <th>Driver?</th>
                 </thead>
                 <tbody>
                 <tr v-repeat="brother: form.brothers">
-                    <td>@{{ brother.name }}</td>
+                    <td>@{{ formatBrother(brother) }}</td>
                     <td>@{{ brother.id }}</td>
-                    <td>@{{ brother.hours }}</td>
+                    <td>{!! Form::text('hours', null, ['class'=>'form-control','v-model'=>'brother.hours']) !!}</td>
+                    <td>{!! Form::text('minutes', null, ['class'=>'form-control','v-model'=>'brother.minutes']) !!}</td>
                     <td>@{{ brother.isDriver }}</td>
                 </tr>
                 </tbody>
@@ -150,7 +149,7 @@
             <br>
 
             <div class="form-group">
-                {!! Form::submit('Create Contract', ['class'=>'btn btn-primary form-control']) !!}
+                {!! Form::submit('Submit Report', ['class'=>'btn btn-primary form-control']) !!}
             </div>
         </div>
         {!! Form::close() !!}

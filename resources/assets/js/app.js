@@ -13,11 +13,7 @@ $.ajaxSetup({
         'Content-Type' : 'application/json'
     }
 });
-
-//var typeahead = require('typeahead.js');
-//console.log(typeahead);
-//var Bloodhound = typeahead.bloodhound;
-
+require('Select2');
 //Setup Vue and Vue Resource
 var Vue = require('vue');
 Vue.use(require('vue-resource'));
@@ -55,7 +51,7 @@ var Resources = function () {
         Vue: Vue,
         form: require('./components/forms/forms.js')(Vue),
         ContractRequirement: function (instance) {
-            return instance.$resource('/contractreqs/:id');
+            return instance.$resource('/contractreqs/:id',{},defaultActions);
         },
         Contract: function (instance) {
             return instance.$resource('/contracts/:id',{},defaultActions);
@@ -81,6 +77,9 @@ var Resources = function () {
                     method: 'PUT',
                 }
             });
+        },
+        User: function(instance){
+            return instance.$resource('/users/:id',{},defaultActions);
         },
         utils: {
             loadUnhide: function(rootElement){

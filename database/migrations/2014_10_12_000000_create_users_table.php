@@ -33,7 +33,7 @@ class CreateUsersTable extends Migration {
             $table->longText('join_reason')->nullable();
             $table->char('major')->nullable();
             $table->char('minor')->nullable();
-            $table->integer('grad_semester')->nullable();
+            $table->integer('graduation_semester')->nullable();
             $table->char('hometown')->nullable();
             $table->timestamps();
             $table->primary('id');

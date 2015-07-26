@@ -43,7 +43,7 @@ class ServiceReport extends BaseModel
             'location' => ['required', 'min:10'],
             'service_type' => ['required', 'in:chapter,country,community,campus'],
             'project_type' => ['required', 'in:inside,outside'],
-            'off_campus' => ['required', 'in:false,true'],
+            'off_campus' => ['required', 'boolean'],
             'travel_time' => ['required_if:off_campus,true', 'integer']
         ];
         $extraRules = [];
@@ -66,7 +66,7 @@ class ServiceReport extends BaseModel
     {
         $messages = [
             'off_campus.in' => 'off_campus should be either true or false',
-            'travel_time.required_if' => 'travel time is required if off_campus is true'
+            'travel_time' => 'travel time is required if the event is off-campus'
         ];
         $extraMessages = [];
         if(Request::has('brothers')) {
