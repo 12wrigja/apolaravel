@@ -23,6 +23,7 @@ Route::get('reports/{type}/manage',['uses'=>'EventPipelineController@manageEvent
 Route::get('/reports/{type}/',['uses'=>'EventPipelineController@showAllEvents','as'=>'report_list']);
 Route::get('/reports/{type}/{id}',['uses'=>'EventPipelineController@showEvent','as'=>'report_show']);
 Route::put('/reports/{type}/{id}',['uses'=>'EventPipelineController@updateEvent','as'=>'report_update']);
+Route::delete('/reports/{type}/{id}',['uses'=>'EventPipelineController@deleteEvent','as'=>'report_delete']);
 
 Route::filter('sameid',function($route){
 	$username = LoginController::getCaseUsername();

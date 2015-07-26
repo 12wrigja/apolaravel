@@ -41,6 +41,11 @@ class EventPipelineController extends Controller
         return view('reports.' . str_replace('_', '', $type) . '.create');
     }
 
+    public function manageEvent($type)
+    {
+        return view('management.' . str_replace('_', '', $type));
+    }
+
     public function showAllEvents($type)
     {
         try {
@@ -94,6 +99,22 @@ class EventPipelineController extends Controller
         try {
             $report = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
             $report->update(Input::all());
+            //Return the data in json form
+            return "Success";
+        } catch (\ReflectionException $e) {
+            return $e;
+//            return Response::json([
+//                'general_error'=>'Unable to process request.'
+//            ],422);
+        }
+    }
+
+    public function deleteEvent($type, $id){
+        try {
+            $report = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
+            $core = $report->core;
+            $report->delete();
+            $core->delete();
             //Return the data in json form
             return "Success";
         } catch (\ReflectionException $e) {

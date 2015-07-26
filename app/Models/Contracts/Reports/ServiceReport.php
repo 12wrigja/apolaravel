@@ -3,6 +3,7 @@
 namespace APOSite\Models\Reports;
 
 use APOSite\Jobs\ProcessEvent;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use League\Fractal\Manager;
 use APOSite\Http\Transformers\ServiceReportTransformer;
 use Request;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Queue;
 
 class ServiceReport extends BaseModel
 {
-
+    use SoftDeletes;
     protected $fillable = [
         'service_type',
         'location',

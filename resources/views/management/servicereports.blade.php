@@ -8,6 +8,8 @@
         <p>Below is the service report management tool. Here you can view all submitted service reports and approve or
             un-approve as necessary.</p>
 
+        <pre>@{{ $data | json }}</pre>
+
 
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#newReports">New Reports</a></li>
@@ -15,7 +17,7 @@
         </ul>
         <div class="tab-content">
             <div id="newReports" class="tab-pane fade in active">
-                <div v-show="reports">
+                <div v-show="reports | empty">
                     <h4>There are no new service reports to display at this time!</h4>
                 </div>
                 <div v-repeat="report : reports">
@@ -79,7 +81,7 @@
                 </div>
             </div>
             <div id="approvedReports" class="tab-pane fade">
-                <div v-show="reports">
+                <div v-show="approved | empty">
                     <h4>There are no approved service reports to display at this time!</h4>
                 </div>
                 <div v-repeat="report : approved">

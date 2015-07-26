@@ -136,11 +136,11 @@
                 </thead>
                 <tbody>
                 <tr v-repeat="brother: form.brothers">
-                    <td>@{{ formatBrother(brother) }}</td>
+                    <td>@{{ brother.name }}</td>
                     <td>@{{ brother.id }}</td>
                     <td>{!! Form::text('hours', null, ['class'=>'form-control','v-model'=>'brother.hours']) !!}</td>
                     <td>{!! Form::text('minutes', null, ['class'=>'form-control','v-model'=>'brother.minutes']) !!}</td>
-                    <td>@{{ brother.isDriver }}</td>
+                    <td>{!! Form::select('is_driver', ['0'=>'No','1'=>'Yes'], '0' ,['class'=>'form-control','v-model'=>'brother.is_driver']) !!}</td>
                 </tr>
                 </tbody>
             </table>

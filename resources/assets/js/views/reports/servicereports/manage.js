@@ -12,7 +12,7 @@ module.exports = function (Resources) {
         },
         methods: {
             approveReport: function (report) {
-                Resources.ServiceReport(this).approve({id: report.id}, {approved: true}, function (data, status, request) {
+                Resources.ServiceReport(this).put({id: report.id}, {approved: true}, function (data, status, request) {
                     if (status == 200) {
                         this.reports.$remove(report);
                         this.approved.push(report);
@@ -32,15 +32,20 @@ module.exports = function (Resources) {
                 });
             }
         },
+        filters: {
+          empty: function(array){
+              return array.constructor === Array && array.length == 0;
+          }
+        },
         ready: function () {
-            Resources.ServiceReport(this).listApproved({}, function (data, status, request) {
+            Resources.ServiceReport(this).get({},{'approved':false}, function (data, status, request) {
                 if (status == 200) {
                     this.reports = data['data'];
                 } else {
                     console.log(data);
                 }
             });
-            Resources.ServiceReport(this).listNotApproved({}, function (data, status, request) {
+            Resources.ServiceReport(this).get({},{'approved':true}, function (data, status, request) {
                 if (status == 200) {
                     this.approved = data['data'];
                 } else {

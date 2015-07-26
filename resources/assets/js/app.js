@@ -33,17 +33,8 @@ Vue.filter('not',function(value){
 var Resources = function () {
 
     var defaultActions = {
-        get: {
-            method: 'GET'
-        },
-        save: {
-            method: 'POST'
-        },
-        update: {
+        put: {
             method: 'PUT'
-        },
-        delete: {
-            method: 'DELETE'
         }
    };
 
@@ -57,26 +48,7 @@ var Resources = function () {
             return instance.$resource('/contracts/:id',{},defaultActions);
         },
         ServiceReport: function(instance) {
-            return instance.$resource('/reports/service_reports/:id',{},{
-                list: {
-                    method: 'GET'
-                },
-                listApproved: {
-                    method: 'GET',
-                    params: {
-                        approved: false
-                    }
-                },
-                listNotApproved: {
-                    method: 'GET',
-                    params: {
-                        approved: false
-                    }
-                },
-                approve: {
-                    method: 'PUT',
-                }
-            });
+            return instance.$resource('/reports/service_reports/:id',{},defaultActions);
         },
         User: function(instance){
             return instance.$resource('/users/:id',{},defaultActions);

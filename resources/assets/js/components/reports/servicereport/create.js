@@ -42,6 +42,7 @@ module.exports = function (Resources) {
                             allowClear: true,
                             templateResult: that.formatBrother,
                             templateSelection: that.formatBrother,
+                            multiple: 'multiple',
                             matcher: function(params, brother){
                                 // If there are no search terms, return all of the data
                                 if ($.trim(params.term) === '') {
@@ -62,8 +63,9 @@ module.exports = function (Resources) {
                         });
                         selector.on("select2:select", function(e){
                             //get the name of the thing selected.
-                            console.log(e);
-                            that.form.brothers.push(e.params.data);
+                            that.addBrother(e);
+                            e.params.data.disabled = true;
+                            selector.val(null).trigger("change");
                         });
                     } else {
                         console.log("error: "+data);
@@ -73,22 +75,30 @@ module.exports = function (Resources) {
             getForm: function () {
                 var newForm = Resources.Vue.util.extend({}, this.form);
                 newForm.off_campus = this.form === '1';
+                var i = newForm.brothers.length;
+                for(var j=0; j<i; j++){
+                    newForm.brothers[j].is_driver = newForm.brothers[j].is_driver === '1';
+                }
                 return newForm;
             },
             formatBrother: function(brother){
                 if(brother.nickname !== null){
                     return brother.nickname + ' ('+brother.first_name+') '+brother.last_name;
                 } else {
-                    return brother.first_name + '  ' +brother.last_name;
+                    return brother.first_name + ' ' +brother.last_name;
                 }
             },
-            addBrother: function(){
-                var index = this.form.brothers.length;
-                this.form.brothers.push({
-                    id: '',
-                    hours: '',
-                    minutes: ''
-                });
+            addBrother: function(e){
+                var broListing = e.params.data;
+                console.log(this.formatBrother(broListing));
+                var newBro = {
+                    'id' : broListing.id,
+                    'name' : this.formatBrother(broListing),
+                    'hours' : 0,
+                    'minutes' : 0,
+                    'is_driver' : false
+                };
+                this.form.brothers.push(newBro);
             }
         },
         filters: {

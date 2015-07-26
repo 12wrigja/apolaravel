@@ -3,10 +3,11 @@
 namespace APOSite\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Report extends Model
 {
-
+    use SoftDeletes;
     protected $fillable = [
         'display_name',
         'description',

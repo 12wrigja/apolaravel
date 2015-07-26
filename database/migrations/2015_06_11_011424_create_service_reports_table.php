@@ -22,6 +22,7 @@ class CreateServiceReportsTable extends Migration {
             $table->integer('travel_time');
 			$table->boolean('approved')->default(false);
 			$table->timestamps();
+            $table->softDeletes();
 		});
 	}
 
