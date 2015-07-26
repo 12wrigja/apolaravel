@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSemestersTable extends Migration
+class CreateOfficesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,12 @@ class CreateSemestersTable extends Migration
      */
     public function up()
     {
-        Schema::create('semesters', function(Blueprint $table) {
+        Schema::create('offices', function(Blueprint $table) {
             $table->increments('id');
-            $table->integer('year');
-            $table->enum('semester',['fall','spring']);
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->tinyInteger('display_order');
+            $table->string('display_name');
+            $table->enum('type',['appointed','elected']);
+            $table->string('email');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateSemestersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('semesters');
+        Schema::drop('offices');
     }
 }

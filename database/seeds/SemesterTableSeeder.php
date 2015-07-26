@@ -2,9 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-// composer require laracasts/testdummy
-use Laracasts\TestDummy\Factory as TestDummy;
-use APOSite\Semester;
+use APOSite\Models\Semester;
 
 class SemesterTableSeeder extends Seeder
 {

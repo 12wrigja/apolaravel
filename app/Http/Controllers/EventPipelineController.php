@@ -23,7 +23,7 @@ class EventPipelineController extends Controller
         $this->fractal = new Manager();
     }
 
-    public function showEvent($type, $id)
+    public function showEvent(Requests\ReadReportRequest $request, $type, $id)
     {
         try {
             $event = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
@@ -46,7 +46,7 @@ class EventPipelineController extends Controller
         return view('management.' . str_replace('_', '', $type));
     }
 
-    public function showAllEvents($type)
+    public function showAllEvents(Requests\ReadReportRequest $request, $type)
     {
         try {
             $class = $this->getClass($type);

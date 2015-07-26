@@ -110,7 +110,8 @@ class ServiceReport extends BaseModel
     }
 
     public function canUpdate($user){
-        if($user != null && ){
+        return false;
+        if($user != null){
 
         } else {
             return false;
@@ -119,6 +120,11 @@ class ServiceReport extends BaseModel
 
     public function canRead($user){
         //Add in logic so not everyone can see the service reports that aren't theirs unless they are the service? vp or webmaster.
+        if($user != null){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function scopeNotApproved($query){
