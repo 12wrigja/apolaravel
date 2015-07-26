@@ -2,7 +2,7 @@
 
 use App;
 use Illuminate\Console\AppNamespaceDetectorTrait;
-
+use APOSite\Http\Controllers\LoginController;
 class StoreReportRequest extends Request
 {
 
@@ -17,7 +17,13 @@ class StoreReportRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        $type = $this->route('type');
+        $user = LoginController::currentUser();
+        try {
+            return App::call($this->getAppNamespace() . $this->filterNamespace . $this->snakeToCamelCase($type) . '@canStore',['user'=>$user]);
+        } catch (\ReflectionException $e) {
+            return false;
+        }
     }
 
     /**

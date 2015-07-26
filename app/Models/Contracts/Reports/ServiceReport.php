@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Queue;
 class ServiceReport extends BaseModel
 {
     use SoftDeletes;
+
     protected $fillable = [
         'service_type',
         'location',
@@ -90,17 +91,34 @@ class ServiceReport extends BaseModel
 
     public function onCreate()
     {
-//        Queue::push('ProcessEvent',['id'=>$this->id, 'type'=>get_class($this)]);
-
-//        Queue::push($event);
     }
 
     public function onUpdate()
     {
         if ($this->approved) {
             $event = new ProcessEvent($this->id, get_class($this));
-            $event->handle();
+            Queue::push($event);
         }
+    }
+
+    public function canStore($user){
+        if($user == null){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function canUpdate($user){
+        if($user != null && ){
+
+        } else {
+            return false;
+        }
+    }
+
+    public function canRead($user){
+        //Add in logic so not everyone can see the service reports that aren't theirs unless they are the service? vp or webmaster.
     }
 
     public function scopeNotApproved($query){

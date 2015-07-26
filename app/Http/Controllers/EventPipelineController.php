@@ -141,8 +141,4 @@ class EventPipelineController extends Controller
         return $class;
     }
 
-    private function snakeToSpace($type)
-    {
-        return str_replace('_', ' ', $type);
-    }
 }

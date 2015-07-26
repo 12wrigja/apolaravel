@@ -8,9 +8,6 @@
         <p>Below is the service report management tool. Here you can view all submitted service reports and approve or
             un-approve as necessary.</p>
 
-        <pre>@{{ $data | json }}</pre>
-
-
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#newReports">New Reports</a></li>
             <li><a data-toggle="tab" href="#approvedReports">Approved Reports</a></li>

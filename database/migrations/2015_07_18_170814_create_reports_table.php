@@ -14,6 +14,8 @@ class CreateReportsTable extends Migration
     {
         Schema::create('reports', function(Blueprint $table) {
             $table->increments('id');
+            $table->char('creator_id',10);
+            $table->foreign('creator_id')->references('id')->on('users');
             $table->char('display_name');
             $table->longText('description');
             $table-> date('event_date');
