@@ -16,4 +16,8 @@ class Semester extends Model
     public static function currentSemester(){
         return static::semesterForDate(Carbon::now());
     }
+
+    public function next(){
+        return Semester::find($this->id+1);
+    }
 }

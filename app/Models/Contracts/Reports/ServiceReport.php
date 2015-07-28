@@ -2,12 +2,15 @@
 
 namespace APOSite\Models\Reports;
 
+use APOSite\Http\Controllers\AccessController;
 use APOSite\Jobs\ProcessEvent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use League\Fractal\Manager;
 use APOSite\Http\Transformers\ServiceReportTransformer;
 use Request;
 use Illuminate\Support\Facades\Queue;
+use APOSite\Models\User;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 class ServiceReport extends BaseModel
 {
@@ -58,9 +61,10 @@ class ServiceReport extends BaseModel
         return $newRules;
     }
 
-    public function updateRules(){
+    public function updateRules()
+    {
         return [
-            'approved'=>['sometimes','required','boolean']
+            'approved' => ['sometimes', 'required', 'boolean']
         ];
     }
 
@@ -71,7 +75,7 @@ class ServiceReport extends BaseModel
             'travel_time' => 'travel time is required if the event is off-campus'
         ];
         $extraMessages = [];
-        if(Request::has('brothers')) {
+        if (Request::has('brothers')) {
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraMessages['brothers.' . $index . '.id.exists'] = 'The cwru id :input is not valid.';
             }
@@ -101,36 +105,52 @@ class ServiceReport extends BaseModel
         }
     }
 
-    public function canStore($user){
-        if($user == null){
-            return false;
-        } else {
+    public function canStore(User $user)
+    {
+        if ($user != null) {
             return true;
-        }
-    }
-
-    public function canUpdate($user){
-        return false;
-        if($user != null){
-
         } else {
             return false;
         }
     }
 
-    public function canRead($user){
+    public static function applyRowLevelSecurity(QueryBuilder $query, User $user)
+    {
+        if (!AccessController::isMembership($user)) {
+            return $query->join('report_user', 'service_reports.id', '=', 'report_user.report_id')->whereIn('report_user.report_id',function($q) use ($user){
+                $q->select('id')->from('reports')->where('report_user.report_id','id')->orWhere('reports.creator_id', $user->id);
+            });
+        } else {
+            return $query;
+        }
+    }
+
+    public function canUpdate(User $user)
+    {
+        if ($user != null && AccessController::isMembership($user)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function canRead(User $user)
+    {
         //Add in logic so not everyone can see the service reports that aren't theirs unless they are the service? vp or webmaster.
-        if($user != null){
+        if ($user != null) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function scopeNotApproved($query){
+    public function scopeNotApproved(QueryBuilder $query)
+    {
         return $query->whereApproved(false);
     }
-    public function scopeApproved($query){
+
+    public function scopeApproved(QueryBuilder $query)
+    {
         return $query->whereApproved(true);
     }
 

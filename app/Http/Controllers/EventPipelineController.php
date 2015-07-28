@@ -21,6 +21,7 @@ class EventPipelineController extends Controller
     function __construct()
     {
         $this->fractal = new Manager();
+        $this->middleware('SSOAuth');
     }
 
     public function showEvent(Requests\ReadReportRequest $request, $type, $id)
@@ -59,6 +60,7 @@ class EventPipelineController extends Controller
                 }
             }
             $query = $query->orderBy('id', 'DESC');
+            $query = $class->getMethod('applyRowLevelSecurity')->invoke(null,$query,LoginController::currentUser());
             $reports = $query->get();
             if (!$reports->isEmpty()) {
                 $transformer = $reports->first()->transformer($this->fractal);

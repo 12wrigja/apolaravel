@@ -14,8 +14,13 @@ use Input;
 use DB;
 use Exception;
 use Log;
+use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Request;
+use APOSite\Models\User;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use League\Fractal\Manager;
 
-abstract class BaseModel extends Eloquent
+abstract class BaseModel extends Eloquent implements \ReportInterface
 {
 
     public $errors;
@@ -24,7 +29,9 @@ abstract class BaseModel extends Eloquent
     {
         DB::beginTransaction();
         $specific = new static($attributes);
-        $coreEvent = new Report($attributes);
+        $coreEvent = new Report();
+        $coreEvent->creator_id = LoginController::currentUser()->id;
+        $coreEvent->fill($attributes);
         $coreEvent->save();
         $specific->save();
         $specific->core()->save($coreEvent);
@@ -66,5 +73,4 @@ abstract class BaseModel extends Eloquent
     {
         return $this->morphOne('APOSite\Models\Report', 'report_type');
     }
-
 }

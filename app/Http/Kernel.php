@@ -27,6 +27,7 @@ class Kernel extends HttpKernel {
 		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
 		'guest' => 'APOSite\Http\Middleware\RedirectIfAuthenticated',
 		'csrf' => 'APOSite\Http\Middleware\VerifyCsrfToken',
+        'SSOAuth' => 'APOSite\Http\Middleware\SSOAuth'
 	];
 
 }

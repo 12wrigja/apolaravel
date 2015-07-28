@@ -18,7 +18,6 @@ class SeedOldUsersTableSeeder extends Seeder
         foreach($oldUsers as $oldUser){
             $user = new User();
 
-
             $user->id = $oldUser->id;
             unset($oldUser->id);
 

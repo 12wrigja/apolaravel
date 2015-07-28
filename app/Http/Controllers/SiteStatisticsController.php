@@ -8,7 +8,4 @@ class SiteStatisticsController extends Controller {
 		
 	}
 
-	public function getserviceevent($id){
-		return ServiceReport::findOrFail($id);
-	}
 }

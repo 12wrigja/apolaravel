@@ -99,6 +99,10 @@ module.exports = function (Resources) {
                     'is_driver' : false
                 };
                 this.form.brothers.push(newBro);
+            },
+            removeBrother: function(brother){
+                this.form.brothers.$remove(brother);
+
             }
         },
         filters: {

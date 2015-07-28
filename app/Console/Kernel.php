@@ -12,6 +12,7 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected $commands = [
 		'APOSite\Console\Commands\Inspire',
+        'APOSite\Console\Commands\ReportCreator'
 	];
 
 	/**

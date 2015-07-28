@@ -52,4 +52,8 @@ class User extends Model
     public function currentContract() {
         return $this->contracts()->orderBy('semester_id','DESC')->first();
     }
+
+    public function offices(){
+        return $this->belongsToMany('APOSite\Models\Office')->withPivot('semester_id','alt_text');
+    }
 }

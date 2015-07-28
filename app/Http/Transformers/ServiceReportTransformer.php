@@ -1,20 +1,12 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: james
- * Date: 7/16/15
- * Time: 10:42 PM
- */
-
-namespace APOSite\Http\Transformers;
-
+<?php namespace APOSite\Http\Transformers;
 
 use APOSite\Models\Reports\ServiceReport;
 use League\Fractal\Manager;
 use League\Fractal\TransformerAbstract;
 use League\Fractal\Resource\Item;
 
-class ServiceReportTransformer extends TransformerAbstract{
+class ServiceReportTransformer extends TransformerAbstract
+{
 
     protected $manager;
 
@@ -24,11 +16,12 @@ class ServiceReportTransformer extends TransformerAbstract{
     }
 
 
-    public function transform(ServiceReport $report){
-        $id = ['id'=>$report->id];
+    public function transform(ServiceReport $report)
+    {
+        $id = ['id' => $report->id];
         $coreEventData = $this->manager->createData(new Item($report->core, new ReportTransformer()))->toArray()['data'];
         $hrefArr = [
-            'href' => route('report_show',['id'=>$report->id, 'type'=>'service_reports']),
+            'href' => route('report_show', ['id' => $report->id, 'type' => 'service_reports']),
         ];
         $otherData = [
             'project_type' => $report->project_type,
@@ -36,9 +29,9 @@ class ServiceReportTransformer extends TransformerAbstract{
             'location' => $report->location,
             'off_campus' => (boolean)$report->off_campus,
             'travel_time' => $report->travel_time,
-            'submission_date'=>$report->created_at->toDateTimeString()
+            'submission_date' => $report->created_at->toDateTimeString()
         ];
-        return array_merge($id,$hrefArr,$coreEventData,$otherData);
+        return array_merge($id, $hrefArr, $coreEventData, $otherData);
     }
 
 }
