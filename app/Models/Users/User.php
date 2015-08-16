@@ -24,7 +24,8 @@ class User extends Model
         'major',
         'minor',
         'graduation_semester',
-        'hometown'
+        'hometown',
+        'family_id'
     ];
 
     public function getFullDisplayName()
@@ -56,4 +57,33 @@ class User extends Model
     public function offices(){
         return $this->belongsToMany('APOSite\Models\Office')->withPivot('semester_id','alt_text');
     }
+
+    public function pictureURL($size = 500){
+            return "http://www.gravatar.com/avatar/" . md5($this->picture) . "?s=$size&d=mm";
+    }
+
+    public function getPledgeSemesterAttribute($value){
+        return Semester::find($value);
+    }
+
+    public function getInitiationSemesterAttribute($value){
+        return Semester::find($value);
+    }
+
+    public function getGraduationSemesterAttribute($value){
+        return Semester::find($value);
+    }
+
+    public function fullDisplayName(){
+        if($this->first_name == $this->nickname || $this->nickname == null){
+            return $this->first_name . ' ' . $this->last_name;
+        } else {
+            return $this->nickname . ' (' . $this->first_name . ') ' . $this->last_name;
+        }
+    }
+
+    public function family(){
+        return Family::find($this->family_id);
+    }
+
 }

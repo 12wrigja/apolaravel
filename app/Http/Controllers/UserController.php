@@ -1,5 +1,6 @@
 <?php namespace APOSite\Http\Controllers;
 
+use APOSite\Http\Requests\UserDeleteRequest;
 use APOSite\Models\MemberStatus;
 use APOSite\Models\User;
 use Illuminate\Support\Facades\Input;
@@ -10,6 +11,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('SSOAuth');
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -18,9 +24,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        if(Request::wantsJson()) {
-            return User::select('first_name','last_name','nickname','id')->get();
-        }else {
+        if (Request::wantsJson()) {
+            return User::select('first_name', 'last_name', 'nickname', 'id')->get();
+        } else {
             //TODO write the listing page for users and allow users to search for each other?
         }
     }
@@ -74,8 +80,21 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
+        $contract = $user->currentContract();
+        $requirements = $contract->requirements;
+        $requirementStatuses = [];
+        $contractPassing = true;
+        foreach ($requirements as $requirement) {
+            $requirementStatus = $requirement->computeForUser($user);
+            $requirementStatuses[$requirement->id] = $requirementStatus;
+            $contractPassing &= $requirementStatus['passing'];
+        }
         if ($user != null) {
-            return View::make('users.profile')->with('user', $user)->with('permissions', $user->permissions());
+            return View::make('users.profile')->with('user', $user)
+                ->with('contract', $contract)
+                ->with('requirements', $requirements)
+                ->with('requirementStatuses', $requirementStatuses)
+                ->with('contractPassing',$contractPassing);
         } else {
             throw new NotFoundHttpException("User Not Found!");
         }
@@ -89,7 +108,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return View::make('users.edit')->with('user', User::find($id))->with('statuses', MemberStatus::lists('status', 'id'));
+
     }
 
     /**
@@ -109,7 +128,7 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(UserDeleteRequest $request, $id)
     {
         $user = User::find($id);
         if ($user != null) {
@@ -147,10 +166,11 @@ class UserController extends Controller
         return $users;
     }
 
-    public function statusPage($id){
+    public function statusPage($id)
+    {
         $user = User::find($id);
         if ($user != null) {
-            return view('contracts.status')->with('contract',$user->currentContract());
+            return view('contracts.status')->with('contract', $user->currentContract());
         } else {
             throw new NotFoundHttpException('User not found');
         }

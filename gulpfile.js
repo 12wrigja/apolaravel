@@ -12,6 +12,6 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.browserify('app.js')
+    mix.browserify('app.js','public/js/bundle.js')
         .browserify('homepage.js','public/js/homepage.js');
 });

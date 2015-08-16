@@ -21,4 +21,15 @@ class Contract extends Model {
         return ['created_at','updated_at'];
     }
 
+    public function isPassing($user){
+        $requirements = $this->Requirements()->get();
+        $passing = true;
+        foreach($requirements as $requirement){
+            if(!$requirement->isPassingForUser($user)){
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

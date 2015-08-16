@@ -98,7 +98,7 @@ Route::get('/logout', function () {
 });
 
 //Route for logging in and checking login
-Route::get('/login', array('as' => 'login', 'middleware' => 'casAuth', function () {
+Route::get('/login', array('as' => 'login', 'middleware' => 'SSOAuth', function () {
     return Redirect::route('home');
 }));
 
