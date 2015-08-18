@@ -30,47 +30,54 @@ abstract class BaseModel extends Eloquent implements \ReportInterface
         DB::beginTransaction();
         $specific = new static($attributes);
         $coreEvent = new Report();
-        $coreEvent->creator_id = LoginController::currentUser()->id;
+        $user = LoginController::currentUser();
+        if (!isset($attributes['creator_id'])) {
+            $attributes['creator_id'] = LoginController::currentUser()->id;
+        }
+
         $coreEvent->fill($attributes);
         $coreEvent->save();
         $specific->save();
         $specific->core()->save($coreEvent);
         $brothers = Input::get('brothers');
-        foreach ($brothers as $index=>$brother) {
-            try {
-                $value = $specific->computeValue($brother);
-                $coreEvent->linkedUsers()->attach($brother['id'],['value'=>$value]);
-            } catch (Exception $e) {
-                Log::error("Unable to link brother " . $brother['id'] . " to report with ID " . $coreEvent->getKey());
-                DB::rollBack();
+        if ($brothers != null) {
+            foreach ($brothers as $index => $brother) {
+                try {
+                    $value = $specific->computeValue($brother);
+                    $coreEvent->linkedUsers()->attach($brother['id'], ['value' => $value]);
+                } catch (Exception $e) {
+                    Log::error("Unable to link brother " . $brother['id'] . " to report with ID " . $coreEvent->getKey());
+                    DB::rollBack();
+                }
             }
         }
         $coreEvent->save();
         $specific->save();
         DB::commit();
         $updateMethod = 'onCreate';
-        if(method_exists($specific,$updateMethod)){
+        if (method_exists($specific, $updateMethod)) {
             $specific->$updateMethod();
         }
         return $specific;
     }
 
-    public function update(array $attributes = []){
-        $updatable = method_exists($this,'updatable')?$this->updatable(): array();
-        foreach($attributes as $key=>$value){
-            if(in_array($key,$updatable)){
-                $this->setAttribute($key,$value);
+    public function core()
+    {
+        return $this->morphOne('APOSite\Models\Report', 'report_type');
+    }
+
+    public function update(array $attributes = [])
+    {
+        $updatable = method_exists($this, 'updatable') ? $this->updatable() : array();
+        foreach ($attributes as $key => $value) {
+            if (in_array($key, $updatable)) {
+                $this->setAttribute($key, $value);
             }
         }
         $this->save();
         $updateMethod = 'onUpdate';
-        if(method_exists($this,$updateMethod)){
+        if (method_exists($this, $updateMethod)) {
             $this->$updateMethod();
         }
-    }
-
-    public function core()
-    {
-        return $this->morphOne('APOSite\Models\Report', 'report_type');
     }
 }

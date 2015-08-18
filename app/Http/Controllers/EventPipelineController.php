@@ -83,7 +83,7 @@ class EventPipelineController extends Controller
         try {
             //Create and save the event
             $method = $this->getClass($type)->getMethod('create');
-            $event = $method->invoke(null, Input::all(), false);
+            $event = $method->invoke(null, Input::except('creator_id'), false);
 
             //Return the data in json form
             $resource = new Item($event, $event->transformer($this->fractal));

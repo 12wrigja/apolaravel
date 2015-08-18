@@ -13,7 +13,8 @@ class Report extends Model
     protected $fillable = [
         'display_name',
         'description',
-        'event_date'
+        'event_date',
+        'creator_id'
     ];
 
     public $timestamps = false;
