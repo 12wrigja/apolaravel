@@ -13,7 +13,7 @@ use APOSite\Http\Controllers\Controller;
 use APOSite\Models\ChapterMeeting;
 use APOSite\Models\ExecMeeting;
 
-class MeetingController extends Controller{
+class MeetingFilter extends Controller{
 
     public function validateChapterMeeting($event){
         return $event instanceof ChapterMeeting;

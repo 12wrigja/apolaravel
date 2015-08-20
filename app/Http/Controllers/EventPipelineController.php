@@ -5,6 +5,7 @@ use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
 use League\Fractal\Manager;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\Collection;
 use Illuminate\Support\Facades\Response;
@@ -52,19 +53,15 @@ class EventPipelineController extends Controller
         try {
             $class = $this->getClass($type);
             $query = $class->getMethod('query')->invoke(null);
-            if (Input::has('approved')) {
-                if (Input::get('approved') == 'true') {
-                    $query = $query->Approved();
-                } else if (Input::get('approved') == 'false') {
-                    $query = $query->NotApproved();
-                }
-            }
+            $query = $class->getMethod('applyReportFilters')->invoke(null,$query);
             $query = $query->orderBy('id', 'DESC');
             $query = $class->getMethod('applyRowLevelSecurity')->invoke(null,$query,LoginController::currentUser());
-            $reports = $query->get();
-            if (!$reports->isEmpty()) {
+            $paginator = $query->paginate(100);
+            if (!$paginator->getCollection()->isEmpty()) {
+                $reports = $paginator->getCollection();
                 $transformer = $reports->first()->transformer($this->fractal);
                 $resource = new Collection($reports, $transformer);
+                $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
                 return $this->fractal->createData($resource)->toJson();
             } else {
                 return Response::json([

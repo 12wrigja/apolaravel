@@ -42,12 +42,12 @@ class ProcessEvent extends Job implements SelfHandling, ShouldQueue
         if($report == null){
             $errorText = 'Unable to process report of type '.$this->reportType . ' with id ' . $this->reportID;
             Log::error($errorText);
-            Mail::raw($errorText,function($message){
-                $message->to(env('ADMIN_EMAIL','webmaster@apo.case.edu'));
-                $message->subject('Report Processing Error');
-            });
+//            Mail::raw($errorText,function($message){
+//                $message->to(env('ADMIN_EMAIL','webmaster@apo.case.edu'));
+//                $message->subject('Report Processing Error');
+//            });
         } else {
-            //Process the event for the contract that each connected user is currently on.
+            //Process the event for all requirement-filter links
             $requirements = Requirement::all();
             foreach($requirements as $requirementIndex=>$requirement){
                 $filters = $requirement->filters;

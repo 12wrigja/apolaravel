@@ -7,6 +7,17 @@ use DB;
 
 class Requirement extends Model
 {
+
+    public static function createFromValues($display_name, $description, $threshold, $comparison){
+        $requirement = new Requirement();
+        $requirement->display_name = $display_name;
+        $requirement->description = $description;
+        $requirement->threshold = $threshold;
+        $requirement->comparison = $comparison;
+        $requirement->save();
+        return $requirement;
+    }
+
     protected $fillable = [
         'display_name',
         'description',
@@ -29,16 +40,25 @@ class Requirement extends Model
         return $this->belongsToMany('APOSite\Models\Filter');
     }
 
-    public function getReportsForUser($user)
+    public function getReportsForUser($user, $semester = null)
     {
-        return Report::whereRaw('id in (select report_id from report_user where user_id = ? and report_id in (select report_id from report_requirement where requirement_id = ?))', [$user->id, $this->id]);
+        $query = Report::whereRaw('id in (select report_id from report_user where user_id = ? and report_id in (select report_id from report_requirement where requirement_id = ?))', [$user->id, $this->id]);
+        if($semester == null){
+            return $query->get();
+        } else {
+            if($semester->end_date == null){
+               return $query->where('event_date','>=',$semester->start_date)->get();
+            } else {
+                return $query->whereBetween('event_date', array($semester->start_date, $semester->end_date))->get();
+            }
+        }
     }
 
-    public function computeForUser($user){
+    public function computeForUser($user,$semester){
         $val = 0;
-        $reports = $this->getReportsForUser($user);
+        $reports = $this->getReportsForUser($user,$semester);
         foreach($reports as $index=>$report){
-            $val += $report->linkedUsers()->where('user_id',$user->id)->value;
+            $val += $report->linkedUsers()->where('user_id',$user->id)->first()->pivot->value;
         }
         $res = [];
         $res['value'] = $val;

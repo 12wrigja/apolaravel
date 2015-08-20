@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use APOSite\Models\Semester;
 
 class UserController extends Controller
 {
@@ -85,7 +86,7 @@ class UserController extends Controller
         $requirementStatuses = [];
         $contractPassing = true;
         foreach ($requirements as $requirement) {
-            $requirementStatus = $requirement->computeForUser($user);
+            $requirementStatus = $requirement->computeForUser($user,Semester::currentSemester());
             $requirementStatuses[$requirement->id] = $requirementStatus;
             $contractPassing &= $requirementStatus['passing'];
         }

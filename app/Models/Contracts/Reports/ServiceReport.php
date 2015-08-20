@@ -10,7 +10,8 @@ use APOSite\Http\Transformers\ServiceReportTransformer;
 use Request;
 use Illuminate\Support\Facades\Queue;
 use APOSite\Models\User;
-use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Input;
 
 class ServiceReport extends BaseModel
 {
@@ -52,10 +53,12 @@ class ServiceReport extends BaseModel
             'travel_time' => ['required_if:off_campus,true', 'integer']
         ];
         $extraRules = [];
-        foreach (Request::get('brothers') as $index => $brother) {
-            $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
-            $extraRules['brothers.' . $index . '.hours'] = ['sometimes', 'required', 'integer', 'min:0'];
-            $extraRules['brothers.' . $index . '.minutes'] = ['sometimes', 'required', 'integer', 'min:0'];
+        if(Request::has('brothers')) {
+            foreach (Request::get('brothers') as $index => $brother) {
+                $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
+                $extraRules['brothers.' . $index . '.hours'] = ['sometimes', 'required', 'integer', 'min:0'];
+                $extraRules['brothers.' . $index . '.minutes'] = ['sometimes', 'required', 'integer', 'min:0'];
+            }
         }
         $newRules = array_merge($rules, $extraRules);
         return $newRules;
@@ -154,4 +157,15 @@ class ServiceReport extends BaseModel
         return $query->whereApproved(true);
     }
 
+    public static function applyReportFilters(QueryBuilder $query)
+    {
+        if (Input::has('approved')) {
+            if (Input::get('approved') == 'true') {
+                $query = $query->Approved();
+            } else if (Input::get('approved') == 'false') {
+                $query = $query->NotApproved();
+            }
+        }
+        return $query;
+    }
 }

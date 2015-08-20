@@ -22,7 +22,7 @@ class Contract extends Model {
     }
 
     public function isPassing($user){
-        $requirements = $this->Requirements()->get();
+        $requirements = $this->Requirements;
         $passing = true;
         foreach($requirements as $requirement){
             if(!$requirement->isPassingForUser($user)){

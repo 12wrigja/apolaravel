@@ -25,6 +25,24 @@ abstract class BaseModel extends Eloquent implements \ReportInterface
 
     public $errors;
 
+    protected static function boot()
+    {
+        parent::boot();
+        self::created(function($model){
+            $updateMethod = 'onCreate';
+            if (method_exists($model, $updateMethod)) {
+                $model->$updateMethod();
+            }
+        });
+        self::saved(function($model){
+            $updateMethod = 'onUpdate';
+            if (method_exists($model, $updateMethod)) {
+                $model->$updateMethod();
+            }
+        });
+    }
+
+
     public static function create(array $attributes = [])
     {
         DB::beginTransaction();
@@ -34,12 +52,12 @@ abstract class BaseModel extends Eloquent implements \ReportInterface
         if (!isset($attributes['creator_id'])) {
             $attributes['creator_id'] = LoginController::currentUser()->id;
         }
-
         $coreEvent->fill($attributes);
         $coreEvent->save();
+
         $specific->save();
         $specific->core()->save($coreEvent);
-        $brothers = Input::get('brothers');
+        $brothers = $attributes['brothers'];
         if ($brothers != null) {
             foreach ($brothers as $index => $brother) {
                 try {
@@ -54,10 +72,7 @@ abstract class BaseModel extends Eloquent implements \ReportInterface
         $coreEvent->save();
         $specific->save();
         DB::commit();
-        $updateMethod = 'onCreate';
-        if (method_exists($specific, $updateMethod)) {
-            $specific->$updateMethod();
-        }
+
         return $specific;
     }
 
@@ -75,9 +90,5 @@ abstract class BaseModel extends Eloquent implements \ReportInterface
             }
         }
         $this->save();
-        $updateMethod = 'onUpdate';
-        if (method_exists($this, $updateMethod)) {
-            $this->$updateMethod();
-        }
     }
 }

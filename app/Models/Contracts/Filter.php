@@ -9,6 +9,15 @@ class Filter extends Model
 {
     use AppNamespaceDetectorTrait;
 
+    public static function createFromValues($display_name, $controller, $method){
+        $filter = new Filter();
+        $filter->display_name = $display_name;
+        $filter->controller = $controller;
+        $filter->method = $method;
+        $filter->save();
+        return $filter;
+    }
+
     protected $filterNamespace = "Http\\Controllers\\Filters\\";
     protected $fillable = [
         'display_name',
