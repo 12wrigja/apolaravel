@@ -1,21 +1,23 @@
 <?php namespace APOSite\Models\Reports;
 
+use APOSite\Http\Transformers\BrotherhoodReportTransformer;
 use APOSite\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use League\Fractal\Manager;
 use Illuminate\Support\Facades\Request;
 
-class BrotherhoodEvent extends BaseModel
+class BrotherhoodReport extends BaseModel
 {
 
     protected $fillable = [
-        'location'
+        'location',
+        'type'
     ];
 
-    public function transformer(Manager $manger)
+    public function transformer(Manager $manager)
     {
-        return null;
+        return new BrotherhoodReportTransformer($manager);
     }
 
     public function computeValue(array $brotherData)
@@ -27,7 +29,9 @@ class BrotherhoodEvent extends BaseModel
 
     public function updateRules()
     {
-        return array();
+        return [
+            'approved' => ['sometimes', 'required', 'boolean']
+        ];
     }
 
     public function onCreate()
@@ -49,17 +53,32 @@ class BrotherhoodEvent extends BaseModel
 
     public static function applyRowLevelSecurity(QueryBuilder $query, User $user)
     {
-        return $query;
+        if (!AccessController::isMembership($user)) {
+            return $query->join('report_user', 'brotherhood_reports.id', '=', 'report_user.report_id')->whereIn('report_user.report_id',function($q) use ($user){
+                $q->select('id')->from('reports')->where('report_user.report_id','id')->orWhere('reports.creator_id', $user->id);
+            });
+        } else {
+            return $query;
+        }
     }
 
     public function canUpdate(User $user)
     {
-        return false;
+        if ($user != null && AccessController::isMembership($user)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function canRead(User $user)
     {
-        return true;
+        //Add in logic so not everyone can see the service reports that aren't theirs unless they are the service? vp or webmaster.
+        if ($user != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function createRules()
@@ -69,12 +88,16 @@ class BrotherhoodEvent extends BaseModel
             'display_name' => ['required', 'min:10'],
             'description' => ['required', 'min:40'],
             'event_date' => ['required', 'date'],
+            'location' => ['required'],
+            'type'=>['required','in:fellowship,pledge,other'],
             'brothers' => ['required', 'array'],
             //Rules specific to the brotherhood report
         ];
         $extraRules = [];
         foreach (Request::get('brothers') as $index => $brother) {
             $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
+            $extraRules['brothers.' . $index . '.hours'] = ['sometimes', 'required', 'integer', 'min:0'];
+            $extraRules['brothers.' . $index . '.minutes'] = ['sometimes', 'required', 'integer', 'min:0'];
             //Other rules for the specific join data go here.
         }
         $newRules = array_merge($rules, $extraRules);

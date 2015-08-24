@@ -50,6 +50,39 @@
                     </div>
                 </div>
             </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-md-4 control-label">
+                        {!! Form::label('location','Project Location') !!}
+                        <p class="help-block"></p>
+                    </div>
+                    <div class="col-md-8">
+                        {!! Form::text('location', null, ['class'=>'form-control','v-model'=>'form.location']) !!}
+                    </div>
+                    {{--<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>--}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-4 control-label">
+                        {!! Form::label('type','Project Type') !!}
+                        <p class="help-block"></p>
+                    </div>
+                    <div class="col-sm-8">
+                        {!! Form::select('type', [
+                        'fellowship'=>'Fellowship Event',
+                        'pledge'=>'Pledge Meeting',
+                        'other'=>'Other'
+                        ],null, ['class'=>'form-control','v-model'=>'form.type']) !!}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+
+            </div>
         </div>
 
         <pre>@{{ form | json }}</pre>

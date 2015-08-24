@@ -16,6 +16,7 @@ class CreateBrotherhoodReportsTable extends Migration {
 		{
 			$table->increments('id');
             $table->string('location');
+            $table->enum('type',['fellowship','pledge','other']);
 			$table->timestamps();
 		});
 	}

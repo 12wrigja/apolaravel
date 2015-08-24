@@ -8,7 +8,8 @@ module.exports = function (Resources) {
                     brothers: [],
                     display_name: '',
                     description: '',
-                    event_date: ''
+                    event_date: '',
+                    type: ''
                 },
                 users : []
             }

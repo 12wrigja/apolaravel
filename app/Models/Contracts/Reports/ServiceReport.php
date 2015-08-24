@@ -90,9 +90,7 @@ class ServiceReport extends BaseModel
     public function updatable()
     {
         return [
-            'approved',
-            'project_type',
-            'service_type'
+            'approved'
         ];
     }
 
