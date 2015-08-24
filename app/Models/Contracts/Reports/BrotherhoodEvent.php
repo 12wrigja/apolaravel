@@ -1,7 +1,8 @@
 <?php namespace APOSite\Models\Reports;
 
 use APOSite\Models\User;
-use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use League\Fractal\Manager;
 use Illuminate\Support\Facades\Request;
 
@@ -19,7 +20,9 @@ class BrotherhoodEvent extends BaseModel
 
     public function computeValue(array $brotherData)
     {
-        return 0;
+        $hours = array_key_exists('hours', $brotherData) ? $brotherData['hours'] : 0;
+        $minutes = array_key_exists('minutes', $brotherData) ? $brotherData['minutes'] : 0;
+        return $hours * 60 + $minutes;
     }
 
     public function updateRules()
@@ -33,6 +36,10 @@ class BrotherhoodEvent extends BaseModel
 
     public function onUpdate()
     {
+        if ($this->approved) {
+            $event = new ProcessEvent($this->id, get_class($this));
+            Queue::push($event);
+        }
     }
 
     public function canStore(User $user)
@@ -47,7 +54,7 @@ class BrotherhoodEvent extends BaseModel
 
     public function canUpdate(User $user)
     {
-        return true;
+        return false;
     }
 
     public function canRead(User $user)
@@ -63,7 +70,7 @@ class BrotherhoodEvent extends BaseModel
             'description' => ['required', 'min:40'],
             'event_date' => ['required', 'date'],
             'brothers' => ['required', 'array'],
-            //Rules specific to the service report
+            //Rules specific to the brotherhood report
         ];
         $extraRules = [];
         foreach (Request::get('brothers') as $index => $brother) {
@@ -88,5 +95,23 @@ class BrotherhoodEvent extends BaseModel
         }
         $allMessages = array_merge($messages, $extraMessages);
         return $allMessages;
+    }
+
+
+    public static function applyReportFilters(Builder $query)
+    {
+        if (Input::has('approved')) {
+            if (Input::get('approved') == 'true') {
+                $query = $query->Approved();
+            } else if (Input::get('approved') == 'false') {
+                $query = $query->NotApproved();
+            }
+        }
+        return $query;
+    }
+
+    public function updatable()
+    {
+        return ['approved'];
     }
 }

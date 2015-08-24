@@ -86,4 +86,13 @@ class User extends Model
         return Family::find($this->family_id);
     }
 
+    public function lifetimeHours(){
+        $reports = $this->reports;
+        $val = 0;
+        foreach($reports as $report){
+            $val += $report->pivot->value;
+        }
+        return $val / 60;
+    }
+
 }

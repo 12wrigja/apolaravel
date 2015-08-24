@@ -1,21 +1,20 @@
+<li class="dropdown">
+    <!-- This works well for static text, like a username -->
+    <a class="dropdown-toggle" data-toggle="dropdown" role="button"
+       aria-expanded="false">{{$currentUser->first_name}} {{$currentUser->last_name}}
+        <span class="caret"></span></a>
+    <ul class="dropdown-menu" role="menu">
+        <li class="item"><a href=""></a></li>
+        @if($currentUser->menu_items != null)
+            @foreach($currentUser->menu_items as $index=>$item)
+                @if(isset($item->isHeader) && $item->isHeader)
+                    <li class="dropdown-header">{{$item->text}}</li>
+                @else
+                    <li class="item"><a href="{!! $item->url !!}">{{$item->text}}</a></li>
+                @endif
+            @endforeach
+        @endif
+    </ul>
 
-<div class="ui dropdown item" >
-	{{LoginController::currentUser()->firstName}} {{LoginController::currentUser()->lastName}}
-	<i class="dropdown icon"></i>
-	<div class="menu">
-		<a class="item" href="/users/{{LoginController::currentUser()->cwruID}}">Profile</a>
-		<a class="item">Contract Status</a>
-		<a class="item">File a Service Report</a>
-		<a class="item" href="/logout?redirect_url={{{Request::url()}}}">Logout</a>
-	</div>
-</div>
-@if(null != Hours::currentHours(LoginController::currentUser()->cwruID))
-<a class="item">
-{{round(Hours::currentHours(LoginController::currentUser()->cwruID),1)}}
-<i class="time icon"></i>
-</a>
-@endif
-<a class="item">
-{{Meetings::currentMeetings(LoginController::currentUser()->cwruID)}}
-<i class="calendar icon"></i>
-</a>
+</li>
+<!-- Add any additional bootstrap header items.  This is a drop-down from an icon -->

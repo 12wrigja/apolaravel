@@ -6,8 +6,28 @@ module.exports = function (Resources) {
         },
         data: function () {
             return {
-                reports: [],
-                approved: []
+                reports: {},
+                approved: {},
+                reports_cache: {},
+                approved_cache: {},
+                reports_page: -1,
+                approved_page: -1
+            }
+        },
+        computed: {
+            showReportPagination: function () {
+                if(this.reports_page != -1) {
+                    return this.reports.meta.pagination.total_pages > 0;
+                } else {
+                    return false;
+                }
+            },
+            showApprovedPagination: function () {
+                if(this.approved_page != -1) {
+                    return this.approved.meta.pagination.total_pages > 0;
+                } else {
+                    return false;
+                }
             }
         },
         methods: {
@@ -30,28 +50,49 @@ module.exports = function (Resources) {
                         console.log(data);
                     }
                 });
+            },
+            getPage: function (page, approved) {
+                console.log(page + ' ' + approved);
+                if (page <= 0) {
+                    return;
+                }
+                if (approved === 'true' && page in this.approved_cache) {
+                    return this.approved_cache[page];
+                } else if (approved === 'false' && page in this.reports_cache) {
+                    return this.reports_cache[page];
+                } else {
+                    Resources.ServiceReport(this).get({}, {
+                        'approved': approved,
+                        'page': page
+                    }, function (data, status, request) {
+                        if (status == 200) {
+                            if (approved) {
+                                this.approved_cache[page] = data;
+                                this.approved_page = page;
+                                this.approved = data;
+                            } else {
+                                this.reports_cache[page] = data;
+                                this.reports_page = page;
+                                this.reports = data;
+                            }
+                        } else {
+                            console.log(data);
+                        }
+                    });
+                }
             }
         },
         filters: {
-          empty: function(array){
-              return array.constructor === Array && array.length == 0;
-          }
+            empty: function (array) {
+                if (array && array !== null) {
+                    return array.constructor === Array && array.length == 0;
+                }
+                return true;
+            }
         },
         ready: function () {
-            Resources.ServiceReport(this).get({},{'approved':false}, function (data, status, request) {
-                if (status == 200) {
-                    this.reports = data['data'];
-                } else {
-                    console.log(data);
-                }
-            });
-            Resources.ServiceReport(this).get({},{'approved':true}, function (data, status, request) {
-                if (status == 200) {
-                    this.approved = data['data'];
-                } else {
-                    console.log(data);
-                }
-            });
+            this.getPage(1, false);
+            this.getPage(1, true);
         }
     });
 

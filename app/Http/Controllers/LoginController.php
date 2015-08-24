@@ -40,7 +40,13 @@ class LoginController extends Controller
 
     public static function currentUser()
     {
-        return User::find(Session::get('username'));
+        if(Session::has('user')){
+            return Session::get('user');
+        } else {
+            $user = User::find(Session::get('username'));
+            Session::put('user',$user);
+            return $user;
+        }
     }
 
 }

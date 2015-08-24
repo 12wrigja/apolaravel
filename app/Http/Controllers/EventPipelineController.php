@@ -45,7 +45,7 @@ class EventPipelineController extends Controller
 
     public function manageEvent($type)
     {
-        return view('management.' . str_replace('_', '', $type));
+        return view('reports.' . str_replace('_', '', $type) . '.manage');
     }
 
     public function showAllEvents(Requests\ReadReportRequest $request, $type)
@@ -56,7 +56,7 @@ class EventPipelineController extends Controller
             $query = $class->getMethod('applyReportFilters')->invoke(null,$query);
             $query = $query->orderBy('id', 'DESC');
             $query = $class->getMethod('applyRowLevelSecurity')->invoke(null,$query,LoginController::currentUser());
-            $paginator = $query->paginate(100);
+            $paginator = $query->paginate(20);
             if (!$paginator->getCollection()->isEmpty()) {
                 $reports = $paginator->getCollection();
                 $transformer = $reports->first()->transformer($this->fractal);

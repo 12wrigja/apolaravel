@@ -17,4 +17,5 @@ interface ReportInterface {
     public static function applyReportFilters(QueryBuilder $query);
     public function canUpdate(User $user);
     public function canRead(User $user);
+    public function updatable();
 }

@@ -23,13 +23,23 @@ class ServiceReportTransformer extends TransformerAbstract
         $hrefArr = [
             'href' => route('report_show', ['id' => $report->id, 'type' => 'service_reports']),
         ];
+        $brothers = $report->core->linkedUsers;
+        $brothers->transform(function ($item, $key){
+            $val = $item->pivot;
+            unset($val->report_id);
+            return $val;
+        });
         $otherData = [
+            'display_name' => $report->core->display_name,
+            'description' => $report->core->description,
+            'event_date' => $report->core->event_date,
             'project_type' => $report->project_type,
             'service_type' => $report->service_type,
             'location' => $report->location,
             'off_campus' => (boolean)$report->off_campus,
             'travel_time' => $report->travel_time,
-            'submission_date' => $report->created_at->toDateTimeString()
+            'submission_date' => $report->created_at->toDateTimeString(),
+            'brothers' => $brothers
         ];
         return array_merge($id, $hrefArr, $coreEventData, $otherData);
     }

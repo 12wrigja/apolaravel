@@ -4,16 +4,20 @@ namespace APOSite\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use SuperClosure\Serializer;
 
 class Requirement extends Model
 {
 
-    public static function createFromValues($display_name, $description, $threshold, $comparison){
-        $requirement = new Requirement();
+    public static function createFromValues($display_name, $description, $threshold, $comparison, $computeFunction){
+        $requirement = new Requirement;
         $requirement->display_name = $display_name;
         $requirement->description = $description;
         $requirement->threshold = $threshold;
         $requirement->comparison = $comparison;
+        //$packagedFunction = App::make('EncrypterContract')->encrypt((new Serializer)->serialize($computeFunction));
+        $packagedFunction = (new Serializer)->serialize($computeFunction);
+        $requirement->compute_function = $packagedFunction;
         $requirement->save();
         return $requirement;
     }
@@ -54,12 +58,19 @@ class Requirement extends Model
         }
     }
 
+    public function getComputeFunctionAttribute($value){
+        return (new Serializer())->unserialize($value);
+    }
+
     public function computeForUser($user,$semester){
-        $val = 0;
+
         $reports = $this->getReportsForUser($user,$semester);
-        foreach($reports as $index=>$report){
-            $val += $report->linkedUsers()->where('user_id',$user->id)->first()->pivot->value;
+        $reportValues = [];
+        foreach($reports as $report){
+            $reportValues[$report->id] = $report->linkedUsers()->where('user_id',$user->id)->first()->pivot->value;
         }
+        $compute_fn = $this->compute_function;
+        $val = $compute_fn($reports,$reportValues);
         $res = [];
         $res['value'] = $val;
         $res['passing'] = $this->isPassingForValue($val);

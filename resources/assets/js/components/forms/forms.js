@@ -12,7 +12,7 @@ module.exports = function (Vue) {
             computed: {
                 formURL: function () {
                     return $(this.$$.iform).attr('action');
-                },
+                }
             },
 
             methods: {
@@ -106,6 +106,14 @@ module.exports = function (Vue) {
                 }
             },
             ready: function () {
+                window.onbeforeunload = function(){
+                    localStorage.setItem(window.location.href+'|form',JSON.stringify(this.form));
+                };
+                var formData = localStorage.getItem(window.location.href+"|form");
+                if(formData != null){
+                    formData = JSON.parse(formData);
+                    this.form = formData;
+                }
                 //this.setupDebug();
                 this.setupLoading();
                 this.register();

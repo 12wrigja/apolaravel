@@ -5,8 +5,7 @@
 
     <h1 class="page-header">Submit a Service Report</h1>
 
-    <p>Please provide the following information. When adding brothers/pledges to this report, please add the name of the
-        of the person submitting the form as well. This service report is submitted to the Membership VP, who keeps
+    <p>Please provide the following information. This service report is submitted to the Membership VP, who keeps
         track of all service hours.</p>
 
     <p>If you are unfamilar with the service hours guidelines they can be found here.</p>
@@ -120,7 +119,6 @@
                 </div>
             </div>
         </div>
-        <pre>@{{ form | json }}</pre>
         <div class="form-horizontal">
             <h2>Brothers in Report</h2>
             <p class="help-block"></p>

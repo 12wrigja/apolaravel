@@ -18,6 +18,7 @@ class CreateRequirementsTable extends Migration
             $table->longText('description');
             $table->integer('threshold');
             $table->enum('comparison',['LT','LEQ','EQ','GEQ','GT']);
+            $table->text('compute_function');
             $table->timestamps();
             $table->softDeletes();
         });

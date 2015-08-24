@@ -20,7 +20,6 @@ class SSOAuth
     public function handle($request, Closure $next)
     {
         $username = null;
-
         if (Session::has('username')) {
             $username = Session::get('username');
         } else if (Input::has('ticket')) {
