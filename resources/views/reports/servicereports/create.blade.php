@@ -152,5 +152,4 @@
         </div>
         {!! Form::close() !!}
     </create_service_report_form>
-
 @endsection

@@ -59,6 +59,32 @@ var Resources = function () {
                 console.log($(rootElement).find('.loadhidden'));
                 $(rootElement).find('.loadhidden').removeClass('loadhidden').removeClass('hidden');
             }
+        },
+        select2settings: function(data,formatFn){
+            return {
+                data: data,
+                allowClear: true,
+                templateResult: formatFn,
+                templateSelection: formatFn,
+                multiple: 'multiple',
+                matcher: function(params, brother){
+                    // If there are no search terms, return all of the data
+                    if ($.trim(params.term) === '') {
+                        return brother;
+                    }
+                    if(brother.first_name.toLowerCase().indexOf(params.term.toLowerCase()) > -1){
+                        return brother;
+                    } else if (brother.last_name.toLowerCase().indexOf(params.term.toLowerCase()) > -1){
+                        return brother;
+                    } else if (brother.nickname != null && brother.nickname.toLowerCase().indexOf(params.term.toLowerCase()) > -1){
+                        return brother;
+                    } else if (brother.id.indexOf(params.term.toLowerCase()) > -1){
+                        return brother;
+                    } else {
+                        return null;
+                    }
+                }
+            }
         }
     }
 }();

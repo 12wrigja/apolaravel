@@ -106,11 +106,14 @@ module.exports = function (Vue) {
                 }
             },
             ready: function () {
+                var that = this;
                 window.onbeforeunload = function(){
-                    localStorage.setItem(window.location.href+'|form',JSON.stringify(this.form));
+                    if(that.form) {
+                        localStorage.setItem(window.location.href + '|form', JSON.stringify(that.form));
+                    }
                 };
                 var formData = localStorage.getItem(window.location.href+"|form");
-                if(formData != null){
+                if(formData && formData != null){
                     formData = JSON.parse(formData);
                     this.form = formData;
                 }

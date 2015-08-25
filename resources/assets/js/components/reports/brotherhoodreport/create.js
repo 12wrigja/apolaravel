@@ -24,30 +24,7 @@ module.exports = function (Resources) {
                         this.users = data;
                         var that = this;
                         var selector = $('#brotherselecter');
-                        selector.select2({
-                            data: data,
-                            allowClear: true,
-                            templateResult: that.formatBrother,
-                            templateSelection: that.formatBrother,
-                            multiple: 'multiple',
-                            matcher: function(params, brother){
-                                // If there are no search terms, return all of the data
-                                if ($.trim(params.term) === '') {
-                                    return brother;
-                                }
-                               if(brother.first_name.toLowerCase().indexOf(params.term.toLowerCase()) > -1){
-                                   return brother;
-                               } else if (brother.last_name.toLowerCase().indexOf(params.term.toLowerCase()) > -1){
-                                   return brother;
-                               } else if (brother.nickname != null && brother.nickname.toLowerCase().indexOf(params.term.toLowerCase()) > -1){
-                                   return brother;
-                               } else if (brother.id.indexOf(params.term.toLowerCase()) > -1){
-                                   return brother;
-                               } else {
-                                   return null;
-                               }
-                            }
-                        });
+                        selector.select2(Resources.select2settings(data,that.formatBrother));
                         selector.on("select2:select", function(e){
                             //get the name of the thing selected.
                             that.addBrother(e);
@@ -77,8 +54,7 @@ module.exports = function (Resources) {
                     'id' : broListing.id,
                     'name' : this.formatBrother(broListing),
                     'hours' : 0,
-                    'minutes' : 0,
-                    'is_driver' : false
+                    'minutes' : 0
                 };
                 this.form.brothers.push(newBro);
             },
