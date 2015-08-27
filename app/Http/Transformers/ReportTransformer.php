@@ -15,12 +15,20 @@ class ReportTransformer extends TransformerAbstract{
 
     public function transform(Report $event){
         return [
-            'id' => $event->id,
+            'id' => $event->EventType->id,
+            'href' => route('report_show',['id'=>$event->EventType->id,'type'=>$this->getReportHREF($event)]),
             'display_name' => $event->display_name,
             'description' => $event->description,
             'date' => $event->event_date,
             'submitter' => $event->creator_id
         ];
+    }
+
+    private function getReportHREF($report){
+        $type = $report->report_type_type;
+        $type = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $type));
+        $type = substr(strrchr($type,'\\'),1)."s";
+        return $type;
     }
 
 }

@@ -1,6 +1,6 @@
 <?php namespace APOSite\Http\Transformers;
 
-use APOSite\Models\Reports\ServiceReport;
+use APOSite\Models\Reports\BrotherhoodReport;
 use League\Fractal\Manager;
 use League\Fractal\TransformerAbstract;
 use League\Fractal\Resource\Item;
@@ -16,13 +16,9 @@ class BrotherhoodReportTransformer extends TransformerAbstract
     }
 
 
-    public function transform(ServiceReport $report)
+    public function transform(BrotherhoodReport $report)
     {
-        $id = ['id' => $report->id];
         $coreEventData = $this->manager->createData(new Item($report->core, new ReportTransformer()))->toArray()['data'];
-        $hrefArr = [
-            'href' => route('report_show', ['id' => $report->id, 'type' => 'service_reports']),
-        ];
         $brothers = $report->core->linkedUsers;
         $brothers->transform(function ($item, $key){
             $val = $item->pivot;
@@ -38,7 +34,7 @@ class BrotherhoodReportTransformer extends TransformerAbstract
             'submission_date' => $report->created_at->toDateTimeString(),
             'brothers' => $brothers
         ];
-        return array_merge($id, $hrefArr, $coreEventData, $otherData);
+        return array_merge($coreEventData, $otherData);
     }
 
 }

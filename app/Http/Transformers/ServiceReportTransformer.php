@@ -19,9 +19,6 @@ class ServiceReportTransformer extends TransformerAbstract
     public function transform(ServiceReport $report)
     {
         $coreEventData = $this->manager->createData(new Item($report->core, new ReportTransformer()))->toArray()['data'];
-        $hrefArr = [
-            'href' => route('report_show', ['id' => $report->id, 'type' => 'service_reports']),
-        ];
         $brothers = $report->core->linkedUsers;
         $brothers->transform(function ($item, $key){
             $val = $item->pivot;
@@ -40,7 +37,7 @@ class ServiceReportTransformer extends TransformerAbstract
             'submission_date' => $report->created_at->toDateTimeString(),
             'brothers' => $brothers
         ];
-        return array_merge($hrefArr, $coreEventData, $otherData);
+        return array_merge($coreEventData, $otherData);
     }
 
 }
