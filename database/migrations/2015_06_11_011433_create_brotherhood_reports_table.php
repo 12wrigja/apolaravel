@@ -12,11 +12,12 @@ class CreateBrotherhoodReportsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('brotherhood_events', function(Blueprint $table)
+		Schema::create('brotherhood_reports', function(Blueprint $table)
 		{
 			$table->increments('id');
             $table->string('location');
             $table->enum('type',['fellowship','pledge','other']);
+            $table->boolean('approved')->default(false);
 			$table->timestamps();
 		});
 	}
@@ -28,7 +29,7 @@ class CreateBrotherhoodReportsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('brotherhood_events');
+		Schema::drop('brotherhood_reports');
 	}
 
 }

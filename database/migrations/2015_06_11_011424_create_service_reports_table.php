@@ -20,7 +20,7 @@ class CreateServiceReportsTable extends Migration {
             $table->enum('project_type',['inside','outside']);
             $table->boolean('off_campus');
             $table->integer('travel_time');
-			$table->boolean('approved')->default(false);
+            $table->boolean('approved')->default(false);
 			$table->timestamps();
             $table->softDeletes();
 		});

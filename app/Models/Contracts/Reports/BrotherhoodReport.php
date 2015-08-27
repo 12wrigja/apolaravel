@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use League\Fractal\Manager;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Input;
+use APOSite\Http\Controllers\AccessController;
 
 class BrotherhoodReport extends BaseModel
 {
@@ -120,6 +122,16 @@ class BrotherhoodReport extends BaseModel
         return $allMessages;
     }
 
+
+    public function scopeNotApproved(QueryBuilder $query)
+    {
+        return $query->whereApproved(false);
+    }
+
+    public function scopeApproved(QueryBuilder $query)
+    {
+        return $query->whereApproved(true);
+    }
 
     public static function applyReportFilters(Builder $query)
     {
