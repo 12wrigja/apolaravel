@@ -15,9 +15,11 @@ class ReportTransformer extends TransformerAbstract{
 
     public function transform(Report $event){
         return [
+            'id' => $event->id,
             'display_name' => $event->display_name,
             'description' => $event->description,
-            'date' => $event->event_date
+            'date' => $event->event_date,
+            'submitter' => $event->creator_id
         ];
     }
 
