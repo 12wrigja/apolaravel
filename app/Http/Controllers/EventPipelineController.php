@@ -57,6 +57,10 @@ class EventPipelineController extends Controller
             $query = $query->orderBy('id', 'DESC');
             $query = $class->getMethod('applyRowLevelSecurity')->invoke(null,$query,LoginController::currentUser());
             $paginator = $query->paginate(20);
+            $queryParams = Input::except('page');
+            foreach ($queryParams as $key => $value) {
+                $paginator->addQuery($key, $value);
+            }
             if (!$paginator->getCollection()->isEmpty()) {
                 $reports = $paginator->getCollection();
                 $transformer = $reports->first()->transformer($this->fractal);
