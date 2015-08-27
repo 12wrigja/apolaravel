@@ -1,6 +1,5 @@
 <?php namespace APOSite\Http\Controllers;
 
-use APOSite\Http\Requests\UserDeleteRequest;
 use APOSite\Models\MemberStatus;
 use APOSite\Models\User;
 use Illuminate\Support\Facades\Input;
@@ -9,6 +8,8 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use APOSite\Models\Semester;
+use Illuminate\Support\Facades\Redirect;
+use APOSite\Http\Requests\Users\UserDeleteRequest;
 
 class UserController extends Controller
 {
@@ -81,14 +82,30 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
+        if(Request::wantsJSON()){
+            if($user != null){
+                return $user;
+            } else {
+                //TODO update this json response to be formatted the same as the others.
+                return response('User not found.',404);
+            }
+        }
         $contract = $user->currentContract();
-        $requirements = $contract->requirements;
-        $requirementStatuses = [];
+        $requirements = null;
+        $requirementStatuses = null;
         $contractPassing = true;
-        foreach ($requirements as $requirement) {
-            $requirementStatus = $requirement->computeForUser($user,Semester::currentSemester());
-            $requirementStatuses[$requirement->id] = $requirementStatus;
-            $contractPassing &= $requirementStatus['passing'];
+        if($contract != null) {
+            $requirements = $contract->requirements;
+            $requirementStatuses = [];
+            $contractPassing = true;
+            foreach ($requirements as $requirement) {
+                $requirementStatus = $requirement->computeForUser($user, Semester::currentSemester());
+                $requirementStatuses[$requirement->id] = $requirementStatus;
+                $contractPassing &= $requirementStatus['passing'];
+            }
+        } else {
+            $requirements = [];
+            $requirementStatus = [];
         }
         if ($user != null) {
             return View::make('users.profile')->with('user', $user)

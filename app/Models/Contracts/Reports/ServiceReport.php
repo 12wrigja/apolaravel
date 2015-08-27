@@ -57,7 +57,7 @@ class ServiceReport extends BaseModel
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
                 $extraRules['brothers.' . $index . '.hours'] = ['sometimes', 'required', 'integer', 'min:0'];
-                $extraRules['brothers.' . $index . '.minutes'] = ['sometimes', 'required', 'integer', 'min:0'];
+                $extraRules['brothers.' . $index . '.minutes'] = ['sometimes', 'required', 'integer', 'min:0','max:59'];
             }
         }
         $newRules = array_merge($rules, $extraRules);

@@ -96,11 +96,13 @@ class BrotherhoodReport extends BaseModel
             //Rules specific to the brotherhood report
         ];
         $extraRules = [];
-        foreach (Request::get('brothers') as $index => $brother) {
-            $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
-            $extraRules['brothers.' . $index . '.hours'] = ['sometimes', 'required', 'integer', 'min:0'];
-            $extraRules['brothers.' . $index . '.minutes'] = ['sometimes', 'required', 'integer', 'min:0'];
-            //Other rules for the specific join data go here.
+        if(Request::has('brothers')) {
+            foreach (Request::get('brothers') as $index => $brother) {
+                $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
+                $extraRules['brothers.' . $index . '.hours'] = ['sometimes', 'required', 'integer', 'min:0'];
+                $extraRules['brothers.' . $index . '.minutes'] = ['sometimes', 'required', 'integer', 'min:0','max:59'];
+                //Other rules for the specific join data go here.
+            }
         }
         $newRules = array_merge($rules, $extraRules);
         return $newRules;

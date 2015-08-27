@@ -1,9 +1,11 @@
-<?php namespace APOSite\Http\Requests;
+<?php namespace APOSite\Http\Requests\Reports;
 
 use App;
 use Illuminate\Console\AppNamespaceDetectorTrait;
+use APOSite\Http\Controllers\LoginController;
+use APOSite\Http\Requests\Request;
 
-class UpdateReportRequest extends Request
+class ReadReportRequest extends Request
 {
 
     use AppNamespaceDetectorTrait;
@@ -17,7 +19,13 @@ class UpdateReportRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        $type = $this->route('type');
+        $user = LoginController::currentUser();
+        try {
+            return App::call($this->getAppNamespace() . $this->filterNamespace . $this->snakeToCamelCase($type) . '@canRead',['user'=>$user]);
+        } catch (\ReflectionException $e) {
+            return false;
+        }
     }
 
     /**
@@ -27,22 +35,12 @@ class UpdateReportRequest extends Request
      */
     public function rules()
     {
-        $type = $this->route('type');
-        try {
-            return App::call($this->getAppNamespace() . $this->filterNamespace . $this->snakeToCamelCase($type) . '@updateRules');
-        } catch (\ReflectionException $e) {
-            return [];
-        }
+        return [];
     }
 
     public function messages()
     {
-        $type = $this->route('type');
-        try {
-            return App::call($this->getAppNamespace() . $this->filterNamespace . $this->snakeToCamelCase($type) . '@errorMessages');
-        } catch (\ReflectionException $e) {
-            return [];
-        }
+        return [];
     }
 
 

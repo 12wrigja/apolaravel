@@ -32,6 +32,7 @@ class LoginController extends Controller
 
     public static function logout()
     {
+        Session::forget('user');
         Session::forget('username');
         if (Session::has('debug_username')) {
             Session::forget('debug_username');
@@ -40,7 +41,7 @@ class LoginController extends Controller
 
     public static function currentUser()
     {
-        if(Session::has('user')){
+        if(Session::has('user') && Session::get('user') != null){
             return Session::get('user');
         } else {
             $user = User::find(Session::get('username'));

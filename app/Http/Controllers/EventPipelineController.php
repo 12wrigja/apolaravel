@@ -9,6 +9,9 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\Collection;
 use Illuminate\Support\Facades\Response;
+use APOSite\Http\Requests\Reports\ReadReportRequest;
+use APOSite\Http\Requests\Reports\StoreReportRequest;
+use APOSite\Http\Requests\Reports\UpdateReportRequest;
 
 class EventPipelineController extends Controller
 {
@@ -25,7 +28,7 @@ class EventPipelineController extends Controller
         $this->middleware('SSOAuth');
     }
 
-    public function showEvent(Requests\ReadReportRequest $request, $type, $id)
+    public function showEvent(ReadReportRequest $request, $type, $id)
     {
         try {
             $event = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
@@ -48,7 +51,7 @@ class EventPipelineController extends Controller
         return view('reports.' . str_replace('_', '', $type) . '.manage');
     }
 
-    public function showAllEvents(Requests\ReadReportRequest $request, $type)
+    public function showAllEvents(ReadReportRequest $request, $type)
     {
         try {
             $class = $this->getClass($type);
@@ -79,7 +82,7 @@ class EventPipelineController extends Controller
         }
     }
 
-    public function submitEvent(Requests\StoreReportRequest $request, $type)
+    public function submitEvent(StoreReportRequest $request, $type)
     {
         try {
             //Create and save the event
@@ -97,7 +100,7 @@ class EventPipelineController extends Controller
         }
     }
 
-    public function updateEvent(Requests\UpdateReportRequest $request, $type, $id)
+    public function updateEvent(UpdateReportRequest $request, $type, $id)
     {
         try {
             $report = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
