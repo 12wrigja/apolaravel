@@ -18,7 +18,7 @@ class SemesterTableSeeder extends Seeder
             $semester->year = $currentYear;
             $semester->semester = 'spring';
             if($currentYear == '2015'){
-                $semester->end_date = Carbon::parse('2015-04-27');
+                $semester->end_date = Carbon::parse('2015-04-06');
             }
             $semester->save();
 
@@ -27,7 +27,7 @@ class SemesterTableSeeder extends Seeder
             $semester->year = $currentYear;
             $semester->semester = 'fall';
             if($currentYear == '2015'){
-                $semester->start_date = Carbon::parse('2015-04-27');
+                $semester->start_date = Carbon::parse('2015-04-06');
             }
             $semester->save();
         }

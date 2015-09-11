@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use APOSite\Models\Reports\ServiceReport;
+use APOSite\Models\Reports\Types\ServiceReport;
 
 class OldServiceReportsSeeder extends Seeder
 {
@@ -47,7 +47,7 @@ class OldServiceReportsSeeder extends Seeder
                         break;
                 }
 
-            $brothers = [];
+                $brothers = [];
 
                 //Link users to the event
                 $oldBrothers = DB::connection('apo')->table('tblbroservice')->where('reportID', $oldReport->id)->get();
@@ -55,13 +55,13 @@ class OldServiceReportsSeeder extends Seeder
                     $brother = [];
                     $brother['id'] = $oldBrother->brotherID;
                     $brother['hours'] = floor($oldBrother->hours / 12);
-                    $brother['minutes'] = ($oldBrother->hours*5)%60;
+                    $brother['minutes'] = ($oldBrother->hours * 5) % 60;
                     array_push($brothers, $brother);
                 }
                 $oldReport->brothers = $brothers;
                 //Create the event
                 $report = ServiceReport::create((array)$oldReport);
-                if($oldReport->approved){
+                if ($oldReport->approved) {
                     $report->approved = true;
                     $report->save();
                 }

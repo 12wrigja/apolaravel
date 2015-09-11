@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder {
         $this->call('OldContractStatusSeeder');
         $this->call('RequirementTableSeeder');
         $this->call('OldServiceReportsSeeder');
+        $this->call('OldMeetingSeeder');
 	}
 
 }

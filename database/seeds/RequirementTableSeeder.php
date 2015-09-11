@@ -64,10 +64,13 @@ class RequirementTableSeeder extends Seeder
         });
         array_push($activeRequirements, $activepledgemeetings->id);
         $activedues = Requirement::createFromValues("Active Member Dues", "As an active member in APO TY, you are required to pay full dues", 70, 'EQ', function($reports,$reportValues){
-            $val = 0;
             $reports->sortBy('event_date');
-            $latestReport = $reports[$reports->count()-1];
-            return $reportValues[$latestReport->id];
+            if($reports->count()>0) {
+                $latestReport = $reports[$reports->count() - 1];
+                return $reportValues[$latestReport->id];
+            } else {
+                return 0;
+            }
         });
         array_push($activeRequirements, $activedues->id);
 
@@ -101,10 +104,13 @@ class RequirementTableSeeder extends Seeder
         });
         array_push($associateRequirements, $associatebrotherhoodhours->id);
         $associatedues = Requirement::createFromValues("Associate Member Dues", "As an associate member in APO TY, you are required to pay half dues", 35, 'EQ', function($reports,$reportValues){
-            $val = 0;
             $reports->sortBy('event_date');
-            $latestReport = $reports[$reports->count()-1];
-            return $reportValues[$latestReport->id];
+            if($reports->count()>0) {
+                $latestReport = $reports[$reports->count() - 1];
+                return $reportValues[$latestReport->id];
+            } else {
+                return 0;
+            }
         });
         array_push($associateRequirements, $associatedues->id);
 
@@ -138,18 +144,29 @@ class RequirementTableSeeder extends Seeder
         });
         array_push($pledgeRequirements, $pledgebrotherhoodhours->id);
         $pledgechaptermeetings = Requirement::createFromValues("Pledge Member Chapter Meetings", "As an pledge of APO TY, you are required to attend at least 2 chapter meetings each semester.", 8, 'GEQ', function($reports,$reportValues){
-            return 0;
+            $val = 0;
+            foreach($reports as $report){
+                $val += $reportValues[$report->id];
+            }
+            return $val;
         });
         array_push($pledgeRequirements, $pledgechaptermeetings->id);
         $pledgepledgemeetings = Requirement::createFromValues("Pledge Member Pledge Meetings", "As an pledge of APO TY, you are required to attend all pledge meetings this semester", 9, 'GEQ', function($reports,$reportValues){
-            return 0;
+            $val = 0;
+            foreach($reports as $report){
+                $val += $reportValues[$report->id];
+            }
+            return $val;
         });
         array_push($pledgeRequirements, $pledgepledgemeetings->id);
         $pledgedues = Requirement::createFromValues("Pledge Member Dues", "As an pledge of APO TY, you are required to pay full dues", 70, 'EQ', function($reports,$reportValues){
-            $val = 0;
             $reports->sortBy('event_date');
-            $latestReport = $reports[$reports->count()-1];
-            return $reportValues[$latestReport->id];
+            if($reports->count()>0) {
+                $latestReport = $reports[$reports->count() - 1];
+                return $reportValues[$latestReport->id];
+            } else {
+                return 0;
+            }
         });
         array_push($pledgeRequirements, $pledgedues->id);
 

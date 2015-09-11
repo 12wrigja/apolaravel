@@ -34,6 +34,13 @@ class SeedOldUsersTableSeeder extends Seeder
             unset($oldUser->big);
 
             $user->fill((array)$oldUser);
+            if($user->last_name == 'Founder'){
+                $user->first_name = 'Founder';
+            }
+            if($user->id = 'mxm763'){
+                $user->first_name = 'Meletke';
+                $user->last_name = 'Melaku';
+            }
             $user->save();
         }
         DB::commit();
