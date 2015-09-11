@@ -1,5 +1,7 @@
 <h4>Project Name</h4>
 
+<P>@{{ report.display_name }}</P>
+
 <h4>Description</h4>
 
 <p>@{{report.description}}</p>
@@ -9,7 +11,7 @@
     <div class="col-sm-6">
         <h4>Event Date</h4>
 
-        <p>@{{ report.event_date }}</p>
+        <p>@{{ report.date }}</p>
     </div>
     <div class="col-sm-6">
         <h4>Location</h4>

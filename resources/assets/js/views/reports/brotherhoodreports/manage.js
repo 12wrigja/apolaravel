@@ -34,8 +34,8 @@ module.exports = function (Resources) {
             approveReport: function (report) {
                 Resources.BrotherhoodReport(this).put({id: report.id}, {approved: true}, function (data, status, request) {
                     if (status == 200) {
-                        this.reports.$remove(report);
-                        this.approved.push(report);
+                        this.reports.data.$remove(report);
+                        this.approved.data.push(report);
                     } else {
                         console.log('Error approving report.');
                     }
@@ -44,8 +44,8 @@ module.exports = function (Resources) {
             deleteReport: function (report) {
                 Resources.BrotherhoodReport(this).delete({id: report.id}, function (data, status, request) {
                     if (status == 200) {
-                        this.reports.$remove(report);
-                        this.approved.$remove(report);
+                        this.reports.data.$remove(report);
+                        this.approved.data.$remove(report);
                     } else {
                         console.log(data);
                     }
