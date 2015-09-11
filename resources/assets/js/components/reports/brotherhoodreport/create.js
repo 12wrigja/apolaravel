@@ -9,14 +9,15 @@ module.exports = function (Resources) {
                     display_name: '',
                     description: '',
                     event_date: '',
-                    type: ''
+                    type: '',
+                    location: ''
                 },
                 users : []
             }
         },
         methods: {
             successFunction: function (data) {
-
+                $(this.$$.successArea).collapse('show');
             },
             setupUserSearch: function () {
                 Resources.User(this).get({},function(data,status,response){
@@ -61,6 +62,16 @@ module.exports = function (Resources) {
             removeBrother: function(brother){
                 this.form.brothers.$remove(brother);
 
+            },
+            clearForm: function(){
+                this.form = {
+                    brothers: [],
+                    display_name: '',
+                    description: '',
+                    event_date: '',
+                    type: '',
+                    location: ''
+                };
             }
         },
         filters: {

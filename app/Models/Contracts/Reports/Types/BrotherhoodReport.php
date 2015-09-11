@@ -113,6 +113,8 @@ class BrotherhoodReport extends BaseModel
     public function errorMessages()
     {
         $messages = [
+            'display_name.required'=>'The event name field is required.',
+            'type.required'=>'The project type field is required.'
             //Error messages specific to this report type go here.
         ];
         $extraMessages = [];

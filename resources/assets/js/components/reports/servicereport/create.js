@@ -29,7 +29,7 @@ module.exports = function (Resources) {
         },
         methods: {
             successFunction: function (data) {
-
+                $(this.$$.successArea).collapse('show');
             },
             setupUserSearch: function () {
                 Resources.User(this).get({},function(data,status,response){
@@ -90,6 +90,19 @@ module.exports = function (Resources) {
                     }
                 }
                 return false;
+            },
+            clearForm: function(){
+                this.form = {
+                    brothers: [],
+                    display_name: '',
+                    description: '',
+                    event_date: '',
+                    location: '',
+                    off_campus: '',
+                    project_type: '',
+                    service_type: '',
+                    travel_time: '',
+                };
             }
         },
         filters: {
