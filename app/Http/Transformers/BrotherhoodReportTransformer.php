@@ -1,6 +1,6 @@
 <?php namespace APOSite\Http\Transformers;
 
-use APOSite\Models\Reports\BrotherhoodReport;
+use APOSite\Models\Reports\Types\BrotherhoodReport;
 use League\Fractal\Manager;
 use League\Fractal\TransformerAbstract;
 use League\Fractal\Resource\Item;

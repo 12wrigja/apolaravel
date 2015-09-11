@@ -1,9 +1,10 @@
 <?php
 
-namespace APOSite\Models\Reports;
+namespace APOSite\Models\Reports\Types;
 
 use APOSite\Http\Controllers\AccessController;
 use APOSite\Jobs\ProcessEvent;
+use APOSite\Models\Reports\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use League\Fractal\Manager;
 use APOSite\Http\Transformers\ServiceReportTransformer;

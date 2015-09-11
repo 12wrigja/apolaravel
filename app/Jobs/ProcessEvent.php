@@ -53,7 +53,7 @@ class ProcessEvent extends Job implements SelfHandling, ShouldQueue
                 $filters = $requirement->filters;
                 foreach($filters as $filterIndex=>$filter){
                     if($filter->validate($report)){
-                        $requirement->Reports()->attach($report);
+                        $requirement->Reports()->attach($report->core);
                     }
                 }
             }

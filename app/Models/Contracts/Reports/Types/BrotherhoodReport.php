@@ -1,13 +1,15 @@
-<?php namespace APOSite\Models\Reports;
+<?php namespace APOSite\Models\Reports\Types;
 
-use APOSite\Http\Transformers\BrotherhoodReportTransformer;
-use APOSite\Models\User;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use League\Fractal\Manager;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Input;
 use APOSite\Http\Controllers\AccessController;
+use APOSite\Http\Transformers\BrotherhoodReportTransformer;
+use APOSite\Jobs\ProcessEvent;
+use APOSite\Models\Reports\BaseModel;
+use APOSite\Models\User;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Request;
+use League\Fractal\Manager;
 
 class BrotherhoodReport extends BaseModel
 {
@@ -135,7 +137,7 @@ class BrotherhoodReport extends BaseModel
         return $query->whereApproved(true);
     }
 
-    public static function applyReportFilters(Builder $query)
+    public static function applyReportFilters(QueryBuilder $query)
     {
         if (Input::has('approved')) {
             if (Input::get('approved') == 'true') {

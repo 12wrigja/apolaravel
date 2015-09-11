@@ -1,11 +1,12 @@
 <?php namespace APOSite\Http\Controllers;
 
 use APOSite\Models\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 
 class LoginController extends Controller
 {
@@ -41,12 +42,23 @@ class LoginController extends Controller
 
     public static function currentUser()
     {
-        if(Session::has('user') && Session::get('user') != null){
+        if (Session::has('user') && Session::get('user') != null) {
             return Session::get('user');
         } else {
             $user = User::find(Session::get('username'));
-            Session::put('user',$user);
+            Session::put('user', $user);
             return $user;
+        }
+    }
+
+    public static function debugLogin()
+    {
+        $username = Input::get('username');
+        if (App::environment() == 'local') {
+            Session::put('username', $username);
+            return Response::JSON(['newUsername' => $username]);
+        } else {
+            dd('Invalid session.');
         }
     }
 

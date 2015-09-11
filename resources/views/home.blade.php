@@ -2,9 +2,6 @@
 
 @section('stylesheets')
     {!!Html::style('css/homepage.css')!!}
-    @if(Session::get('username') === 'jsk137')
-        {!!Html::syle('css/jsk137.css')!!}
-    @endif
 @stop
 
 @section('scripts')

@@ -4,7 +4,8 @@ namespace APOSite\Http\Controllers\Filters;
 
 
 use APOSite\Http\Controllers\Controller;
-use APOSite\Models\Reports\ServiceReport;
+use APOSite\Models\Reports\Types\BrotherhoodReport;
+use APOSite\Models\Reports\Types\ServiceReport;
 
 class EventFilter extends Controller{
 
@@ -13,7 +14,7 @@ class EventFilter extends Controller{
     }
 
     public function validateBrotherhoodEvent($event){
-        return false; //$event instanceof BrotherhoodReport && $event->approved == true;
+        return $event instanceof BrotherhoodReport && $event->approved = true;
     }
 
     public function validateDuesEvent($event){

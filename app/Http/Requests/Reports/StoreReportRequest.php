@@ -12,7 +12,7 @@ class StoreReportRequest extends Request
 
     use AppNamespaceDetectorTrait;
 
-    protected $filterNamespace = "Models\\Reports\\";
+    protected $filterNamespace = "Models\\Reports\\Types\\";
 
     /**
      * Determine if the user is authorized to make this request.

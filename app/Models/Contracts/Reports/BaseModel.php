@@ -50,7 +50,7 @@ abstract class BaseModel extends Eloquent implements \ReportInterface
         $coreEvent = new Report();
         $user = LoginController::currentUser();
         if (!isset($attributes['creator_id'])) {
-            $attributes['creator_id'] = LoginController::currentUser()->id;
+            $attributes['creator_id'] = $user->id;
         }
         $coreEvent->fill($attributes);
         $coreEvent->save();
@@ -65,6 +65,7 @@ abstract class BaseModel extends Eloquent implements \ReportInterface
                     $coreEvent->linkedUsers()->attach($brother['id'], ['value' => $value]);
                 } catch (Exception $e) {
                     Log::error("Unable to link brother " . $brother['id'] . " to report with ID " . $coreEvent->getKey());
+                    Log::error($e);
                     DB::rollBack();
                 }
             }

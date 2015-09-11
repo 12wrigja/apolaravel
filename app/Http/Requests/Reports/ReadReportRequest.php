@@ -10,7 +10,7 @@ class ReadReportRequest extends Request
 
     use AppNamespaceDetectorTrait;
 
-    protected $filterNamespace = "Models\\Reports\\";
+    protected $filterNamespace = "Models\\Reports\\Types\\";
 
     /**
      * Determine if the user is authorized to make this request.
@@ -20,9 +20,10 @@ class ReadReportRequest extends Request
     public function authorize()
     {
         $type = $this->route('type');
+        $type = $this->snakeToCamelCase($type);
         $user = LoginController::currentUser();
         try {
-            return App::call($this->getAppNamespace() . $this->filterNamespace . $this->snakeToCamelCase($type) . '@canRead',['user'=>$user]);
+            return App::call($this->getAppNamespace() . $this->filterNamespace . $type . '@canRead',['user'=>$user]);
         } catch (\ReflectionException $e) {
             return false;
         }

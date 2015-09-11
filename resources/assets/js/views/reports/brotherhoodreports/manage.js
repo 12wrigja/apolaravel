@@ -32,7 +32,7 @@ module.exports = function (Resources) {
         },
         methods: {
             approveReport: function (report) {
-                Resources.ServiceReport(this).put({id: report.id}, {approved: true}, function (data, status, request) {
+                Resources.BrotherhoodReport(this).put({id: report.id}, {approved: true}, function (data, status, request) {
                     if (status == 200) {
                         this.reports.$remove(report);
                         this.approved.push(report);
@@ -42,7 +42,7 @@ module.exports = function (Resources) {
                 });
             },
             deleteReport: function (report) {
-                Resources.ServiceReport(this).delete({id: report.id}, function (data, status, request) {
+                Resources.BrotherhoodReport(this).delete({id: report.id}, function (data, status, request) {
                     if (status == 200) {
                         this.reports.$remove(report);
                         this.approved.$remove(report);
@@ -61,7 +61,7 @@ module.exports = function (Resources) {
                 } else if (approved === 'false' && page in this.reports_cache) {
                     return this.reports_cache[page];
                 } else {
-                    Resources.ServiceReport(this).get({}, {
+                    Resources.BrotherhoodReport(this).get({}, {
                         'approved': approved,
                         'page': page
                     }, function (data, status, request) {

@@ -10,8 +10,7 @@ namespace APOSite\Http\Controllers\Filters;
 
 
 use APOSite\Http\Controllers\Controller;
-use APOSite\Models\ChapterMeeting;
-use APOSite\Models\ExecMeeting;
+use APOSite\Models\Reports\Types\ChapterMeeting;
 
 class MeetingFilter extends Controller{
 

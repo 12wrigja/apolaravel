@@ -18,7 +18,7 @@ class EventPipelineController extends Controller
 
     use AppNamespaceDetectorTrait;
 
-    protected $filterNamespace = "Models\\Reports\\";
+    protected $filterNamespace = "Models\\Reports\\Types\\";
 
     protected $fractal;
 
@@ -32,8 +32,12 @@ class EventPipelineController extends Controller
     {
         try {
             $event = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
-            $resource = new Item($event, $event->transformer($this->fractal));
-            return $this->fractal->createData($resource)->toJson();
+            if($event->transformer != null) {
+                $resource = new Item($event, $event->transformer($this->fractal));
+                return $this->fractal->createData($resource)->toJson();
+            } else {
+                return $event;
+            }
         } catch (\ReflectionException $e) {
             return "Reflection issue.";
         } catch (ModelNotFoundException $e) {
@@ -67,17 +71,23 @@ class EventPipelineController extends Controller
             if (!$paginator->getCollection()->isEmpty()) {
                 $reports = $paginator->getCollection();
                 $transformer = $reports->first()->transformer($this->fractal);
-                $resource = new Collection($reports, $transformer);
-                $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-                return $this->fractal->createData($resource)->toJson();
+                if($transformer != null){
+                    $resource = new Collection($reports, $transformer);
+                    $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+                    return $this->fractal->createData($resource)->toJson();
+                } else {
+                    return $paginator;
+                }
             } else {
                 return Response::json([
                     'data' => []
                 ], 200);
             }
         } catch (\ReflectionException $e) {
+            //TODO cleanup what happens when a reflection exception is thrown. Maybe return a 404 for a not found report type?
             return $e;
         } catch (ModelNotFoundException $e) {
+            //TODO Cleanup the response type here to give the correct error message, status, etc.
             return "Model not found.";
         }
     }

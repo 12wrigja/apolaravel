@@ -16,6 +16,7 @@ $.ajaxSetup({
 require('Select2');
 //Setup Vue and Vue Resource
 var Vue = require('vue');
+Vue.config.debug = true;
 Vue.use(require('vue-resource'));
 //Set default headers for all Vue requests
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
@@ -49,6 +50,9 @@ var Resources = function () {
         },
         ServiceReport: function(instance) {
             return instance.$resource('/reports/service_reports/:id',{},defaultActions);
+        },
+        BrotherhoodReport: function(instance) {
+            return instance.$resource('/reports/brotherhood_reports/:id',{},defaultActions);
         },
         User: function(instance){
             return instance.$resource('/users/:id',{},defaultActions);
@@ -98,7 +102,8 @@ var main = new Vue({
         'contract-edit-form': require('./views/contracts/edit.js')(Resources),
         'create_service_report_form' : require('./components/reports/servicereport/create.js')(Resources),
         'create_brotherhood_report_form' : require('./components/reports/brotherhoodreport/create.js')(Resources),
-        'manage-service-reports-view' : require('./views/reports/servicereports/manage.js')(Resources)
+        'manage-service-reports-view' : require('./views/reports/servicereports/manage.js')(Resources),
+        'manage-brotherhood-reports-view' : require('./views/reports/brotherhoodreports/manage.js')(Resources)
     },
 
     filters: {

@@ -57,8 +57,8 @@
     <tbody>
     <tr v-repeat="brother: report.brothers">
         <td>@{{ brother.user_id }}</td>
-        <td>@{{ brother.value / 60 }}</td>
-        <td>@{{ brother.value % 60 }}</td>
+        <td>@{{ brother.hours }}</td>
+        <td>@{{ brother.minutes }}</td>
     </tr>
     </tbody>
 </table>

@@ -5,7 +5,7 @@ use APOSite\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
 interface ReportInterface {
-    public function transformer(Manager $manger);
+    public function transformer(Manager $manager);
     public function computeValue(array $brotherData);
     public function createRules();
     public function updateRules();
