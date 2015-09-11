@@ -41,8 +41,8 @@
                 </div>
                 <nav v-show="showReportPagination">
                     <ul class="pager">
-                        <li class="previous" v-show="showReportPagination && reports.meta.pagination.links.previous"><a class="btn" v-on="click: getPage(reports_page-1,false)"><span aria-hidden="true">&larr;</span> Older</a></li>
-                        <li class="next" v-show="showReportPagination && reports.meta.pagination.links.next"><a class="btn" v-on="click: getPage(reports_page+1,false)">Newer <span aria-hidden="true">&rarr;</span></a></li>
+                        <li class="previous" v-show="showReportPagination && reports.meta.pagination.links.previous"><a class="btn" v-on="click: getPage(reports_page+1,false)"><span aria-hidden="true">&larr;</span> Older</a></li>
+                        <li class="next" v-show="showReportPagination && reports.meta.pagination.links.next"><a class="btn" v-on="click: getPage(reports_page-1,false)">Newer <span aria-hidden="true">&rarr;</span></a></li>
                     </ul>
                 </nav>
             </div>
@@ -74,8 +74,8 @@
                 </div>
                 <nav v-show="showApprovedPagination">
                     <ul class="pager">
-                        <li class="previous" v-show="showApprovedPagination"><a class="btn" v-on="click: getPage(approved_page-1,true)"><span aria-hidden="true">&larr;</span> Older</a></li>
-                        <li class="next" v-show="showApprovedPagination"><a class="btn" v-on="click: getPage(approved_page+1,true)">Newer <span aria-hidden="true">&rarr;</span></a></li>
+                        <li class="previous" v-show="showApprovedPagination"><a class="btn" v-on="click: getPage(approved_page+1,true)"><span aria-hidden="true">&larr;</span> Older</a></li>
+                        <li class="next" v-show="showApprovedPagination"><a class="btn" v-on="click: getPage(approved_page-1,true)">Newer <span aria-hidden="true">&rarr;</span></a></li>
                     </ul>
                 </nav>
             </div>
