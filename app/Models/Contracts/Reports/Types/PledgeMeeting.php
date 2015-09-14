@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use League\Fractal\Manager;
 use APOSite\Jobs\ProcessEvent;
 
-class ChapterMeeting extends BaseModel {
+class PledgeMeeting extends BaseModel {
 
     protected $fillable = ['minutes'];
 
