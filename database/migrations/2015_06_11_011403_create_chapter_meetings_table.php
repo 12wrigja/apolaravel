@@ -15,6 +15,7 @@ class CreateChapterMeetingsTable extends Migration {
 		Schema::create('chapter_meetings', function(Blueprint $table)
 		{
 			$table->increments('id');
+            $table->text('minutes')->nullable();
 			$table->timestamps();
 		});
 	}

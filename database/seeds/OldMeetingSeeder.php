@@ -1,0 +1,58 @@
+<?php
+
+use Illuminate\Database\Seeder;
+use APOSite\Models\Reports\Types\ChapterMeeting;
+
+class OldMeetingSeeder extends Seeder
+{
+    public function run()
+    {
+
+        DB::reconnect();
+
+        DB::statement("SET foreign_key_checks=0");
+        ChapterMeeting::truncate();
+        DB::statement("SET foreign_key_checks=1");
+
+
+        Eloquent::reguard();
+        //Import old contract names from the status tables.
+        DB::connection('apo')->table('tblmeetings')->select('eventID', 'date as event_date', 'type', 'semester')->chunk(100, function ($oldMeetings) {
+            foreach ($oldMeetings as $oldMeeting) {
+                $brothers = [];
+                $oldMeeting->creator_id = 'jow5';
+                //Link users to the event
+                $oldBrothers = DB::connection('apo')->table('tblattendance')->where('event', $oldMeeting->eventID)->get();
+                foreach ($oldBrothers as $oldBrother) {
+                    $brother = [];
+                    $brother['id'] = $oldBrother->id;
+                    array_push($brothers, $brother);
+                }
+                $oldMeeting->brothers = $brothers;
+                $report = null;
+                switch ($oldMeeting->type) {
+                    case 'chapter':
+                        $report = ChapterMeeting::create((array)$oldMeeting);
+                        break;
+                    case 'pledge':
+                        continue;
+                        break;
+                    case 'exec':
+                        continue;
+                        break;
+                    case 'chapter_rollover':
+                        continue;
+                        break;
+                    case 'pledge_rollover':
+                        continue;
+                        break;
+                    case 'other':
+                        continue;
+                        break;
+                }
+            }
+
+        });
+        Eloquent::unguard();
+    }
+}

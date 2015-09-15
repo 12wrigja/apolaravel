@@ -42,14 +42,16 @@ module.exports = function (Resources) {
                 });
             },
             deleteReport: function (report) {
-                Resources.BrotherhoodReport(this).delete({id: report.id}, function (data, status, request) {
-                    if (status == 200) {
-                        this.reports.data.$remove(report);
-                        this.approved.data.$remove(report);
-                    } else {
-                        console.log(data);
-                    }
-                });
+                if(window.confirm("Are you sure you want to delete this report?")) {
+                    Resources.BrotherhoodReport(this).delete({id: report.id}, function (data, status, request) {
+                        if (status == 200) {
+                            this.reports.data.$remove(report);
+                            this.approved.data.$remove(report);
+                        } else {
+                            console.log(data);
+                        }
+                    });
+                }
             },
             getPage: function (page, approved) {
                 console.log(page + ' ' + approved);

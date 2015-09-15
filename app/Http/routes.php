@@ -82,10 +82,10 @@ Route::get('/', array('as' => 'home', function () {
 }));
 
 ////Route for logging in when debugging the application
-//Route::post('login_debug',function(){
-//	LoginController::debugLogin();
-//	return Redirect::route('home');
-//});
+Route::post('login/debug',function(){
+	return LoginController::debugLogin();
+	return Redirect::route('home');
+});
 
 //Route for logging out
 Route::get('/logout', function () {

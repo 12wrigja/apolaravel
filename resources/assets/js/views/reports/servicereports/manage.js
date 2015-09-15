@@ -44,15 +44,17 @@ module.exports = function (Resources) {
                 });
             },
             deleteReport: function (report) {
-                Resources.ServiceReport(this).delete({id: report.id}, function (data, status, request) {
-                    if (status == 200) {
-                        console.log(this.reports);
-                        this.reports.data.$remove(report);
-                        this.approved.data.$remove(report);
-                    } else {
-                        console.log(data);
-                    }
-                });
+                if(window.confirm("Are you sure you want to delete this report?")) {
+                    Resources.ServiceReport(this).delete({id: report.id}, function (data, status, request) {
+                        if (status == 200) {
+                            console.log(this.reports);
+                            this.reports.data.$remove(report);
+                            this.approved.data.$remove(report);
+                        } else {
+                            console.log(data);
+                        }
+                    });
+                }
             },
             getPage: function (page, approved) {
                 console.log(page + ' ' + approved);

@@ -31,9 +31,13 @@ class EventPipelineController extends Controller
     public function showEvent(ReadReportRequest $request, $type, $id)
     {
         try {
-            $event = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
-            if($event->transformer != null) {
-                $resource = new Item($event, $event->transformer($this->fractal));
+            $class = $this->getClass($type);
+            $query = $class->getMethod('query')->invoke(null);
+            $query = $class->getMethod('applyRowLevelSecurity')->invoke(null,$query,LoginController::currentUser());
+            $event = $query->findOrFail($id);
+            $transformer = $event->transformer($this->fractal);
+            if($transformer != null) {
+                $resource = new Item($event, $transformer);
                 return $this->fractal->createData($resource)->toJson();
             } else {
                 return $event;
