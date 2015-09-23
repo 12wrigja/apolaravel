@@ -2,8 +2,6 @@
 
 use Illuminate\Database\Seeder;
 
-// composer require laracasts/testdummy
-use Laracasts\TestDummy\Factory as TestDummy;
 use APOSite\Models\User;
 class SeedOldUsersTableSeeder extends Seeder
 {
@@ -37,7 +35,7 @@ class SeedOldUsersTableSeeder extends Seeder
             if($user->last_name == 'Founder'){
                 $user->first_name = 'Founder';
             }
-            if($user->id = 'mxm763'){
+            if($user->id == 'mxm763'){
                 $user->first_name = 'Meletke';
                 $user->last_name = 'Melaku';
             }
