@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: APO
+        psr4_prefix: APO
+        src_path: app
