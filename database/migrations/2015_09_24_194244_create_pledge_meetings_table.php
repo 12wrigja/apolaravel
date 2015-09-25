@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
 class CreatePledgeMeetingsTable extends Migration
 {
@@ -14,8 +15,11 @@ class CreatePledgeMeetingsTable extends Migration
     {
         Schema::create('pledge_meetings', function(Blueprint $table) {
             $table->increments('id');
-            
+            $table->date('meeting_date');
+            $table->text('minutes');
+            $table->char('creator_id',10);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

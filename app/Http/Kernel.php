@@ -29,5 +29,6 @@ class Kernel extends HttpKernel
         'auth' => \APO\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \APO\Http\Middleware\RedirectIfAuthenticated::class,
+        'SSOAuth' => \APO\Http\Middleware\SSOAuth::class,
     ];
 }

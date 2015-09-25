@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
 class CreateSemestersTable extends Migration
 {
@@ -14,7 +15,10 @@ class CreateSemestersTable extends Migration
     {
         Schema::create('semesters', function(Blueprint $table) {
             $table->increments('id');
-            
+            $table->integer('year');
+            $table->enum('semester',['fall','spring']);
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
             $table->timestamps();
         });
     }
