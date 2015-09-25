@@ -18,6 +18,7 @@ class CreateReportUserPivotTable extends Migration
             $table->char('user_id',10)->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('value')->unsigned()->default(0);
+            $table->char('tag',255)->nullable();
         });
     }
 

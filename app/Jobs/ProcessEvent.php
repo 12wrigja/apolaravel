@@ -47,6 +47,12 @@ class ProcessEvent extends Job implements SelfHandling, ShouldQueue
 //                $message->subject('Report Processing Error');
 //            });
         } else {
+            if($report->core != null){
+                $report->core->Requirements()->detach();
+            } else {
+                dd($report);
+            }
+
             //Process the event for all requirement-filter links
             $requirements = Requirement::all();
             foreach($requirements as $requirementIndex=>$requirement){
@@ -58,7 +64,5 @@ class ProcessEvent extends Job implements SelfHandling, ShouldQueue
                 }
             }
         }
-
-
     }
 }

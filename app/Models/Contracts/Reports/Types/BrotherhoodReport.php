@@ -31,6 +31,10 @@ class BrotherhoodReport extends BaseModel
         return $hours * 60 + $minutes;
     }
 
+    public function getTag(array $brotherData){
+        return null;
+    }
+
     public function updateRules()
     {
         return [

@@ -2,7 +2,7 @@
 
 
 @section('crud_form')
-    <manage-brotherhood-reports-view inline-template>
+    <manage_brotherhood_reports_form inline-template>
         <h1>Manage Brotherhood Reports</h1>
 
         <p>Below is the brotherhood report management tool. Here you can view all submitted service reports and approve or
@@ -80,5 +80,5 @@
                 </nav>
             </div>
         </div>
-    </manage-brotherhood-reports-view>
+    </manage_brotherhood_reports_form>
 @endsection

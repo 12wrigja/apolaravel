@@ -170,7 +170,6 @@ class RequirementTableSeeder extends Seeder
         });
         array_push($pledgeRequirements, $pledgedues->id);
 
-
         //Attach requirements to the contracts
         $activeContract = Contract::find(1);
         $associateContract = Contract::find(6);
@@ -202,11 +201,11 @@ class RequirementTableSeeder extends Seeder
         $activechaptermeetings->filters()->attach($chapterMeetingFilter->id);
         $pledgechaptermeetings->filters()->attach($chapterMeetingFilter->id);
 
-        $pledgeMeetingFilter = Filter::createFromValues('Pledge Meeting Filter','MeetingFilter','validateChapterMeeting');
+        $pledgeMeetingFilter = Filter::createFromValues('Pledge Meeting Filter','MeetingFilter','validatePledgeMeeting');
         $activechaptermeetings->filters()->attach($pledgeMeetingFilter->id);
         $pledgechaptermeetings->filters()->attach($pledgeMeetingFilter->id);
 
-        $execMeetingFilter = Filter::createFromValues('Exec Meeting Filter','MeetingFilter','validateChapterMeeting');
+        $execMeetingFilter = Filter::createFromValues('Exec Meeting Filter','MeetingFilter','validateExecMeeting');
 
         //Other Filters
         $duesFilter = Filter::createFromValues('Dues Reporting Filter','EventFilter','validateDuesEvent');

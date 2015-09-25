@@ -11,6 +11,7 @@ namespace APOSite\Http\Controllers\Filters;
 
 use APOSite\Http\Controllers\Controller;
 use APOSite\Models\Reports\Types\ChapterMeeting;
+use APOSite\Models\Reports\Types\PledgeMeeting;
 
 class MeetingFilter extends Controller{
 
@@ -23,7 +24,7 @@ class MeetingFilter extends Controller{
     }
 
     public function validatePledgeMeeting($event){
-        return false;
+        return $event instanceof PledgeMeeting;
     }
 
 }

@@ -11,7 +11,7 @@ class OldServiceReportsSeeder extends Seeder
         ServiceReport::truncate();
         DB::statement("SET foreign_key_checks=1");
 
-
+        DB::beginTransaction();
         Eloquent::reguard();
         //Import old contract names from the status tables.
         DB::connection('apo')->table('tblsvcrpt')->select('id', 'date as event_date', 'event as display_name', 'location', 'isOutside', 'offcampus as off_campus', 'traveltime as travel_time', 'comments as description', 'approved', 'serviceType as service_type', 'submittedBy as creator_id')->chunk(100, function ($oldServiceReports) {
@@ -68,6 +68,7 @@ class OldServiceReportsSeeder extends Seeder
             }
 
         });
+        DB::commit();
         Eloquent::unguard();
     }
 }

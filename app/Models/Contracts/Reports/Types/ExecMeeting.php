@@ -24,6 +24,10 @@ class ExecMeeting extends BaseModel {
         return 1;
     }
 
+    public function getTag(array $brotherData){
+        return $brotherData['count_for'];
+    }
+
     public function createRules()
     {
         $rules = [

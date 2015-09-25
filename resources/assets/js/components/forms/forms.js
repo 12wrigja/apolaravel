@@ -12,11 +12,23 @@ module.exports = function (Vue) {
 
             computed: {
                 formURL: function () {
-                    return $(this.$$.iform).attr('action');
+                    var base = $(this.$$.iform).attr('action');
+                    var xdebug_key = this.getURLVars()['XDEBUG_SESSION_START'];
+                    if(xdebug_key !== undefined){
+                        base = base + "?XDEBUG_SESSION_START="+xdebug_key;
+                    }
+                    return base;
                 }
             },
 
             methods: {
+                getURLVars : function(){
+                        var vars = {};
+                        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                            vars[key] = value;
+                        });
+                        return vars;
+                },
                 register: function () {
                     console.log('Registering form.');
                     console.log(this.formURL);

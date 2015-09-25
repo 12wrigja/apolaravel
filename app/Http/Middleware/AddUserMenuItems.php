@@ -56,7 +56,15 @@ class AddUserMenuItems
             }
 
             if(AccessController::isSecretary($user)){
+                $item = new \stdClass();
+                $item->isHeader = true;
+                $item->text = "Secretary Functions";
+                array_push($menu_items,$item);
 
+                $item = new \stdClass();
+                $item->text = "Create Chapter Meeting";
+                $item->url = URL::to('reports/chapter_meetings/create');
+                array_push($menu_items,$item);
             }
 
             if(AccessController::isSergentAtArms($user)){
@@ -69,6 +77,17 @@ class AddUserMenuItems
 
             if(AccessController::isExecMember($user)){
 
+            }
+            if(AccessController::isPledgeEducator($user)){
+                $item = new \stdClass();
+                $item->isHeader = true;
+                $item->text = "Pledge Educator Functions";
+                array_push($menu_items,$item);
+
+                $item = new \stdClass();
+                $item->text = "Create Pledge Meeting";
+                $item->url = URL::to('reports/pledge_meetings/create');
+                array_push($menu_items,$item);
             }
 
 

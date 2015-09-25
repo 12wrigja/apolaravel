@@ -62,7 +62,8 @@ abstract class BaseModel extends Eloquent implements \ReportInterface
             foreach ($brothers as $index => $brother) {
                 try {
                     $value = $specific->computeValue($brother);
-                    $coreEvent->linkedUsers()->attach($brother['id'], ['value' => $value]);
+                    $tag = $specific->getTag($brother);
+                    $coreEvent->linkedUsers()->attach($brother['id'], ['value' => $value,'tag'=>$tag]);
                 } catch (Exception $e) {
                     Log::error("Unable to link brother " . $brother['id'] . " to report with ID " . $coreEvent->getKey());
                     Log::error($e);

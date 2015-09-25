@@ -23,8 +23,12 @@ class Report extends Model
         return $this->morphTo('report_type');
     }
 
+    public function Requirements(){
+        return $this->belongsToMany('APOSite\Models\Requirement');
+    }
+
     public function linkedUsers(){
-        return $this->belongsToMany('APOSite\Models\User')->withPivot('value');
+        return $this->belongsToMany('APOSite\Models\User')->withPivot('value','tag');
     }
 
 }

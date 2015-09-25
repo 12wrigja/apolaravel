@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 interface ReportInterface {
     public function transformer(Manager $manager);
     public function computeValue(array $brotherData);
+    public function getTag(array $brotherData);
     public function createRules();
     public function updateRules();
     public function errorMessages();

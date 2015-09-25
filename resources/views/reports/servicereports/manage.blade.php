@@ -2,7 +2,7 @@
 
 
 @section('crud_form')
-    <manage-service-reports-view inline-template>
+    <manage_service_reports_form inline-template>
         <h1>Manage Service Reports</h1>
 
         <p>Below is the service report management tool. Here you can view all submitted service reports and approve or
@@ -80,5 +80,5 @@
                 </nav>
             </div>
         </div>
-    </manage-service-reports-view>
+    </manage_service_reports_form>
 @endsection

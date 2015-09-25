@@ -100,10 +100,13 @@ var main = new Vue({
     components: {
         'contract-create-form': require('./views/contracts/create.js')(Resources),
         'contract-edit-form': require('./views/contracts/edit.js')(Resources),
-        'create_service_report_form' : require('./components/reports/servicereport/create.js')(Resources),
-        'create_brotherhood_report_form' : require('./components/reports/brotherhoodreport/create.js')(Resources),
-        'manage-service-reports-view' : require('./views/reports/servicereports/manage.js')(Resources),
-        'manage-brotherhood-reports-view' : require('./views/reports/brotherhoodreports/manage.js')(Resources)
+        'create_service_report_form' : require('./views/reports/servicereports/create.js')(Resources),
+        'create_brotherhood_report_form' : require('./views/reports/brotherhoodreports/create.js')(Resources),
+        'manage_service_reports_form' : require('./views/reports/servicereports/manage.js')(Resources),
+        'manage_brotherhood_reports_form' : require('./views/reports/brotherhoodreports/manage.js')(Resources),
+        'create_chapter_meeting_form' : require('./views/reports/chaptermeetings/create.js')(Resources),
+        'create_pledge_meeting_form': require('./views/reports/pledgemeetings/create.js')(Resources),
+        'create_exec_meeting_form' : require('./views/reports/execmeetings/create.js')(Resources)
     },
 
     filters: {
