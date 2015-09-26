@@ -1,17 +1,17 @@
 <?php namespace APOSite\Http\Controllers;
 
 use APOSite\Http\Requests;
-use Illuminate\Console\AppNamespaceDetectorTrait;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Input;
-use League\Fractal\Manager;
-use League\Fractal\Pagination\IlluminatePaginatorAdapter;
-use League\Fractal\Resource\Item;
-use League\Fractal\Resource\Collection;
-use Illuminate\Support\Facades\Response;
 use APOSite\Http\Requests\Reports\ReadReportRequest;
 use APOSite\Http\Requests\Reports\StoreReportRequest;
 use APOSite\Http\Requests\Reports\UpdateReportRequest;
+use Illuminate\Console\AppNamespaceDetectorTrait;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
+use League\Fractal\Manager;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
 class EventPipelineController extends Controller
 {
@@ -33,10 +33,10 @@ class EventPipelineController extends Controller
         try {
             $class = $this->getClass($type);
             $query = $class->getMethod('query')->invoke(null);
-            $query = $class->getMethod('applyRowLevelSecurity')->invoke(null,$query,LoginController::currentUser());
+            $query = $class->getMethod('applyRowLevelSecurity')->invoke(null, $query, LoginController::currentUser());
             $event = $query->findOrFail($id);
             $transformer = $event->transformer($this->fractal);
-            if($transformer != null) {
+            if ($transformer != null) {
                 $resource = new Item($event, $transformer);
                 return $this->fractal->createData($resource)->toJson();
             } else {
@@ -64,9 +64,9 @@ class EventPipelineController extends Controller
         try {
             $class = $this->getClass($type);
             $query = $class->getMethod('query')->invoke(null);
-            $query = $class->getMethod('applyReportFilters')->invoke(null,$query);
+            $query = $class->getMethod('applyReportFilters')->invoke(null, $query);
             $query = $query->orderBy('id', 'DESC');
-            $query = $class->getMethod('applyRowLevelSecurity')->invoke(null,$query,LoginController::currentUser());
+            $query = $class->getMethod('applyRowLevelSecurity')->invoke(null, $query, LoginController::currentUser());
             $paginator = $query->paginate(20);
             $queryParams = Input::except('page');
             foreach ($queryParams as $key => $value) {
@@ -75,7 +75,7 @@ class EventPipelineController extends Controller
             if (!$paginator->getCollection()->isEmpty()) {
                 $reports = $paginator->getCollection();
                 $transformer = $reports->first()->transformer($this->fractal);
-                if($transformer != null){
+                if ($transformer != null) {
                     $resource = new Collection($reports, $transformer);
                     $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
                     return $this->fractal->createData($resource)->toJson();
@@ -129,7 +129,8 @@ class EventPipelineController extends Controller
         }
     }
 
-    public function deleteEvent($type, $id){
+    public function deleteEvent($type, $id)
+    {
         try {
             $report = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
             $core = $report->core;

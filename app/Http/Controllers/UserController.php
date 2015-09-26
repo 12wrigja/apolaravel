@@ -1,15 +1,14 @@
 <?php namespace APOSite\Http\Controllers;
 
-use APOSite\Models\MemberStatus;
-use APOSite\Models\User;
+use APOSite\Http\Requests\Users\UserDeleteRequest;
+use APOSite\Models\Semester;
+use APOSite\Models\Users\User;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use APOSite\Models\Semester;
-use Illuminate\Support\Facades\Redirect;
-use APOSite\Http\Requests\Users\UserDeleteRequest;
 
 class UserController extends Controller
 {
@@ -30,6 +29,7 @@ class UserController extends Controller
             return User::select('first_name', 'last_name', 'nickname', 'id')->get();
         } else {
             //TODO write the listing page for users and allow users to search for each other?
+            return 'Unimplemented.';
         }
     }
 
@@ -40,7 +40,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return View::make('users.create')->with('statuses', MemberStatus::lists('status', 'id'));
+        return View::make('users.create');
     }
 
     /**
@@ -82,19 +82,19 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        if(Request::wantsJSON()){
-            if($user != null){
+        if (Request::wantsJSON()) {
+            if ($user != null) {
                 return $user;
             } else {
                 //TODO update this json response to be formatted the same as the others.
-                return response('User not found.',404);
+                return response('User not found.', 404);
             }
         }
         $contract = $user->currentContract();
         $requirements = null;
         $requirementStatuses = null;
         $contractPassing = true;
-        if($contract != null) {
+        if ($contract != null) {
             $requirements = $contract->requirements;
             $requirementStatuses = [];
             $contractPassing = true;
@@ -112,7 +112,7 @@ class UserController extends Controller
                 ->with('contract', $contract)
                 ->with('requirements', $requirements)
                 ->with('requirementStatuses', $requirementStatuses)
-                ->with('contractPassing',$contractPassing);
+                ->with('contractPassing', $contractPassing);
         } else {
             throw new NotFoundHttpException("User Not Found!");
         }
@@ -175,9 +175,13 @@ class UserController extends Controller
     private function searchUsers($text)
     {
         if ($text != "") {
-            $users = User::with(['status' => function ($q) {
-                $q->select('id', 'status');
-            }])->where('firstName', 'LIKE', $text . '%')->orWhere('lastName', 'LIKE', $text . '%')->orWhere(DB::raw('CONCAT(firstName, " ", lastName)'), 'LIKE', $text . '%')->orderBy('firstName', 'ASC')->orderBy('lastName', 'ASC');
+            $users = User::with([
+                'status' => function ($q) {
+                    $q->select('id', 'status');
+                }
+            ])->where('firstName', 'LIKE', $text . '%')->orWhere('lastName', 'LIKE',
+                $text . '%')->orWhere(DB::raw('CONCAT(firstName, " ", lastName)'), 'LIKE',
+                $text . '%')->orderBy('firstName', 'ASC')->orderBy('lastName', 'ASC');
         } else {
             $users = null;
         }

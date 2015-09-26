@@ -2,11 +2,11 @@
 
 namespace APOSite\Http\Middleware;
 
-use Closure;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Input;
 use APOSite\Http\Controllers\LoginController;
-use APOSite\Models\User;
+use APOSite\Models\Users\User;
+use Closure;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
 
 class SSOAuth
 {
@@ -22,12 +22,14 @@ class SSOAuth
         $username = null;
         if (Session::has('username')) {
             $username = Session::get('username');
-        } else if (Input::has('ticket')) {
-            $username = LoginController::handleTicket(Input::get('ticket'), $request->url());
-            Session::put('username', $username);
-            return redirect($request->url());
         } else {
-            return LoginController::directToAuthPage();
+            if (Input::has('ticket')) {
+                $username = LoginController::handleTicket(Input::get('ticket'), $request->url());
+                Session::put('username', $username);
+                return redirect($request->url());
+            } else {
+                return LoginController::directToAuthPage();
+            }
         }
         if (User::find($username) == null) {
             return view('errors.401')->with('message', 'You do not have permission to access this page.');

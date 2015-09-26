@@ -2,22 +2,45 @@
 
 namespace APOSite\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
 class Semester extends Model
 {
-    public static function semesterForDate($date){
-        return Semester::whereNotNull('start_date')->where('start_date','<=',$date)->where(function($query) use ($date){
-           $query->whereNull('end_date')->orWhere('end_date','>=',$date);
-        })->orderBy('start_date','DESC')->first();
-    }
+    protected $dates = ['start_date','end_date'];
 
-    public static function currentSemester(){
+    public static function currentSemester()
+    {
         return static::semesterForDate(Carbon::now());
     }
 
-    public function next(){
-        return Semester::find($this->id+1);
+    public static function semesterForDate($date)
+    {
+        return Semester::whereNotNull('start_date')->where('start_date', '<=', $date)->where(function ($query) use (
+            $date
+        ) {
+            $query->whereNull('end_date')->orWhere('end_date', '>=', $date);
+        })->orderBy('start_date', 'DESC')->first();
+    }
+
+    public function next()
+    {
+        return Semester::find($this->id + 1);
+    }
+
+    public function dateInSemester(Carbon $date){
+        $start = $this->start_date;
+        $end = $this->end_date;
+        if($start == null && $end == null){
+            return false;
+        } else {
+            $gate = true;
+            if($start != null){
+                $gate = $gate && $start <= $date;
+            } if($end != null){
+                $gate = $gate && $end >= $date;
+            }
+            return $gate;
+        }
     }
 }

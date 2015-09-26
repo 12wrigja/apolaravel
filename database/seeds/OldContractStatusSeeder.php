@@ -1,10 +1,9 @@
 <?php
 
+use APOSite\Models\Semester;
+use APOSite\Models\Users\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use APOSite\Models\Contract;
-use APOSite\Models\Semester;
-use APOSite\Models\User;
 
 class OldContractStatusSeeder extends Seeder
 {
@@ -15,18 +14,6 @@ class OldContractStatusSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement("SET foreign_key_checks=0");
-        Contract::truncate();
-        DB::statement("SET foreign_key_checks=1");
-        //Import old contract names from the status tables.
-        $oldContracts = DB::connection('apo')->table('tblstatus')->select('id','status')->get();
-        foreach ($oldContracts as $oldContract){
-            $contract = new Contract();
-            $contract->id = $oldContract->id;
-            $contract->display_name = $oldContract->status;
-            $contract->save();
-        }
-
         $oldUsers = DB::connection('apo')->table('tblmembers')->select('cwruID as id', 'status')->get();
         Eloquent::reguard();
         DB::statement("SET foreign_key_checks=0");
@@ -35,15 +22,28 @@ class OldContractStatusSeeder extends Seeder
 
         DB::beginTransaction();
         $semester = Semester::currentSemester();
+        $map = [];
+        $oldStatuses = DB::connection('apo')->table('tblstatus')->select('id', 'status')->get();
+        foreach ($oldStatuses as $oldStatus) {
+            $map[$oldStatus->id] = $this->convertStatus($oldStatus->status);
+        }
         foreach ($oldUsers as $oldUser) {
             $user = User::find($oldUser->id);
-            if($oldUser->status != null) {
-                $contract = Contract::find($oldUser->status);
-                $user->contracts()->attach($contract, ['semester_id'=>$semester->id]);
-                $user->save();
+            if ($oldUser->status != null) {
+                $contract = $map[$oldUser->status];
+                DB::table('contract_user')->insert([
+                    'user_id' => $user->id,
+                    'contract_id' => $contract,
+                    'semester_id' => $semester->id
+                ]);
             }
         }
         DB::commit();
         Eloquent::unguard();
+    }
+
+    private function convertStatus($status)
+    {
+        return str_replace(' ', '', ucwords($status));
     }
 }

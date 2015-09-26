@@ -22,10 +22,11 @@
                 @foreach($carouselItems as $index => $cItem)
                     <div class="item
                         @if($index==0)
-                        active
-                        @endif
-                    ">
-                        <div class="background" style="background:url({!! $cItem->background_image !!}) center center; background-size: cover">
+                            active
+                            @endif
+                            ">
+                        <div class="background"
+                             style="background:url({!! $cItem->background_image !!}) center center; background-size: cover">
 
                         </div>
                         @if($cItem->title != null)
@@ -33,10 +34,11 @@
                                 <div class="carousel-caption">
                                     <h1>{{$cItem->title}}</h1>
                                     @if($cItem->caption != null)
-                                    <p>{{$cItem->caption}}</p>
+                                        <p>{{$cItem->caption}}</p>
                                     @endif
                                     @if($cItem->action_text != null && $cItem->action_url != null)
-                                        <p><a class="btn btn-lg btn-primary" href="{!! $cItem->action_url !!}" role="button" target="_blank">{{$cItem->action_text}}</a></p>
+                                        <p><a class="btn btn-lg btn-primary" href="{!! $cItem->action_url !!}"
+                                              role="button" target="_blank">{{$cItem->action_text}}</a></p>
                                     @endif
                                 </div>
                             </div>

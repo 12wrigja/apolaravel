@@ -1,4 +1,6 @@
-<?php namespace APOSite\Models;
+<?php
+
+namespace APOSite\Models\Users;
 
 use Illuminate\Database\Eloquent\Model;
 

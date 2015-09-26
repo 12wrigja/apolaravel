@@ -1,9 +1,9 @@
 <?php namespace APOSite\Http\Transformers;
 
-use APOSite\Models\Reports\Types\ServiceReport;
+use APOSite\Models\Contracts\Reports\Types\ServiceReport;
 use League\Fractal\Manager;
-use League\Fractal\TransformerAbstract;
 use League\Fractal\Resource\Item;
+use League\Fractal\TransformerAbstract;
 
 class ServiceReportTransformer extends TransformerAbstract
 {
@@ -18,13 +18,14 @@ class ServiceReportTransformer extends TransformerAbstract
 
     public function transform(ServiceReport $report)
     {
-        $coreEventData = $this->manager->createData(new Item($report->core, new ReportTransformer()))->toArray()['data'];
+        $coreEventData = $this->manager->createData(new Item($report->core,
+            new ReportTransformer()))->toArray()['data'];
         $brothers = $report->core->linkedUsers;
-        $brothers->transform(function ($item, $key){
+        $brothers->transform(function ($item, $key) {
             $val = $item->pivot;
             unset($val->report_id);
-            $val->hours = $item->value/60;
-            $val->minutes = $item->value%60;
+            $val->hours = $item->value / 60;
+            $val->minutes = $item->value % 60;
             unset($val->value);
             return $val;
         });

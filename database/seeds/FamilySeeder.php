@@ -1,11 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
-// composer require laracasts/testdummy
-use APOSite\Models\Office;
-use APOSite\Models\User;
-use APOSite\Models\Semester;
+use APOSite\Models\Users\Family;
 
 class FamilySeeder extends Seeder
 {
@@ -15,7 +11,7 @@ class FamilySeeder extends Seeder
         Eloquent::reguard();
         DB::beginTransaction();
         foreach ($oldFamilies as $oldFamily) {
-            $newFamily = \APOSite\Models\Family::create((array)$oldFamily);
+            $newFamily = Family::create((array)$oldFamily);
         }
         DB::commit();
         Eloquent::unguard();

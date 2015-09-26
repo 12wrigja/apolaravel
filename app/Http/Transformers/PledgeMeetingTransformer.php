@@ -1,9 +1,9 @@
 <?php namespace APOSite\Http\Transformers;
 
-use APOSite\Models\Reports\Types\PledgeMeeting;
+use APOSite\Models\Contracts\Reports\Types\PledgeMeeting;
 use League\Fractal\Manager;
-use League\Fractal\TransformerAbstract;
 use League\Fractal\Resource\Item;
+use League\Fractal\TransformerAbstract;
 
 class PledgeMeetingTransformer extends TransformerAbstract
 {
@@ -18,9 +18,10 @@ class PledgeMeetingTransformer extends TransformerAbstract
 
     public function transform(PledgeMeeting $report)
     {
-        $coreEventData = $this->manager->createData(new Item($report->core, new ReportTransformer()))->toArray()['data'];
+        $coreEventData = $this->manager->createData(new Item($report->core,
+            new ReportTransformer()))->toArray()['data'];
         $brothers = $report->core->linkedUsers;
-        $brothers->transform(function ($item, $key){
+        $brothers->transform(function ($item, $key) {
             $val = $item->pivot;
             unset($val->report_id);
             return $val;

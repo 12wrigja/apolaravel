@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreatePledgeMeetingsTable extends Migration
 {
@@ -12,10 +12,13 @@ class CreatePledgeMeetingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pledge_meetings', function(Blueprint $table)
-        {
+        Schema::create('pledge_meetings', function (Blueprint $table) {
             $table->increments('id');
+            $table->char('creator_id', 10)->nullable();
+            $table->date('event_date');
+            $table->text('minutes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

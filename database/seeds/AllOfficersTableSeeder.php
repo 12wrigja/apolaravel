@@ -1,18 +1,18 @@
 <?php
 
-use Illuminate\Database\Seeder;
-
-// composer require laracasts/testdummy
 use APOSite\Models\Office;
-use APOSite\Models\User;
 use APOSite\Models\Semester;
+use APOSite\Models\Users\User;
+use Illuminate\Database\Seeder;
 
 class AllOfficersTableSeeder extends Seeder
 {
     public function run()
     {
         $semester = Semester::currentSemester();
-        $oldOffices = DB::connection('apo')->table('tblofficers')->select('displayOrder as display_order', 'Office as email', 'Display as display_name', 'type', 'CurrentOfficer as co', 'NewlyElectedOfficer as no')->get();
+        $oldOffices = DB::connection('apo')->table('tblofficers')->select('displayOrder as display_order',
+            'Office as email', 'Display as display_name', 'type', 'CurrentOfficer as co',
+            'NewlyElectedOfficer as no')->get();
         Eloquent::reguard();
         DB::beginTransaction();
         foreach ($oldOffices as $oldOffice) {
@@ -32,14 +32,18 @@ class AllOfficersTableSeeder extends Seeder
             }
         }
         $oldOfficers = DB::connection('apo')->table('tblallofficers')->get();
-        foreach($oldOfficers as $oldOfficer){
+        foreach ($oldOfficers as $oldOfficer) {
             $oldUser = User::find($oldOfficer->id);
-            if($oldUser != null){
-                $office = Office::where('display_name',$oldOfficer->position)->first();
-                if($office != null){
-                    $office->users()->attach($oldUser,['semester_id'=>$oldOfficer->semester,'alt_text'=>null]);
+            if ($oldUser != null) {
+                $office = Office::where('display_name', $oldOfficer->position)->first();
+                if ($office != null) {
+                    $office->users()->attach($oldUser, ['semester_id' => $oldOfficer->semester, 'alt_text' => null]);
                 } else {
-                    DB::table('office_user')->insert(['semester_id'=>$oldOfficer->semester, 'alt_text'=>$oldOfficer->position,'user_id'=>$oldUser->id]);
+                    DB::table('office_user')->insert([
+                        'semester_id' => $oldOfficer->semester,
+                        'alt_text' => $oldOfficer->position,
+                        'user_id' => $oldUser->id
+                    ]);
                 }
 
             }

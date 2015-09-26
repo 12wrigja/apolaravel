@@ -1,14 +1,14 @@
-<?php namespace APOSite\Models\Reports\Types;
+<?php
+namespace APOSite\Models\Contracts\Reports\Types;
 
 use APOSite\Http\Controllers\AccessController;
 use APOSite\Http\Transformers\PledgeMeetingTransformer;
-use APOSite\Models\Reports\BaseModel;
+use APOSite\Models\Contracts\Reports\BaseModel;
+use APOSite\Models\Users\User;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Request;
-use APOSite\Models\User;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use League\Fractal\Manager;
-use APOSite\Jobs\ProcessEvent;
 
 class PledgeMeeting extends BaseModel
 {
@@ -36,7 +36,8 @@ class PledgeMeeting extends BaseModel
         return 1;
     }
 
-    public function getTag(array $brotherData){
+    public function getTag(array $brotherData)
+    {
         return $brotherData['count_for'];
     }
 
@@ -75,25 +76,16 @@ class PledgeMeeting extends BaseModel
 
     public function errorMessages()
     {
-        $extraMessages = ['description.required' => 'Minutes are required.', 'description.min:40' => 'The minutes have to be at least 40 characters long'];
+        $extraMessages = [
+            'description.required' => 'Minutes are required.',
+            'description.min:40' => 'The minutes have to be at least 40 characters long'
+        ];
         if (Request::has('brothers')) {
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraMessages['brothers.' . $index . '.id.exists'] = 'The cwru id :input is not valid.';
             }
         }
         return $extraMessages;
-    }
-
-    public function onCreate()
-    {
-        $event = new ProcessEvent($this->id, get_class($this));
-        Queue::push($event);
-    }
-
-    public function onUpdate()
-    {
-        $event = new ProcessEvent($this->id, get_class($this));
-        Queue::push($event);
     }
 
     public function canStore(User $user)

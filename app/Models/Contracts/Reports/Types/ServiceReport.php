@@ -1,24 +1,28 @@
 <?php
 
-namespace APOSite\Models\Reports\Types;
+namespace APOSite\Models\Contracts\Reports\Types;
 
 use APOSite\Http\Controllers\AccessController;
-use APOSite\Jobs\ProcessEvent;
-use APOSite\Models\Reports\BaseModel;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use League\Fractal\Manager;
 use APOSite\Http\Transformers\ServiceReportTransformer;
-use Request;
-use Illuminate\Support\Facades\Queue;
-use APOSite\Models\User;
+use APOSite\Models\Contracts\Reports\BaseModel;
+use APOSite\Models\Users\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Queue;
+use League\Fractal\Manager;
+use Request;
 
 class ServiceReport extends BaseModel
 {
     use SoftDeletes;
 
+    protected $dates = ['created_at','updated_at','event_date','deleted_at'];
+
     protected $fillable = [
+        'event_name',
+        'description',
+        'event_date',
         'service_type',
         'location',
         'project_type',
@@ -38,7 +42,8 @@ class ServiceReport extends BaseModel
         return $hours * 60 + $minutes;
     }
 
-    public function getTag(array $brotherData){
+    public function getTag(array $brotherData)
+    {
         return null;
     }
 
@@ -58,11 +63,17 @@ class ServiceReport extends BaseModel
             'travel_time' => ['required_if:off_campus,true', 'integer']
         ];
         $extraRules = [];
-        if(Request::has('brothers')) {
+        if (Request::has('brothers')) {
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
                 $extraRules['brothers.' . $index . '.hours'] = ['sometimes', 'required', 'integer', 'min:0'];
-                $extraRules['brothers.' . $index . '.minutes'] = ['sometimes', 'required', 'integer', 'min:0','max:59'];
+                $extraRules['brothers.' . $index . '.minutes'] = [
+                    'sometimes',
+                    'required',
+                    'integer',
+                    'min:0',
+                    'max:59'
+                ];
             }
         }
         $newRules = array_merge($rules, $extraRules);
@@ -99,18 +110,6 @@ class ServiceReport extends BaseModel
         ];
     }
 
-    public function onCreate()
-    {
-    }
-
-    public function onUpdate()
-    {
-        if ($this->approved) {
-            $event = new ProcessEvent($this->id, get_class($this));
-            Queue::push($event);
-        }
-    }
-
     public function canStore(User $user)
     {
         if ($user != null) {
@@ -123,8 +122,10 @@ class ServiceReport extends BaseModel
     public static function applyRowLevelSecurity(QueryBuilder $query, User $user)
     {
         if (!AccessController::isMembership($user)) {
-            return $query->join('report_user', 'service_reports.id', '=', 'report_user.report_id')->whereIn('report_user.report_id',function($q) use ($user){
-                $q->select('id')->from('reports')->where('report_user.report_id','id')->orWhere('reports.creator_id', $user->id);
+            return $query->join('report_user', 'service_reports.id', '=',
+                'report_user.report_id')->whereIn('report_user.report_id', function ($q) use ($user) {
+                $q->select('id')->from('reports')->where('report_user.report_id', 'id')->orWhere('reports.creator_id',
+                    $user->id);
             });
         } else {
             return $query;
@@ -165,8 +166,10 @@ class ServiceReport extends BaseModel
         if (Input::has('approved')) {
             if (Input::get('approved') == 'true') {
                 $query = $query->Approved();
-            } else if (Input::get('approved') == 'false') {
-                $query = $query->NotApproved();
+            } else {
+                if (Input::get('approved') == 'false') {
+                    $query = $query->NotApproved();
+                }
             }
         }
         return $query;

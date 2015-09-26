@@ -1,10 +1,12 @@
-<?php namespace APOSite\Models;
+<?php
 
-use APOSite\Http\Controllers\AccessController;
+namespace APOSite\Models\Users;
+
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+
+use APOSite\Models\Semester;
 
 class User extends Model
 {
@@ -42,54 +44,66 @@ class User extends Model
         }
     }
 
-    public function reports(){
-        return $this->belongsToMany('APOSite\Models\Report')->withPivot('value');
+    public function reports()
+    {
+        return $this->belongsToMany('APOSite\Models\Contracts\Report')->withPivot('value', 'tag')->with('eventType');
     }
 
-    public function contracts(){
-        return $this->belongsToMany('APOSite\Models\Contract')->withPivot('semester_id');
+    public function contractForSemester($semester)
+    {
+        $query = DB::table('contract_user')->where('user_id', $this->id);
+        if ($semester == null) {
+            $semester = Semester::currentSemester();
+        }
+        $query = $query->where('semester_id', $semester->id);
+        $contract_id = $query->select('contract_id')->first()->contract_id;
+        return App::make('APOSite\ContractFramework\Contracts\\' . $contract_id . 'Contract', ['user' => $this,'semester'=>$semester]);
     }
 
-    public function currentContract() {
-        return $this->contracts()->orderBy('semester_id','DESC')->first();
+    public function offices()
+    {
+        return $this->belongsToMany('APOSite\Models\Office')->withPivot('semester_id', 'alt_text');
     }
 
-    public function offices(){
-        return $this->belongsToMany('APOSite\Models\Office')->withPivot('semester_id','alt_text');
+    public function pictureURL($size = 500)
+    {
+        return "http://www.gravatar.com/avatar/" . md5($this->picture) . "?s=$size&d=mm";
     }
 
-    public function pictureURL($size = 500){
-            return "http://www.gravatar.com/avatar/" . md5($this->picture) . "?s=$size&d=mm";
-    }
-
-    public function getPledgeSemesterAttribute($value){
+    public function getPledgeSemesterAttribute($value)
+    {
         return Semester::find($value);
     }
 
-    public function getInitiationSemesterAttribute($value){
+    public function getInitiationSemesterAttribute($value)
+    {
         return Semester::find($value);
     }
 
-    public function getGraduationSemesterAttribute($value){
+    public function getGraduationSemesterAttribute($value)
+    {
         return Semester::find($value);
     }
 
-    public function fullDisplayName(){
-        if($this->first_name == $this->nickname || $this->nickname == null){
+    public function fullDisplayName()
+    {
+        if ($this->first_name == $this->nickname || $this->nickname == null) {
             return $this->first_name . ' ' . $this->last_name;
         } else {
             return $this->nickname . ' (' . $this->first_name . ') ' . $this->last_name;
         }
     }
 
-    public function family(){
+    public function family()
+    {
         return Family::find($this->family_id);
     }
 
-    public function lifetimeHours(){
+    public function lifetimeHours()
+    {
         $reports = $this->reports;
         $val = 0;
-        foreach($reports as $report){
+        foreach ($reports as $report) {
             $val += $report->pivot->value;
         }
         return $val / 60;

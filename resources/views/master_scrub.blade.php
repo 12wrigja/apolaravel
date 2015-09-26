@@ -9,12 +9,12 @@
 
     @yield('metadata')
 
-    <!-- Site Properities -->
+            <!-- Site Properities -->
     <title>Alpha Phi Omega at Case Western Reserve University</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet"/>
     {!!Html::style('css/bootstrap-theme.min.css')!!}
     {!! Html::style('css/master.css') !!}
     {!! Html::style('css/mobile-master.css') !!}

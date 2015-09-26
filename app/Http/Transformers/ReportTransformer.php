@@ -8,15 +8,17 @@
 
 namespace APOSite\Http\Transformers;
 
-use APOSite\Models\Report;
+use APOSite\Models\Contracts\Report;
 use League\Fractal\TransformerAbstract;
 
-class ReportTransformer extends TransformerAbstract{
-
-    public function transform(Report $event){
+class ReportTransformer extends TransformerAbstract
+{
+    //TODO convert the functionality of this file into the individual transformers.
+    public function transform(Report $event)
+    {
         return [
             'id' => $event->EventType->id,
-            'href' => route('report_show',['id'=>$event->EventType->id,'type'=>$this->getReportHREF($event)]),
+            'href' => route('report_show', ['id' => $event->EventType->id, 'type' => $this->getReportHREF($event)]),
             'display_name' => $event->display_name,
             'description' => $event->description,
             'date' => $event->event_date,
@@ -24,10 +26,11 @@ class ReportTransformer extends TransformerAbstract{
         ];
     }
 
-    private function getReportHREF($report){
+    private function getReportHREF($report)
+    {
         $type = $report->report_type_type;
         $type = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $type));
-        $type = substr(strrchr($type,'\\'),1)."s";
+        $type = substr(strrchr($type, '\\'), 1) . "s";
         return $type;
     }
 

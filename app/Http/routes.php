@@ -1,18 +1,7 @@
 <?php
-use APOSite\Models\CarouselItem;
 use APOSite\Http\Controllers\LoginController;
-use APOSite\Http\Controllers\AccessController;
+use APOSite\Models\CarouselItem;
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
-*/
 //Patterns for the various routes.
 //Type pattern for the various report types that can exist.
 Route::pattern('type', '[a-z][a-z_]*');
@@ -77,14 +66,16 @@ Route::get('contracts/{id}/', 'ContractController@show')->where('id', '[0-9]+');
 //Route::post('contractreqs', ['uses' => 'ContractRequirementController@store', 'as' => 'contractreq_store']);
 
 //Route for the homepage
-Route::get('/', array('as' => 'home', function () {
-    return View::make('home')->with('carouselItems', CarouselItem::all());
-}));
+Route::get('/', array(
+    'as' => 'home',
+    function () {
+        return View::make('home')->with('carouselItems', CarouselItem::all());
+    }
+));
 
 ////Route for logging in when debugging the application
-Route::post('login/debug',function(){
-	return LoginController::debugLogin();
-	return Redirect::route('home');
+Route::post('login/debug', function () {
+    return LoginController::debugLogin();
 });
 
 //Route for logging out
@@ -98,7 +89,15 @@ Route::get('/logout', function () {
 });
 
 //Route for logging in and checking login
-Route::get('/login', array('as' => 'login', 'middleware' => 'SSOAuth', function () {
-    return Redirect::route('home');
-}));
+Route::get('/login', array(
+    'as' => 'login',
+    'middleware' => 'SSOAuth',
+    function () {
+        return Redirect::route('home');
+    }
+));
+
+Route::get('debug',function(){
+    return LoginController::currentUser()->contractForSemester(null)->requirements[0]->getReports();
+});
 

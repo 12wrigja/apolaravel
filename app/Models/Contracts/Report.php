@@ -1,34 +1,43 @@
 <?php
 
-namespace APOSite\Models;
+namespace APOSite\Models\Contracts;
 
-use APOSite\Http\Controllers\LoginController;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Report extends Model
 {
-    use SoftDeletes;
-
-    protected $fillable = [
-        'display_name',
-        'description',
-        'event_date',
-        'creator_id'
-    ];
 
     public $timestamps = false;
+    protected $fillable = [];
 
-    public function EventType(){
+    public function EventType()
+    {
         return $this->morphTo('report_type');
     }
 
-    public function Requirements(){
-        return $this->belongsToMany('APOSite\Models\Requirement');
+    public function linkedUsers()
+    {
+        return $this->belongsToMany('APOSite\Models\Users\User')->withPivot('value', 'tag');
     }
 
-    public function linkedUsers(){
-        return $this->belongsToMany('APOSite\Models\User')->withPivot('value','tag');
+    public function scopeServiceReports($query){
+        return $query->whereReportTypeType('APOSite\Models\Contracts\Reports\Types\ServiceReport');
+    }
+
+    public function scopeBrotherhoodReports($query){
+        return $query->whereReportTypeType('APOSite\Models\Contracts\Reports\Types\BrotherhoodReport');
+    }
+
+    public function scopeChapterMeetings($query){
+        return $query->whereReportTypeType('APOSite\Models\Contracts\Reports\Types\ChapterMeeting');
+    }
+
+    public function scopePledgeMeetings($query){
+        return $query->whereReportTypeType('APOSite\Models\Contracts\Reports\Types\PledgeMeeting');
+    }
+
+    public function scopeExecMeeings($query){
+        return $query->whereReportTypeType('APOSite\Models\Contracts\Reports\Types\ExecMeeting');
     }
 
 }

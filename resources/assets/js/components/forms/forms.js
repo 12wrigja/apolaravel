@@ -1,5 +1,5 @@
 module.exports = function (Vue) {
-    var form = Vue.extend(
+    return Vue.extend(
         {
             data: function () {
                 return {
@@ -146,5 +146,4 @@ module.exports = function (Vue) {
                 this.register();
             }
         });
-    return form;
 }
