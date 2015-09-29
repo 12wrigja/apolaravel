@@ -116,9 +116,16 @@ class AddUserMenuItems
 
             //Service report menu item
             $item = new \stdClass();
-            $item->text = "View Profile and Contract";
+            $item->text = "View Profile";
             $item->url = URL::to('/users/'.$user->id);
             array_push($menu_items,$item);
+
+            //Service report menu item
+            $item = new \stdClass();
+            $item->text = "View Contract";
+            $item->url = URL::to('/users/'.$user->id.'/status');
+            array_push($menu_items,$item);
+
 
             //Service report menu item
             $item = new \stdClass();

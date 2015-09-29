@@ -19,40 +19,39 @@ Route::get('/reports/{type}/{id}', ['uses' => 'EventPipelineController@showEvent
 Route::put('/reports/{type}/{id}', ['uses' => 'EventPipelineController@updateEvent', 'as' => 'report_update']);
 Route::delete('/reports/{type}/{id}', ['uses' => 'EventPipelineController@deleteEvent', 'as' => 'report_delete']);
 
-Route::get('/users/{cwruid}/status', function () {
-    return 'Looking at user with id: ';
-});
-
 //Routes for the officer pages
 Route::get('officers', 'Officers\OfficerPageController@index');
 
 //Routes for managing the users of the users, including creating and storing users.
-Route::get('/users/create', 'UserController@create');
-Route::post('/users', 'UserController@store');
+//Route::get('/users/create', 'UserController@create');
+//Route::post('/users', 'UserController@store');
 Route::delete('/users/{cwruid}', 'UserController@destroy');
-Route::get('/users/manage', 'UserController@manage');
+//TODO fix up or verify user management and user search
+//Route::get('/users/manage', 'UserController@manage');
 
 //Route for searching users.
-Route::get('/users/search', array('uses' => 'UserController@search', 'as' => 'users.search'));
+//Route::get('/users/search', array('uses' => 'UserController@search', 'as' => 'users.search'));
 
 //Routes for displaying all users and individual user profiles
 Route::get('/users', 'UserController@index');
 Route::get('/users/{cwruid}', 'UserController@show');
 
 //Routes for allowing users to update their profiles.
-Route::get('/users/{cwruid}/edit', 'UserController@edit');
+//TODO fix up the user editing system
+//Route::get('/users/{cwruid}/edit', 'UserController@edit');
 Route::get('/users/{cwruid}/status', 'UserController@statusPage');
-Route::put('/users/cwruid}', 'UserController@update');
+//Route::put('/users/cwruid}', 'UserController@update');
 
+//TODO clean up routing system for contract and requirement data, along w/ models
 //All routes regarding contracts and contract requirements are commented out for the time being as they have not been refactored correctly.
 
-Route::get('contracts', ['uses' => 'ContractController@index', 'as' => 'contract_view']);
+//Route::get('contracts', ['uses' => 'ContractController@index', 'as' => 'contract_view']);
 //Route::get('contracts/create', ['uses' => 'ContractController@create', 'as' => 'contract_create']);
 //Route::post('contracts', ['uses' => 'ContractController@store', 'as' => 'contract_store']);
 //Route::get('contracts/{id}/edit', ['uses' => 'ContractController@edit', 'as' => 'contract_edit']);
 //Route::put('contracts/{id}', ['uses' => 'ContractController@update', 'as' => 'contract_update']);
 //Route::delete('contracts/{id}', ['uses' => 'ContractController@destroy', 'as' => 'contract_delete']);
-Route::get('contracts/{id}/', 'ContractController@show')->where('id', '[0-9]+');
+//Route::get('contracts/{id}/', 'ContractController@show')->where('id', '[0-9]+');
 //
 ////Route group for Contract Requirements
 //Route::get('contractreqs', ['uses' => 'ContractRequirementController@index', 'as' => 'contractreq_view']);

@@ -68,34 +68,5 @@
                 <p>Phone Number: {{$user->phone_number}}</p>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-sm-6">
-                <h2>Contract Status</h2>
-                <h4>Current Contract: {{$user->currentContract()->display_name}} (
-                @if($contractPassing)
-                    Passed!
-                @else
-                    Not Passing
-                @endif
-                    )
-                    </h4>
-                @if(count($requirements) == 0)
-                    <h4>No Requirements for this contract.</h4>
-                @else
-                    <h4>Requirements: </h4>
-                    @foreach($requirements as $index=>$requirement)
-                        <h5>{{$requirement->display_name}} (
-                            @if($requirementStatuses[$requirement->id]['passing'])
-                                Passed
-                            @else
-                                Not Passed
-                            @endif
-                            {{$requirementStatuses[$requirement->id]['value']}} / {{$requirement->threshold}}
-                            ) </h5>
-                    @endforeach
-                @endif
-            </div>
-        </div>
     </div>
 @stop

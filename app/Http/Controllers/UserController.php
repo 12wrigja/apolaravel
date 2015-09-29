@@ -90,29 +90,8 @@ class UserController extends Controller
                 return response('User not found.', 404);
             }
         }
-        $contract = $user->currentContract();
-        $requirements = null;
-        $requirementStatuses = null;
-        $contractPassing = true;
-        if ($contract != null) {
-            $requirements = $contract->requirements;
-            $requirementStatuses = [];
-            $contractPassing = true;
-            foreach ($requirements as $requirement) {
-                $requirementStatus = $requirement->computeForUser($user, Semester::currentSemester());
-                $requirementStatuses[$requirement->id] = $requirementStatus;
-                $contractPassing &= $requirementStatus['passing'];
-            }
-        } else {
-            $requirements = [];
-            $requirementStatus = [];
-        }
         if ($user != null) {
-            return View::make('users.profile')->with('user', $user)
-                ->with('contract', $contract)
-                ->with('requirements', $requirements)
-                ->with('requirementStatuses', $requirementStatuses)
-                ->with('contractPassing', $contractPassing);
+            return View::make('users.profile')->with('user', $user);
         } else {
             throw new NotFoundHttpException("User Not Found!");
         }

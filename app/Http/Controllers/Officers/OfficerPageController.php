@@ -2,7 +2,7 @@
 
 use APOSite\Http\Controllers\Controller;
 use APOSite\Http\Requests;
-use APOSite\Models\Officers;
+use APOSite\Models\Office;
 
 class OfficerPageController extends Controller {
 
@@ -13,18 +13,8 @@ class OfficerPageController extends Controller {
 	 */
 	public function index()
 	{
-        return view('officers.currentOfficers')->with('officers',Officers::AllInOrder());
+        return view('officers.currentOfficers')->with('offices',Office::AllInOrder()->get());
     }
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
 
 	/**
 	 * Store a newly created resource in storage.

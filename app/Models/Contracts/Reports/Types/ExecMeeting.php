@@ -29,7 +29,7 @@ class ExecMeeting extends BaseModel
 
     public function getTag(array $brotherData)
     {
-        return $brotherData['count_for'];
+        return array_key_exists('count_for',$brotherData)?$brotherData['count_for']:'exec';
     }
 
     public function createRules()

@@ -26,6 +26,10 @@ class Office extends Model
 
     public function currentOfficer()
     {
-        return $this->users()->where('semester_id', Semester::currentSemester()->id)->get();
+        return $this->users()->where('semester_id', Semester::currentSemester()->id)->first();
+    }
+
+    public function scopeAllInOrder($query){
+        return $query->orderBy('display_order','ASC');
     }
 }
