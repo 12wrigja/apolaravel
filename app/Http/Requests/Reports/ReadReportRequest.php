@@ -10,7 +10,7 @@ class ReadReportRequest extends Request
 
     use AppNamespaceDetectorTrait;
 
-    protected $filterNamespace = "Models\\Reports\\Types\\";
+    protected $filterNamespace = "Models\\Contracts\\Reports\\Types\\";
 
     /**
      * Determine if the user is authorized to make this request.

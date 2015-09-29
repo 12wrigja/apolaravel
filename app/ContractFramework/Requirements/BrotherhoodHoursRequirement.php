@@ -8,17 +8,17 @@
 
 namespace APOSite\ContractFramework\Requirements;
 
-class ActiveMemberTotalHoursRequirement extends Requirement
+class BrotherhoodHoursRequirement extends Requirement
 {
-    public static $name = "Total Service Hours";
-    public static $description = "As an Active APO Brother, you have to do at least 20 hours of service each semester.";
+    public static $name = "Brotherhood Hours";
+    public static $description = "As an APO Brother, you need to attend at least 2 hours of brotherhood events each semester.";
 
-    protected $threshold = 20;
+    protected $threshold = 2;
     protected $comparison = 'GEQ';
 
     public function getReports()
     {
-        $service_reports = $this->user->reports()->ServiceReports()->get();
+        $service_reports = $this->user->reports()->BrotherhoodReports()->get();
         $semester = $this->semester;
         $service_reports = $service_reports->filter(function($report) use ($semester){
             $val = $semester->dateInSemester($report->report_type->event_date);

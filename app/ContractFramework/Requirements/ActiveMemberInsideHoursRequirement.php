@@ -8,12 +8,12 @@
 
 namespace APOSite\ContractFramework\Requirements;
 
-class ActiveMemberTotalHoursRequirement extends Requirement
+class ActiveMemberInsideHoursRequirement extends Requirement
 {
-    public static $name = "Total Service Hours";
-    public static $description = "As an Active APO Brother, you have to do at least 20 hours of service each semester.";
+    public static $name = "Inside Hours";
+    public static $description = "As an Active APO Brother, at least 10 of the hours you do each semester need to be inside hours.";
 
-    protected $threshold = 20;
+    protected $threshold = 10;
     protected $comparison = 'GEQ';
 
     public function getReports()
@@ -23,6 +23,7 @@ class ActiveMemberTotalHoursRequirement extends Requirement
         $service_reports = $service_reports->filter(function($report) use ($semester){
             $val = $semester->dateInSemester($report->report_type->event_date);
             $val = $val && $report->report_type->approved;
+            $val = $val && $report->report_type->project_type == 'inside';
             return $val;
         });
         return $service_reports;

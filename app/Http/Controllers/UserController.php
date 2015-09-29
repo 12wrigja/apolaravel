@@ -192,7 +192,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if ($user != null) {
-            return view('contracts.status')->with('contract', $user->currentContract());
+            return view('contracts.status')->with('contract', $user->contractForSemester(null));
         } else {
             throw new NotFoundHttpException('User not found');
         }

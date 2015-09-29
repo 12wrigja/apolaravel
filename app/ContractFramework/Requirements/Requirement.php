@@ -13,13 +13,14 @@ use APOSite\Models\Users\User;
 
 abstract class Requirement
 {
-
-    public $description;
+    public static $name;
+    public static $description;
 
     protected $user;
     protected $semester;
-    protected $thresholdValue;
+    protected $threshold;
     protected $comparison;
+    protected $value;
 
     function __construct(User $user, Semester $semester)
     {
@@ -34,23 +35,49 @@ abstract class Requirement
 
     public abstract function getReports();
 
-    public abstract function getValue();
+    public abstract function computeValue();
+
+    public final function getValue(){
+        if($this->value == null){
+            $this->value = $this->computeValue();
+        }
+        return $this->value;
+    }
+
+    public final function getThreshold(){
+        $threshold = $this->threshold;
+        if(method_exists($this,'getDynamicThreshold')){
+            $threshold = $this->getDynamicThreshold();
+        }
+        return $threshold;
+    }
+
+    public final function getPercentDone(){
+        $ratio = $this->getValue() / $this->getThreshold();
+        if($ratio >= 1){
+            return 100;
+        } else {
+            return intval(floor($ratio*100));
+        }
+    }
 
     private final function compareAgainstThreshold($value)
     {
+        $threshold = $this->getThreshold();
+
         switch ($this->comparison) {
             case 'EQ':
-                return $value == $this->thresholdValue;
+                return $value == $threshold;
             case 'GEQ':
-                return $value >= $this->thresholdValue;
+                return $value >= $threshold;
             case 'LEQ' :
-                return $value <= $this->thresholdValue;
+                return $value <= $threshold;
             case 'GE' :
-                return $value > $this->thresholdValue;
+                return $value > $threshold;
             case 'LE' :
-                return $value < $this->thresholdValue;
+                return $value < $threshold;
             case 'NEQ' :
-                return $value != $this->thresholdValue;
+                return $value != $threshold;
             default:
                 return false;
         }

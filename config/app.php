@@ -152,9 +152,6 @@ return [
         //SSO User Binding provider
         'APOSite\Providers\SSOUserProvider',
 
-        //Macro service provider
-        'APOSite\Providers\MacroProvider',
-
         //Laracasts Flash Provider
         'Laracasts\Flash\FlashServiceProvider',
 

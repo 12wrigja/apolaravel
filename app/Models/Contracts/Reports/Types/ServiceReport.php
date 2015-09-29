@@ -17,8 +17,6 @@ class ServiceReport extends BaseModel
 {
     use SoftDeletes;
 
-    protected $dates = ['created_at','updated_at','event_date','deleted_at'];
-
     protected $fillable = [
         'event_name',
         'description',

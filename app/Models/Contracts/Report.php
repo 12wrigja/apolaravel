@@ -36,8 +36,12 @@ class Report extends Model
         return $query->whereReportTypeType('APOSite\Models\Contracts\Reports\Types\PledgeMeeting');
     }
 
-    public function scopeExecMeeings($query){
+    public function scopeExecMeetings($query){
         return $query->whereReportTypeType('APOSite\Models\Contracts\Reports\Types\ExecMeeting');
+    }
+
+    public function scopeDuesReports($query){
+        return $query->whereReportTypeType('APOSite\Models\Contracts\Reports\Types\DuesReport');
     }
 
 }

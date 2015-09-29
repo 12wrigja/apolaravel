@@ -9,8 +9,8 @@ abstract class Contract
 {
 
     public $requirements = [];
-    public $name;
-    public $description;
+    public static $name;
+    public static $description;
 
     private $user;
     private $semester;
@@ -22,6 +22,7 @@ abstract class Contract
         foreach ($this->getRequirementClasses() as $class) {
             $this->requirements[] = new $class($user,$semester);
         }
+        $this->requirements = collect($this->requirements);
     }
 
     protected function getRequirementClasses()

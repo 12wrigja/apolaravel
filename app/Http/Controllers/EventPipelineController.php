@@ -18,7 +18,7 @@ class EventPipelineController extends Controller
 
     use AppNamespaceDetectorTrait;
 
-    protected $filterNamespace = "Models\\Reports\\Types\\";
+    protected $filterNamespace = "Models\\Contracts\\Reports\\Types\\";
 
     protected $fractal;
 

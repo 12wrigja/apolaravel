@@ -8,16 +8,26 @@
 
 namespace APOSite\ContractFramework\Contracts;
 
+use APOSite\ContractFramework\Requirements\ActiveMemberChapterMeetingRequirement;
+use APOSite\ContractFramework\Requirements\ActiveMemberPledgeMeetingRequirement;
 use APOSite\ContractFramework\Requirements\ActiveMemberTotalHoursRequirement;
+use APOSite\ContractFramework\Requirements\ActiveMemberInsideHoursRequirement;
+use APOSite\ContractFramework\Requirements\ActiveMemberDuesRequirement;
+use APOSite\ContractFramework\Requirements\BrotherhoodHoursRequirement;
 
 class ActiveContract extends Contract
 {
+    public static $name = "Active Contract";
 
     protected function getRequirementClasses()
     {
-        // TODO: finish implementing what classes are needed by this contract.
         return [
-            ActiveMemberTotalHoursRequirement::class
+            ActiveMemberChapterMeetingRequirement::class,
+            ActiveMemberPledgeMeetingRequirement::class,
+            ActiveMemberTotalHoursRequirement::class,
+            ActiveMemberInsideHoursRequirement::class,
+            ActiveMemberDuesRequirement::class,
+            BrotherhoodHoursRequirement::class
         ];
     }
 }

@@ -8,12 +8,12 @@
 
 namespace APOSite\ContractFramework\Requirements;
 
-class ActiveMemberTotalHoursRequirement extends Requirement
+class PledgeMemberTotalHoursRequirement extends Requirement
 {
     public static $name = "Total Service Hours";
-    public static $description = "As an Active APO Brother, you have to do at least 20 hours of service each semester.";
+    public static $description = "As an APO Pledge, you have to do at least 10 hours of service this semester.";
 
-    protected $threshold = 20;
+    protected $threshold = 10;
     protected $comparison = 'GEQ';
 
     public function getReports()

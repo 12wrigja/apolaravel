@@ -11,6 +11,7 @@ namespace APOSite\Models\Contracts\Reports;
 use APOSite\Models\Contracts\ReportInterface;
 use APOSite\Http\Controllers\LoginController;
 use APOSite\Models\Contracts\Report;
+use APOSite\Models\Semester;
 use Illuminate\Support\Facades\DB;
 use Eloquent;
 use Exception;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 
 abstract class BaseModel extends Eloquent implements ReportInterface
 {
+    protected $dates = ['created_at','updated_at','event_date','deleted_at'];
 
     public $errors;
 
@@ -73,5 +75,14 @@ abstract class BaseModel extends Eloquent implements ReportInterface
             }
         }
         $this->save();
+    }
+
+    public function scopeCurrentSemester($query){
+        $semester = Semester::currentSemester();
+        if($semester->end_date == null){
+            return $query->where('event_date','>=',$semester->start_date);
+        } else {
+            return $query->whereBetween('event_date', array($semester->start_date, $semester->end_date));
+        }
     }
 }
