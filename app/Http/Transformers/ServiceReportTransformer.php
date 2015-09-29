@@ -1,6 +1,7 @@
 <?php namespace APOSite\Http\Transformers;
 
 use APOSite\Models\Contracts\Reports\Types\ServiceReport;
+use APOSite\Models\Users\User;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\TransformerAbstract;
@@ -18,18 +19,24 @@ class ServiceReportTransformer extends TransformerAbstract
 
     public function transform(ServiceReport $report)
     {
-        $coreEventData = $this->manager->createData(new Item($report->core,
-            new ReportTransformer()))->toArray()['data'];
         $brothers = $report->core->linkedUsers;
         $brothers->transform(function ($item, $key) {
             $val = $item->pivot;
             unset($val->report_id);
-            $val->hours = $item->value / 60;
-            $val->minutes = $item->value % 60;
+            $val->display_name = $item->getFullDisplayName();
+            $val->hours = intval($item->pivot->value / 60);
+            $val->minutes = $item->pivot->value % 60;
             unset($val->value);
             return $val;
         });
         $otherData = [
+            'id' => $report->id,
+            'href' => route('report_show',['id'=>$report->id,'type'=>'service_reports']),
+            'display_name' => $report->event_name,
+            'description' => $report->description,
+            'date' => $report->event_date->toDateString(),
+            'human_date' => $report->event_date->toFormattedDateString(),
+            'submitter' => $report->creator_id,
             'project_type' => $report->project_type,
             'service_type' => $report->service_type,
             'location' => $report->location,
@@ -38,7 +45,7 @@ class ServiceReportTransformer extends TransformerAbstract
             'submission_date' => $report->created_at->toDateTimeString(),
             'brothers' => $brothers
         ];
-        return array_merge($coreEventData, $otherData);
+        return $otherData;
     }
 
 }

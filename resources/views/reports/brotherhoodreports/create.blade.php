@@ -17,11 +17,11 @@
         <div class="form-horizontal">
             <div class="form-group">
                 <div class="col-sm-2 control-label">
-                    {!! Form::label('display_name','Event Name') !!}
+                    {!! Form::label('event_name','Event Name') !!}
                     <p class="help-block"></p>
                 </div>
                 <div class="col-sm-10">
-                    {!! Form::text('display_name', null, ['class'=>'form-control','v-model'=>'form.display_name']) !!}
+                    {!! Form::text('event_name', null, ['class'=>'form-control','v-model'=>'form.event_name']) !!}
                 </div>
                 <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
             </div>

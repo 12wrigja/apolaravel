@@ -1,11 +1,11 @@
 <?php namespace APOSite\Http\Transformers;
 
-use APOSite\Models\Contracts\Reports\Types\ChapterMeeting;
+use APOSite\Models\Contracts\Reports\Types\ExecMeeting;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\TransformerAbstract;
 
-class ChapterMeetingTransformer extends TransformerAbstract
+class ExecMeetingTransformer extends TransformerAbstract
 {
 
     protected $manager;
@@ -16,7 +16,7 @@ class ChapterMeetingTransformer extends TransformerAbstract
     }
 
 
-    public function transform(ChapterMeeting $report)
+    public function transform(ExecMeeting $report)
     {
         $brothers = $report->core->linkedUsers;
         $brothers->transform(function ($item, $key) {

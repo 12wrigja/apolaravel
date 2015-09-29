@@ -17,7 +17,11 @@ class BrotherhoodReport extends BaseModel
 
     protected $fillable = [
         'location',
-        'type'
+        'type',
+        'event_date',
+        'description',
+        'creator_id',
+        'event_name'
     ];
 
     public function transformer(Manager $manager)
@@ -46,7 +50,7 @@ class BrotherhoodReport extends BaseModel
 
     public function canStore(User $user)
     {
-        return true;
+        return $user != null;
     }
 
     public static function applyRowLevelSecurity(QueryBuilder $query, User $user)
@@ -85,7 +89,7 @@ class BrotherhoodReport extends BaseModel
     {
         $rules = [
             //Rules for the core report data
-            'display_name' => ['required', 'min:10'],
+            'event_name' => ['required', 'min:10'],
             'description' => ['required', 'min:40'],
             'event_date' => ['required', 'date'],
             'location' => ['required'],
@@ -115,7 +119,6 @@ class BrotherhoodReport extends BaseModel
     public function errorMessages()
     {
         $messages = [
-            'display_name.required' => 'The event name field is required.',
             'type.required' => 'The project type field is required.'
             //Error messages specific to this report type go here.
         ];

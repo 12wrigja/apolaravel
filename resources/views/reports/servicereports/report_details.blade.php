@@ -11,7 +11,7 @@
     <div class="col-sm-6">
         <h4>Event Date</h4>
 
-        <p>@{{ report.date }}</p>
+        <p>@{{ report.human_date }}</p>
     </div>
     <div class="col-sm-6">
         <h4>Location</h4>
@@ -52,12 +52,14 @@
 <table class="table table-hover">
     <thead>
     <th>Brother</th>
+    <th>CWRU ID</th>
     <th>Hours</th>
     <th>Minutes</th>
 
     </thead>
     <tbody>
     <tr v-repeat="brother: report.brothers">
+        <td>@{{ brother.display_name }}</td>
         <td>@{{ brother.user_id }}</td>
         <td>@{{ brother.hours }}</td>
         <td>@{{ brother.minutes }}</td>

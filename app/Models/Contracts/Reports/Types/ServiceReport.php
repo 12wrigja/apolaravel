@@ -25,7 +25,8 @@ class ServiceReport extends BaseModel
         'location',
         'project_type',
         'off_campus',
-        'travel_time'
+        'travel_time',
+        'creator_id'
     ];
 
     public function transformer(Manager $manager)
@@ -49,7 +50,7 @@ class ServiceReport extends BaseModel
     {
         $rules = [
             //Rules for the core report data
-            'display_name' => ['required', 'min:10'],
+            'event_name' => ['required', 'min:10'],
             'description' => ['required', 'min:40'],
             'event_date' => ['required', 'date'],
             'brothers' => ['required', 'array'],

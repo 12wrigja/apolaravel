@@ -32,15 +32,15 @@ class User extends Model
 
     public function getFullDisplayName()
     {
-        return $this->getDisplayName() . " " . $this->lastName;
+        return $this->getDisplayName() . " " . $this->last_name;
     }
 
     public function getDisplayName()
     {
-        if ($this->nickName != null) {
-            return $this->nickName;
+        if ($this->nickname != null) {
+            return $this->nickname;
         } else {
-            return $this->firstName;
+            return $this->first_name;
         }
     }
 

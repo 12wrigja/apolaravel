@@ -1,4 +1,5 @@
 <?php
+
 namespace APOSite\Models\Contracts\Reports\Types;
 
 use APOSite\Http\Controllers\AccessController;
@@ -13,18 +14,8 @@ use League\Fractal\Manager;
 class PledgeMeeting extends BaseModel
 {
 
-    protected $fillable = ['minutes'];
-
-    public static function applyRowLevelSecurity(QueryBuilder $query, User $user)
-    {
-        return $query;
-        // TODO: Implement applyRowLevelSecurity() method.
-    }
-
-    public static function applyReportFilters(QueryBuilder $query)
-    {
-        return $query;
-    }
+    protected $fillable = ['minutes','event_date','creator_id'];
+    protected $dates = ['event_date','created_at','updated_at','deleted_at'];
 
     public function transformer(Manager $manager)
     {
@@ -45,7 +36,7 @@ class PledgeMeeting extends BaseModel
     {
         $rules = [
             //Rules for the core report data
-            'description' => ['sometimes', 'required', 'min:40'],
+            'minutes' => ['sometimes', 'required', 'min:40'],
             'event_date' => ['required', 'date'],
             'brothers' => ['required', 'array']
         ];
@@ -53,6 +44,7 @@ class PledgeMeeting extends BaseModel
         if (Request::has('brothers')) {
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
+                $extraRules['brothers.' . $index . '.count_for'] = ['sometimes','required','in:chapter,pledge,exec'];
             }
         }
         $newRules = array_merge($rules, $extraRules);
@@ -62,24 +54,25 @@ class PledgeMeeting extends BaseModel
     public function updateRules()
     {
         $rules = [
-            'event_date' => ['sometimes', 'required'],
-            'brothers' => ['sometimes', 'required', 'array']
+            //Rules for the core report data
+            'minutes' => ['sometimes', 'required', 'min:40'],
+            'event_date' => ['sometimes','required', 'date'],
+            'brothers' => ['sometimes','required', 'array']
         ];
         $extraRules = [];
         if (Request::has('brothers')) {
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
+                $extraRules['brothers.' . $index . '.count_for'] = ['sometimes','required','in:chapter,pledge,exec'];
             }
         }
-        return array_merge($rules, $extraRules);
+        $newRules = array_merge($rules, $extraRules);
+        return $newRules;
     }
 
     public function errorMessages()
     {
-        $extraMessages = [
-            'description.required' => 'Minutes are required.',
-            'description.min:40' => 'The minutes have to be at least 40 characters long'
-        ];
+        $extraMessages = [];
         if (Request::has('brothers')) {
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraMessages['brothers.' . $index . '.id.exists'] = 'The cwru id :input is not valid.';
@@ -93,6 +86,17 @@ class PledgeMeeting extends BaseModel
         return AccessController::isSecretary($user);
     }
 
+    public static function applyRowLevelSecurity(QueryBuilder $query, User $user)
+    {
+        return $query;
+        // TODO: Implement applyRowLevelSecurity() method.
+    }
+
+    public static function applyReportFilters(QueryBuilder $query)
+    {
+        return $query;
+    }
+
     public function canUpdate(User $user)
     {
         return AccessController::isSecretary($user);
@@ -100,11 +104,11 @@ class PledgeMeeting extends BaseModel
 
     public function canRead(User $user)
     {
-        return true;
+        return $user != null;
     }
 
     public function updatable()
     {
-        return ['event_date', 'brothers'];
+        return ['event_date', 'brothers','minutes'];
     }
 }

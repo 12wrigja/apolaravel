@@ -1,7 +1,9 @@
-<?php namespace APOSite\Models\Contracts\Reports\Types;
+<?php
+
+namespace APOSite\Models\Contracts\Reports\Types;
 
 use APOSite\Http\Controllers\AccessController;
-use APOSite\Http\Transformers\ChapterMeetingTransformer;
+use APOSite\Http\Transformers\ExecMeetingTransformer;
 use APOSite\Models\Contracts\Reports\BaseModel;
 use APOSite\Models\Users\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -12,11 +14,12 @@ use League\Fractal\Manager;
 class ExecMeeting extends BaseModel
 {
 
-    protected $fillable = ['minutes'];
+    protected $fillable = ['minutes','event_date','creator_id'];
+    protected $dates = ['event_date','created_at','updated_at','deleted_at'];
 
     public function transformer(Manager $manager)
     {
-        return new ChapterMeetingTransformer($manager);
+        return new ExecMeetingTransformer($manager);
     }
 
     public function computeValue(array $brotherData)
@@ -33,7 +36,7 @@ class ExecMeeting extends BaseModel
     {
         $rules = [
             //Rules for the core report data
-            'description' => ['sometimes', 'required', 'min:40'],
+            'minutes' => ['sometimes', 'required', 'min:40'],
             'event_date' => ['required', 'date'],
             'brothers' => ['required', 'array']
         ];
@@ -41,6 +44,7 @@ class ExecMeeting extends BaseModel
         if (Request::has('brothers')) {
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
+                $extraRules['brothers.' . $index . '.count_for'] = ['sometimes','required','in:chapter,pledge,exec'];
             }
         }
         $newRules = array_merge($rules, $extraRules);
@@ -50,16 +54,20 @@ class ExecMeeting extends BaseModel
     public function updateRules()
     {
         $rules = [
-            'event_date' => ['sometimes', 'required'],
-            'brothers' => ['sometimes', 'required', 'array']
+            //Rules for the core report data
+            'minutes' => ['sometimes', 'required', 'min:40'],
+            'event_date' => ['sometimes','required', 'date'],
+            'brothers' => ['sometimes','required', 'array']
         ];
         $extraRules = [];
         if (Request::has('brothers')) {
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
+                $extraRules['brothers.' . $index . '.count_for'] = ['sometimes','required','in:chapter,pledge,exec'];
             }
         }
-        return array_merge($rules, $extraRules);
+        $newRules = array_merge($rules, $extraRules);
+        return $newRules;
     }
 
     public function errorMessages()
@@ -96,11 +104,11 @@ class ExecMeeting extends BaseModel
 
     public function canRead(User $user)
     {
-        return true;
+        return $user != null;
     }
 
     public function updatable()
     {
-        return ['event_date', 'brothers'];
+        return ['event_date', 'brothers','minutes'];
     }
 }

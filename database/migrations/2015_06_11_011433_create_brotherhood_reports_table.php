@@ -16,7 +16,7 @@ class CreateBrotherhoodReportsTable extends Migration
         Schema::create('brotherhood_reports', function (Blueprint $table) {
             $table->increments('id');
             $table->char('creator_id', 10);
-            $table->char('display_name');
+            $table->char('event_name');
             $table->longText('description');
             $table->date('event_date');
             $table->string('location');

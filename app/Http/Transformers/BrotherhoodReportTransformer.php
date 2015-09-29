@@ -18,24 +18,34 @@ class BrotherhoodReportTransformer extends TransformerAbstract
 
     public function transform(BrotherhoodReport $report)
     {
-        $coreEventData = $this->manager->createData(new Item($report->core,
-            new ReportTransformer()))->toArray()['data'];
         $brothers = $report->core->linkedUsers;
         $brothers->transform(function ($item, $key) {
             $val = $item->pivot;
             unset($val->report_id);
+            $val->display_name = $item->getFullDisplayName();
+            $val->hours = intval($item->pivot->value / 60);
+            $val->minutes = $item->pivot->value % 60;
+            unset($val->value);
             return $val;
         });
+        if($report->event_date == null){
+            dd($report);
+        }
         $otherData = [
-            'display_name' => $report->core->display_name,
-            'description' => $report->core->description,
-            'event_date' => $report->core->event_date,
+            'id' => $report->id,
+            'href' => route('report_show',['id'=>$report->id,'type'=>'service_reports']),
+            'event_name' => $report->event_name,
+            'description' => $report->description,
+            'date' => $report->event_date->toDateString(),
+            'human_date' => $report->event_date->toFormattedDateString(),
+            'submitter' => $report->creator_id,
+            'event_date' => $report->event_date,
             'location' => $report->location,
             'type' => $report->type,
             'submission_date' => $report->created_at->toDateTimeString(),
             'brothers' => $brothers
         ];
-        return array_merge($coreEventData, $otherData);
+        return $otherData;
     }
 
 }

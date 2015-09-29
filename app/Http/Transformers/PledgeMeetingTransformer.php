@@ -18,19 +18,22 @@ class PledgeMeetingTransformer extends TransformerAbstract
 
     public function transform(PledgeMeeting $report)
     {
-        $coreEventData = $this->manager->createData(new Item($report->core,
-            new ReportTransformer()))->toArray()['data'];
         $brothers = $report->core->linkedUsers;
         $brothers->transform(function ($item, $key) {
             $val = $item->pivot;
             unset($val->report_id);
+            unset($val->value);
             return $val;
         });
         $otherData = [
+            'id' => $report->id,
+            'href' => route('report_show',['id'=>$report->id,'type'=>'pledge_meetings']),
+            'date' => $report->event_date->toDateString(),
+            'human_date' => $report->event_date->toFormattedDateString(),
             'minutes' => $report->minutes,
             'brothers' => $brothers
         ];
-        return array_merge($coreEventData, $otherData);
+        return  $otherData;
     }
 
 }
