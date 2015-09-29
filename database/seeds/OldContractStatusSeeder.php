@@ -30,7 +30,11 @@ class OldContractStatusSeeder extends Seeder
         foreach ($oldUsers as $oldUser) {
             $user = User::find($oldUser->id);
             if ($oldUser->status != null) {
-                $contract = $map[$oldUser->status];
+                if(!array_key_exists($oldUser->status,$map)){
+                    $contract = "Inactive";
+                } else {
+                    $contract = $map[$oldUser->status];
+                }
                 DB::table('contract_user')->insert([
                     'user_id' => $user->id,
                     'contract_id' => $contract,
