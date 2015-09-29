@@ -6,9 +6,12 @@ var $ = require('jquery');
 window.$ = $;
 window.jQuery = $;
 require('bootstrap');
+function getFromMetadata(tag){
+    return $('meta[name="'+tag+'"]').attr('content');
+}
 $.ajaxSetup({
     headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'X-CSRF-TOKEN': getFromMetadata('csrf-token'),
         'Accept': 'application/json',
         'Content-Type' : 'application/json'
     }
@@ -19,7 +22,7 @@ var Vue = require('vue');
 Vue.config.debug = true;
 Vue.use(require('vue-resource'));
 //Set default headers for all Vue requests
-Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+Vue.http.headers.common['X-CSRF-TOKEN'] = getFromMetadata('csrf-token');
 Vue.transition('collapse',{
    enter: function(el){
        $(el).addClass('in');
@@ -31,6 +34,7 @@ Vue.transition('collapse',{
 Vue.filter('not',function(value){
     return !value;
 });
+
 var Resources = function () {
 
     var defaultActions = {
@@ -42,20 +46,23 @@ var Resources = function () {
     return {
         Vue: Vue,
         form: require('./components/forms/forms.js')(Vue),
-        ContractRequirement: function (instance) {
-            return instance.$resource('/contractreqs/:id',{},defaultActions);
-        },
-        Contract: function (instance) {
-            return instance.$resource('/contracts/:id',{},defaultActions);
-        },
         ServiceReport: function(instance) {
-            return instance.$resource('/reports/service_reports/:id',{},defaultActions);
+            return instance.$resource(getFromMetadata('service_report_api'),{},defaultActions);
         },
         BrotherhoodReport: function(instance) {
-            return instance.$resource('/reports/brotherhood_reports/:id',{},defaultActions);
+            return instance.$resource(getFromMetadata('brotherhood_report_api'),{},defaultActions);
         },
         User: function(instance){
-            return instance.$resource('/users/:id',{},defaultActions);
+            return instance.$resource(getFromMetadata('user_api'),{},defaultActions);
+        },
+        ChapterMeeting: function(instance){
+            return instance.$resource(getFromMetadata('chapter_meeting_api'),{},defaultActions);
+        },
+        ExecMeeting: function(instance){
+            return instance.$resource(getFromMetadata('exec_meeting_api'),{},defaultActions);
+        },
+        PledgeMeeting: function(instance){
+            return instance.$resource(getFromMetadata('pledge_meeting_api'),{},defaultActions);
         },
         utils: {
             loadUnhide: function(rootElement){
@@ -98,8 +105,6 @@ var main = new Vue({
     el: 'body',
 
     components: {
-        'contract-create-form': require('./views/contracts/create.js')(Resources),
-        'contract-edit-form': require('./views/contracts/edit.js')(Resources),
         'create_service_report_form' : require('./views/reports/servicereports/create.js')(Resources),
         'create_brotherhood_report_form' : require('./views/reports/brotherhoodreports/create.js')(Resources),
         'manage_service_reports_form' : require('./views/reports/servicereports/manage.js')(Resources),

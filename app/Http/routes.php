@@ -33,8 +33,8 @@ Route::delete('/users/{cwruid}', 'UserController@destroy');
 //Route::get('/users/search', array('uses' => 'UserController@search', 'as' => 'users.search'));
 
 //Routes for displaying all users and individual user profiles
-Route::get('/users', 'UserController@index');
-Route::get('/users/{cwruid}', 'UserController@show');
+Route::get('/users', ['uses'=>'UserController@index','as'=>'user_list']);
+Route::get('/users/{cwruid}', ['uses'=>'UserController@show','as'=>'user_show']);
 
 //Routes for allowing users to update their profiles.
 //TODO fix up the user editing system
