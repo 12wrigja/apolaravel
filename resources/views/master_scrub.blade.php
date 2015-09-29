@@ -43,7 +43,7 @@
                 @else
                     <li class="dropdown pull-right">
 
-                        <a href="{!! URL::to('login?redirect_url='.Request::url())!!}" style="color:#777; margin-top: 5px;"
+                        <a href="{!! route('login',['redirect_url'=>Request::url()]) !!}" style="color:#777; margin-top: 5px;"
                            class="dropdown-toggle"><span
                                     class="glyphicon glyphicon-user"></span><b> Login</b></a>
                     </li>
