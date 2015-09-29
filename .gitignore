@@ -5,7 +5,6 @@
 .env.*.php
 .env.php
 .env
-/public/js
 #OS Stuff
 .DS_Store
 
