@@ -37,7 +37,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="/" class="navbar-brand">APO @ CWRU</a>
+            <a href="{{route('home')}}" class="navbar-brand">APO @ CWRU</a>
         </div>
 
         <div id="navbarCollapse" class="collapse navbar-collapse">

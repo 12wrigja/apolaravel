@@ -18,7 +18,7 @@
                                 @if($office->currentOfficer() != null)
                                     <h1>{{$office->display_name}}</h1>
                                     <p>Email: {!!Html::mailTo($office->email.'@apo.case.edu')!!}</p>
-                                    <h3>URL::to({{$office->currentOfficer()->getFullDisplayName()}}</h3>
+                                    <h4><a href="{{route('user_show',['id'=>$office->currentOfficer()->id])}}">{{$office->currentOfficer()->getFullDisplayName()}}</a></h4>
                                     <p></p>
                                 @else
 

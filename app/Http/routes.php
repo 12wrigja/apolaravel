@@ -20,7 +20,7 @@ Route::put('/reports/{type}/{id}', ['uses' => 'EventPipelineController@updateEve
 Route::delete('/reports/{type}/{id}', ['uses' => 'EventPipelineController@deleteEvent', 'as' => 'report_delete']);
 
 //Routes for the officer pages
-Route::get('officers', 'Officers\OfficerPageController@index');
+Route::get('officers', ['uses'=>'Officers\OfficerPageController@index','as'=>'officers']);
 
 //Routes for managing the users of the users, including creating and storing users.
 //Route::get('/users/create', 'UserController@create');
