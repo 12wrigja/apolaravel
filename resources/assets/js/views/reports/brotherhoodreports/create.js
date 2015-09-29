@@ -28,8 +28,9 @@ module.exports = function (Resources) {
                         selector.select2(Resources.select2settings(data,that.formatBrother));
                         selector.on("select2:select", function(e){
                             //get the name of the thing selected.
-                            that.addBrother(e);
-                            e.params.data.disabled = true;
+                            if(!that.hasBrother(e)){
+                                that.addBrother(e);
+                            }
                             selector.val(null).trigger("change");
                         });
                     } else {
@@ -47,6 +48,16 @@ module.exports = function (Resources) {
                 } else {
                     return brother.first_name + ' ' +brother.last_name;
                 }
+            },
+            hasBrother: function(e){
+                var broListing = e.params.data;
+                var length = this.form.brothers.length;
+                for(var i=0; i<length; i++){
+                    if(this.form.brothers[i].id == broListing.id){
+                        return true;
+                    }
+                }
+                return false;
             },
             addBrother: function(e){
                 var broListing = e.params.data;

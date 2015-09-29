@@ -59,7 +59,7 @@
 </nav>
 
 @yield('content')
-{!!Html::script('js/bundle.js')!!}
+{!!Html::script(elixir('js/bundle.js'))!!}
 @yield('scripts')
 </body>
 
