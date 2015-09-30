@@ -28413,9 +28413,13 @@ module.exports = function (Vue) {
             },
             setNotLoading: function setNotLoading() {
                 console.log(this);
-                $(this.$$.iform).collapse('show');
-                $(this.$$.loadingArea).collapse('hide');
-                console.log('Set not loading. Form should be visible.');
+                var instance = this;
+                Vue.nextTick(function () {
+                    console.log(instance);
+                    $(instance.$$.iform).collapse('show');
+                    $(instance.$$.loadingArea).collapse('hide');
+                    console.log('Set not loading. Form should be visible.');
+                });
             },
             collapseSwap: function collapseSwap(obj1, obj2) {
                 $(obj1).collapse('show');

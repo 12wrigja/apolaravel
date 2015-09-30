@@ -14,30 +14,30 @@ module.exports = function (Vue) {
                 formURL: function () {
                     var base = $(this.$$.iform).attr('action');
                     var xdebug_key = this.getURLVars()['XDEBUG_SESSION_START'];
-                    if(xdebug_key !== undefined){
-                        base = base + "?XDEBUG_SESSION_START="+xdebug_key;
+                    if (xdebug_key !== undefined) {
+                        base = base + "?XDEBUG_SESSION_START=" + xdebug_key;
                     }
                     return base;
                 }
             },
 
             methods: {
-                getURLVars : function(){
-                        var vars = {};
-                        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-                            vars[key] = value;
-                        });
-                        return vars;
+                getURLVars: function () {
+                    var vars = {};
+                    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+                        vars[key] = value;
+                    });
+                    return vars;
                 },
                 register: function () {
                     console.log('Registering form.');
                     console.log(this.formURL);
                     this.$$.iform.addEventListener('submit', this.submitForm);
                 },
-                loadWait: function(){
-                    var timeTaken = new Date().getTime()/1000 - this.loadTime;
-                    while(timeTaken < 2) {
-                        timeTaken = new Date().getTime()/1000 - this.loadTime;
+                loadWait: function () {
+                    var timeTaken = new Date().getTime() / 1000 - this.loadTime;
+                    while (timeTaken < 2) {
+                        timeTaken = new Date().getTime() / 1000 - this.loadTime;
                     }
                 },
                 submitForm: function (event) {
@@ -75,25 +75,27 @@ module.exports = function (Vue) {
                         }
                     });
                 },
-                getForm: function(){
-                  return this.form;
+                getForm: function () {
+                    return this.form;
                 },
                 setupLoading: function () {
-                    $(this.$$.iform).collapse({'toggle':false});
-                    $(this.$$.loadingArea).collapse({'toggle':false});
+                    $(this.$$.iform).collapse({'toggle': false});
+                    $(this.$$.loadingArea).collapse({'toggle': false});
                 },
                 setupDebug: function () {
-                    this.$$.iform.insertAdjacentHTML('afterend','<pre v-show="debug"> {{ getForm() | json }} </pre>');
+                    this.$$.iform.insertAdjacentHTML('afterend', '<pre v-show="debug"> {{ getForm() | json }} </pre>');
                 },
                 setLoading: function () {
                     $(this.$$.loadingArea).collapse('show');
                     $(this.$$.iform).collapse('hide');
                 },
                 setNotLoading: function () {
-                    console.log(this);
-                    $(this.$$.iform).collapse('show');
-                    $(this.$$.loadingArea).collapse('hide');
-                    console.log('Set not loading. Form should be visible.');
+                    var instance = this;
+                    Vue.nextTick(function () {
+                        $(instance.$$.iform).collapse('show');
+                        $(instance.$$.loadingArea).collapse('hide');
+                        console.log('Set not loading. Form should be visible.');
+                    });
                 },
                 collapseSwap: function (obj1, obj2) {
                     $(obj1).collapse('show');
@@ -128,7 +130,7 @@ module.exports = function (Vue) {
                     }
                     return result;
                 },
-                startOver : function(){
+                startOver: function () {
                     this.clearForm();
                     $(this.$$.loadingArea).collapse('hide');
                     $(this.$$.successArea).collapse('hide');
@@ -137,13 +139,13 @@ module.exports = function (Vue) {
             },
             ready: function () {
                 var that = this;
-                window.onbeforeunload = function(){
-                    if(that.form) {
+                window.onbeforeunload = function () {
+                    if (that.form) {
                         localStorage.setItem(window.location.href + '|form', JSON.stringify(that.form));
                     }
                 };
-                var formData = localStorage.getItem(window.location.href+"|form");
-                if(formData && formData != null){
+                var formData = localStorage.getItem(window.location.href + "|form");
+                if (formData && formData != null) {
                     formData = JSON.parse(formData);
                     this.form = formData;
                 }
