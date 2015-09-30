@@ -79,18 +79,20 @@ module.exports = function (Vue) {
                   return this.form;
                 },
                 setupLoading: function () {
+                    $(this.$$.iform).collapse({'toggle':false});
+                    $(this.$$.loadingArea).collapse({'toggle':false});
                 },
                 setupDebug: function () {
                     this.$$.iform.insertAdjacentHTML('afterend','<pre v-show="debug"> {{ getForm() | json }} </pre>');
                 },
                 setLoading: function () {
-                    $(this.$$.loadingArea).collapse({'toggle':'show'});
-                    $(this.$$.iform).collapse({'toggle':'hide'});
+                    $(this.$$.loadingArea).collapse('show');
+                    $(this.$$.iform).collapse('hide');
                 },
                 setNotLoading: function () {
                     console.log(this);
-                    $(this.$$.iform).collapse({'toggle':'show'});
-                    $(this.$$.loadingArea).collapse({'toggle':'hide'});
+                    $(this.$$.iform).collapse('show');
+                    $(this.$$.loadingArea).collapse('hide');
                     console.log('Set not loading. Form should be visible.');
                 },
                 collapseSwap: function (obj1, obj2) {

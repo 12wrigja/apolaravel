@@ -28400,18 +28400,21 @@ module.exports = function (Vue) {
             getForm: function getForm() {
                 return this.form;
             },
-            setupLoading: function setupLoading() {},
+            setupLoading: function setupLoading() {
+                $(this.$$.iform).collapse({ 'toggle': false });
+                $(this.$$.loadingArea).collapse({ 'toggle': false });
+            },
             setupDebug: function setupDebug() {
                 this.$$.iform.insertAdjacentHTML('afterend', '<pre v-show="debug"> {{ getForm() | json }} </pre>');
             },
             setLoading: function setLoading() {
-                $(this.$$.loadingArea).collapse({ 'toggle': 'show' });
-                $(this.$$.iform).collapse({ 'toggle': 'hide' });
+                $(this.$$.loadingArea).collapse('show');
+                $(this.$$.iform).collapse('hide');
             },
             setNotLoading: function setNotLoading() {
                 console.log(this);
-                $(this.$$.iform).collapse({ 'toggle': 'show' });
-                $(this.$$.loadingArea).collapse({ 'toggle': 'hide' });
+                $(this.$$.iform).collapse('show');
+                $(this.$$.loadingArea).collapse('hide');
                 console.log('Set not loading. Form should be visible.');
             },
             collapseSwap: function collapseSwap(obj1, obj2) {
@@ -28995,6 +28998,7 @@ module.exports = function (Resources) {
         methods: {
             successFunction: function successFunction(data) {
                 $(this.$$.loadingArea).collapse('hide');
+                $(this.$$.successArea).collapse({ 'toggle': false });
                 $(this.$$.successArea).collapse('show');
             },
             setupUserSearch: function setupUserSearch() {
