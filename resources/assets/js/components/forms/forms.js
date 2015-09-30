@@ -70,8 +70,8 @@ module.exports = function (Vue) {
                             document.close();
                         } else {
                             console.log(error);
-                            instance.setNotLoading();
                             instance.renderErrors(error.responseJSON);
+                            instance.setNotLoading();
                         }
                     });
                 },
@@ -84,12 +84,12 @@ module.exports = function (Vue) {
                     this.$$.iform.insertAdjacentHTML('afterend','<pre v-show="debug"> {{ getForm() | json }} </pre>');
                 },
                 setLoading: function () {
-                    $(this.$$.loadingArea).collapse('show');
-                    $(this.$$.iform).collapse('hide');
+                    $(this.$$.loadingArea).collapse({'toggle':'show'});
+                    $(this.$$.iform).collapse({'toggle':'hide'});
                 },
                 setNotLoading: function () {
-                    $(this.$$.iform).collapse('show');
-                    $(this.$$.loadingArea).collapse('hide');
+                    $(this.$$.iform).collapse({'toggle':'show'});
+                    $(this.$$.loadingArea).collapse({'toggle':'hide'});
                     console.log('Set not loading. Form should be visible.');
                 },
                 collapseSwap: function (obj1, obj2) {
