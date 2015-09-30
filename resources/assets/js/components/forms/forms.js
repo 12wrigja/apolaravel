@@ -55,11 +55,13 @@ module.exports = function (Vue) {
                     }).done(function (data) {
                         localStorage.removeItem(window.location.href + '|form');
                         instance.loadWait();
+                        console.log("Done Waiting.");
                         console.log("Successful call to " + this.formURL);
                         $(instance.$$.loadingArea).collapse('hide');
                         instance.successFunction(data);
                     }).fail(function (error) {
                         instance.loadWait();
+                        console.log("Done Waiting.");
                         if (error.status >= 500) {
                             //TODO update the error code management for production
                             console.log(error);
