@@ -28376,13 +28376,13 @@ module.exports = function (Vue) {
                     data: JSON.stringify(this.getForm())
                 }).done(function (data) {
                     localStorage.removeItem(window.location.href + '|form');
-                    instance.loadWait();
+                    //instance.loadWait();
                     console.log("Done Waiting.");
                     console.log("Successful call to " + this.formURL);
                     $(instance.$$.loadingArea).collapse('hide');
                     instance.successFunction(data);
                 }).fail(function (error) {
-                    instance.loadWait();
+                    //instance.loadWait();
                     console.log("Done Waiting.");
                     if (error.status >= 500) {
                         //TODO update the error code management for production
@@ -28411,6 +28411,7 @@ module.exports = function (Vue) {
             setNotLoading: function setNotLoading() {
                 $(this.$$.iform).collapse('show');
                 $(this.$$.loadingArea).collapse('hide');
+                console.log('Set not loading. Form should be visible.');
             },
             collapseSwap: function collapseSwap(obj1, obj2) {
                 $(obj1).collapse('show');
