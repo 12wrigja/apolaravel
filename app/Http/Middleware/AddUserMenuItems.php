@@ -33,9 +33,15 @@ class AddUserMenuItems
                 array_push($menu_items,$item);
 
                 $item = new \stdClass();
+                $item->text = "Manage brotherhood reports";
+                $item->url = URL::to('/reports/brotherhood_reports/manage');
+                array_push($menu_items, $item);
+
+                $item = new \stdClass();
                 $item->text = "Manage service reports";
                 $item->url = URL::to('/reports/service_reports/manage');
                 array_push($menu_items, $item);
+
             }
 
             if(AccessController::isService($user)){
@@ -48,10 +54,7 @@ class AddUserMenuItems
                 $item->text = "Fellowship Functions";
                 array_push($menu_items,$item);
 
-                $item = new \stdClass();
-                $item->text = "Manage brotherhood reports";
-                $item->url = URL::to('/reports/brotherhood_reports/manage');
-                array_push($menu_items, $item);
+
             }
 
             if(AccessController::isHistorian($user)){

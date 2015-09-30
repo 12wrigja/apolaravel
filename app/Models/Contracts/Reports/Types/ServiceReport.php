@@ -150,6 +150,10 @@ class ServiceReport extends BaseModel
         }
     }
 
+    public function canManage(User $user){
+        return AccessController::isMembership($user);
+    }
+
     public function scopeNotApproved(QueryBuilder $query)
     {
         return $query->whereApproved(false);

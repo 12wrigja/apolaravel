@@ -85,6 +85,10 @@ class BrotherhoodReport extends BaseModel
         }
     }
 
+    public function canManage(User $user){
+        return AccessController::isMembership($user);
+    }
+
     public function createRules()
     {
         $rules = [

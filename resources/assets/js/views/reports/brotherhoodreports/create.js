@@ -17,6 +17,7 @@ module.exports = function (Resources) {
         },
         methods: {
             successFunction: function (data) {
+                $(this.$$.loadingArea).collapse('hide');
                 $(this.$$.successArea).collapse('show');
             },
             setupUserSearch: function () {

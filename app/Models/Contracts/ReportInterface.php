@@ -30,5 +30,7 @@ interface ReportInterface
 
     public function canRead(User $user);
 
+    public function canManage(User $user);
+
     public function updatable();
 }

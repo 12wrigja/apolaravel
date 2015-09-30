@@ -1,6 +1,7 @@
 <?php namespace APOSite\Http\Controllers;
 
 use APOSite\Http\Requests\Users\UserDeleteRequest;
+use APOSite\Http\Requests\Users\UserStatusPageRequest;
 use APOSite\Models\Semester;
 use APOSite\Models\Users\User;
 use Illuminate\Support\Facades\Input;
@@ -167,7 +168,7 @@ class UserController extends Controller
         return $users;
     }
 
-    public function statusPage($id)
+    public function statusPage(UserStatusPageRequest $request, $id)
     {
         $user = User::find($id);
         if ($user != null) {

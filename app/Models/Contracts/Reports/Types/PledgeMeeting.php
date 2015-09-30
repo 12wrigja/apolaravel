@@ -86,6 +86,10 @@ class PledgeMeeting extends BaseModel
         return AccessController::isSecretary($user);
     }
 
+    public function canManage(User $user){
+        return AccessController::isMembership($user) || AccessController::isSecretary($user);
+    }
+
     public static function applyRowLevelSecurity(QueryBuilder $query, User $user)
     {
         return $query;
