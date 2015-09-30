@@ -28409,6 +28409,7 @@ module.exports = function (Vue) {
                 $(this.$$.iform).collapse({ 'toggle': 'hide' });
             },
             setNotLoading: function setNotLoading() {
+                console.log(this);
                 $(this.$$.iform).collapse({ 'toggle': 'show' });
                 $(this.$$.loadingArea).collapse({ 'toggle': 'hide' });
                 console.log('Set not loading. Form should be visible.');
