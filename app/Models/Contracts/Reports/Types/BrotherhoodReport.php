@@ -123,14 +123,19 @@ class BrotherhoodReport extends BaseModel
     public function errorMessages()
     {
         $messages = [
-            'type.required' => 'The project type field is required.'
+            'type.required' => 'The project type field is required.',
+            'brothers.required' => 'You need to include at least one brother in this report.',
             //Error messages specific to this report type go here.
         ];
         $extraMessages = [];
         if (Request::has('brothers')) {
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraMessages['brothers.' . $index . '.id.exists'] = 'The cwru id :input is not valid.';
-                //Error messages specific to the specific join data for this report type go here.
+                $extraMessages['brothers.' . $index . '.hours.integer'] = 'Hours need to be a number.';
+                $extraMessages['brothers.' . $index . '.minutes.integer'] = 'Minutes need to be a number.';
+                $extraMessages['brothers.' . $index . '.hours.min'] = 'Hours needs to be at least 0.';
+                $extraMessages['brothers.' . $index . '.minutes.min'] = 'Minutes need to be at least 0.';
+                $extraMessages['brothers.' . $index . '.minutes.max'] = 'Minutes need to be at most 59.';
             }
         }
         $allMessages = array_merge($messages, $extraMessages);

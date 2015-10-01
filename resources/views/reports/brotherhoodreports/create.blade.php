@@ -55,7 +55,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <div class="col-md-4 control-label">
-                        {!! Form::label('location','Project Location') !!}
+                        {!! Form::label('location','Event Location') !!}
                         <p class="help-block"></p>
                     </div>
                     <div class="col-md-8">
@@ -87,10 +87,9 @@
             </div>
         </div>
 
-        <div class="form-horizontal">
+        <div class="form-group">
             <h2>Brothers in Report</h2>
-
-            <p class="help-block"></p>
+            <p name="brothers" class="help-block"></p>
             <td><select id="brotherselecter" placeholder="Search for a Brother..." class="form-control"></select></td>
             <!-- Brothers listing -->
             <table class="table table-hover">
@@ -103,8 +102,14 @@
                 <tbody>
                 <tr v-repeat="brother: form.brothers">
                     <td>@{{ brother.name }}</td>
-                    <td>{!! Form::text('hours', null, ['class'=>'form-control','v-model'=>'brother.hours']) !!}</td>
-                    <td>{!! Form::text('minutes', null, ['class'=>'form-control','v-model'=>'brother.minutes']) !!}</td>
+                    <td class="form-group">
+                        <div>{!! Form::text('brothers.@{{$index}}.hours', null, ['class'=>'form-control','v-model'=>'brother.hours']) !!}</div>
+                        <p class="help-block"></p>
+                    </td>
+                    <td class="form-group">
+                        <div>{!! Form::text('brothers.@{{$index}}.minutes', null, ['class'=>'form-control','v-model'=>'brother.minutes']) !!}</div>
+                        <p class="help-block"></p>
+                    </td>
                     <td>
                         <div class="btn btn-danger" v-on="click: removeBrother(brother)">Remove</div>
                     </td>
