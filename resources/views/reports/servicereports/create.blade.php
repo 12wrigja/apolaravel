@@ -74,7 +74,7 @@
                         <p class="help-block"></p>
                     </div>
                     <div class="col-sm-8">
-                        {!! Form::select('project_type',['inside'=>'Inside','outside'=>'Outside'] ,'inside', ['class'=>'form-control','v-model'=>'form.project_type']) !!}
+                        {!! Form::select('project_type',['inside'=>'Inside','outside'=>'Outside'] ,null, ['class'=>'form-control','v-model'=>'form.project_type']) !!}
                     </div>
                 </div>
             </div>
@@ -90,7 +90,7 @@
                         'chapter'=>'Service to the Chapter',
                         'campus'=>'Service to the Campus',
                         'community'=>'Service to the Community',
-                        'country'=>'Service to the Community'
+                        'country'=>'Service to the Country'
                         ],null, ['class'=>'form-control','v-model'=>'form.service_type']) !!}
                     </div>
                 </div>

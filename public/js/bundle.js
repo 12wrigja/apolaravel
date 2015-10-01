@@ -28356,12 +28356,6 @@ module.exports = function (Vue) {
                 console.log(this.formURL);
                 this.$$.iform.addEventListener('submit', this.submitForm);
             },
-            loadWait: function loadWait() {
-                var timeTaken = new Date().getTime() / 1000 - this.loadTime;
-                while (timeTaken < 2) {
-                    timeTaken = new Date().getTime() / 1000 - this.loadTime;
-                }
-            },
             submitForm: function submitForm(event) {
                 console.log('Submitting form.');
                 console.log(this.formURL);
@@ -28376,25 +28370,27 @@ module.exports = function (Vue) {
                     data: JSON.stringify(this.getForm())
                 }).done(function (data) {
                     localStorage.removeItem(window.location.href + '|form');
-                    //instance.loadWait();
-                    console.log("Done Waiting.");
-                    console.log("Successful call to " + this.formURL);
-                    $(instance.$$.loadingArea).collapse('hide');
-                    instance.successFunction(data);
+                    setTimeout(function () {
+                        console.log("Done Waiting.");
+                        console.log("Successful call to " + this.formURL);
+                        $(instance.$$.loadingArea).collapse('hide');
+                        instance.successFunction(data);
+                    }, 1000);
                 }).fail(function (error) {
-                    //instance.loadWait();
-                    console.log("Done Waiting.");
-                    if (error.status >= 500) {
-                        //TODO update the error code management for production
-                        console.log(error);
-                        document.open();
-                        document.write(error.responseText);
-                        document.close();
-                    } else {
-                        console.log(error);
-                        instance.renderErrors(error.responseJSON);
-                        instance.setNotLoading();
-                    }
+                    setTimeout(function () {
+                        console.log("Done Waiting.");
+                        if (error.status >= 500) {
+                            //TODO update the error code management for production
+                            console.log(error);
+                            document.open();
+                            document.write(error.responseText);
+                            document.close();
+                        } else {
+                            console.log(error);
+                            instance.renderErrors(error.responseJSON);
+                            instance.setNotLoading();
+                        }
+                    }, 1000);
                 });
             },
             getForm: function getForm() {
@@ -28412,14 +28408,9 @@ module.exports = function (Vue) {
                 $(this.$$.iform).collapse('hide');
             },
             setNotLoading: function setNotLoading() {
-                console.log(this);
-                var instance = this;
-                Vue.nextTick(function () {
-                    console.log(instance);
-                    $(instance.$$.iform).collapse('show');
-                    $(instance.$$.loadingArea).collapse('hide');
-                    console.log('Set not loading. Form should be visible.');
-                });
+                $(this.$$.iform).collapse('show');
+                $(this.$$.loadingArea).collapse('hide');
+                console.log('Set not loading. Form should be visible.');
             },
             collapseSwap: function collapseSwap(obj1, obj2) {
                 $(obj1).collapse('show');
