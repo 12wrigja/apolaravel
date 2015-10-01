@@ -90,12 +90,18 @@ class ServiceReport extends BaseModel
     {
         $messages = [
             'off_campus.in' => 'off_campus should be either true or false',
-            'travel_time' => 'travel time is required if the event is off-campus'
+            'travel_time' => 'travel time is required if the event is off-campus',
+            'brothers.required' => 'You need to include at least one brother in this report.'
         ];
         $extraMessages = [];
         if (Request::has('brothers')) {
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraMessages['brothers.' . $index . '.id.exists'] = 'The cwru id :input is not valid.';
+                $extraMessages['brothers.' . $index . '.hours.integer'] = 'Hours need to be a number.';
+                $extraMessages['brothers.' . $index . '.minutes.integer'] = 'Minutes need to be a number.';
+                $extraMessages['brothers.' . $index . '.hours.min'] = 'Hours needs to be at least 0.';
+                $extraMessages['brothers.' . $index . '.minutes.min'] = 'Minutes need to be at least 0.';
+                $extraMessages['brothers.' . $index . '.minutes.max'] = 'Minutes need to be at most 59.';
             }
         }
         $allMessages = array_merge($messages, $extraMessages);

@@ -18,11 +18,11 @@
         <div class="form-horizontal">
             <div class="form-group">
                 <div class="col-sm-2 control-label">
-                    {!! Form::label('event_name','Project Name') !!}
+                    {!! Form::label('event_name','Event Name') !!}
                     <p class="help-block"></p>
                 </div>
                 <div class="col-sm-10">
-                    {!! Form::text('event__name', null, ['class'=>'form-control','v-model'=>'form.event_name']) !!}
+                    {!! Form::text('event_name', null, ['class'=>'form-control','v-model'=>'form.event_name']) !!}
                 </div>
                 <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
             </div>
@@ -55,7 +55,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <div class="col-md-4 control-label">
-                        {!! Form::label('location','Project Location') !!}
+                        {!! Form::label('location','Event Location') !!}
                         <p class="help-block"></p>
                     </div>
                     <div class="col-md-8">
@@ -119,9 +119,10 @@
                 </div>
             </div>
         </div>
-        <div class="form-horizontal">
+        <div class="form-group">
             <h2>Brothers in Report</h2>
-            <p class="help-block"></p>
+
+            <p name="brothers" class="help-block"></p>
             <td><select id="brotherselecter" placeholder="Search for a Brother..." class="form-control"></select></td>
             <!-- Brothers listing -->
             <table class="table table-hover">
@@ -135,10 +136,18 @@
                 <tbody>
                 <tr v-repeat="brother: form.brothers">
                     <td>@{{ brother.name }}</td>
-                    <td>{!! Form::text('hours', null, ['class'=>'form-control','v-model'=>'brother.hours']) !!}</td>
-                    <td>{!! Form::text('minutes', null, ['class'=>'form-control','v-model'=>'brother.minutes']) !!}</td>
+                    <td class="form-group">
+                        <div>{!! Form::text('brothers.@{{$index}}.hours', null, ['class'=>'form-control','v-model'=>'brother.hours']) !!}</div>
+                        <p class="help-block"></p>
+                    </td>
+                    <td class="form-group">
+                        <div>{!! Form::text('brothers.@{{$index}}.minutes', null, ['class'=>'form-control','v-model'=>'brother.minutes']) !!}</div>
+                        <p class="help-block"></p>
+                    </td>
                     <td>{!! Form::select('is_driver', ['0'=>'No','1'=>'Yes'], '0' ,['class'=>'form-control','v-model'=>'brother.is_driver']) !!}</td>
-                    <td><div class="btn btn-danger" v-on="click: removeBrother(brother)">Remove</div></td>
+                    <td>
+                        <div class="btn btn-danger" v-on="click: removeBrother(brother)">Remove</div>
+                    </td>
                 </tr>
                 </tbody>
             </table>
