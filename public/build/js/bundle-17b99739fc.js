@@ -28257,24 +28257,6 @@ var Resources = (function () {
                 console.log(rootElement);
                 console.log($(rootElement).find('.loadhidden'));
                 $(rootElement).find('.loadhidden').removeClass('loadhidden').removeClass('hidden');
-            },
-            parseDate: function parseDate(dateString) {
-                //Matches YYY-MM-DD
-                if (dateString.match(/\d{2}\/\d{2}\/\d{4}/g)) {
-                    var d = new Date(dateString);
-                    var year = d.getFullYear();
-                    var month = d.getMonth() + 1;
-                    if (month < 10) {
-                        month = '0' + month;
-                    }
-                    var day = d.getDate();
-                    if (day < 10) {
-                        day = '0' + day;
-                    }
-                    return year + '-' + month + '-' + day;
-                } else {
-                    return dateString;
-                }
             }
         },
         select2settings: function select2settings(data, formatFn) {
@@ -29038,7 +29020,6 @@ module.exports = function (Resources) {
             getForm: function getForm() {
                 var newForm = Resources.Vue.util.extend({}, this.form);
                 newForm.off_campus = this.form === '1';
-                newForm.event_date = Resources.utils.parseDate(this.form.event_date);
                 var i = newForm.brothers.length;
                 for (var j = 0; j < i; j++) {
                     newForm.brothers[j].is_driver = newForm.brothers[j].is_driver === '1';

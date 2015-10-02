@@ -85,4 +85,8 @@ abstract class BaseModel extends Eloquent implements ReportInterface
             return $query->whereBetween('event_date', array($semester->start_date, $semester->end_date));
         }
     }
+
+    public function setEventDateAttribute($value){
+        $this->attributes['event_date'] = new Carbon($value);
+    }
 }

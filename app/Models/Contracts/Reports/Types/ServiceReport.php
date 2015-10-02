@@ -9,7 +9,7 @@ use APOSite\Models\Users\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Queue;
+use Carbon\Carbon;
 use League\Fractal\Manager;
 use Request;
 
@@ -183,4 +183,5 @@ class ServiceReport extends BaseModel
         }
         return $query;
     }
+
 }
