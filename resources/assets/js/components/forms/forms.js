@@ -60,9 +60,9 @@ module.exports = function (Vue) {
                             if (error.status >= 500) {
                                 //TODO update the error code management for production
                                 console.log(error);
-                                document.open();
-                                document.write(error.responseText);
-                                document.close();
+                                //document.open();
+                                //document.write(error.responseText);
+                                //document.close();
                             } else {
                                 console.log(error);
                                 instance.renderErrors(error.responseJSON);

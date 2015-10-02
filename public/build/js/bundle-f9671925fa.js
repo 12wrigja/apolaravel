@@ -28257,6 +28257,24 @@ var Resources = (function () {
                 console.log(rootElement);
                 console.log($(rootElement).find('.loadhidden'));
                 $(rootElement).find('.loadhidden').removeClass('loadhidden').removeClass('hidden');
+            },
+            parseDate: function parseDate(dateString) {
+                //Matches YYY-MM-DD
+                if (dateString.match(/\d{2}\/\d{2}\/\d{4}/g)) {
+                    var d = new Date(dateString);
+                    var year = d.getFullYear();
+                    var month = d.getMonth() + 1;
+                    if (month < 10) {
+                        month = '0' + month;
+                    }
+                    var day = d.getDate();
+                    if (day < 10) {
+                        day = '0' + day;
+                    }
+                    return year + '-' + month + '-' + day;
+                } else {
+                    return dateString;
+                }
             }
         },
         select2settings: function select2settings(data, formatFn) {
@@ -28382,14 +28400,14 @@ module.exports = function (Vue) {
                         if (error.status >= 500) {
                             //TODO update the error code management for production
                             console.log(error);
-                            document.open();
-                            document.write(error.responseText);
-                            document.close();
+                            //document.open();
+                            //document.write(error.responseText);
+                            //document.close();
                         } else {
-                            console.log(error);
-                            instance.renderErrors(error.responseJSON);
-                            instance.setNotLoading();
-                        }
+                                console.log(error);
+                                instance.renderErrors(error.responseJSON);
+                                instance.setNotLoading();
+                            }
                     }, 1000);
                 });
             },
@@ -28612,7 +28630,9 @@ module.exports = function (Resources) {
                 Resources.BrotherhoodReport(this).put({ id: report.id }, { approved: true }, function (data, status, request) {
                     if (status == 200) {
                         this.reports.data.$remove(report);
-                        this.approved.data.push(report);
+                        if (this.approved_page == 1) {
+                            this.approved.data.push(report);
+                        }
                     } else {
                         console.log('Error approving report.');
                     }
@@ -28631,34 +28651,34 @@ module.exports = function (Resources) {
                 }
             },
             getPage: function getPage(page, approved) {
-                console.log(page + ' ' + approved);
-                if (page <= 0) {
-                    return;
-                }
-                if (approved === 'true' && page in this.approved_cache) {
-                    return this.approved_cache[page];
-                } else if (approved === 'false' && page in this.reports_cache) {
-                    return this.reports_cache[page];
-                } else {
-                    Resources.BrotherhoodReport(this).get({}, {
-                        'approved': approved,
-                        'page': page
-                    }, function (data, status, request) {
-                        if (status == 200) {
-                            if (approved) {
-                                this.approved_cache[page] = data;
-                                this.approved_page = page;
-                                this.approved = data;
-                            } else {
-                                this.reports_cache[page] = data;
-                                this.reports_page = page;
-                                this.reports = data;
-                            }
+                //console.log(page + ' ' + approved);
+                //if (page <= 0) {
+                //    return;
+                //}
+                //if (approved === 'true' && page in this.approved_cache) {
+                //    return this.approved_cache[page];
+                //} else if (approved === 'false' && page in this.reports_cache) {
+                //    return this.reports_cache[page];
+                //} else {
+                Resources.BrotherhoodReport(this).get({}, {
+                    'approved': approved,
+                    'page': page
+                }, function (data, status, request) {
+                    if (status == 200) {
+                        if (approved) {
+                            //this.approved_cache[page] = data;
+                            this.approved_page = page;
+                            this.approved = data;
                         } else {
-                            console.log(data);
+                            //this.reports_cache[page] = data;
+                            this.reports_page = page;
+                            this.reports = data;
                         }
-                    });
-                }
+                    } else {
+                        console.log(data);
+                    }
+                });
+                //}
             }
         },
         filters: {
@@ -29018,6 +29038,7 @@ module.exports = function (Resources) {
             getForm: function getForm() {
                 var newForm = Resources.Vue.util.extend({}, this.form);
                 newForm.off_campus = this.form === '1';
+                newForm.event_date = Resources.utils.parseDate(this.form.event_date);
                 var i = newForm.brothers.length;
                 for (var j = 0; j < i; j++) {
                     newForm.brothers[j].is_driver = newForm.brothers[j].is_driver === '1';
@@ -29120,11 +29141,14 @@ module.exports = function (Resources) {
                 Resources.ServiceReport(this).put({ id: report.id }, { approved: true }, function (data, status, request) {
                     if (status == 200) {
                         this.reports.data.$remove(report);
-                        this.approved.data.push(report);
+                        if (this.approved_page == 1) {
+                            this.approved.data.push(report);
+                        }
                     } else {
                         console.log('Error approving report.');
-                        var w = window.open();
-                        $(w.document).html(data);
+                        console.log(data);
+                        //var w  = window.open();
+                        //$(w.document).html(data);
                     }
                 });
             },
@@ -29136,40 +29160,40 @@ module.exports = function (Resources) {
                             this.reports.data.$remove(report);
                             this.approved.data.$remove(report);
                         } else {
+                            console.log('Error approving report.');
                             console.log(data);
                         }
                     });
                 }
             },
             getPage: function getPage(page, approved) {
-                console.log(page + ' ' + approved);
-                if (page <= 0) {
-                    return;
-                }
-                if (approved === 'true' && page in this.approved_cache) {
-                    return this.approved_cache[page];
-                } else if (approved === 'false' && page in this.reports_cache) {
-                    return this.reports_cache[page];
-                } else {
-                    Resources.ServiceReport(this).get({}, {
-                        'approved': approved,
-                        'page': page
-                    }, function (data, status, request) {
-                        if (status == 200) {
-                            if (approved) {
-                                this.approved_cache[page] = data;
-                                this.approved_page = page;
-                                this.approved = data;
-                            } else {
-                                this.reports_cache[page] = data;
-                                this.reports_page = page;
-                                this.reports = data;
-                            }
+                //if (page <= 0) {
+                //    return;
+                //}
+                //if (approved === 'true' && page in this.approved_cache) {
+                //    return this.approved_cache[page];
+                //} else if (approved === 'false' && page in this.reports_cache) {
+                //    return this.reports_cache[page];
+                //} else {
+                Resources.ServiceReport(this).get({}, {
+                    'approved': approved,
+                    'page': page
+                }, function (data, status, request) {
+                    if (status == 200) {
+                        if (approved) {
+                            //this.approved_cache[page] = data;
+                            this.approved_page = page;
+                            this.approved = data;
                         } else {
-                            console.log(data);
+                            //this.reports_cache[page] = data;
+                            this.reports_page = page;
+                            this.reports = data;
                         }
-                    });
-                }
+                    } else {
+                        console.log(data);
+                    }
+                });
+                //}
             }
         },
         filters: {

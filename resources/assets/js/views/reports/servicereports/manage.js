@@ -35,11 +35,14 @@ module.exports = function (Resources) {
                 Resources.ServiceReport(this).put({id: report.id}, {approved: true}, function (data, status, request) {
                     if (status == 200) {
                         this.reports.data.$remove(report);
-                        this.approved.data.push(report);
+                        if(this.approved_page == 1) {
+                            this.approved.data.push(report);
+                        }
                     } else {
                         console.log('Error approving report.');
-                        var w  = window.open();
-                        $(w.document).html(data);
+                        console.log(data);
+                        //var w  = window.open();
+                        //$(w.document).html(data);
                     }
                 });
             },
@@ -51,32 +54,32 @@ module.exports = function (Resources) {
                             this.reports.data.$remove(report);
                             this.approved.data.$remove(report);
                         } else {
+                            console.log('Error approving report.');
                             console.log(data);
                         }
                     });
                 }
             },
             getPage: function (page, approved) {
-                console.log(page + ' ' + approved);
-                if (page <= 0) {
-                    return;
-                }
-                if (approved === 'true' && page in this.approved_cache) {
-                    return this.approved_cache[page];
-                } else if (approved === 'false' && page in this.reports_cache) {
-                    return this.reports_cache[page];
-                } else {
+                //if (page <= 0) {
+                //    return;
+                //}
+                //if (approved === 'true' && page in this.approved_cache) {
+                //    return this.approved_cache[page];
+                //} else if (approved === 'false' && page in this.reports_cache) {
+                //    return this.reports_cache[page];
+                //} else {
                     Resources.ServiceReport(this).get({}, {
                         'approved': approved,
                         'page': page
                     }, function (data, status, request) {
                         if (status == 200) {
                             if (approved) {
-                                this.approved_cache[page] = data;
+                                //this.approved_cache[page] = data;
                                 this.approved_page = page;
                                 this.approved = data;
                             } else {
-                                this.reports_cache[page] = data;
+                                //this.reports_cache[page] = data;
                                 this.reports_page = page;
                                 this.reports = data;
                             }
@@ -84,7 +87,7 @@ module.exports = function (Resources) {
                             console.log(data);
                         }
                     });
-                }
+                //}
             }
         },
         filters: {

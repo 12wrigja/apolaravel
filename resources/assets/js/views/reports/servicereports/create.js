@@ -55,6 +55,7 @@ module.exports = function (Resources) {
             getForm: function () {
                 var newForm = Resources.Vue.util.extend({}, this.form);
                 newForm.off_campus = this.form === '1';
+                newForm.event_date = Resources.utils.parseDate(this.form.event_date);
                 var i = newForm.brothers.length;
                 for(var j=0; j<i; j++){
                     newForm.brothers[j].is_driver = newForm.brothers[j].is_driver === '1';

@@ -24,7 +24,7 @@
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                                    href="#collapse@{{report.id}}" aria-expanded="false"
                                    aria-controls="collapse@{{report.id}}">
-                                    @{{report.event_name}}
+                                    @{{report.event_name}} |
                                     @{{report.human_date}}
                                 </a>
                             </h4>
@@ -32,7 +32,7 @@
                         <div id="collapse@{{report.id}}" class="panel-collapse collapse" role="tabpanel"
                              aria-labelledby="heading@{{report.id}}">
                             <div class="panel-body">
-                                @include('reports.servicereports.report_details')
+                                @include('reports.brotherhoodreports.report_details')
                                 <div class="btn btn-primary" v-on="click: approveReport(report)">Approve</div>
                                 <div class="btn btn-danger" v-on="click: deleteReport(report)">Delete</div>
                             </div>
@@ -57,7 +57,7 @@
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                                    href="#collapse@{{report.id}}" aria-expanded="false"
                                    aria-controls="collapse@{{report.id}}">
-                                    @{{report.event_name}}
+                                    @{{report.event_name}} |
                                     @{{report.human_date}}
                                 </a>
                             </h4>
@@ -66,8 +66,8 @@
                              aria-labelledby="heading@{{report.id}}">
                             <div class="panel-body">
 
-                                @include('reports.servicereports.report_details')
-
+                                @include('reports.brotherhoodreports.report_details')
+                                <div class="btn btn-danger" v-on="click: deleteReport(report)">Delete</div>
                             </div>
                         </div>
                     </div>

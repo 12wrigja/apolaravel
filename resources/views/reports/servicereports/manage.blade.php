@@ -67,7 +67,7 @@
                             <div class="panel-body">
 
                                 @include('reports.servicereports.report_details')
-
+                                <div class="btn btn-danger" v-on="click: deleteReport(report)">Delete</div>
                             </div>
                         </div>
                     </div>
