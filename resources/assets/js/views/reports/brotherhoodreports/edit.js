@@ -5,33 +5,27 @@ module.exports = function (Resources) {
         data: function () {
             return {
                 form: {
+                    id: -1,
                     brothers: [],
                     event_name: '',
                     description: '',
                     event_date: '',
-                    location: '',
-                    off_campus: '',
-                    project_type: '',
-                    service_type: '',
-                    travel_time: '',
+                    type: '',
+                    location: ''
                 },
-                users : []
-            }
-        },
-        computed: {
-            allowTravelTime: function () {
-                console.log('Computing if we can let the user fill in travel time.');
-                return this.form.project_type === 'inside' && this.form.off_campus === '1';
-            },
-            allowOffCampus: function () {
-                return this.form.project_type === "inside";
+                users : [],
+                report: [],
+                method:'PUT'
             }
         },
         methods: {
             successFunction: function (data) {
                 $(this.$$.loadingArea).collapse('hide');
-                $(this.$$.successArea).collapse({'toggle':false});
-                $(this.$$.successArea).collapse('show');
+                //collapse modal, update data in main list
+                this.$dispatch('successfulEdit',data['data']);
+                //Update the existing report reference to use this data.
+                this.startOver();
+                $(this.$$.modal).modal('hide');
             },
             setupUserSearch: function () {
                 Resources.User(this).get({},function(data,status,response){
@@ -52,13 +46,11 @@ module.exports = function (Resources) {
                     }
                 })
             },
+            getIDForForm: function(){
+              return this.form.id;
+            },
             getForm: function () {
                 var newForm = Resources.Vue.util.extend({}, this.form);
-                newForm.off_campus = this.form === '1';
-                var i = newForm.brothers.length;
-                for(var j=0; j<i; j++){
-                    newForm.brothers[j].is_driver = newForm.brothers[j].is_driver === '1';
-                }
                 return newForm;
             },
             formatBrother: function(brother){
@@ -67,21 +59,6 @@ module.exports = function (Resources) {
                 } else {
                     return brother.first_name + ' ' +brother.last_name;
                 }
-            },
-            addBrother: function(e){
-                var broListing = e.params.data;
-                var newBro = {
-                    'id' : broListing.id,
-                    'name' : this.formatBrother(broListing),
-                    'hours' : 0,
-                    'minutes' : 0,
-                    'is_driver' : false
-                };
-                this.form.brothers.push(newBro);
-            },
-            removeBrother: function(brother){
-                this.form.brothers.$remove(brother);
-
             },
             hasBrother: function(e){
                 var broListing = e.params.data;
@@ -93,18 +70,33 @@ module.exports = function (Resources) {
                 }
                 return false;
             },
+            addBrother: function(e){
+                var broListing = e.params.data;
+                console.log(this.formatBrother(broListing));
+                var newBro = {
+                    'id' : broListing.id,
+                    'name' : this.formatBrother(broListing),
+                    'hours' : 0,
+                    'minutes' : 0
+                };
+                this.form.brothers.push(newBro);
+            },
+            removeBrother: function(brother){
+                this.form.brothers.$remove(brother);
+
+            },
             clearForm: function(){
                 this.form = {
                     brothers: [],
                     event_name: '',
                     description: '',
                     event_date: '',
-                    location: '',
-                    off_campus: '',
-                    project_type: '',
-                    service_type: '',
-                    travel_time: '',
+                    type: '',
+                    location: ''
                 };
+            },
+            show: function(){
+                $(this.$$.modal).modal('show');
             }
         },
         filters: {

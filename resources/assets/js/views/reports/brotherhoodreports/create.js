@@ -6,7 +6,7 @@ module.exports = function (Resources) {
             return {
                 form: {
                     brothers: [],
-                    display_name: '',
+                    event_name: '',
                     description: '',
                     event_date: '',
                     type: '',
@@ -78,7 +78,7 @@ module.exports = function (Resources) {
             clearForm: function(){
                 this.form = {
                     brothers: [],
-                    display_name: '',
+                    event_name: '',
                     description: '',
                     event_date: '',
                     type: '',

@@ -59,8 +59,8 @@
     </thead>
     <tbody>
     <tr v-repeat="brother: report.brothers">
-        <td>@{{ brother.display_name }}</td>
-        <td>@{{ brother.user_id }}</td>
+        <td>@{{ brother.name }}</td>
+        <td>@{{ brother.id }}</td>
         <td>@{{ brother.hours }}</td>
         <td>@{{ brother.minutes }}</td>
     </tr>

@@ -111,7 +111,8 @@ var main = new Vue({
         'manage_brotherhood_reports_form' : require('./views/reports/brotherhoodreports/manage.js')(Resources),
         'create_chapter_meeting_form' : require('./views/reports/chaptermeetings/create.js')(Resources),
         'create_pledge_meeting_form': require('./views/reports/pledgemeetings/create.js')(Resources),
-        'create_exec_meeting_form' : require('./views/reports/execmeetings/create.js')(Resources)
+        'create_exec_meeting_form' : require('./views/reports/execmeetings/create.js')(Resources),
+        'edit_brotherhood_report_form' : require('./views/reports/brotherhoodreports/edit.js')(Resources),
     },
 
     filters: {

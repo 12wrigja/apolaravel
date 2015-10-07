@@ -158,6 +158,9 @@
             <div class="form-group">
                 {!! Form::submit('Submit Report', ['class'=>'btn btn-primary form-control']) !!}
             </div>
+            <div class="form-group">
+                <div class="btn btn-danger form-control" v-on="click: confirmClearForm()">Clear Form</div>
+            </div>
         </div>
         {!! Form::close() !!}
 

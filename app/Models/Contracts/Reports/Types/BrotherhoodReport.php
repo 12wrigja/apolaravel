@@ -8,7 +8,6 @@ use APOSite\Models\Contracts\Reports\BaseModel;
 use APOSite\Models\Users\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Request;
 use League\Fractal\Manager;
 
@@ -43,9 +42,10 @@ class BrotherhoodReport extends BaseModel
 
     public function updateRules()
     {
-        return [
+        $createRules = $this->createRules();
+        return array_merge($createRules,[
             'approved' => ['sometimes', 'required', 'boolean']
-        ];
+        ]);
     }
 
     public function canStore(User $user)
@@ -85,7 +85,8 @@ class BrotherhoodReport extends BaseModel
         }
     }
 
-    public function canManage(User $user){
+    public function canManage(User $user)
+    {
         return AccessController::isMembership($user);
     }
 
@@ -169,6 +170,13 @@ class BrotherhoodReport extends BaseModel
 
     public function updatable()
     {
-        return ['approved'];
+        return [
+            'approved',
+            'location',
+            'type',
+            'event_date',
+            'event_name',
+            'description',
+        ];
     }
 }

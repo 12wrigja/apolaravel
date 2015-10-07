@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Eloquent;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 abstract class BaseModel extends Eloquent implements ReportInterface
 {
@@ -37,23 +38,27 @@ abstract class BaseModel extends Eloquent implements ReportInterface
         $specific->core()->save($coreEvent);
         $brothers = $attributes['brothers'];
         if ($brothers != null) {
-            foreach ($brothers as $index => $brother) {
-                try {
-                    $value = $specific->computeValue($brother);
-                    $tag = $specific->getTag($brother);
-                    $coreEvent->linkedUsers()->attach($brother['id'], ['value' => $value, 'tag' => $tag]);
-                } catch (Exception $e) {
-                    Log::error("Unable to link brother " . $brother['id'] . " to report with ID " . $coreEvent->getKey());
-                    Log::error($e);
-                    throw $e;
-                }
-            }
+            BaseModel::updateBrothers($specific,$coreEvent,$brothers);
         }
         $coreEvent->save();
         $specific->save();
         DB::commit();
 
         return $specific;
+    }
+
+    private static function updateBrothers($specific, $coreEvent, $brothers){
+        foreach ($brothers as $index => $brother) {
+            try {
+                $value = $specific->computeValue($brother);
+                $tag = $specific->getTag($brother);
+                $coreEvent->linkedUsers()->attach($brother['id'], ['value' => $value, 'tag' => $tag]);
+            } catch (Exception $e) {
+                Log::error("Unable to link brother " . $brother['id'] . " to report with ID " . $coreEvent->getKey());
+                Log::error($e);
+                throw $e;
+            }
+        }
     }
 
     public function core()
@@ -70,11 +75,17 @@ abstract class BaseModel extends Eloquent implements ReportInterface
     {
         $updatable = method_exists($this, 'updatable') ? $this->updatable() : array();
         foreach ($attributes as $key => $value) {
-            if (in_array($key, $updatable)) {
+            if ($key != 'brothers' && in_array($key, $updatable)) {
                 $this->setAttribute($key, $value);
             }
         }
-        $this->save();
+        if(array_key_exists('brothers',$attributes)){
+            //Re-sync all brothers attached to this event.
+            $core = $this->core;
+            $core->linkedUsers()->detach();
+            BaseModel::updateBrothers($this,$core,$attributes['brothers']);
+        }
+        return $this->save();
     }
 
     public function scopeCurrentSemester($query){

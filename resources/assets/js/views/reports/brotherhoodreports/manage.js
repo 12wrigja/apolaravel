@@ -6,12 +6,13 @@ module.exports = function (Resources) {
         },
         data: function () {
             return {
-                reports: {},
-                approved: {},
+                reports: [],
+                approved: [],
                 reports_cache: {},
                 approved_cache: {},
                 reports_page: -1,
-                approved_page: -1
+                approved_page: -1,
+                tempReport: {}
             }
         },
         computed: {
@@ -84,6 +85,25 @@ module.exports = function (Resources) {
                         }
                     });
                 //}
+            },
+            editReport: function(report){
+                this.tempReport = report;
+                this.$.editForm.form = Resources.Vue.util.extend({}, report);
+                this.$.editForm.form.id = report.id;
+                var instance = this;
+                this.$on('successfulEdit',function(updatedReport){
+                    instance.reports.data.forEach(function(item,index){
+                       if(item.id === updatedReport.id){
+                           instance.reports.data.$set(index,updatedReport);
+                           console.log('#collapse'+item.id);
+                           var id = '#collapse'+item.id;
+                           Resources.Vue.nextTick(function(){
+                               $(id).collapse('show');
+                           });
+                       }
+                    });
+                });
+                this.$.editForm.show();
             }
         },
         filters: {

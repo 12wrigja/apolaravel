@@ -17,6 +17,9 @@ module.exports = function (Vue) {
                     if (xdebug_key !== undefined) {
                         base = base + "?XDEBUG_SESSION_START=" + xdebug_key;
                     }
+                    if(base.indexOf(':id')){
+                        base = base.replace(':id',this.getIDForForm());
+                    }
                     return base;
                 }
             },
@@ -37,7 +40,9 @@ module.exports = function (Vue) {
                 submitForm: function (event) {
                     console.log('Submitting form.');
                     console.log(this.formURL);
-                    event.preventDefault();
+                    if(event !== null && event !== undefined){
+                        event.preventDefault();
+                    }
                     this.loadTime = new Date().getTime() / 1000;
                     this.setLoading();
                     this.cleanupErrors();
@@ -52,7 +57,7 @@ module.exports = function (Vue) {
                             console.log("Done Waiting.");
                             console.log("Successful call to " + this.formURL);
                             $(instance.$$.loadingArea).collapse('hide');
-                            instance.successFunction(data);
+                            instance.successFunction(JSON.parse(data));
                         }, 1000);
                     }).fail(function (error) {
                         setTimeout(function () {
@@ -128,6 +133,12 @@ module.exports = function (Vue) {
                     $(this.$$.loadingArea).collapse('hide');
                     $(this.$$.successArea).collapse('hide');
                     $(this.$$.iform).collapse('show');
+                },
+                confirmClearForm: function(){
+                    var instance = this;
+                    if(window.confirm("Are you sure you want to clear this form?")) {
+                        instance.clearForm();
+                    }
                 }
             },
             ready: function () {

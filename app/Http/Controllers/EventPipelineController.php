@@ -118,9 +118,14 @@ class EventPipelineController extends Controller
     {
         try {
             $report = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
-            $report->update(Input::all());
-            //Return the data in json form
-            return "Success";
+            $res = $report->update(Input::except(['id','creator_id']));
+            if($res == null || $res) {
+                //Return the data in json form
+                $resource = new Item($report, $report->transformer($this->fractal));
+                return $this->fractal->createData($resource)->toJson();
+            } else {
+                return "Error updating model.";
+            }
         } catch (\ReflectionException $e) {
             return $e;
 //            return Response::json([
