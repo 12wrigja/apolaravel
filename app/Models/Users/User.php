@@ -57,7 +57,12 @@ class User extends Model
         }
         $query = $query->where('semester_id', $semester->id);
         $contract_id = $query->select('contract_id')->first()->contract_id;
-        return App::make('APOSite\ContractFramework\Contracts\\' . $contract_id . 'Contract', ['user' => $this,'semester'=>$semester]);
+        try {
+            return App::make('APOSite\ContractFramework\Contracts\\' . $contract_id . 'Contract', ['user' => $this, 'semester' => $semester]);
+        } catch(\ReflectionException $e){
+            return null;
+        }
+
     }
 
     public function offices()

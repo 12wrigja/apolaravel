@@ -23,7 +23,7 @@
                             </div>
                         </div>
                         <p>Required: {{ $requirement->getThreshold() }}</p>
-                        <p>Current: {{ $requirement->getValue() }}</p>
+                        <p>Current: {{ round($requirement->getValue(),2) }}</p>
                         {{-- @if($reports != null)
                              @foreach($reports as $report)
                                 @if($report->report_type instanceof \APOSite\Models\Contracts\Reports\Types\ServiceReport)
