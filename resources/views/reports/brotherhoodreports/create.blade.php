@@ -25,7 +25,6 @@
             <div class="form-group">
                 <div class="btn btn-danger form-control" v-on="click: confirmClearForm()">Clear Form</div>
             </div>
-        </div>
         {!! Form::close() !!}
 
         <div class="alert alert-info alert-important collapse" role="alert" v-el="loadingArea">

@@ -11,8 +11,7 @@ module.exports = function (Resources) {
                 reports_cache: {},
                 approved_cache: {},
                 reports_page: -1,
-                approved_page: -1,
-                tempReport: {}
+                approved_page: -1
             }
         },
         computed: {

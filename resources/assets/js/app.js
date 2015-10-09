@@ -112,7 +112,7 @@ var main = new Vue({
         'create_chapter_meeting_form' : require('./views/reports/chaptermeetings/create.js')(Resources),
         'create_pledge_meeting_form': require('./views/reports/pledgemeetings/create.js')(Resources),
         'create_exec_meeting_form' : require('./views/reports/execmeetings/create.js')(Resources),
-        'edit_brotherhood_report_form' : require('./views/reports/brotherhoodreports/edit.js')(Resources),
+        'form_editor' : require('./components/forms/editor.js')(Resources),
         'create_dues_report_form' : require('./views/reports/duesreports/create.js')(Resources)
     },
 

@@ -81,9 +81,13 @@ class ServiceReport extends BaseModel
 
     public function updateRules()
     {
-        return [
+        $createRules = $this->createRules();
+        foreach($createRules as $key=>$rule){
+            array_push($createRules[$key],'sometimes');
+        }
+        return array_merge($createRules,[
             'approved' => ['sometimes', 'required', 'boolean']
-        ];
+        ]);
     }
 
     public function errorMessages()
@@ -111,7 +115,15 @@ class ServiceReport extends BaseModel
     public function updatable()
     {
         return [
-            'approved'
+            'approved',
+            'event_name',
+            'description',
+            'event_date',
+            'service_type',
+            'location',
+            'project_type',
+            'off_campus',
+            'travel_time',
         ];
     }
 

@@ -81,7 +81,7 @@
                 </nav>
             </div>
         </div>
-        <edit_brotherhood_report_form inline-template v-ref="editForm">
+        <form_editor inline-template v-ref="editForm">
         <div class="modal fade" v-el="modal">
             <div class="modal-dialog modal-wide">
                 <div class="modal-content">
@@ -109,6 +109,6 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-        </edit_brotherhood_report_form>
+        </form_editor>
     </manage_brotherhood_reports_form>
 @endsection

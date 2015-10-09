@@ -1,6 +1,6 @@
-<h4>Project Name</h4>
+<h4>Event Name</h4>
 
-<P>@{{ report.display_name }}</P>
+<P>@{{ report.event_name }}</P>
 
 <h4>Description</h4>
 

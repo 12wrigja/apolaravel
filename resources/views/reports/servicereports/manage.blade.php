@@ -24,7 +24,7 @@
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                                    href="#collapse@{{report.id}}" aria-expanded="false"
                                    aria-controls="collapse@{{report.id}}">
-                                    @{{report.display_name}} |
+                                    @{{report.event_name}} |
                                     @{{report.human_date}}
                                 </a>
                             </h4>
@@ -33,7 +33,8 @@
                              aria-labelledby="heading@{{report.id}}">
                             <div class="panel-body">
                                 @include('reports.servicereports.report_details')
-                                <div class="btn btn-primary" v-on="click: approveReport(report)">Approve</div>
+                                <div class="btn btn-primary" v-on="click: editReport(report)">Edit</div>
+                                <div class="btn btn-success" v-on="click: approveReport(report)">Approve</div>
                                 <div class="btn btn-danger" v-on="click: deleteReport(report)">Delete</div>
                             </div>
                         </div>
@@ -57,7 +58,7 @@
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                                    href="#collapse@{{report.id}}" aria-expanded="false"
                                    aria-controls="collapse@{{report.id}}">
-                                    @{{report.display_name}} |
+                                    @{{report.event_name}} |
                                     @{{report.human_date}}
                                 </a>
                             </h4>
@@ -80,5 +81,34 @@
                 </nav>
             </div>
         </div>
+        <form_editor inline-template v-ref="editForm">
+            <div class="modal fade" v-el="modal">
+                <div class="modal-dialog modal-wide">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Edit Service Report</h4>
+                        </div>
+                        <div class="modal-body">
+                            {!! Form::open(['route'=>['report_update','type'=>'service_reports','id'=>':id'],'class'=>'collapse in','v-el'=>'iform'])!!}
+                            @include('reports.servicereports.form')
+                        </div>
+                        {!! Form::close() !!}
+                        <div class="alert alert-info alert-important collapse" role="alert" v-el="loadingArea">
+                            <h3 class="text-center">Editing Report...</h3>
+
+                            <div class="progress">
+                                <div class="progress-bar  progress-bar-striped active" role="progressbar" aria-valuenow="100"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" v-on="click: submitForm(event)">Save changes</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </form_editor>
     </manage_service_reports_form>
 @endsection
