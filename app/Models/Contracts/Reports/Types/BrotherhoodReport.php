@@ -43,9 +43,14 @@ class BrotherhoodReport extends BaseModel
     public function updateRules()
     {
         $createRules = $this->createRules();
-        return array_merge($createRules,[
+        foreach($createRules as $key=>$rule){
+            array_push($createRules[$key],'sometimes');
+        }
+        $allRules =  array_merge($createRules,[
             'approved' => ['sometimes', 'required', 'boolean']
         ]);
+        dd($allRules);
+        return $allRules;
     }
 
     public function canStore(User $user)
