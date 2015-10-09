@@ -17,7 +17,7 @@ module.exports = function (Vue) {
                     if (xdebug_key !== undefined) {
                         base = base + "?XDEBUG_SESSION_START=" + xdebug_key;
                     }
-                    if(base.indexOf(':id')){
+                    if(base.indexOf(':id') >= 0 ){
                         base = base.replace(':id',this.getIDForForm());
                     }
                     return base;
@@ -34,7 +34,6 @@ module.exports = function (Vue) {
                 },
                 register: function () {
                     console.log('Registering form.');
-                    console.log(this.formURL);
                     this.$$.iform.addEventListener('submit', this.submitForm);
                 },
                 submitForm: function (event) {

@@ -11,7 +11,7 @@
     <p>Contact the Membership VP with any questions at membership@apo.case.edu</p>
 
     <create_brotherhood_report_form inline-template>
-        {!! Form::open(['route'=>[$mode,'type'=>'brotherhood_reports'],'class'=>'collapse in','v-el'=>'iform'])
+        {!! Form::open(['route'=>['report_store','type'=>'brotherhood_reports'],'class'=>'collapse in','v-el'=>'iform'])
         !!}
 
             @include('reports.brotherhoodreports.form')
