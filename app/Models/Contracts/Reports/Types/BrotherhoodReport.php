@@ -49,7 +49,6 @@ class BrotherhoodReport extends BaseModel
         $allRules =  array_merge($createRules,[
             'approved' => ['sometimes', 'required', 'boolean']
         ]);
-        dd($allRules);
         return $allRules;
     }
 
