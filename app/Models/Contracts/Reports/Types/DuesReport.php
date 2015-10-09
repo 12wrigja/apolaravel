@@ -7,9 +7,12 @@ use APOSite\Http\Transformers\ChapterMeetingTransformer;
 use APOSite\Models\Contracts\Reports\BaseModel;
 use APOSite\Models\Users\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use League\Fractal\Manager;
+use APOSite\ContractFramework\Requirements\ActiveMemberDuesRequirement;
+use APOSite\ContractFramework\Requirements\AssociateMemberDuesRequirement;
+use APOSite\ContractFramework\Requirements\PledgeMemberDuesRequirement;
 
 class DuesReport extends BaseModel
 {
@@ -25,7 +28,29 @@ class DuesReport extends BaseModel
 
     public function computeValue(array $brotherData)
     {
-        return 1;
+        if(array_key_exists('type',$brotherData)){
+            if($brotherData['type'] == 'full'){
+                $brother = User::find($brotherData['id']);
+                $contract = $brother->contractForSemester(null);
+                $requirements = $contract->requirements;
+                $duesReq = null;
+                $requirements = $contract->requirements;
+                foreach ($requirements as $requirement) {
+                    if ($requirement instanceof ActiveMemberDuesRequirement || $requirement instanceof AssociateMemberDuesRequirement || $requirement instanceof PledgeMemberDuesRequirement) {
+                        $duesReq = $requirement;
+                        break;
+                    }
+                }
+                if($duesReq != null){
+                    return $duesReq->getThreshold();
+                } else {
+                    Log::error('Unable to log user '.$brother->id.' paying full dues.');
+                    //TODO insert a way to notify the webmaster when this happens so that he can look into it.
+                }
+            }
+        } else {
+            return $brotherData['value'];
+        }
     }
 
     public function getTag(array $brotherData)
@@ -44,6 +69,7 @@ class DuesReport extends BaseModel
         if (Request::has('brothers')) {
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
+                $extraRules['brothers.'.$index.'.type'] = ['sometimes','required','in:full,other'];
                 $extraRules['brothers.' . $index . '.value'] = ['required','integer','min:0'];
             }
         }

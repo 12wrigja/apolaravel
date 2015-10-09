@@ -6,9 +6,6 @@ module.exports = function (Resources) {
             return {
                 form: {
                     brothers: [],
-                    display_name: '',
-                    description: '',
-                    event_date: ''
                 },
                 users : []
             }
@@ -38,7 +35,6 @@ module.exports = function (Resources) {
             },
             getForm: function () {
                 var newForm = Resources.Vue.util.extend({}, this.form);
-                newForm.display_name = "Chapter Meeting " + newForm.event_date;
                 return newForm;
             },
             formatBrother: function(brother){
@@ -52,7 +48,9 @@ module.exports = function (Resources) {
                 var broListing = e.params.data;
                 var newBro = {
                     'id' : broListing.id,
-                    'name' : this.formatBrother(broListing)
+                    'name' : this.formatBrother(broListing),
+                    'type' : 'full',
+                    'value' : 0
                 };
                 this.form.brothers.push(newBro);
             },
@@ -73,11 +71,8 @@ module.exports = function (Resources) {
             clearForm: function(){
                 this.form = {
                     brothers: [],
-                    display_name: '',
-                    description: '',
-                    event_date: ''
                 };
-            }
+            },
         },
         filters: {
             isFalse: function (val) {

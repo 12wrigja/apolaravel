@@ -56,7 +56,17 @@ class AddUserMenuItems
 
 
             }
+            if(AccessController::isTreasurer($user)){
+                $item = new \stdClass();
+                $item->isHeader = true;
+                $item->text = "Treasurer Functions";
+                array_push($menu_items,$item);
 
+                $item = new \stdClass();
+                $item->text = "Manage Dues";
+                $item->url = URL::to('/reports/dues_reports/create');
+                array_push($menu_items,$item);
+            }
             if(AccessController::isHistorian($user)){
 
             }
