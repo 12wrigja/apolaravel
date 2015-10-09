@@ -30,9 +30,6 @@ class BrotherhoodReportTransformer extends TransformerAbstract
             unset($val->value);
             return $val;
         });
-        if($report->event_date == null){
-            dd($report);
-        }
         $otherData = [
             'id' => $report->id,
             'href' => route('report_show',['id'=>$report->id,'type'=>'service_reports']),
