@@ -13,7 +13,11 @@ class OfficerPageController extends Controller {
 	 */
 	public function index()
 	{
-        return view('officers.currentOfficers')->with('offices',Office::AllInOrder()->get());
+        $offices = Office::AllInOrder()->get();
+        $offices = $offices->filter(function($office){
+            return $office->currentOfficer() != null;
+        });
+        return view('officers.currentOfficers')->with('offices',$offices);
     }
 
 	/**
