@@ -1,0 +1,6 @@
+<svg v-attr="width: width, height: height" viewBox="0 0 32 32" style="border-radius: 50%; transform: rotate(-90deg);">
+    <!-- Background Loop-->
+    <circle r="16" cx="16" cy="16" fill="none" stroke="{{bgcolor}}" stroke-width="15" stroke-dasharray="100 100"></circle>
+
+    <circle v-repeat="section in sections" r="16" cx="16" cy="16" fill="none" stroke="{{section.color}}" stroke-width="15" stroke-dasharray="{{section.percent}} 100" stroke-dashoffset="{{section.offset}}" ></circle>
+</svg>

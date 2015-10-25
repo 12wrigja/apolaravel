@@ -27,6 +27,9 @@ class AssociateMemberDuesRequirement extends Requirement
     public function computeValue()
     {
         $report = $this->getReports($this->semester);
+        if($report == null){
+            return 0;
+        }
         return $report->pivot->value;
     }
 }

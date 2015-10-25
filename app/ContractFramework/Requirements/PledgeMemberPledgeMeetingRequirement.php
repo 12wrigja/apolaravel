@@ -47,6 +47,6 @@ class PledgeMemberPledgeMeetingRequirement extends Requirement
     }
 
     public function getDynamicThreshold(){
-        return PledgeMeeting::current()->count();
+        return PledgeMeeting::currentSemester()->count();
     }
 }

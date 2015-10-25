@@ -5,6 +5,7 @@ namespace APOSite\Models\Users;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Query;
 
 use APOSite\Models\Semester;
 
@@ -56,7 +57,11 @@ class User extends Model
             $semester = Semester::currentSemester();
         }
         $query = $query->where('semester_id', $semester->id);
-        $contract_id = $query->select('contract_id')->first()->contract_id;
+        $contract = $query->select('contract_id')->first();
+        if($contract == null){
+            return null;
+        }
+        $contract_id = $contract->contract_id;
         try {
             return App::make('APOSite\ContractFramework\Contracts\\' . $contract_id . 'Contract', ['user' => $this, 'semester' => $semester]);
         } catch(\ReflectionException $e){
@@ -112,6 +117,34 @@ class User extends Model
             $val += $report->pivot->value;
         }
         return $val / 60;
+    }
+
+    public function scopeActiveForSemester($query, Semester $semester)
+    {
+        return $query->join('contract_user', function($join){
+            $join->on('users.id','=','contract_user.user_id');
+        })->whereContractId('Active')->whereSemesterId($semester->id);
+    }
+
+    public function scopeAssociateForSemester($query, Semester $semester)
+    {
+        return $query->join('contract_user', function($join){
+            $join->on('users.id','=','contract_user.user_id');
+        })->whereContractId('Associate')->whereSemesterId($semester->id);
+    }
+
+    public function scopePledgeForSemester($query, Semester $semester)
+    {
+        return $query->join('contract_user', function($join){
+            $join->on('users.id','=','contract_user.user_id');
+        })->whereContractId('Pledge')->whereSemesterId($semester->id);
+    }
+
+    public function scopeNeophyteForSemester($query, Semester $semester)
+    {
+        return $query->join('contract_user', function($join){
+            $join->on('users.id','=','contract_user.user_id');
+        })->whereContractId('Neophyte')->whereSemesterId($semester->id);
     }
 
 }

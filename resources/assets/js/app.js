@@ -113,7 +113,8 @@ var main = new Vue({
         'create_pledge_meeting_form': require('./views/reports/pledgemeetings/create.js')(Resources),
         'create_exec_meeting_form' : require('./views/reports/execmeetings/create.js')(Resources),
         'form_editor' : require('./components/forms/editor.js')(Resources),
-        'create_dues_report_form' : require('./views/reports/duesreports/create.js')(Resources)
+        'create_dues_report_form' : require('./views/reports/duesreports/create.js')(Resources),
+        'piechart' : require('./components/graphwidgets/piechart.js')(Resources),
     },
 
     filters: {

@@ -22,6 +22,8 @@ Route::delete('/reports/{type}/{id}', ['uses' => 'EventPipelineController@delete
 //Routes for the officer pages
 Route::get('officers', ['uses'=>'Officers\OfficerPageController@index','as'=>'officers']);
 
+Route::get('statistics',['uses'=>'ChapterStatisticsController@index','as'=>'chapterstatistics']);
+
 //Routes for managing the users of the users, including creating and storing users.
 //Route::get('/users/create', 'UserController@create');
 //Route::post('/users', 'UserController@store');
