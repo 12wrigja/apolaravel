@@ -8,7 +8,7 @@
     <h2>Service Hours</h2>
     <p>Total Hours: {{$totalHours}}</p>
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <piechart parts="{{$totalInsideHours}},#665|{{$totalOutsideHours}},yellowgreen"
                       bgcolor="yellowgreen"></piechart>
         </div>
@@ -26,7 +26,7 @@
                 Outside Hours: {{$totalOutsideHours}}
             </p>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <piechart
                     parts="{{$totalChapterHours}},red|{{$totalCampusHours}},blue|{{$totalCommunityHours}},yellow|{{$totalCountryHours}},green"
                     bgcolor="black"></piechart>
@@ -61,11 +61,34 @@
     <h2>Brotherhood Hours</h2>
 
     <h2>Contracts</h2>
+    <div class="row">
+        <div class="col-sm-2">
+            <piechart parts="{{$totalActiveContracts}},red|{{$totalAssociateContracts}},blue|{{$totalPledgeContracts}},green|{{$totalNeophyteContracts}},yellow"></piechart>
+        </div>
+        <div class="col-sm-6">
+            <p>
+                <svg width="15px" height="15px">
+                    <rect width="15px" height="15px" fill="red"></rect>
+                </svg>
+                Actives: {{$totalActiveContracts}}</p>
+            <p>
+                <svg width="15px" height="15px">
+                    <rect width="15px" height="15px" fill="blue"></rect>
+                </svg>
+                Associates: {{$totalAssociateContracts}}</p>
+            <p>
+                <svg width="15px" height="15px">
+                    <rect width="15px" height="15px" fill="green"></rect>
+                </svg>
+                Pledges: {{$totalPledgeContracts}}</p>
+            <p>
+                <svg width="15px" height="15px">
+                    <rect width="15px" height="15px" fill="yellow"></rect>
+                </svg>
+                Neophytes: {{$totalNeophyteContracts}}</p>
+        </div>
+    </div>
 
-    <p>Actives: {{$totalActiveContracts}}</p>
-    <p>Associates: {{$totalAssociateContracts}}</p>
-    <p>Pledges: {{$totalPledgeContracts}}</p>
-    <p>Neophytes: {{$totalNeophyteContracts}}</p>
 
     <div class="row">
         <div class="col-sm-4">
