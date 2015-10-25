@@ -42,6 +42,11 @@ class AddUserMenuItems
                 $item->url = URL::to('/reports/service_reports/manage');
                 array_push($menu_items, $item);
 
+                $item = new \stdClass();
+                $item->text = "View Chapter Statistics";
+                $item->url = URL::to('statistics');
+                array_push($menu_items, $item);
+
             }
 
             if(AccessController::isService($user)){
@@ -142,6 +147,17 @@ class AddUserMenuItems
             $item->url = URL::to('/users/'.$user->id.'/status');
             array_push($menu_items,$item);
 
+            //Service report menu item
+            $item = new \stdClass();
+            $item->text = "Other";
+            $item->isHeader = true;
+            array_push($menu_items,$item);
+
+            //Service report menu item
+            $item = new \stdClass();
+            $item->text = "View Event Calendar";
+            $item->url = URL::to('calendar');
+            array_push($menu_items,$item);
 
             //Service report menu item
             $item = new \stdClass();
