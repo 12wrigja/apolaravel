@@ -5,7 +5,6 @@ namespace APOSite\Http\Middleware;
 use APOSite\Http\Controllers\AccessController;
 use APOSite\Http\Controllers\LoginController;
 use Closure;
-use Illuminate\Support\Facades\URL;
 
 class AddUserMenuItems
 {
@@ -34,17 +33,17 @@ class AddUserMenuItems
 
                 $item = new \stdClass();
                 $item->text = "Manage brotherhood reports";
-                $item->url = URL::to('/reports/brotherhood_reports/manage');
+                $item->url = route('report_manage',['type'=>'brotherhood_reports']);
                 array_push($menu_items, $item);
 
                 $item = new \stdClass();
                 $item->text = "Manage service reports";
-                $item->url = URL::to('/reports/service_reports/manage');
+                $item->url = route('report_manage',['type'=>'service_reports']);
                 array_push($menu_items, $item);
 
                 $item = new \stdClass();
                 $item->text = "View Chapter Statistics";
-                $item->url = URL::to('statistics');
+                $item->url = route('chapterstatistics');
                 array_push($menu_items, $item);
 
             }
@@ -69,7 +68,7 @@ class AddUserMenuItems
 
                 $item = new \stdClass();
                 $item->text = "Manage Dues";
-                $item->url = URL::to('/reports/dues_reports/create');
+                $item->url = route('report_create',['type'=>'dues_reports']);
                 array_push($menu_items,$item);
             }
             if(AccessController::isHistorian($user)){
@@ -84,7 +83,7 @@ class AddUserMenuItems
 
                 $item = new \stdClass();
                 $item->text = "Create Chapter Meeting";
-                $item->url = URL::to('reports/chapter_meetings/create');
+                $item->url = route('report_create',['type'=>'chapter_meetings']);
                 array_push($menu_items,$item);
             }
 
@@ -107,7 +106,7 @@ class AddUserMenuItems
 
                 $item = new \stdClass();
                 $item->text = "Create Pledge Meeting";
-                $item->url = URL::to('reports/pledge_meetings/create');
+                $item->url = route('report_create',['type'=>'pledge_meetings']);
                 array_push($menu_items,$item);
             }
 
@@ -120,13 +119,13 @@ class AddUserMenuItems
             //Service report menu item
             $item = new \stdClass();
             $item->text = "Submit a service report";
-            $item->url = URL::to('/reports/service_reports/create');
+            $item->url = route('report_create',['type'=>'service_reports']);
             array_push($menu_items,$item);
 
             //Service report menu item
             $item = new \stdClass();
             $item->text = "Submit a brotherhood report";
-            $item->url = URL::to('/reports/brotherhood_reports/create');
+            $item->url = route('report_create',['type'=>'brotherhood_reports']);
             array_push($menu_items,$item);
 
             //Service report menu item
@@ -138,13 +137,13 @@ class AddUserMenuItems
             //Service report menu item
             $item = new \stdClass();
             $item->text = "View Profile";
-            $item->url = URL::to('/users/'.$user->id);
+            $item->url = route('user_show',['id'=>$user->id]);
             array_push($menu_items,$item);
 
             //Service report menu item
             $item = new \stdClass();
             $item->text = "View Contract";
-            $item->url = URL::to('/users/'.$user->id.'/status');
+            $item->url = route('user_status',['id'=>$user->id]);
             array_push($menu_items,$item);
 
             //Service report menu item
@@ -156,13 +155,13 @@ class AddUserMenuItems
             //Service report menu item
             $item = new \stdClass();
             $item->text = "View Event Calendar";
-            $item->url = URL::to('calendar');
+            $item->url = route('calendar');
             array_push($menu_items,$item);
 
             //Service report menu item
             $item = new \stdClass();
             $item->text = "Logout";
-            $item->url = URL::to('/logout');
+            $item->url = route('logout');
             array_push($menu_items,$item);
 
             $user->menu_items = $menu_items;

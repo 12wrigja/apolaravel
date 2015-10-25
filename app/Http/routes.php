@@ -13,7 +13,7 @@ Route::pattern('cwruid', '[a-z]{3}[0-9]*');
 //Routes for reports
 Route::post('/reports/{type}', ['uses' => 'EventPipelineController@submitEvent', 'as' => 'report_store']);
 Route::get('reports/{type}/create', ['uses' => 'EventPipelineController@createEvent', 'as' => 'report_create']);
-Route::get('reports/{type}/manage', ['uses' => 'EventPipelineController@manageEvent', 'as' => 'report_manage']);
+Route::get('manage/reports/{type}', ['uses' => 'EventPipelineController@manageEvent', 'as' => 'report_manage']);
 Route::get('/reports/{type}/', ['uses' => 'EventPipelineController@showAllEvents', 'as' => 'report_list']);
 Route::get('/reports/{type}/{id}', ['uses' => 'EventPipelineController@showEvent', 'as' => 'report_show']);
 Route::put('/reports/{type}/{id}', ['uses' => 'EventPipelineController@updateEvent', 'as' => 'report_update']);
@@ -38,13 +38,13 @@ Route::delete('/users/{cwruid}', 'UserController@destroy');
 //Route::get('/users/search', array('uses' => 'UserController@search', 'as' => 'user_search'));
 
 //Routes for displaying all users and individual user profiles
-Route::get('/users', ['uses'=>'UserController@index','as'=>'user_list']);
+Route::get('/users', ['uses'=>'UserController@index','as'=>'users']);
 Route::get('/users/{cwruid}', ['uses'=>'UserController@show','as'=>'user_show']);
 
 //Routes for allowing users to update their profiles.
 //TODO fix up the user editing system
 //Route::get('/users/{cwruid}/edit', 'UserController@edit');
-Route::get('/users/{cwruid}/status', 'UserController@statusPage');
+Route::get('/users/{cwruid}/status', ['uses'=>'UserController@statusPage','as'=>'user_status']);
 //Route::put('/users/cwruid}', 'UserController@update');
 
 //TODO clean up routing system for contract and requirement data, along w/ models
@@ -83,17 +83,17 @@ Route::post('login/debug', function () {
 });
 
 //Route for logging out
-Route::get('/logout', function () {
+Route::get('/logout', ['as'=>'logout',function () {
     LoginController::logout();
     if (Input::has('redirect_url')) {
         return Redirect::to(Input::get('redirect_url'));
     } else {
         return Redirect::route('home');
     }
-});
+}]);
 
 //Route for logging in and checking login
-Route::get('/login', array(
+Route::get('login', array(
     'as' => 'login',
     'middleware' => 'SSOAuth',
     function () {
