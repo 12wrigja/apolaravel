@@ -2,13 +2,16 @@
 
 use APOSite\Http\Requests\Users\UserDeleteRequest;
 use APOSite\Http\Requests\Users\UserStatusPageRequest;
-use APOSite\Models\Semester;
+use APOSite\Http\Transformers\UserSearchResultTransformer;
 use APOSite\Models\Users\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
@@ -27,10 +30,27 @@ class UserController extends Controller
     public function index()
     {
         if (Request::wantsJson()) {
-            return User::select('first_name', 'last_name', 'nickname', 'id')->get();
+            $users = null;
+            if (Request::has('search') && Request::get('search')) {
+                //Handle a search here.
+                $query = Request::get('query');
+                if ($query == null) {
+                    $query = '';
+                }
+                $users = $this->searchUsers($query);
+            } else {
+                $users = $this->searchUsers("");
+            }
+            $attributes = Input::get('attr');
+            if ($attributes == null) {
+                $attributes = array();
+            }
+            $transformer = new UserSearchResultTransformer($attributes);
+            $resource = new Collection($users, $transformer);
+            $fractal = new Manager();
+            return $fractal->createData($resource)->toJson();
         } else {
-            //TODO write the listing page for users and allow users to search for each other?
-            return 'Unimplemented.';
+            return view('users.index');
         }
     }
 
@@ -137,35 +157,17 @@ class UserController extends Controller
         }
     }
 
-    public function search()
-    {
-        $text = Input::get('query');
-        $users = $this->searchUsers($text);
-        $attributes = Input::get('attr');
-        if ($attributes != null) {
-            $attributes = explode(',', $attributes);
-            foreach ($attributes as $attr) {
-                $users = $users->addSelect($attr);
-            }
-        }
-        $users = $users->get();
-        return $users;
-    }
-
     private function searchUsers($text)
     {
         if ($text != "") {
-            $users = User::with([
-                'status' => function ($q) {
-                    $q->select('id', 'status');
-                }
-            ])->where('firstName', 'LIKE', $text . '%')->orWhere('lastName', 'LIKE',
-                $text . '%')->orWhere(DB::raw('CONCAT(firstName, " ", lastName)'), 'LIKE',
-                $text . '%')->orderBy('firstName', 'ASC')->orderBy('lastName', 'ASC');
+            $users = User::where('first_name', 'LIKE', $text . '%')->orWhere('last_name', 'LIKE',
+                $text . '%')->orWhere(DB::raw('CONCAT(first_name, " ", last_name)'), 'LIKE',
+                $text . '%')->orderBy('first_name', 'ASC')->orderBy('last_name', 'ASC');
         } else {
-            $users = null;
+            $users = User::query();
         }
-        return $users;
+        $users = $users->orderBy('first_name', 'ASC')->orderBy('last_name', 'ASC');
+        return $users->get();
     }
 
     public function statusPage(UserStatusPageRequest $request, $id)

@@ -1,123 +1,40 @@
-@extends('static_fullscreen')
+@extends('templates.crud_template')
 
-@section('stylesheets')
-@parent
-<link rel="stylesheet" type="text/css" href="../packages/css/card.min.css">
-<style>
-#userCards .card .description{
-	height:90px;
-	text-overflow: ellipsis;
-	overflow:hidden;
-}
-.masthead.segment .image{
-margin:0;
-}
-</style>
-@stop
+@section('crud_form')
 
-@section('scripts')
-@parent
-<script>
+    <user-search-view inline-template>
+        <h2>Chapter Member Search</h2>
 
-function getUsers(page) {
-	startLoader();
-    $.ajax({
-        url : '?page=' + page,
-        dataType: 'json',
-    }).done(function (data) {
-        $('#userCards').html(data);
-        endLoader();
-    }).fail(function () {
-    	endLoader();
-        alert('Users could not be loaded.');
-    });
-}
+        <p>This page allows you to browse all APO Theta Upsilon Members, both past and present. To help you find people
+            faster, enter a name into the search box.</p>
 
-function search(text){
-	startLoader();
-	$.ajax({
-        url : '?query=' + text,
-        dataType: 'json',
-    }).done(function (data) {
-        $('#userCards').html(data);
-        endLoader();
-    }).fail(function () {
-    	endLoader();
-        alert('Search could not be completed.');
-    });
-}
+        {!! Form::open(['url'=>'#','v-el'=>'searchBox']) !!}
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for..." v-model="query">
+            <span class="input-group-btn">
+                <button class="btn btn-default">Search</button>
+             </span>
+        </div>
+        {!! Form::close() !!}
 
-function startLoader(){
-	$("#cardLoad").addClass("active");
-}
-function endLoader(){
-	$("#cardLoad").removeClass("active");
-}
-$(document).ready(function() {
-    $(document).on('click', '.pagination a', function (e) {
-    	e.preventDefault();
-    	var num = $(this).attr('href').split('page=')[1];
-    	location.hash = num;
-        getUsers(num);
-    });
-    $("#searchForm button").click(function(e){
-    	e.preventDefault();
-		var text = $('#searchForm input[name="query"]').val();
-		search(text);
-    });
-    $("#searchForm").submit(function(e){
-		e.preventDefault();
-		var text = $('#searchForm input[name="query"]').val();
-		search(text);
-    });
-});
-</script>
-@stop
+        <h3 v-show="isLoading">Loading...</h3>
 
-@section('masthead')
-<h2>APO Members</h2>
-<style>
-.ui.pagination.menu{
-	margin: 10 0;
-}
-#searchForm{
-	display:block;
-	text-align:right;
-}
-#searchForm input{
-	width:25%;
-	display:inline;
-}
-.ui.cards > .card > .content > a.header{
-	height: 3em;
-}
-.ui.cards > .card .meta, .ui.card .meta{
-	height: 2.5em;
-}
-#loadContainer{
-	background: none;
-	padding: none;
-	box-shadow: none;
-}
+        <div id="resultsArea" v-el="resultsArea" v-show="isNotLoading">
+            <ul class="list-group">
+                <li class="list-group-item" v-repeat="user in displayUsers">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <img v-attr="src: user.image" alt="" class="img-thumbnail img-responsive">
+                        </div>
+                        <div class="col-sm-8">
+                            <h1>@{{user.first_name}} @{{ user.last_name }}</h1>
+                            <h4><a href="@{{ user.href }}">View Profile</a></h4>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </user-search-view>
 
-@media only screen and (max-width : 768px) {
-	#searchForm input{
-		width:auto;
-	}
-}
-</style>
-{{Form::open(array('url'=>'#','class'=>'ui action input','id'=>'searchForm','method'=>'GET'))}}
-<!-- {{Form::button('Filter Search',array('class'=>'ui button'))}} -->
-{{Form::text('query')}}
-{{Form::button('Search',array('class'=>'ui button')) }}
-{{Form::close()}}
-<div id="loadContainer" class="ui segment">
-<div id="cardLoad" class="ui dimmer">
-	<div class="ui large loader">
-	</div>
-</div>
-<div id="userCards">
-@include('users.cards')
-</div>
-</div>
-@stop
+
+@endsection

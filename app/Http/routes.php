@@ -35,7 +35,7 @@ Route::delete('/users/{cwruid}', 'UserController@destroy');
 //Route::get('/users/manage', 'UserController@manage');
 
 //Route for searching users.
-//Route::get('/users/search', array('uses' => 'UserController@search', 'as' => 'users.search'));
+//Route::get('/users/search', array('uses' => 'UserController@search', 'as' => 'user_search'));
 
 //Routes for displaying all users and individual user profiles
 Route::get('/users', ['uses'=>'UserController@index','as'=>'user_list']);
