@@ -10,14 +10,15 @@ class CarouselItemTableSeeder extends Seeder
         $first = new CarouselItem();
         $first->title = 'Welcome to APO!';
         $first->background_image = 'css/images/bluebackground.jpg';
+        $first->event_id = -1;
         $first->save();
 
         $second = new CarouselItem();
         $second->title = 'Cats!';
         $second->background_image = 'css/images/catbackground.jpg';
         $second->action_text = 'Pet the Cat!';
+        $second->event_id = -1;
         $second->action_url = '#';
         $second->save();
-        // TestDummy::times(20)->create('App\Post');
     }
 }

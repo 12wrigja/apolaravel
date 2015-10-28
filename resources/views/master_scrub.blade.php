@@ -23,6 +23,7 @@
     {!!Html::style('css/bootstrap-theme.min.css')!!}
     {!! Html::style('css/master.css') !!}
     {!! Html::style('css/mobile-master.css') !!}
+    {!! Html::style('css/dropzone.css') !!}
     @yield('stylesheets')
 </head>
 

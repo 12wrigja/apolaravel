@@ -6,6 +6,7 @@
   "dependencies": {
     "Select2": "git+https://github.com/select2/select2.git",
     "bootstrap": "^3.3.5",
+    "dropzone": "^4.2.0",
     "jquery": "^2.1.4",
     "jquery.mousewheel": "^3.1.9",
     "vue": "^0.12.0",

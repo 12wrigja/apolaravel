@@ -19,6 +19,15 @@ Route::get('/reports/{type}/{id}', ['uses' => 'EventPipelineController@showEvent
 Route::put('/reports/{type}/{id}', ['uses' => 'EventPipelineController@updateEvent', 'as' => 'report_update']);
 Route::delete('/reports/{type}/{id}', ['uses' => 'EventPipelineController@deleteEvent', 'as' => 'report_delete']);
 
+Route::get('images',function(){
+   return view('home');
+});
+//Route::get('/images/{filename}',['uses'=>'ImageController@getImage','as'=>'image_get']);
+Route::post('/img',['as'=>'upload_image','uses'=>'ImageController@uploadImage']);
+Route::get('/manage/banner',function(){
+   return view('tools.bannermanagement');
+});
+
 //Routes for the officer pages
 Route::get('officers', ['uses'=>'Officers\OfficerPageController@index','as'=>'officers']);
 

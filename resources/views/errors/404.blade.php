@@ -1,6 +1,6 @@
-@extends('master_scrub')
+@extends('templates.crud_template')
 
-@section('masthead')
+@section('crud_form')
 <div class="row">
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
@@ -16,4 +16,4 @@
     </div>
     <div class="col-sm-2"></div>
 </div>
-@stop
+@endsection
