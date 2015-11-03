@@ -84,7 +84,7 @@ Route::get('/users/{cwruid}/status', ['uses'=>'UserController@statusPage','as'=>
 Route::get('/', array(
     'as' => 'home',
     function () {
-        return View::make('home')->with('carouselItems', CarouselItem::orderByDisplayOrder());
+        return View::make('home')->with('carouselItems', CarouselItem::OrderByDisplayOrder()->get());
     }
 ));
 
