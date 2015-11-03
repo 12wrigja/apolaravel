@@ -14,4 +14,8 @@ class CarouselItem extends Model
         return $this->hasOne('APOSite\Models\ImageEntry', 'id', 'background_image');
     }
 
+    public function scopeOrderByDisplayOrder($query){
+        return $query->orderBy('display_order','ASC');
+    }
+
 }

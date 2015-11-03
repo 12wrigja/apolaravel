@@ -17,6 +17,7 @@ use Eloquent;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use APOSite\Models\Users\User;
 
 abstract class BaseModel extends Eloquent implements ReportInterface
 {
@@ -99,5 +100,15 @@ abstract class BaseModel extends Eloquent implements ReportInterface
 
     public function setEventDateAttribute($value){
         $this->attributes['event_date'] = new Carbon($value);
+    }
+
+    public function getValueForUser(User $user){
+        $pivotData = $brothers = $this->core->linkedUsers()->where('user_id',$user->id)->first();
+        return $pivotData->pivot->value;
+    }
+
+    public function getTagForUser(User $user){
+        $pivotData = $brothers = $this->core->linkedUsers()->where('user_id',$user->id)->first();
+        return $pivotData->pivot->tag;
     }
 }

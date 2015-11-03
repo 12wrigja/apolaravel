@@ -2,12 +2,11 @@
 
 namespace APOSite\Models\Users;
 
+use APOSite\Models\Semester;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Query;
-
-use APOSite\Models\Semester;
 
 class User extends Model
 {
@@ -52,19 +51,11 @@ class User extends Model
 
     public function contractForSemester($semester)
     {
-        $query = DB::table('contract_user')->where('user_id', $this->id);
-        if ($semester == null) {
-            $semester = Semester::currentSemester();
-        }
-        $query = $query->where('semester_id', $semester->id);
-        $contract = $query->select('contract_id')->first();
-        if($contract == null){
-            return null;
-        }
-        $contract_id = $contract->contract_id;
+        $contract_id = $this->contractForSemester($semester);
         try {
-            return App::make('APOSite\ContractFramework\Contracts\\' . $contract_id . 'Contract', ['user' => $this, 'semester' => $semester]);
-        } catch(\ReflectionException $e){
+            return App::make('APOSite\ContractFramework\Contracts\\' . $contract_id . 'Contract',
+                ['user' => $this, 'semester' => $semester]);
+        } catch (\ReflectionException $e) {
             return null;
         }
 
@@ -121,30 +112,59 @@ class User extends Model
 
     public function scopeActiveForSemester($query, Semester $semester)
     {
-        return $query->join('contract_user', function($join){
-            $join->on('users.id','=','contract_user.user_id');
+        return $query->join('contract_user', function ($join) {
+            $join->on('users.id', '=', 'contract_user.user_id');
         })->whereContractId('Active')->whereSemesterId($semester->id);
     }
 
     public function scopeAssociateForSemester($query, Semester $semester)
     {
-        return $query->join('contract_user', function($join){
-            $join->on('users.id','=','contract_user.user_id');
+        return $query->join('contract_user', function ($join) {
+            $join->on('users.id', '=', 'contract_user.user_id');
         })->whereContractId('Associate')->whereSemesterId($semester->id);
     }
 
     public function scopePledgeForSemester($query, Semester $semester)
     {
-        return $query->join('contract_user', function($join){
-            $join->on('users.id','=','contract_user.user_id');
+        return $query->join('contract_user', function ($join) {
+            $join->on('users.id', '=', 'contract_user.user_id');
         })->whereContractId('Pledge')->whereSemesterId($semester->id);
     }
 
     public function scopeNeophyteForSemester($query, Semester $semester)
     {
-        return $query->join('contract_user', function($join){
-            $join->on('users.id','=','contract_user.user_id');
+        return $query->join('contract_user', function ($join) {
+            $join->on('users.id', '=', 'contract_user.user_id');
         })->whereContractId('Neophyte')->whereSemesterId($semester->id);
     }
 
+    public function ContractTypeForSemester($semester)
+    {
+        $query = DB::table('contract_user')->where('user_id', $this->id);
+        if ($semester == null) {
+            $semester = Semester::currentSemester();
+        }
+        $query = $query->where('semester_id', $semester->id);
+        $contract = $query->select('contract_id')->first();
+        if ($contract == null) {
+            return null;
+        } else {
+            return $contract->contract_id;
+        }
+    }
+
+    public function isPledge($semester = null)
+    {
+        return $this->contractForSemester($semester) == "Pledge";
+    }
+
+    public function isActive($semester = null)
+    {
+        return $this->contractForSemester($semester) == "Active";
+    }
+
+    public function isAssociate($semester = null)
+    {
+        return $this->contractForSemester($semester) == "Associate";
+    }
 }

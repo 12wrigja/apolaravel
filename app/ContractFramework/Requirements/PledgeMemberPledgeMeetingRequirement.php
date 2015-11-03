@@ -49,4 +49,8 @@ class PledgeMemberPledgeMeetingRequirement extends Requirement
     public function getDynamicThreshold(){
         return PledgeMeeting::currentSemester()->count();
     }
+
+    public function getDetails(){
+        return view('reports.meetinglist')->with('reports',$this->getReports());
+    }
 }

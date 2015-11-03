@@ -20,6 +20,7 @@ class DuesSeeder extends Seeder
         $report->report_date = Carbon::now();
         $report->save();
         $core = new Report();
+        $core->save();
         $report->core()->save($core);
         foreach($duesMap as $index=>$map){
             $user = User::find($map->user_id);

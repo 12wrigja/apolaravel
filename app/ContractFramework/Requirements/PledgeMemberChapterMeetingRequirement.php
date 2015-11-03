@@ -49,4 +49,8 @@ class PledgeMemberChapterMeetingRequirement extends Requirement
         $reports = $this->getReports($this->semester);
         return $reports->count();
     }
+
+    public function getDetails(){
+        return view('reports.meetinglist')->with('reports',$this->getReports());
+    }
 }

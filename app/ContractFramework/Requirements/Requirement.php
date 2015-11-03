@@ -82,4 +82,6 @@ abstract class Requirement
                 return false;
         }
     }
+
+    public abstract function getDetails();
 }

@@ -1,8 +1,9 @@
 <?php namespace APOSite\Http\Requests\Users;
 
 use APOSite\Http\Controllers\AccessController;
-use APOSite\Http\Requests\Request;
 use APOSite\Http\Controllers\LoginController;
+use APOSite\Http\Requests\Request;
+use APOSite\Models\Users\User;
 
 class UserStatusPageRequest extends Request
 {
@@ -14,7 +15,16 @@ class UserStatusPageRequest extends Request
      */
     public function authorize()
     {
-        return $this->route('cwruid') == LoginController::currentUser()->id || AccessController::isMembership(LoginController::currentUser());
+        $pageUser = User::find($this->route('cwruid'));
+        if ($pageUser->id == LoginController::currentUser()->id) {
+            return true;
+        } elseif (AccessController::isMembership(LoginController::currentUser())) {
+            return true;
+        } elseif ($pageUser->isPledge() && AccessController::isPledgeEducator(LoginController::currentUser())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -22,7 +32,8 @@ class UserStatusPageRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public
+    function rules()
     {
         return [];
     }

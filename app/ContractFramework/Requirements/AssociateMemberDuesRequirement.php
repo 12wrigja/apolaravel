@@ -32,4 +32,8 @@ class AssociateMemberDuesRequirement extends Requirement
         }
         return $report->pivot->value;
     }
+
+    public function getDetails(){
+        return view('reports.duesreports.dueseventlist')->with('reports',$this->getReports());
+    }
 }

@@ -40,4 +40,9 @@ class AssociateMemberInsideHoursRequirement extends Requirement
         }
         return $value / 60;
     }
+
+    public function getDetails()
+    {
+        return view('reports.brotherhoodreports.list')->with('reports',$this->getReports());
+    }
 }

@@ -40,4 +40,8 @@ class ActiveMemberInsideHoursRequirement extends Requirement
         }
         return $value / 60;
     }
+
+    public function getDetails(){
+        return view('reports.eventlist')->with('reports',$this->getReports());
+    }
 }

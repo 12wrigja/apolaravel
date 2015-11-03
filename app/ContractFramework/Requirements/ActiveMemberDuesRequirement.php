@@ -18,19 +18,21 @@ class ActiveMemberDuesRequirement extends Requirement
 
     public function getReports()
     {
-        $semester = $this->semester;
-
         $dues_reports = $this->user->reports()->DuesReports()->get();
-        return $dues_reports->last();
+        return $dues_reports;
     }
 
     public function computeValue()
     {
-        $report = $this->getReports($this->semester);
-        if($report != null) {
-            return $report->pivot->value;
-        } else {
+        $reports = $this->getReports($this->semester);
+        if($reports->isEmpty()){
             return 0;
+        } else {
+            return $reports->last()->pivot->value;
         }
+    }
+
+    public function getDetails(){
+        return view('reports.duesreports.dueseventlist')->with('reports',$this->getReports());
     }
 }
