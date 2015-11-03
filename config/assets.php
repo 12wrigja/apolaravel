@@ -1,5 +1,5 @@
 <?php
 
 return array(
-  'images'=>'images/'
+  'images'=>'images/uploads/'
 );

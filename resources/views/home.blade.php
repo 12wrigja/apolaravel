@@ -12,12 +12,14 @@
     <div class="masthead">
 
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
-            <!-- Indicators -->
-            <ol class="carousel-indicators">
-                @foreach($carouselItems as $index => $cItem)
-                    <li data-target="#myCarousel" data-slide-to="{{$index}}" @if($index==0) class="active" @endif></li>
-                @endforeach
-            </ol>
+            @if($carouselItems->count() > 1)
+                    <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    @foreach($carouselItems as $index => $cItem)
+                        <li data-target="#myCarousel" data-slide-to="{{$index}}" @if($index==0) class="active" @endif></li>
+                    @endforeach
+                </ol>
+            @endif
             <div class="carousel-inner" role="listbox">
                 @foreach($carouselItems as $index => $cItem)
                     <div class="item
@@ -26,7 +28,7 @@
                             @endif
                             ">
                         <div class="background"
-                             style="background:url({!! $cItem->background_image !!}) center center; background-size: cover">
+                             style="background:url({!! Config::get('assets.images').$cItem->image->path !!}) center center; background-size: cover">
 
                         </div>
                         @if($cItem->title != null)
@@ -46,14 +48,16 @@
                     </div>
                 @endforeach
             </div>
-            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+            @if($carouselItems->count() > 1)
+                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            @endif
         </div>
     </div>
     <div class="text-center">
