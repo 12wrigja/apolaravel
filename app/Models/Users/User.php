@@ -51,7 +51,10 @@ class User extends Model
 
     public function contractForSemester($semester)
     {
-        $contract_id = $this->contractForSemester($semester);
+        if ($semester == null) {
+            $semester = Semester::currentSemester();
+        }
+        $contract_id = $this->ContractTypeForSemester($semester);
         try {
             return App::make('APOSite\ContractFramework\Contracts\\' . $contract_id . 'Contract',
                 ['user' => $this, 'semester' => $semester]);
@@ -138,7 +141,7 @@ class User extends Model
         })->whereContractId('Neophyte')->whereSemesterId($semester->id);
     }
 
-    public function ContractTypeForSemester($semester)
+    public function ContractTypeForSemester(Semester $semester)
     {
         $query = DB::table('contract_user')->where('user_id', $this->id);
         if ($semester == null) {
