@@ -90,7 +90,6 @@ module.exports = function (Resources) {
                 //}
             },
             editReport: function(report){
-                this.tempReport = report;
                 this.$.editForm.form = Resources.Vue.util.extend({}, report);
                 this.$.editForm.form.id = report.id;
                 var instance = this;

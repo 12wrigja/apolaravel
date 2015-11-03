@@ -19,14 +19,18 @@ Route::get('/reports/{type}/{id}', ['uses' => 'EventPipelineController@showEvent
 Route::put('/reports/{type}/{id}', ['uses' => 'EventPipelineController@updateEvent', 'as' => 'report_update']);
 Route::delete('/reports/{type}/{id}', ['uses' => 'EventPipelineController@deleteEvent', 'as' => 'report_delete']);
 
-Route::get('images',function(){
-   return view('home');
-});
 //Route::get('/images/{filename}',['uses'=>'ImageController@getImage','as'=>'image_get']);
 Route::post('/img',['as'=>'upload_image','uses'=>'ImageController@uploadImage']);
-Route::get('/manage/banner',function(){
-   return view('tools.bannermanagement');
-});
+Route::post('/img/freeuse',['as'=>'upload_free_image','uses'=>'ImageController@uploadFreeUseImage']);
+
+
+//Management for the Front Page Banner
+Route::get('/manage/banner',['as'=>'banner_management','uses'=>'BannerController@index']);
+
+//Carousel Item API
+Route::get('/carousel_items/{id}',['as'=>'carousel_list','uses'=>'CarouselItemController@listForEvent']);
+Route::post('/carousel_items',['as'=>'carousel_item_create','uses'=>'CarouselItemController@createCarouselItem']);
+Route::put('/carousel_items/{id}',['as'=>'carousel_item_update','uses'=>'CarouselItemController@editCarouselItem']);
 
 //Routes for the officer pages
 Route::get('officers', ['uses'=>'Officers\OfficerPageController@index','as'=>'officers']);
@@ -40,7 +44,7 @@ Route::get('calendar',['as'=>'calendar',function(){
 //Route::get('/users/create', 'UserController@create');
 //Route::post('/users', 'UserController@store');
 Route::delete('/users/{cwruid}', 'UserController@destroy');
-//TODO fix up or verify user management and user search
+//TODO fix up user editing
 //Route::get('/users/manage', 'UserController@manage');
 
 //Route for searching users.

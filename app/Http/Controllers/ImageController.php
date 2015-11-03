@@ -20,6 +20,17 @@ class ImageController extends Controller
         ],200);
     }
 
+    public function uploadFreeUseImage(ImageStoreRequest $request){
+        $file = $request->file('image');
+        $imgEntry = $this->storeImage($file);
+        $imgEntry->free_use = true;
+        $imgEntry->save();
+        return Response::json([
+            'id'=>$imgEntry->id,
+            'href'=>asset(Config::get('assets.images').$imgEntry->path)
+        ],200);
+    }
+
     public function storeImage(UploadedFile $file)
     {
         //Assign a new file name

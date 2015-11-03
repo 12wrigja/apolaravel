@@ -6,7 +6,8 @@ module.exports = function (Vue) {
                     loadingText: '',
                     method: 'POST',
                     debug: true,
-                    loadTime: 0
+                    loadTime: 0,
+                    requirees: []
                 }
             },
 
@@ -15,10 +16,16 @@ module.exports = function (Vue) {
                     var base = $(this.$$.iform).attr('action');
                     var xdebug_key = this.getURLVars()['XDEBUG_SESSION_START'];
                     if (xdebug_key !== undefined) {
-                        base = base + "?XDEBUG_SESSION_START=" + xdebug_key;
+                        var delim;
+                        if (base.contains('?')) {
+                            delim = '&';
+                        } else {
+                            delim = '?';
+                        }
+                        base = base + delim + "XDEBUG_SESSION_START=" + xdebug_key;
                     }
-                    if(base.indexOf(':id') >= 0 ){
-                        base = base.replace(':id',this.getIDForForm());
+                    if (base.indexOf(':id') >= 0) {
+                        base = base.replace(':id', this.getIDForForm());
                     }
                     return base;
                 }
@@ -33,28 +40,42 @@ module.exports = function (Vue) {
                     return vars;
                 },
                 register: function () {
-                    console.log('Registering form.');
                     this.$$.iform.addEventListener('submit', this.submitForm);
                 },
                 submitForm: function (event) {
                     console.log('Submitting form.');
                     console.log(this.formURL);
-                    if(event !== null && event !== undefined){
+                    if (event !== null && event !== undefined) {
                         event.preventDefault();
                     }
                     this.loadTime = new Date().getTime() / 1000;
                     this.setLoading();
                     this.cleanupErrors();
                     var instance = this;
+                    var form = this.getForm();
+                    console.log(this.requirees.length);
+                    for (var i = 0; i < this.requirees.length; i++) {
+                        var res = this.requirees[i].onPreFormSubmit(form);
+                        if (!res) {
+                            setTimeout(function() {
+                                instance.setNotLoading();
+                            },1000);
+                            return;
+                        }
+                    }
+                    console.log(JSON.stringify(form));
                     $.ajax({
                         url: this.formURL,
                         type: this.method,
-                        data: JSON.stringify(this.getForm())
+                        data: JSON.stringify(form)
                     }).done(function (data) {
                         localStorage.removeItem(window.location.href + '|form');
                         setTimeout(function () {
                             console.log("Done Waiting.");
                             console.log("Successful call to " + this.formURL);
+                            for(var i=0; i<instance.requirees.length; i++){
+                                instance.requirees[i].onSuccessfulSubmit();
+                            }
                             $(instance.$$.loadingArea).collapse('hide');
                             instance.successFunction(JSON.parse(data));
                         }, 1000);
@@ -75,15 +96,19 @@ module.exports = function (Vue) {
                         }, 1000);
                     });
                 },
+                loopRequirees: function(index, allCompleteFunction, failFunction){
+                  if(index > this.requirees.length){
+                      allCompleteFunction();
+                  } else {
+                      var response = this.requirees[index].onPreFormSubmit()
+                  }
+                },
                 getForm: function () {
                     return this.form;
                 },
                 setupLoading: function () {
                     $(this.$$.iform).collapse({'toggle': false});
                     $(this.$$.loadingArea).collapse({'toggle': false});
-                },
-                setupDebug: function () {
-                    this.$$.iform.insertAdjacentHTML('afterend', '<pre v-show="debug"> {{ getForm() | json }} </pre>');
                 },
                 setLoading: function () {
                     $(this.$$.loadingArea).collapse('show');
@@ -133,11 +158,23 @@ module.exports = function (Vue) {
                     $(this.$$.successArea).collapse('hide');
                     $(this.$$.iform).collapse('show');
                 },
-                confirmClearForm: function(){
+                closeForm: function(){
+                    this.setNotLoading;
+                },
+                confirmClearForm: function () {
                     var instance = this;
-                    if(window.confirm("Are you sure you want to clear this form?")) {
+                    if (window.confirm("Are you sure you want to clear this form?")) {
                         instance.clearForm();
                     }
+                }
+            },
+            events : {
+                'registerFormDependency': function(component){
+                    console.log('registering form dependency');
+                    if (!(component in this.requirees)) {
+                        this.requirees.push(component);
+                    }
+                    console.log(this.requirees);
                 }
             },
             ready: function () {

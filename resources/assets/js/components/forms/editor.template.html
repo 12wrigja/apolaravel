@@ -1,0 +1,26 @@
+<div class="modal fade" v-el="modal">
+    <div class="modal-dialog modal-wide">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{topVerb}} {{itemName}}</h4>
+            </div>
+            <div class="modal-body">
+                <content></content>
+                <pre>{{$data | json}}</pre>
+            </div>
+            <div class="alert alert-info alert-important collapse" role="alert" v-el="loadingArea">
+                <h3 class="text-center">@{{ loadingText }}</h3>
+
+                <div class="progress">
+                    <div class="progress-bar  progress-bar-striped active" role="progressbar" aria-valuenow="100"
+                         aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" v-on="click: editorClosed(event)">Close</button>
+                <button type="button" class="btn" v-class="disabled: !canSubmit, btn-primary: isEdit, btn-success: isCreate" v-on="click: actionButtonClicked(event)">{{actionButton}}</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

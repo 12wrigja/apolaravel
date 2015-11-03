@@ -2,17 +2,21 @@
 
 namespace APOSite\Http\Controllers;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Http\Request;
 
-class ImageController extends Controller
+class BannerController extends Controller
 {
 
-    public function storeImage(UploadedFile $file)
+    /**
+     * BannerController constructor.
+     */
+    public function __construct()
     {
-        //Assign a new file name
-        $filename = md5(time().$file->getClientOriginalName());
-        $file->move(Config::get('assets.images'),$filename);
-        return $filename;
+        $this->middleware('SSOAuth');
     }
+
+    public function index(Request $request){
+        return view('tools.banner.bannermanagement');
+    }
+
 }

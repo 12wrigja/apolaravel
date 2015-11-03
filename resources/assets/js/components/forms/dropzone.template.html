@@ -1,0 +1,6 @@
+<form v-el="dropzone" class="dropzone" v-class="singleimage: this.maxFiles == 1">
+    <input name="_token" type="hidden" value="{{token}}">
+    <div class="fallback">
+        <input name="file" type="file" multiple />
+    </div>
+</form>

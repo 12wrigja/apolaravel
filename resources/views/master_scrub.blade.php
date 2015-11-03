@@ -12,6 +12,7 @@
     <meta name="chapter_meeting_api" content="{{route('report_show',['type'=>'chapter_meetings','id'=>':id'])}}">
     <meta name="exec_meeting_api" content="{{route('report_show',['type'=>'exec_meetings','id'=>':id'])}}">
     <meta name="pledge_meeting_api" content="{{route('report_show',['type'=>'pledge_meetings','id'=>':id'])}}">
+    <meta name="carousel_item_api" content="{{route('carousel_list',['id'=>':id'])}}">
     @yield('metadata')
 
             <!-- Site Properities -->

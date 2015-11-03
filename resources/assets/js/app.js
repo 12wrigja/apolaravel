@@ -17,6 +17,8 @@ $.ajaxSetup({
     }
 });
 require('Select2');
+var dropzone = require('dropzone');
+dropzone.autoDiscover = false;
 //Setup Vue and Vue Resource
 var Vue = require('vue');
 Vue.config.debug = true;
@@ -45,6 +47,7 @@ var Resources = function () {
 
     return {
         Vue: Vue,
+        Dropzone: dropzone,
         form: require('./components/forms/forms.js')(Vue),
         ServiceReport: function (instance) {
             return instance.$resource(getFromMetadata('service_report_api'), {}, defaultActions);
@@ -63,6 +66,9 @@ var Resources = function () {
         },
         PledgeMeeting: function (instance) {
             return instance.$resource(getFromMetadata('pledge_meeting_api'), {}, defaultActions);
+        },
+        CarouselItem: function (instance) {
+            return instance.$resource(getFromMetadata('carousel_item_api'), {}, defaultActions);
         },
         utils: {
             loadUnhide: function (rootElement) {
@@ -117,7 +123,8 @@ var Resources = function () {
             } else {
                 return null;
             }
-        }
+        },
+        getFromMetadata: getFromMetadata
     }
 }();
 module.exports = Resources;
@@ -137,6 +144,8 @@ var main = new Vue({
         'create_dues_report_form': require('./views/reports/duesreports/create.js')(Resources),
         'piechart': require('./components/graphwidgets/piechart.js')(Resources),
         'user-search-view': require('./views/users/search.js')(Resources),
+        'file-dropzone' :require('./components/forms/dropzone.js')(Resources),
+        'banner-manager' : require('./views/other/bannermanager.js')(Resources),
     },
 
     filters: {
