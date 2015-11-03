@@ -10,6 +10,7 @@ namespace APOSite\ContractFramework\Requirements;
 
 class PledgeMemberInsideHoursRequirement extends Requirement
 {
+    public static $name = "Inside Hours";
     public static $description = "As an APO Pledge, at least 8 of the hours you do each semester need to be inside hours.";
 
     protected $threshold = 8;
