@@ -19,18 +19,20 @@ Route::get('/reports/{type}/{id}', ['uses' => 'EventPipelineController@showEvent
 Route::put('/reports/{type}/{id}', ['uses' => 'EventPipelineController@updateEvent', 'as' => 'report_update']);
 Route::delete('/reports/{type}/{id}', ['uses' => 'EventPipelineController@deleteEvent', 'as' => 'report_delete']);
 
-Route::get('images',function(){
-   return view('home');
-});
+//Route::get('images',function(){
+//   return view('home');
+//});
 //Route::get('/images/{filename}',['uses'=>'ImageController@getImage','as'=>'image_get']);
-Route::post('/img',['as'=>'upload_image','uses'=>'ImageController@uploadImage']);
-Route::get('/manage/banner',function(){
-   return view('tools.bannermanagement');
-});
+//Route::post('/img',['as'=>'upload_image','uses'=>'ImageController@uploadImage']);
+//Route::get('/manage/banner',function(){
+//   return view('tools.bannermanagement');
+//});
 
 //Routes for the officer pages
 Route::get('officers', ['uses'=>'Officers\OfficerPageController@index','as'=>'officers']);
-
+Route::get('faq',function(){
+    return view('faq');
+});
 Route::get('statistics',['uses'=>'ChapterStatisticsController@index','as'=>'chapterstatistics']);
 Route::get('calendar',['as'=>'calendar',function(){
     return view('tools.calendar');
@@ -106,7 +108,14 @@ Route::get('login', array(
     'as' => 'login',
     'middleware' => 'SSOAuth',
     function () {
-        return Redirect::route('home');
+        if(session()->has('redirect_url')){
+            $redirect_url = session('redirect_url');
+            session()->forget('redirect_ur');
+            return redirect($redirect_url);
+        } else {
+            return Redirect::route('home');
+        }
+
     }
 ));
 

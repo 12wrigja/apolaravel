@@ -28,6 +28,9 @@ class LoginController extends Controller
 
     public static function directToAuthPage()
     {
+        if(Request::has('redirect_url')){
+            session(['redirect_url'=>Request::get('redirect_url')]);
+        }
         return Redirect::away('https://login.case.edu/cas/login?service=' . Request::url());
     }
 

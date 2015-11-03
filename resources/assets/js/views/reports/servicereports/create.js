@@ -34,12 +34,12 @@ module.exports = function (Resources) {
                 $(this.$$.successArea).collapse('show');
             },
             setupUserSearch: function () {
+                var that = this;
                 Resources.User(this).get({},function(data,status,response){
                     if(status == 200){
-                        this.users = data;
-                        var that = this;
+                        that.users = data['data'];
                         var selector = $('#brotherselecter');
-                        selector.select2(Resources.select2settings(data,that.formatBrother));
+                        selector.select2(Resources.select2settings(data['data'],that.formatBrother));
                         selector.on("select2:select", function(e){
                             //get the name of the thing selected.
                             if(!that.hasBrother(e)){
@@ -62,7 +62,7 @@ module.exports = function (Resources) {
                 return newForm;
             },
             formatBrother: function(brother){
-                if(brother.nickname !== null){
+                if(brother.nickname !== null && brother.nickname !== undefined){
                     return brother.nickname + ' ('+brother.first_name+') '+brother.last_name;
                 } else {
                     return brother.first_name + ' ' +brother.last_name;

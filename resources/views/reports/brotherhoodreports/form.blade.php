@@ -71,7 +71,7 @@
     <h2>Brothers in Report</h2>
 
     <p name="brothers" class="help-block"></p>
-    <td><select id="brotherselecter" placeholder="Search for a Brother..." class="form-control"></select></td>
+    <td><select id="brotherselecter" placeholder="Search for a Brother..." class="form-control" style="width: 100%;"></select></td>
     <!-- Brothers listing -->
     <table class="table table-hover">
         <thead>

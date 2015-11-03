@@ -99,9 +99,10 @@ var Resources = function () {
             if (split.length > 1) {
                 //Check the following supported formats:
                 // firstname lastname
+                // nickname lastname
                 if (first_name.indexOf(split[0]) > -1 && last_name.indexOf(split[1]) > -1) {
                     return brother;
-                } else if (nick_name.indexOf(split[0]) > -1 && last_name.indexOf(split[1]) > -1) {
+                } else if (brother.nickname !== undefined && nick_name.indexOf(split[0]) > -1 && last_name.indexOf(split[1]) > -1) {
                     return brother;
                 } else {
                     return null;
@@ -112,7 +113,7 @@ var Resources = function () {
                 return brother;
             } else if (last_name.indexOf(split[0]) > -1) {
                 return brother;
-            } else if (nick_name.indexOf(split[0]) > -1) {
+            } else if (brother.nickname !== undefined && nick_name.indexOf(split[0]) > -1) {
                 return brother;
             } else {
                 return null;

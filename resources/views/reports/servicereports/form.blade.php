@@ -17,7 +17,6 @@
         <div class="col-sm-10">
             {!! Form::textarea('description', null, ['class'=>'form-control','v-model'=>'form.description']) !!}
         </div>
-        <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
     </div>
 </div>
 
@@ -101,11 +100,11 @@
         </div>
     </div>
 </div>
-<div class="form-group">
+<div class="form-group form-row">
     <h2>Brothers in Report</h2>
 
     <p name="brothers" class="help-block"></p>
-    <td><select id="brotherselecter" placeholder="Search for a Brother..." class="form-control"></select></td>
+    <td><select id="brotherselecter" placeholder="Search for a Brother..." class="form-control" style="width: 100%;"></select></td>
     <!-- Brothers listing -->
     <table class="table table-hover">
         <thead>

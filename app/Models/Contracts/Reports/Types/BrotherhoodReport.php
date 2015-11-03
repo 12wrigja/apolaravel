@@ -98,8 +98,8 @@ class BrotherhoodReport extends BaseModel
     {
         $rules = [
             //Rules for the core report data
-            'event_name' => ['required', 'min:10'],
-            'description' => ['required', 'min:40'],
+            'event_name' => ['required'],
+            'description' => ['required'],
             'event_date' => ['required', 'date'],
             'location' => ['required'],
             'type' => ['required', 'in:fellowship,pledge,other'],
