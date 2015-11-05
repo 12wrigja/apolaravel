@@ -22,8 +22,7 @@
                                 <span class="sr-only">{{$requirement->getPercentDone()}}% Complete</span>
                             </div>
                         </div>
-                        <p>Required: {{ $requirement->getThreshold() }}</p>
-                        <p>Current: {{ round($requirement->getValue(),2) }}</p>
+                        <p>Current: {{ round($requirement->getValue(),2) }}, Required: {{ $requirement->getThreshold() }}</p>
                         {!! $requirement->getDetails($user) !!}
                     </div>
                 @endforeach

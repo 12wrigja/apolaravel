@@ -14,16 +14,35 @@
                 <div>
                     <h1>{{$user->fullDisplayName()}}</h1>
 
-                    <p>Pledge
-                        Semester: {{ucwords($user->pledge_semester->semester)}} {{$user->pledge_semester->year}}</p>
+                    <p>Pledge Semester:
+                        @if($user->pledge_semester != null)
+                            {{ucwords($user->pledge_semester->semester)}} {{$user->pledge_semester->year}}
+                        @else
+                            Unknown
+                        @endif
+                    </p>
 
-                    <p>Initiation
-                        Semester: {{ucwords($user->initiation_semester->semester)}} {{$user->initiation_semester->year}}</p>
+                    <p>Initiation Semester:
+                        @if($user->initiation_semester != null)
+                            {{ucwords($user->initiation_semester->semester)}} {{$user->initiation_semester->year}}
+                        @else
+                            Unknown
+                        @endif
+                    </p>
 
-                    <p>Graduation
-                        Semester: {{ucwords($user->initiation_semester->semester)}} {{$user->initiation_semester->year}}</p>
-
-                    <p>Family: {{$user->family()->name}}</p>
+                    <p>Graduation Semester:
+                        @if($user->graduation_semester != null)
+                            {{ucwords($user->graduation_semester->semester)}} {{$user->graduation_semester->year}}
+                        @else
+                            Unknown
+                    @endif
+                    <p>Family:
+                        @if($user->family() != null)
+                            {{$user->family()->name}}
+                        @else
+                            Unknown
+                        @endif
+                    </p>
                 </div>
                 <div>
                     <h2>About Me</h2>
