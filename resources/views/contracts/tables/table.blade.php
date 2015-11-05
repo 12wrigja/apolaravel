@@ -2,7 +2,7 @@
     <thead>
     <th>Brother</th>
     @foreach($contractType::getRequirementClasses() as $requirement)
-        <th>
+        <th class="text-center">
             {{$requirement::$name}}
         </th>
     @endforeach
@@ -15,17 +15,17 @@
                     class="success"
                 @endif
                 >
-            <td>{{$brother->getFullDisplayName()}}</td>
+            <td>{{$brother->fullDisplayName()}}</td>
 
             @foreach($contract->requirements as $requirement)
-                <td>
+                <td class="text-center">
                     {{round($requirement->getValue(),2)}}/{{$requirement->getThreshold()}}
                     @if($requirement->isComplete())
                         <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
                     @endif
                 </td>
             @endforeach
-            <td><a target="_blank" href="{{route('user_status',['id'=>$brother->id])}}" class="btn btn-primary">Details</a></td>
+            <td class="text-center"><a target="_blank" href="{{route('user_status',['id'=>$brother->id])}}" class="btn btn-primary">Details</a></td>
         </tr>
     @endforeach
 </table>
