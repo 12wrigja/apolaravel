@@ -28,6 +28,10 @@ abstract class Requirement
         $this->semester = $semester;
     }
 
+    public function getUser(){
+        return $this->user;
+    }
+
     public final function isComplete()
     {
         return $this->compareAgainstThreshold($this->getValue());

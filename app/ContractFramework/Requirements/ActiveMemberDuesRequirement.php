@@ -33,6 +33,6 @@ class ActiveMemberDuesRequirement extends Requirement
     }
 
     public function getDetails(){
-        return view('reports.duesreports.dueseventlist')->with('reports',$this->getReports());
+        return view('reports.duesreports.dueseventlist')->with('reports',$this->getReports())->with('user',$this->user);
     }
 }

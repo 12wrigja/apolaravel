@@ -42,6 +42,6 @@ class PledgeMemberTotalHoursRequirement extends Requirement
 
     public function getDetails()
     {
-        return view('reports.brotherhoodreports.list')->with('reports',$this->getReports());
+        return view('reports.eventlist')->with('reports',$this->getReports())->with('user',$this->user);
     }
 }

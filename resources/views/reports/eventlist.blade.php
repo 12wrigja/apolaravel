@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table table-hover table-responsive">
     <thead>
     <tr>
         <th>Event Name</th>
@@ -13,8 +13,8 @@
             <td>{{$report->EventType->event_name}}</td>
             <td>{{$report->EventType->location}}</td>
             <td>{{$report->EventType->event_date->toFormattedDateString()}}</td>
-            <td>{{round($report->EventType->getValueForUser($currentUser)/60)}}</td>
-            <td>{{$report->EventType->getValueForUser($currentUser)%60}}</td>
+            <td>{{round($report->EventType->getValueForUser($user)/60)}}</td>
+            <td>{{$report->EventType->getValueForUser($user)%60}}</td>
         </tr>
     @endforeach
 </table>

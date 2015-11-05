@@ -6,6 +6,7 @@
             {{$requirement::$name}}
         </th>
     @endforeach
+    <th></th>
     </thead>
     @foreach($brothers as $brother)
         <?php $contract = $brother->contractForSemester(null);?>
@@ -24,6 +25,7 @@
                     @endif
                 </td>
             @endforeach
+            <td><a target="_blank" href="{{route('user_status',['id'=>$brother->id])}}" class="btn btn-primary">Details</a></td>
         </tr>
     @endforeach
 </table>

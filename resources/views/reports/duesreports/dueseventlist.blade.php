@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table table-hover table-responsive">
     <thead>
     <tr>
         <th>Payment Date</th>
@@ -8,7 +8,7 @@
     @foreach($reports as $report)
         <tr>
             <td>{{$report->EventType->report_date->toFormattedDateString()}}</td>
-            <td>${{round($report->EventType->getValueForUser($currentUser),2)}}</td>
+            <td>${{round($report->EventType->getValueForUser($user),2)}}</td>
         </tr>
     @endforeach
 </table>

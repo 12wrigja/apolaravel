@@ -24,7 +24,7 @@
                         </div>
                         <p>Required: {{ $requirement->getThreshold() }}</p>
                         <p>Current: {{ round($requirement->getValue(),2) }}</p>
-                        {!! $requirement->getDetails() !!}
+                        {!! $requirement->getDetails($user) !!}
                     </div>
                 @endforeach
             </div>
