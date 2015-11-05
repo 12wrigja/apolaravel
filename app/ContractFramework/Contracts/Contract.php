@@ -19,13 +19,13 @@ abstract class Contract
     {
         $this->user = $user;
         $this->semester = $semester;
-        foreach ($this->getRequirementClasses() as $class) {
+        foreach ($this::getRequirementClasses() as $class) {
             $this->requirements[] = new $class($user,$semester);
         }
         $this->requirements = collect($this->requirements);
     }
 
-    protected function getRequirementClasses()
+    public static function getRequirementClasses()
     {
         return [];
     }
@@ -39,4 +39,7 @@ abstract class Contract
         return $complete;
     }
 
+    public static final function getReportTable($brothers){
+        return view('contracts.tables.table')->with('contractType',static::class)->with('brothers',$brothers);
+    }
 }

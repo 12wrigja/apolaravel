@@ -13,7 +13,7 @@ class NeophyteContract extends Contract
 {
     public static $name = "Neophyte Contract";
 
-    protected function getRequirementClasses()
+    public static function getRequirementClasses()
     {
         return [
             PledgeMemberPledgeMeetingRequirement::class,
@@ -24,4 +24,11 @@ class NeophyteContract extends Contract
             BrotherhoodHoursRequirement::class
         ];
     }
+
+    public static function getReportTable($brothers)
+    {
+        return "";
+    }
+
+
 }

@@ -33,7 +33,7 @@ Route::get('officers', ['uses'=>'Officers\OfficerPageController@index','as'=>'of
 Route::get('faq',function(){
     return view('faq');
 });
-Route::get('statistics',['uses'=>'ChapterStatisticsController@index','as'=>'chapterstatistics']);
+Route::get('statistics',['uses'=>'ChapterStatisticsController@chapterStatistics','as'=>'chapterstatistics']);
 Route::get('calendar',['as'=>'calendar',function(){
     return view('tools.calendar');
 }]);
@@ -57,6 +57,8 @@ Route::get('/users/{cwruid}', ['uses'=>'UserController@show','as'=>'user_show'])
 //Route::get('/users/{cwruid}/edit', 'UserController@edit');
 Route::get('/users/{cwruid}/status', ['uses'=>'UserController@statusPage','as'=>'user_status']);
 //Route::put('/users/cwruid}', 'UserController@update');
+
+Route::get('contracts/progress',['uses'=>'ChapterStatisticsController@contractStatusPage','as'=>'contract_progress']);
 
 //TODO clean up routing system for contract and requirement data, along w/ models
 //All routes regarding contracts and contract requirements are commented out for the time being as they have not been refactored correctly.

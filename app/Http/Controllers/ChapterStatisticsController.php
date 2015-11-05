@@ -34,7 +34,7 @@ class ChapterStatisticsController extends Controller
         $this->middleware('SSOAuth');
     }
 
-    public function index(ViewStatisticsRequest $request)
+    public function chapterStatistics(ViewStatisticsRequest $request)
     {
         $semester = Semester::currentSemester();
 
@@ -217,5 +217,13 @@ class ChapterStatisticsController extends Controller
                 'pledgePledgeMeetings',
                 'pledgeDues',
                 'pledgesComplete'));
+    }
+
+    public function contractStatusPage(ViewStatisticsRequest $request){
+        $activeBrothers = User::ActiveForSemester(Semester::currentSemester())->orderBy('first_name','ASC')->orderBy('last_name','ASC')->get();
+        $associateBrothers = User::AssociateForSemester(Semester::currentSemester())->orderBy('first_name','ASC')->orderBy('last_name','ASC')->get();
+        $pledgeBrothers = User::PledgeForSemester(Semester::currentSemester())->orderBy('first_name','ASC')->orderBy('last_name','ASC')->get();
+
+        return view('tools.contractstatus')->with(compact('activeBrothers','associateBrothers','pledgeBrothers'));
     }
 }

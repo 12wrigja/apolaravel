@@ -19,7 +19,7 @@ class ActiveContract extends Contract
 {
     public static $name = "Active Contract";
 
-    protected function getRequirementClasses()
+    public static function getRequirementClasses()
     {
         return [
             ActiveMemberChapterMeetingRequirement::class,

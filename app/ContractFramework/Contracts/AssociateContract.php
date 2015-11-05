@@ -15,7 +15,7 @@ use APOSite\ContractFramework\Requirements\AssociateMemberInsideHoursRequirement
 class AssociateContract extends Contract
 {
     public static $name = "Associate Contract";
-    protected function getRequirementClasses()
+    public static function getRequirementClasses()
     {
         return [
             AssociateMemberInsideHoursRequirement::class,

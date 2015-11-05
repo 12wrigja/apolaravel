@@ -46,6 +46,11 @@ class AddUserMenuItems
                 $item->url = route('chapterstatistics');
                 array_push($menu_items, $item);
 
+                $item = new \stdClass();
+                $item->text = "View Contract Progress";
+                $item->url = route('contract_progress');
+                array_push($menu_items, $item);
+
             }
 
             if(AccessController::isService($user)){
@@ -53,11 +58,10 @@ class AddUserMenuItems
             }
 
             if(AccessController::isFellowship($user)){
-                $item = new \stdClass();
-                $item->isHeader = true;
-                $item->text = "Fellowship Functions";
-                array_push($menu_items,$item);
-
+//                $item = new \stdClass();
+//                $item->isHeader = true;
+//                $item->text = "Fellowship Functions";
+//                array_push($menu_items,$item);
 
             }
             if(AccessController::isTreasurer($user)){

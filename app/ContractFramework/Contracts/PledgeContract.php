@@ -13,7 +13,7 @@ class PledgeContract extends Contract
 {
     public static $name = "Pledge Contract";
 
-    protected function getRequirementClasses()
+    public static function getRequirementClasses()
     {
         return [
             PledgeMemberPledgeMeetingRequirement::class,
