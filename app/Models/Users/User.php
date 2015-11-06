@@ -58,7 +58,7 @@ class User extends Model
         try {
             return App::make('APOSite\ContractFramework\Contracts\\' . $contract_id . 'Contract',
                 ['user' => $this, 'semester' => $semester]);
-        } catch (\ReflectionException $e) {
+        } catch (\Exception $e) {
             return null;
         }
 
