@@ -16,6 +16,7 @@ use APOSite\ContractFramework\Requirements\PledgeMemberChapterMeetingRequirement
 use APOSite\ContractFramework\Requirements\PledgeMemberDuesRequirement;
 use APOSite\ContractFramework\Requirements\PledgeMemberPledgeMeetingRequirement;
 use APOSite\ContractFramework\Requirements\PledgeMemberTotalHoursRequirement;
+use APOSite\Http\Requests\Reports\ViewContractProgressRequest;
 use APOSite\Http\Requests\Reports\ViewStatisticsRequest;
 use APOSite\Models\Contracts\Reports\Types\ServiceReport;
 use APOSite\Models\Semester;
@@ -219,11 +220,16 @@ class ChapterStatisticsController extends Controller
                 'pledgesComplete'));
     }
 
-    public function contractStatusPage(ViewStatisticsRequest $request){
-        $activeBrothers = User::ActiveForSemester(Semester::currentSemester())->orderBy('first_name','ASC')->orderBy('last_name','ASC')->get();
-        $associateBrothers = User::AssociateForSemester(Semester::currentSemester())->orderBy('first_name','ASC')->orderBy('last_name','ASC')->get();
+    public function contractStatusPage(ViewContractProgressRequest $request){
         $pledgeBrothers = User::PledgeForSemester(Semester::currentSemester())->orderBy('first_name','ASC')->orderBy('last_name','ASC')->get();
-
-        return view('tools.contractstatus')->with(compact('activeBrothers','associateBrothers','pledgeBrothers'));
+        if(AccessController::isMembership(LoginController::currentUser())){
+            $activeBrothers = User::ActiveForSemester(Semester::currentSemester())->orderBy('first_name','ASC')->orderBy('last_name','ASC')->get();
+            $associateBrothers = User::AssociateForSemester(Semester::currentSemester())->orderBy('first_name','ASC')->orderBy('last_name','ASC')->get();
+            return view('tools.contractstatus')->with(compact('activeBrothers','associateBrothers','pledgeBrothers'));
+        } else if (AccessController::isPledgeEducator(LoginController::currentUser())){
+            return view('tools.contractstatus_pledges')->wth(compact('pledgeBrothers'));
+        } else {
+            //Do something here if stuff is all messed up.
+        }
     }
 }
