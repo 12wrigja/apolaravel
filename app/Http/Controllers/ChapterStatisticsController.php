@@ -227,7 +227,7 @@ class ChapterStatisticsController extends Controller
             $associateBrothers = User::AssociateForSemester(Semester::currentSemester())->orderBy('first_name','ASC')->orderBy('last_name','ASC')->get();
             return view('tools.contractstatus')->with(compact('activeBrothers','associateBrothers','pledgeBrothers'));
         } else if (AccessController::isPledgeEducator(LoginController::currentUser())){
-            return view('tools.contractstatus_pledges')->wth(compact('pledgeBrothers'));
+            return view('tools.contractstatus_pledges')->with(compact('pledgeBrothers'));
         } else {
             //Do something here if stuff is all messed up.
         }
