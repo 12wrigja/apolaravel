@@ -1,4 +1,4 @@
-@extends('master_scrub')
+@extends('master_full')
 
 @section('content')
     <div class="container">
