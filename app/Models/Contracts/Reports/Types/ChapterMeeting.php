@@ -83,7 +83,7 @@ class ChapterMeeting extends BaseModel
 
     public function canStore(User $user)
     {
-        return AccessController::isSecretary($user);
+        return AccessController::isSecretary($user) || AccessController::isMembership($user);
     }
 
     public function canManage(User $user){

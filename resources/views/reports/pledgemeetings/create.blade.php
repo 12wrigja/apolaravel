@@ -44,11 +44,15 @@
             <table class="table table-hover">
                 <thead>
                 <th>Brother</th>
+                <th>Count For</th>
                 <th></th>
                 </thead>
                 <tbody>
                 <tr v-repeat="brother: form.brothers">
                     <td>@{{ brother.name }}</td>
+                    <td>
+                    {!! Form::select('count_for', ['chapter'=>'Chapter','pledge'=>'Pledge','exec'=>'Exec'], 'pledge' ,['class'=>'form-control','v-model'=>'brother.count_for']) !!}
+                    <td>
                     <td>
                         <div class="btn btn-danger" v-on="click: removeBrother(brother)">Remove</div>
                     </td>

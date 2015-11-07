@@ -46,6 +46,16 @@ class AddUserMenuItems
                 $item->url = route('contract_progress');
                 array_push($menu_items, $item);
 
+                $item = new \stdClass();
+                $item->text = "Create Chapter Meeting";
+                $item->url = route('report_create',['type'=>'chapter_meetings']);
+                array_push($menu_items,$item);
+
+                $item = new \stdClass();
+                $item->text = "Create Exec Meeting";
+                $item->url = route('report_create',['type'=>'exec_meetings']);
+                array_push($menu_items,$item);
+
             }
 
             if(AccessController::isService($user)){
