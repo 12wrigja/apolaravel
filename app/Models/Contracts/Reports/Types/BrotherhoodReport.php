@@ -72,7 +72,7 @@ class BrotherhoodReport extends BaseModel
 
     public function canUpdate(User $user)
     {
-        if ($user != null && AccessController::isFellowship($user)) {
+        if ($user != null && (AccessController::isFellowship($user) || AccessController::isMembership($user))){
             return true;
         } else {
             return false;
@@ -91,7 +91,7 @@ class BrotherhoodReport extends BaseModel
 
     public function canManage(User $user)
     {
-        return AccessController::isMembership($user);
+        return AccessController::isMembership($user) || AccessController::isFellowship($user);
     }
 
     public function createRules()

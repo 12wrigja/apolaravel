@@ -37,6 +37,11 @@ class AddUserMenuItems
                 array_push($menu_items, $item);
 
                 $item = new \stdClass();
+                $item->text = "Manage brotherhood reports";
+                $item->url = route('report_manage',['type'=>'brotherhood_reports']);
+                array_push($menu_items, $item);
+
+                $item = new \stdClass();
                 $item->text = "View Chapter Statistics";
                 $item->url = route('chapterstatistics');
                 array_push($menu_items, $item);
