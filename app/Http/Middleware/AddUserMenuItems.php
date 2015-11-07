@@ -32,11 +32,6 @@ class AddUserMenuItems
                 array_push($menu_items,$item);
 
                 $item = new \stdClass();
-                $item->text = "Manage brotherhood reports";
-                $item->url = route('report_manage',['type'=>'brotherhood_reports']);
-                array_push($menu_items, $item);
-
-                $item = new \stdClass();
                 $item->text = "Manage service reports";
                 $item->url = route('report_manage',['type'=>'service_reports']);
                 array_push($menu_items, $item);
@@ -58,10 +53,15 @@ class AddUserMenuItems
             }
 
             if(AccessController::isFellowship($user)){
-//                $item = new \stdClass();
-//                $item->isHeader = true;
-//                $item->text = "Fellowship Functions";
-//                array_push($menu_items,$item);
+                $item = new \stdClass();
+                $item->isHeader = true;
+                $item->text = "Fellowship Functions";
+                array_push($menu_items,$item);
+
+                $item = new \stdClass();
+                $item->text = "Manage brotherhood reports";
+                $item->url = route('report_manage',['type'=>'brotherhood_reports']);
+                array_push($menu_items, $item);
 
             }
             if(AccessController::isTreasurer($user)){
@@ -88,6 +88,11 @@ class AddUserMenuItems
                 $item = new \stdClass();
                 $item->text = "Create Chapter Meeting";
                 $item->url = route('report_create',['type'=>'chapter_meetings']);
+                array_push($menu_items,$item);
+
+                $item = new \stdClass();
+                $item->text = "Create Exec Meeting";
+                $item->url = route('report_create',['type'=>'exec_meetings']);
                 array_push($menu_items,$item);
             }
 

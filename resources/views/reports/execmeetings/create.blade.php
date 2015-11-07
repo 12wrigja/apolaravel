@@ -3,10 +3,10 @@
 
 @section('crud_form')
 
-    <h1 class="page-header">Create a Chapter Meeting</h1>
+    <h1 class="page-header">Create an Exec Meeting</h1>
 
     <create_chapter_meeting_form inline-template>
-        {!! Form::open(['route'=>['report_store','type'=>'chapter_meetings'],'class'=>'collapse in','v-el'=>'iform'])
+        {!! Form::open(['route'=>['report_store','type'=>'exec_meetings'],'class'=>'collapse in','v-el'=>'iform'])
         !!}
 
         <div class="form-horizontal">
@@ -44,11 +44,14 @@
             <table class="table table-hover">
                 <thead>
                 <th>Brother</th>
+                <th>Count For</th>
                 <th></th>
                 </thead>
                 <tbody>
                 <tr v-repeat="brother: form.brothers">
                     <td>@{{ brother.name }}</td>
+                    <td>
+                    {!! Form::select('count_for', ['chapter'=>'Chapter','pledge'=>'Pledge','exec'=>'Exec'], 'exec' ,['class'=>'form-control','v-model'=>'brother.count_for']) !!}
                     <td>
                         <div class="btn btn-danger" v-on="click: removeBrother(brother)">Remove</div>
                     </td>
@@ -60,7 +63,10 @@
             <br>
 
             <div class="form-group">
-                {!! Form::submit('Create Chapter Meeting', ['class'=>'btn btn-primary form-control']) !!}
+                {!! Form::submit('Create Exec Meeting', ['class'=>'btn btn-primary form-control']) !!}
+            </div>
+            <div class="form-group">
+                <div class="btn btn-danger form-control" v-on="click: confirmClearForm()">Clear Form</div>
             </div>
         </div>
         {!! Form::close() !!}

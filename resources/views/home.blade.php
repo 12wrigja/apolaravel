@@ -39,7 +39,7 @@
                                         <p>{{$cItem->caption}}</p>
                                     @endif
                                     @if($cItem->action_text != null && $cItem->action_url != null)
-                                        <p><a class="btn btn-lg btn-primary" href="{!! $cItem->action_url !!}"
+                                        <p><a class="btn btn-lg btn-primary" href="{!! url() . $cItem->action_url !!}"
                                               role="button" target="_blank">{{$cItem->action_text}}</a></p>
                                     @endif
                                 </div>
@@ -60,8 +60,10 @@
             @endif
         </div>
     </div>
-    <div class="text-center">
-        <h1>What is APO all about?</h1>
+    <div class="row">
+        <div class="text-center">
+            <h1>What is APO all about?</h1>
+        </div>
     </div>
     <div class="row">
         <div class="col-sm-2"></div>
@@ -69,7 +71,7 @@
             <div class="row text-center">
                 <div class="col-sm-4">
                     <div class="homepage-icon-container">
-                        {!!Html::image('css/images/leadership-image.png','APO Leadership
+                        {!!Html::image('css/images/teacher44.svg','APO Leadership
                         Icon',array('class'=>'img-responsive homepage-icon'))!!}
                     </div>
                     <h3>Leadership</h3>
@@ -79,7 +81,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="homepage-icon-container">
-                        {!!Html::image('css/images/friendship-image.png','APO Friendship Icon',
+                        {!!Html::image('css/images/men.svg','APO Friendship Icon',
                         array('class'=>'img-responsive homepage-icon'))!!}
                     </div>
                     <h3>Friendship</h3>
@@ -89,7 +91,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="homepage-icon-container">
-                        {!!Html::image('css/images/service-image.png','APO Service Icon', array('class'=>'img-responsive
+                        {!!Html::image('css/images/hand-1.svg','APO Service Icon', array('class'=>'img-responsive
                         homepage-icon'))!!}
                     </div>
                     <h3>Service</h3>
@@ -99,5 +101,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-2"></div>
+        <div class="col-sm-2">
+
+        </div>
+    </div>
+    <div class="text-center">Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
 @stop

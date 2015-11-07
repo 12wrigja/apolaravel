@@ -5,27 +5,26 @@
 
     <h1>FAQ</h1>
 
-    <p>Welcome to the new APO Website! This is probably all very new to everyone, and so below is a quick FAQ full of
-        questions people might have and some answers.</p>
+    <p>Welcome to the new APO Website! This is probably all very new to everyone, and so below is a quick FAQ to try and
+        address some of the questions people might have.</p>
 
-    <h3>How do I use things?</h3>
-    <p>Good question! One of the existing issues with the old website was the organizational structure. This has been
-        simplified: almost anything you could want to do you can now do from the dropdown menu at the top right section
-        of the screen. Simply log in using Case's SSO system (same as for Blackboard) and you will be returned
-        automatically back to this site. Once you are logged in, you can click on your name from the dropdown and a list
-        will appear with all the information you might find useful, such as submitting service and brotherhood reports,
+    <h3>How do I do things?</h3>
+    <p>Good question! One of the issues with the old website was organization. Now, you can get anything you
+        want from the dropdown menu at the top right section of the screen. Simply log in using your CWRU ID and
+        password system (same as for Blackboard) and you will be returned automatically back to this site. </p>
+    <p>Once you are logged in, you can click on your name from the dropdown and a list
+        will appear with pages/actions you might find useful, such as submitting service and brotherhood reports,
         checking your contract status and signing out. If you are an exec board member, any additional functionality you
-        have as an exec board member will be listed there as well.</p>
+        have as an exec board member will be listed there under an appropriate subheading.</p>
     <p>If you can't find what you are looking for there, try having a look at the various menu bar options just to the
-        left od your name. You can find information about the chapter under the Theta Upsilon Chapter tab, including
+        left of your name. You can find information about the chapter under the Theta Upsilon Chapter tab, including
         current officer contact information, a complete member search system, and information about the chapter in
-        general (currently under construction. If you know what should go here, keep reading down to the section on
-        collaboration).</p>
+        general (currently under construction. If you know what should go here, keep reading down to the last section to learn how to help fill in these pages).</p>
 
     <h3>Where is all my data?</h3>
 
     <p>Don't worry! The old APO database is completely intact. It's just taking a while to move over all the data. Right
-        now, the following pieces of data are successfully migrated over:</p>
+        now, the following pieces of data have been successfully migrated over:</p>
     <ul>
         <li>Service reports</li>
         <li>Users (all user data, not just names and CWRU ID's.)</li>
@@ -56,20 +55,23 @@
     <h3>Why did things change?</h3>
     <h6>In Summary: </h6> <p> Things were breaking and the existing codebase was unmaintainable.</p>
     <h6>Long Answer: </h6>
-    <p>For those of you that don't know, the previous version of the APO Website is ancient. The first version launched
-        in 2003, and the code that it uses is very reminiscent of the time. No class structures, basic templating, and
-        lots of confusing and poorly documented code. The old code base used RAW SQL queries, leading to vulnerability
-        injection issues, as well as relying on insecure storage of sensitive data. There were also many issues caused
-        by lack of documentation and poor coding practices. I (the webmaster as of 2015) decided this needed to change
+    <p>For those of you that don't know, the previous version of the APO Website was first launched around 2003. As the
+        the role of webmaster has changed hands, previous webmasters have continued to work on top of the original
+        framework, and this has lead to many issues caused
+        by lack of organization, documentation and poor coding practices. I (the webmaster as of 2015) decided this
+        needed to change
         in order to preserve the sanity of myself and future webmasters, as well as bring Theta Upsilon's website into
         the current generation.</p>
     <p>Hopefully changing the core of the website will lead to a more extensible platform for future webmasters to work
-        with, as well as provide increased reliability and reduced random issues. If you know PHP (<b>especially</b> the
+        with, as well as provide increased reliability and a reduction in random issues that seem to be cropping up. If
+        you know PHP (<b>especially</b> the
         Laravel framework), Javascript, or SASS,
         I would love your help. The source code to the project is available on Github <a
                 href="https://github.com/12wrigja/apolaravel">here</a> and anyone is welcome to make Pull Requests with
-        features and bug fixes. I also would like help thememing the website and filling in various static sections. For
-        those, you can email the current webmaster at {!! Html::mailto('webmaster@apo.case.edu') !!} to see what needs
+        features and bug fixes. I also would like help themeing the website and filling in various informational
+        sections. For
+        those, you can email me (the current webmaster) at {!! Html::mailto('webmaster@apo.case.edu') !!} to see what
+        needs
         doing or make suggestions of your own.</p>
 
 

@@ -30,9 +30,9 @@ Route::delete('/reports/{type}/{id}', ['uses' => 'EventPipelineController@delete
 
 //Routes for the officer pages
 Route::get('officers', ['uses'=>'Officers\OfficerPageController@index','as'=>'officers']);
-Route::get('faq',function(){
+Route::get('faq',['as'=>'faq',function(){
     return view('faq');
-});
+}]);
 Route::get('statistics',['uses'=>'ChapterStatisticsController@chapterStatistics','as'=>'chapterstatistics']);
 Route::get('calendar',['as'=>'calendar',function(){
     return view('tools.calendar');
