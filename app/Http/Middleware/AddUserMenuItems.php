@@ -132,6 +132,11 @@ class AddUserMenuItems
                 $item->text = "Create Pledge Meeting";
                 $item->url = route('report_create',['type'=>'pledge_meetings']);
                 array_push($menu_items,$item);
+
+                $item = new \stdClass();
+                $item->text = "View Pledge Contract Progress";
+                $item->url = route('contract_progress');
+                array_push($menu_items, $item);
             }
 
 
