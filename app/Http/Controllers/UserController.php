@@ -1,7 +1,8 @@
 <?php namespace APOSite\Http\Controllers;
 
+use APOSite\Http\Requests\Users\UserEditRequest;
 use APOSite\Http\Requests\Users\UserDeleteRequest;
-use APOSite\Http\Requests\Users\UserStatusPageRequest;
+use APOSite\Http\Requests\Users\UserPersonalPageRequest;
 use APOSite\Http\Transformers\UserSearchResultTransformer;
 use APOSite\Models\Users\User;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\View;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use APOSite\Models\Semester;
 
 class UserController extends Controller
 {
@@ -112,7 +114,8 @@ class UserController extends Controller
             }
         }
         if ($user != null) {
-            return View::make('users.profile')->with('user', $user);
+            $big = User::find($user->big);
+            return View::make('users.profile')->with(compact('user','big'));
         } else {
             throw new NotFoundHttpException("User Not Found!");
         }
@@ -124,9 +127,14 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(UserPersonalPageRequest $request, $id)
     {
-
+        $user = User::find($id);
+        if ($user != null) {
+            return view('users.profileedit')->with('user', $user);
+        } else {
+            throw new NotFoundHttpException("User Not Found!");
+        }
     }
 
     /**
@@ -135,9 +143,24 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update($id)
+    public function update(UserEditRequest $request, $id)
     {
-
+        $user = User::find($id);
+        if ($user != null) {
+            $attributes = $request->except(['first_name','last_name','family_id','big']);
+            foreach($attributes as $key=>$value){
+                if($value == ""){
+                    $attributes[$key] = null;
+                }
+            }
+            $user->fill($attributes);
+            //Construct semester ID number from given info
+            $user->graduation_semester = Semester::SemesterFromText($request->get('semester'),$request->get('year'),true)->id;
+            $user->save();
+            return Redirect::route('user_show',['id'=>$user->id]);
+        } else {
+            throw new NotFoundHttpException("User Not Found!");
+        }
     }
 
     /**
@@ -170,7 +193,7 @@ class UserController extends Controller
         return $users->get();
     }
 
-    public function statusPage(UserStatusPageRequest $request, $id)
+    public function statusPage(UserPersonalPageRequest $request, $id)
     {
         $user = User::find($id);
         if ($user != null) {

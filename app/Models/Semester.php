@@ -43,4 +43,22 @@ class Semester extends Model
             return $gate;
         }
     }
+
+    public static function SemesterFromText($semester, $year, $shouldCreate = false){
+        $base = $year << 1;
+        if($semester == 'fall'){
+            $base += 1;
+        }
+        $sem = static::find($base);
+        if($sem == null && $shouldCreate){
+            $newSem = new Semester();
+            $newSem->id = $base;
+            $newSem->semester = $semester;
+            $newSem->year = $year;
+            $newSem->save();
+            return $newSem;
+        } else {
+            return $sem;
+        }
+    }
 }

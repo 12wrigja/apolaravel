@@ -2,14 +2,13 @@
 
 namespace APOSite\Http\Requests\Users;
 
-use APOSite\Http\Controllers\AccessController;
-use APOSite\Http\Controllers\LoginController;
 use APOSite\Http\Requests\Request;
 use APOSite\Models\Users\User;
+use APOSite\Http\Controllers\LoginController;
+use APOSite\Http\Controllers\AccessController;
 
-class UserPersonalPageRequest extends Request
+class UserEditRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -34,10 +33,13 @@ class UserPersonalPageRequest extends Request
      *
      * @return array
      */
-    public
-    function rules()
+    public function rules()
     {
-        return [];
+        return [
+            'semester'=>'sometimes|required|in:fall,spring',
+            'year'=>'sometimes|required|integer|min:1000',
+            'email'=>'sometimes|email',
+            'phone_number'=>'sometimes|numeric'
+        ];
     }
-
 }

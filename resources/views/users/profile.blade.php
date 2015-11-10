@@ -12,7 +12,19 @@
             </div>
             <div class="col-sm-6">
                 <div>
-                    <h1>{{$user->fullDisplayName()}}</h1>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <h1>{{$user->fullDisplayName()}}</h1>
+                        </div>
+                        @if($user->id == \APOSite\Http\Controllers\LoginController::currentUser()->id || \APOSite\Http\Controllers\AccessController::isWebmaster(\APOSite\Http\Controllers\LoginController::currentUser()))
+                            <div class="col-md-2">
+                                <br>
+                                <a href="{{route('user_edit',['id'=>$user->id])}}" class="btn btn-primary">Edit
+                                    Profile</a>
+                            </div>
+                        @endif
+                    </div>
+
 
                     <p>Pledge Semester:
                         @if($user->pledge_semester != null)
@@ -43,48 +55,70 @@
                             Unknown
                         @endif
                     </p>
+
+                    <p>Big:
+                        @if($big != null)
+                            <a href="{{route('user_show',['id'=>$big->id])}}">{{$big->fullDisplayName()}}</a>
+                        @else
+                            Unassigned
+                        @endif
+                    </p>
                 </div>
                 <div>
                     <h2>About Me</h2>
                     <h4>Education</h4>
+
                     <h6>Major</h6>
 
                     <p>{{$user->major or "Unknown"}}</p>
+
                     <h6>Minor</h6>
 
                     <p>{{$user->minor or "Unknown"}}</p>
+
                     <h4>Biography</h4>
 
                     <p>{{$user->biography or "No Biography Found!"}}</p>
+
                     <h4>Why Did I Join APO?</h4>
 
                     <p>{{$user->join_reason or "No Reason Found!"}}</p>
+
+                    <h4>Lifetime Hours</h4>
+
+                    <p>{{floor($user->lifetimeHours()/60)}} hours, {{$user->lifetimeHours() % 60}} minutes</p>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
                 <h2>Locations</h2>
-                <h4>On Campus: </h4>
+                <h4>Hometown</h4>
 
-                <p>{{$user->campus_residence}}</p>
+                {{$user->hometown or "Unknown"}}
+                <h4>On Campus </h4>
+
+                <p>{{$user->campus_residence or "Unknown"}}</p>
                 <h4>Off Campus</h4>
+                @if($user->address != null || $user->city != null || $user->state != null || $user->zip_code != null)
+                    <p>{{$user->address}}</p>
 
-                <p>{{$user->address}}</p>
+                    <p>{{$user->city}}</p>
 
-                <p>{{$user->city}}</p>
+                    <p>{{$user->state}}</p>
 
-                <p>{{$user->state}}</p>
-
-                <p>{{$user->zip_code}}</p>
+                    <p>{{$user->zip_code}}</p>
+                @else
+                    <p>Uknown</p>
+                @endif
             </div>
 
             <div class="col-sm-6">
                 <h2>Contact</h2>
 
-                <p>Email Address: {{$user->email_address}}</p>
+                <p>Email Address: {{$user->email or "Unknown"}}</p>
 
-                <p>Phone Number: {{$user->phone_number}}</p>
+                <p>Phone Number: {{$user->phone_number or "Unknown"}}</p>
             </div>
         </div>
     </div>

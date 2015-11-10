@@ -54,9 +54,9 @@ Route::get('/users/{cwruid}', ['uses'=>'UserController@show','as'=>'user_show'])
 
 //Routes for allowing users to update their profiles.
 //TODO fix up the user editing system
-//Route::get('/users/{cwruid}/edit', 'UserController@edit');
+Route::get('/users/{cwruid}/edit', ['uses'=>'UserController@edit','as'=>'user_edit']);
 Route::get('/users/{cwruid}/status', ['uses'=>'UserController@statusPage','as'=>'user_status']);
-//Route::put('/users/cwruid}', 'UserController@update');
+Route::put('/users/{cwruid}', ['uses'=>'UserController@update','as'=>'user_update']);
 
 Route::get('contracts/progress',['uses'=>'ChapterStatisticsController@contractStatusPage','as'=>'contract_progress']);
 

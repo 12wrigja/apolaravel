@@ -1,102 +1,192 @@
 @extends('master_full')
 
-@section('masthead')
-
-@stop
-
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <img src="{{$user->pictureURL()}}" class="ui image">
+        <h1>Editing Profile</h1>
+        <a href="{{route('user_show',['id'=>$user->id])}}" class="btn btn-primary">Return to Profile (Don't Save)</a>
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
-            <div class="col-sm-6">
-                <div>
-                    <div class="row">
-                        <div class="col-md-10">
-                            <h1>{{$user->fullDisplayName()}}</h1>
-                        </div>
-                        @if($user->id == \APOSite\Http\Controllers\LoginController::currentUser()->id || \APOSite\Http\Controllers\AccessController::isWebmaster(\APOSite\Http\Controllers\LoginController::currentUser()))
-                            <div class="col-md-2">
-                                <br>
-                                <a href="{{route('user_edit',['id'=>$user->id])}}" class="btn btn-primary">Edit Profile</a>
-                            </div>
-                        @endif
+        @endif
+        {!!  Form::open(['route'=>['user_update','cwruid'=>$user->id],'role'=>'form','class'=>'form-horizontal','method'=>'PUT'])  !!}
+        <h3 class="text-center">About You</h3>
+
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                {!! Form::label('nickname','Nickname') !!}
+                <p class="help-block"></p>
+            </div>
+            <div class="col-sm-2">
+                {!! Form::text('nickname', $user->nickname, ['class'=>'form-control']) !!}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                {!! Form::label('semester','Graduation Semester') !!}
+                <p class="help-block"></p>
+            </div>
+            <div class="col-sm-2">
+                {!! Form::select('semester', ['fall'=>'Fall','spring'=>'Spring'], ($user->graduation_semester!=null)?$user->graduation_semester->semester:null, ['class'=>'form-control']) !!}
+            </div>
+            <div class="col-sm-1">
+                {!! Form::text('year', ($user->graduation_semester!=null)?$user->graduation_semester->year:null, ['class'=>'form-control']) !!}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                {!! Form::label('major','Major') !!}
+                <p class="help-block"></p>
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('major', $user->major, ['class'=>'form-control']) !!}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                {!! Form::label('minor','Minor') !!}
+                <p class="help-block"></p>
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('minor', $user->minor, ['class'=>'form-control']) !!}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                {!! Form::label('biography','Biography') !!}
+                <p class="help-block"></p>
+            </div>
+            <div class="col-sm-10">
+                {!! Form::textarea('biography', $user->biography, ['class'=>'form-control']) !!}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                {!! Form::label('join_reason','Why did you join APO?') !!}
+                <p class="help-block"></p>
+            </div>
+            <div class="col-sm-10">
+                {!! Form::textarea('join_reason', $user->join_reason, ['class'=>'form-control']) !!}
+            </div>
+        </div>
+
+        <h3>Contact Info</h3>
+
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                {!! Form::label('email','Email Address') !!}
+                <p class="help-block"></p>
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('email', $user->email, ['class'=>'form-control']) !!}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                {!! Form::label('phone_number','Phone Number') !!}
+                <p class="help-block"></p>
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('phone_number', $user->phone_number, ['class'=>'form-control']) !!}
+            </div>
+        </div>
+
+        <h3 class="text-center">Locations</h3>
+
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">
+                        {!! Form::label('hometown','Hometown') !!}
+                        <p class="help-block"></p>
                     </div>
-
-
-                    <p>Pledge Semester:
-                        @if($user->pledge_semester != null)
-                            {{ucwords($user->pledge_semester->semester)}} {{$user->pledge_semester->year}}
-                        @else
-                            Unknown
-                        @endif
-                    </p>
-
-                    <p>Initiation Semester:
-                        @if($user->initiation_semester != null)
-                            {{ucwords($user->initiation_semester->semester)}} {{$user->initiation_semester->year}}
-                        @else
-                            Unknown
-                        @endif
-                    </p>
-
-                    <p>Graduation Semester:
-                        @if($user->graduation_semester != null)
-                            {{ucwords($user->graduation_semester->semester)}} {{$user->graduation_semester->year}}
-                        @else
-                            Unknown
-                    @endif
-                    <p>Family:
-                        @if($user->family() != null)
-                            {{$user->family()->name}}
-                        @else
-                            Unknown
-                        @endif
-                    </p>
+                    <div class="col-sm-10">
+                        {!! Form::text('hometown', $user->hometown, ['class'=>'form-control']) !!}
+                    </div>
                 </div>
-                <div>
-                    <h2>About Me</h2>
-                    <h4>Education</h4>
-                    <h6>Major</h6>
-
-                    <p>{{$user->major or "Unknown"}}</p>
-                    <h6>Minor</h6>
-
-                    <p>{{$user->minor or "Unknown"}}</p>
-                    <h4>Biography</h4>
-
-                    <p>{{$user->biography or "No Biography Found!"}}</p>
-                    <h4>Why Did I Join APO?</h4>
-
-                    <p>{{$user->join_reason or "No Reason Found!"}}</p>
+            </div>
+            <div class="col-sm-7">
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">
+                        {!! Form::label('campus_residence','On Campus Location') !!}
+                        <p class="help-block"></p>
+                    </div>
+                    <div class="col-sm-10">
+                        {!! Form::text('campus_residence', $user->campus_location, ['class'=>'form-control']) !!}
+                    </div>
                 </div>
             </div>
         </div>
+
+
+        <h4 class="text-center">Off Campus Address</h4>
+
         <div class="row">
-            <div class="col-sm-6">
-                <h2>Locations</h2>
-                <h4>On Campus: </h4>
-
-                <p>{{$user->campus_residence}}</p>
-                <h4>Off Campus</h4>
-
-                <p>{{$user->address}}</p>
-
-                <p>{{$user->city}}</p>
-
-                <p>{{$user->state}}</p>
-
-                <p>{{$user->zip_code}}</p>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">
+                        {!! Form::label('address','Address') !!}
+                        <p class="help-block"></p>
+                    </div>
+                    <div class="col-sm-10">
+                        {!! Form::text('address', $user->address, ['class'=>'form-control']) !!}
+                    </div>
+                </div>
             </div>
-
-            <div class="col-sm-6">
-                <h2>Contact</h2>
-
-                <p>Email Address: {{$user->email_address}}</p>
-
-                <p>Phone Number: {{$user->phone_number}}</p>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">
+                        {!! Form::label('city','City') !!}
+                        <p class="help-block"></p>
+                    </div>
+                    <div class="col-sm-10">
+                        {!! Form::text('city', $user->city, ['class'=>'form-control']) !!}
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">
+                        {!! Form::label('state','State') !!}
+                        <p class="help-block"></p>
+                    </div>
+                    <div class="col-sm-10">
+                        {!! Form::text('state', $user->state, ['class'=>'form-control']) !!}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">
+                        {!! Form::label('zip_code','Zip Code') !!}
+                        <p class="help-block"></p>
+                    </div>
+                    <div class="col-sm-10">
+                        {!! Form::text('zip_code', $user->zip_code, ['class'=>'form-control']) !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{--Picture--}}
+
+        <div class="form-group">
+            {!! Form::submit('Update Profile', ['class'=>'btn btn-primary form-control']) !!}
+        </div>
+
+        {!! Form::close() !!}
     </div>
 @stop

@@ -105,12 +105,7 @@ class User extends Model
 
     public function lifetimeHours()
     {
-        $reports = $this->reports;
-        $val = 0;
-        foreach ($reports as $report) {
-            $val += $report->pivot->value;
-        }
-        return $val / 60;
+        return $this->reports()->ServiceReports()->sum('value');
     }
 
     public function scopeActiveForSemester($query, Semester $semester)
