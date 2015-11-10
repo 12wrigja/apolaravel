@@ -6,6 +6,7 @@ use APOSite\Http\Controllers\AccessController;
 use APOSite\Models\Users\User;
 use Closure;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 
 class UserSpoofingMiddleware
 {
@@ -16,7 +17,7 @@ class UserSpoofingMiddleware
      * @param  \Closure $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         //Setup data
         $spoofUserID = $request->get('spoof');
@@ -35,10 +36,10 @@ class UserSpoofingMiddleware
                 //If there is a name there, use that so long as it isn't the word Off.
                 if($spoofUserID != null){
                     if($spoofUserID == 'off'){
-                        $request = $this->setSpoofing($spoofingUser->id,$request);
+                        $this->setSpoofing($spoofingUser->id,$request);
                         Session::forget('spoofusername');
                     } else {
-                        $request = $this->setSpoofing($spoofUserID,$request);
+                        $this->setSpoofing($spoofUserID,$request);
                     }
                 }
                 return $next($request);
@@ -47,7 +48,7 @@ class UserSpoofingMiddleware
             if (AccessController::isWebmaster($currentUser)) {
                 //Start spoofing
                 Session::put('spoofusername', $currentUser->id);
-                $request = $this->setSpoofing($spoofUserID, $request);
+                $this->setSpoofing($spoofUserID, $request);
                 return $next($request);
             }
         }
@@ -59,11 +60,6 @@ class UserSpoofingMiddleware
         if ($user != null) {
             Session::put('username', $username);
             Session::put('user', $user);
-            $menuItemAdding = new AddUserMenuItems();
-            $newRequest = $menuItemAdding->handle($request,function($request){
-                return $request;
-            });
-            return $newRequest;
         }
     }
 }
