@@ -4,6 +4,7 @@ use APOSite\Models\Contracts\Reports\Types\BrotherhoodReport;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\TransformerAbstract;
+use APOSite\Models\Users\User;
 
 class BrotherhoodReportTransformer extends TransformerAbstract
 {
@@ -37,7 +38,7 @@ class BrotherhoodReportTransformer extends TransformerAbstract
             'description' => $report->description,
             'event_date' => $report->event_date->toDateString(),
             'human_date' => $report->event_date->toFormattedDateString(),
-            'submitter' => $report->creator_id,
+            'submitter' => ['id'=>$report->creator_id,'display_name'=>User::find($report->creator_id)->fullDisplayName()],
             'location' => $report->location,
             'type' => $report->type,
             'submission_date' => $report->created_at->toDateTimeString(),

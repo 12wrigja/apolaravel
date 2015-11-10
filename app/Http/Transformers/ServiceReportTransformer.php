@@ -38,7 +38,7 @@ class ServiceReportTransformer extends TransformerAbstract
             'description' => $report->description,
             'event_date' => $report->event_date->toDateString(),
             'human_date' => $report->event_date->toFormattedDateString(),
-            'submitter' => $report->creator_id,
+            'submitter' => ['id'=>$report->creator_id,'display_name'=>User::find($report->creator_id)->fullDisplayName()],
             'project_type' => $report->project_type,
             'service_type' => $report->service_type,
             'location' => $report->location,
