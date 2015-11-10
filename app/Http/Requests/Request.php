@@ -1,6 +1,7 @@
 <?php namespace APOSite\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Redirect;
 
 abstract class Request extends FormRequest
 {
@@ -18,5 +19,15 @@ abstract class Request extends FormRequest
      * @return array
      */
     public abstract function rules();
+
+    public function forbiddenResponse()
+    {
+        if($this->wantsJson()){
+            return Request::json(['error'=>'403','message'=>'You are not authorized to do that action.']);
+        } else {
+            return Redirect::route('error_show',['id'=>403]);
+        }
+    }
+
 
 }

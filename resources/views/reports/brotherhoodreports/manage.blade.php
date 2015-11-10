@@ -5,7 +5,7 @@
     <manage_brotherhood_reports_form inline-template>
         <h1>Manage Brotherhood Reports</h1>
 
-        <p>Below is the brotherhood report management tool. Here you can view all submitted service reports and approve or
+        <p>Below is the brotherhood report management tool. Here you can view all submitted brotherhood reports and approve or
             un-approve as necessary.</p>
 
         <ul class="nav nav-tabs">

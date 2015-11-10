@@ -121,7 +121,10 @@ Route::get('login', array(
     }
 ));
 
-Route::get('debug',function(){
-    return LoginController::currentUser()->contractForSemester(null)->requirements[0]->getReports();
-});
-
+Route::get('{id}',['as'=>'error_show',function($id){
+   try{
+       return view('errors.'.$id);
+   } catch(Exception $e){
+       return Redirect::route('error_show',['id'=>'404']);
+   }
+}]);

@@ -10,7 +10,7 @@
 				</div>
 				<div class="col-sm-8">
 					<h1 class="ui inverted header">Authorization Error!</h1>
-					<p class="inverted">We are sorry - you need to be signed in to access that page.</p>
+					<p class="inverted">We are sorry - whatever you were trying to access is off-limits. If you feel this is in error, please email the webmaster at {!! Html::mailTo('webmaster@apo.case.edu') !!}</p>
 				</div>
 			</div>
 		</div>

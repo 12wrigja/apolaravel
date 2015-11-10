@@ -54,7 +54,7 @@ class EventPipelineController extends Controller
         return view('reports.' . str_replace('_', '', $type) . '.create');
     }
 
-    public function manageEvent($type)
+    public function manageEvent(Requests\Reports\ManageReportRequest $requet, $type)
     {
         return view('reports.' . str_replace('_', '', $type) . '.manage');
     }
