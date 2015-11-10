@@ -24,7 +24,6 @@ class UserSpoofingMiddleware
         $currentUser = User::find(Session::get('username'));
         if ($spoofingUser == null && !AccessController::isWebmaster($currentUser)) {
             Session::forget('spoofusername');
-            $request->merge(['spoof' => null]);
             return $next($request);
         }
         if ($spoofingUser != null) {

@@ -5,7 +5,7 @@ use APOSite\Http\Controllers\LoginController;
 use APOSite\Http\Requests\Request;
 use APOSite\Models\Users\User;
 
-class UserStatusPageRequest extends Request
+class UserPersonalPageRequest extends Request
 {
 
     /**
