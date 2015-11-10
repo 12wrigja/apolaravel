@@ -18,7 +18,9 @@ class SSOUserProvider extends ServiceProvider
     {
         view()->composer('*', function ($view) {
             $user = LoginController::currentUser();
-            $user = $this->AddMenuItems($user);
+            if($user != null){
+                $user = $this->AddMenuItems($user);
+            }
             return $view->with('currentUser', $user);
         });
     }
