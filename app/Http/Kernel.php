@@ -17,7 +17,8 @@ class Kernel extends HttpKernel
         'Illuminate\Session\Middleware\StartSession',
         'Illuminate\View\Middleware\ShareErrorsFromSession',
         'APOSite\Http\Middleware\AddUserMenuItems',
-        'APOSite\Http\Middleware\VerifyCsrfToken'
+        'APOSite\Http\Middleware\VerifyCsrfToken',
+        'APOSite\Http\Middleware\UserSpoofingMiddleware'
     ];
 
     /**

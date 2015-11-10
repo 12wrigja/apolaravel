@@ -28,12 +28,12 @@ abstract class BaseModel extends Eloquent implements ReportInterface
     public static function create(array $attributes = [])
     {
         DB::beginTransaction();
-        $specific = new static($attributes);
-        $coreEvent = new Report();
         $user = LoginController::currentUser();
         if (!isset($attributes['creator_id'])) {
             $attributes['creator_id'] = $user->id;
         }
+        $specific = new static($attributes);
+        $coreEvent = new Report();
         $coreEvent->save();
         $specific->save();
         $specific->core()->save($coreEvent);

@@ -1,6 +1,16 @@
-<h4>Project Name</h4>
+<div class="row">
 
-<P>@{{ report.event_name }}</P>
+    <div class="col-sm-6">
+        <h4>Event Name</h4>
+
+        <p>@{{ report.event_name }}</p>
+    </div>
+    <div class="col-sm-6">
+        <h4>Submitter</h4>
+
+        <p>@{{report.submitter.display_name}}</p>
+    </div>
+</div>
 
 <h4>Description</h4>
 
