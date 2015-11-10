@@ -35,7 +35,7 @@
 		<div class="container">
 			<div class="content">
 				{!!Html::image('css/images/torch-logo-new.png','APO Torch Logo',array('class'=>'img-responsive'))!!}
-				<div class="title">APO@CWRU is under maintenance.</br>Be right back!</div>
+				<div class="title"><b>APO@CWRU is under maintenance.</br>Be right back!</b></div>
 			</div>
 		</div>
 	</body>

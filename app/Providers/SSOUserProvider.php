@@ -205,6 +205,11 @@ class SSOUserProvider extends ServiceProvider
             $item->url = route('calendar');
             array_push($menu_items,$item);
 
+            $item = new \stdClass();
+            $item->text = "View APO Documents";
+            $item->url = route('document_list');
+            array_push($menu_items,$item);
+
             //Service report menu item
             $item = new \stdClass();
             $item->text = "Logout";

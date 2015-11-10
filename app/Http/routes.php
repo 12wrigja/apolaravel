@@ -60,6 +60,10 @@ Route::put('/users/{cwruid}', ['uses'=>'UserController@update','as'=>'user_updat
 
 Route::get('contracts/progress',['uses'=>'ChapterStatisticsController@contractStatusPage','as'=>'contract_progress']);
 
+Route::get('documents',['uses'=>'DocumentController@index','as'=>'document_list']);
+Route::get('documents/{office}/{filename}',['uses'=>'DocumentController@getOfficeDocument','as'=>'retrieve_office_document']);
+Route::get('documents/{filename}',['uses'=>'DocumentController@getDocument','as'=>'retrieve_document']);
+
 //TODO clean up routing system for contract and requirement data, along w/ models
 //All routes regarding contracts and contract requirements are commented out for the time being as they have not been refactored correctly.
 
