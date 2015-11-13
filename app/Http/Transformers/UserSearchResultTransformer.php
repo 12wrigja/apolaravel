@@ -8,8 +8,8 @@
 
 namespace APOSite\Http\Transformers;
 
-use League\Fractal\TransformerAbstract;
 use APOSite\Models\Users\User;
+use League\Fractal\TransformerAbstract;
 
 class UserSearchResultTransformer extends TransformerAbstract
 {
@@ -26,7 +26,7 @@ class UserSearchResultTransformer extends TransformerAbstract
 
     public function transform(User $user)
     {
-        $base =  [
+        $base = [
             'id' => $user->id,
             'href' => route('user_show', ['id' => $user->id]),
             'display_name' => $user->getFullDisplayName(),
@@ -34,9 +34,12 @@ class UserSearchResultTransformer extends TransformerAbstract
             'last_name' => $user->last_name,
             'image' => $user->pictureURL(150),
         ];
-        foreach($this->attributes as $attr){
+        if (count($this->attributes) == 0 || count($this->attributes) == 1 && $this->attributes[0] == "") {
+            return $base;
+        }
+        foreach ($this->attributes as $attr) {
             $value = $user->getAttribute($attr);
-            if($value != null){
+            if ($value != null) {
                 $base[$attr] = $value;
             }
         }

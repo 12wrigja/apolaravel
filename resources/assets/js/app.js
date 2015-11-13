@@ -138,6 +138,8 @@ var main = new Vue({
         'create_dues_report_form': require('./views/reports/duesreports/create.js')(Resources),
         'piechart': require('./components/graphwidgets/piechart.js')(Resources),
         'user-search-view': require('./views/users/search.js')(Resources),
+        'brother-selector' : require('./components/forms/brother-selector.js')(Resources),
+        'contract-manager' : require('./views/contracts/manage.js')(Resources)
     },
 
     filters: {

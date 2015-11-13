@@ -54,9 +54,13 @@ module.exports = function (Vue) {
                         localStorage.removeItem(window.location.href + '|form');
                         setTimeout(function () {
                             console.log("Done Waiting.");
-                            console.log("Successful call to " + this.formURL);
+                            console.log("Data: \n"+data);
                             $(instance.$$.loadingArea).collapse('hide');
-                            instance.successFunction(JSON.parse(data));
+                            if(typeof data == "string"){
+                                instance.successFunction(JSON.parse(data));
+                            } else {
+                                instance.successFunction(data);
+                            }
                         }, 1000);
                     }).fail(function (error) {
                         setTimeout(function () {

@@ -60,6 +60,11 @@ class SSOUserProvider extends ServiceProvider
                 array_push($menu_items, $item);
 
                 $item = new \stdClass();
+                $item->text = "Manage Contracts Signed";
+                $item->url = route('contract_manage');
+                array_push($menu_items, $item);
+
+                $item = new \stdClass();
                 $item->text = "View Chapter Statistics";
                 $item->url = route('chapterstatistics');
                 array_push($menu_items, $item);

@@ -55,13 +55,14 @@ class User extends Model
             $semester = Semester::currentSemester();
         }
         $contract_id = $this->ContractTypeForSemester($semester);
-        try {
-            return App::make('APOSite\ContractFramework\Contracts\\' . $contract_id . 'Contract',
-                ['user' => $this, 'semester' => $semester]);
-        } catch (\Exception $e) {
-            return null;
+        if($contract_id != null || $contract_id != ""){
+            try {
+                return App::make('APOSite\ContractFramework\Contracts\\' . $contract_id . 'Contract',
+                    ['user' => $this, 'semester' => $semester]);
+            } catch (\Exception $e) {
+            }
         }
-
+        return null;
     }
 
     public function offices()
@@ -134,6 +135,12 @@ class User extends Model
         return $query->join('contract_user', function ($join) {
             $join->on('users.id', '=', 'contract_user.user_id');
         })->whereContractId('Neophyte')->whereSemesterId($semester->id);
+    }
+
+    public function scopeIncludeContract($query){
+        return $query->join('contract_user',function($join){
+            $join->on('users.id','=','contract_user.user_id');
+        })->addSelect('contract_id as contract');
     }
 
     public function ContractTypeForSemester(Semester $semester)

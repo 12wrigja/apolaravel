@@ -1,9 +1,10 @@
 <?php namespace APOSite\Http\Controllers;
 
-use APOSite\Http\Requests\Users\UserEditRequest;
 use APOSite\Http\Requests\Users\UserDeleteRequest;
+use APOSite\Http\Requests\Users\UserEditRequest;
 use APOSite\Http\Requests\Users\UserPersonalPageRequest;
 use APOSite\Http\Transformers\UserSearchResultTransformer;
+use APOSite\Models\Semester;
 use APOSite\Models\Users\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -13,8 +14,8 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
+use PhpSpec\Exception\Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use APOSite\Models\Semester;
 
 class UserController extends Controller
 {
@@ -43,9 +44,28 @@ class UserController extends Controller
             } else {
                 $users = $this->searchUsers("");
             }
-            $attributes = Input::get('attr');
-            if ($attributes == null) {
-                $attributes = array();
+            try {
+
+                $attributes = Input::get('attrs');
+                if ($attributes == null) {
+                    $users = $users->get();
+                    $attributes = [];
+                } else {
+                    $attributes = explode(',', $attributes);
+                    foreach ($attributes as $attribute) {
+                        $sanitiedAttributeName = str_replace('_', '', ucwords($attribute));
+                        $methodNam = 'scopeInclude' . $sanitiedAttributeName;
+                        if (method_exists(new User(), $methodNam)) {
+                            $users = $users->{'Include' . $sanitiedAttributeName}();
+                        } else {
+                            $users = $users->addSelect($sanitiedAttributeName);
+                        }
+                    }
+                    $users = $users->get();
+                }
+            } catch (Exception $e) {
+                return Response::json(['message' => 'Unable to process your request. Please check your attribute names and try again.'],
+                    422);
             }
             $transformer = new UserSearchResultTransformer($attributes);
             $resource = new Collection($users, $transformer);
@@ -115,7 +135,7 @@ class UserController extends Controller
         }
         if ($user != null) {
             $big = User::find($user->big);
-            return View::make('users.profile')->with(compact('user','big'));
+            return View::make('users.profile')->with(compact('user', 'big'));
         } else {
             throw new NotFoundHttpException("User Not Found!");
         }
@@ -147,17 +167,18 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if ($user != null) {
-            $attributes = $request->except(['first_name','last_name','family_id','big']);
-            foreach($attributes as $key=>$value){
-                if($value == ""){
+            $attributes = $request->except(['first_name', 'last_name', 'family_id', 'big']);
+            foreach ($attributes as $key => $value) {
+                if ($value == "") {
                     $attributes[$key] = null;
                 }
             }
             $user->fill($attributes);
             //Construct semester ID number from given info
-            $user->graduation_semester = Semester::SemesterFromText($request->get('semester'),$request->get('year'),true)->id;
+            $user->graduation_semester = Semester::SemesterFromText($request->get('semester'), $request->get('year'),
+                true)->id;
             $user->save();
-            return Redirect::route('user_show',['id'=>$user->id]);
+            return Redirect::route('user_show', ['id' => $user->id]);
         } else {
             throw new NotFoundHttpException("User Not Found!");
         }
@@ -189,15 +210,16 @@ class UserController extends Controller
         } else {
             $users = User::query();
         }
-        $users = $users->orderBy('first_name', 'ASC')->orderBy('last_name', 'ASC');
-        return $users->get();
+        $users = $users->orderBy('first_name', 'ASC')->orderBy('last_name', 'ASC')->select('first_name', 'last_name',
+            'nickname', 'id');
+        return $users;
     }
 
     public function statusPage(UserPersonalPageRequest $request, $id)
     {
         $user = User::find($id);
         if ($user != null) {
-            return view('contracts.status')->with('contract', $user->contractForSemester(null))->with('user',$user);
+            return view('contracts.status')->with('contract', $user->contractForSemester(null))->with('user', $user);
         } else {
             throw new NotFoundHttpException('User not found');
         }

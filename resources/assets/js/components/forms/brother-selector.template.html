@@ -1,0 +1,20 @@
+<select v-el="selector" placeholder="Search for a Brother..." class="form-control" style="width: 100%;"></select>
+<table class="table table-responsive">
+    <thead>
+    <th>Brother</th>
+    <th v-repeat="attr in attributes">
+        {{attr.header}}
+    </th>
+    <th></th>
+    </thead>
+    <tr v-repeat="brother in brothers">
+        <td>{{ brother.display_name }}</td>
+        <td v-repeat="attr in attributes">
+            <select class="form-control" v-model="brother[attr.binding]" v-if="attr.display.type === 'select'" options="attr.display.options">
+            </select>
+        </td>
+        <td>
+            <div class="btn btn-danger" v-on="click: removeBrother(brother)">Remove</div>
+        </td>
+    </tr>
+</table>

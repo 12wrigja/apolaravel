@@ -66,7 +66,8 @@ Route::get('documents/{filename}',['uses'=>'DocumentController@getDocument','as'
 
 //TODO clean up routing system for contract and requirement data, along w/ models
 //All routes regarding contracts and contract requirements are commented out for the time being as they have not been refactored correctly.
-
+Route::get('manage/contracts',['uses'=>'ContractController@manage','as'=>'contract_manage']);
+Route::post('contracts',['uses'=>'ContractController@modifyContract','as'=>'contract_store']);
 //Route::get('contracts', ['uses' => 'ContractController@index', 'as' => 'contract_view']);
 //Route::get('contracts/create', ['uses' => 'ContractController@create', 'as' => 'contract_create']);
 //Route::post('contracts', ['uses' => 'ContractController@store', 'as' => 'contract_store']);
