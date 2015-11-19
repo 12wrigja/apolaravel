@@ -20,8 +20,7 @@ class PledgeContract extends Contract
             PledgeMemberChapterMeetingRequirement::class,
             PledgeMemberTotalHoursRequirement::class,
             PledgeMemberInsideHoursRequirement::class,
-            PledgeMemberDuesRequirement::class,
-            BrotherhoodHoursRequirement::class
+            PledgeMemberDuesRequirement::class
         ];
     }
 }
