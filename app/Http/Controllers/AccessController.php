@@ -1,7 +1,9 @@
 <?php namespace APOSite\Http\Controllers;
 
-use APOSite\Models\Users\User;
 use APOSite\Models\Office;
+use APOSite\Models\Semester;
+use APOSite\Models\Users\User;
+use DB;
 
 class AccessController extends Controller
 {
@@ -62,9 +64,43 @@ class AccessController extends Controller
         return static::officeIDsInArray($user, ['6', '7']);
     }
 
-    private static function getOfficeIDs(User $user = null)
+    public static function getOfficeIDs(User $user = null)
     {
-        return $user->offices()->current()->lists('id');
+        //Current office ID's (includes one semester back rollover.
+        /*
+         * select * from
+(
+SELECT
+    *
+FROM
+    office_user
+WHERE
+    semester_id = 4032
+UNION SELECT
+    *
+FROM
+    office_user
+WHERE
+    semester_id = 4031
+        AND office_id NOT IN (SELECT
+            office_id
+        FROM
+            office_user
+        WHERE
+            semester_id = 4032)) as t where t.user_id = 'jow5';
+         */
+        $thisSem = Semester::currentSemester();
+        $prevSem = $thisSem->previous();
+        $currentOfficers = DB::table('office_user')->whereSemesterId($thisSem->id)->union(DB::table('office_user')->whereSemesterId($prevSem->id)->whereNotIn('office_id',
+            function ($query) use ($thisSem,$user) {
+                $query->select('office_id')->from('office_user')->whereSemesterId($thisSem->id);
+            }))->get();
+        $offices = collect($currentOfficers)->filter(function($item) use ($user){
+            return $item->user_id == $user->id;
+        });
+        return $offices->transform(function($item){
+            return $item->office_id;
+        })->values()->toArray();
     }
 
     private static function officeIDsInArray($user, $ids = array())
@@ -82,21 +118,22 @@ class AccessController extends Controller
         }
     }
 
-    public static function getAccessibleFoldersForUser(User $user = null){
+    public static function getAccessibleFoldersForUser(User $user = null)
+    {
         $folders = [];
-        if($user != null){
-            if(static::isWebmaster($user)){
+        if ($user != null) {
+            if (static::isWebmaster($user)) {
                 $folders = [];
                 $offices = Office::all()->lists('display_name');
-                foreach($offices as $office) {
+                foreach ($offices as $office) {
                     $folders[$office] = static::cleanFolderName(str_replace(' ', '',
                         str_replace('-', '', strtolower($office))));
                 }
                 return $folders;
             } else {
                 $folders = [];
-                $offices =  $user->offices()->current()->get()->lists('display_name');
-                foreach($offices as $office) {
+                $offices = $user->offices()->current()->get()->lists('display_name');
+                foreach ($offices as $office) {
                     $folders[$office] = static::cleanFolderName(str_replace(' ', '',
                         str_replace('-', '', strtolower($office))));
                 }
@@ -105,6 +142,7 @@ class AccessController extends Controller
         }
         return $folders;
     }
+
     private static function cleanFolderName($folder)
     {
         $cleanName = $folder;

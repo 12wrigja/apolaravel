@@ -28,6 +28,11 @@ class Semester extends Model
         return Semester::find($this->id + 1);
     }
 
+    public function previous()
+    {
+        return Semester::find($this->id - 1);
+    }
+
     public function dateInSemester(Carbon $date){
         $start = $this->start_date;
         $end = $this->end_date;

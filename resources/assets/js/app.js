@@ -139,7 +139,8 @@ var main = new Vue({
         'piechart': require('./components/graphwidgets/piechart.js')(Resources),
         'user-search-view': require('./views/users/search.js')(Resources),
         'brother-selector' : require('./components/forms/brother-selector.js')(Resources),
-        'contract-manager' : require('./views/contracts/manage.js')(Resources)
+        'contract-manager' : require('./views/contracts/manage.js')(Resources),
+        'contract-signer' : require('./views/contracts/signer.js')(Resources)
     },
 
     filters: {

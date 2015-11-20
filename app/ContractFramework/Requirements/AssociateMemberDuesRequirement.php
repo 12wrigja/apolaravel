@@ -8,6 +8,8 @@
 
 namespace APOSite\ContractFramework\Requirements;
 
+use APOSite\Models\Semester;
+
 class AssociateMemberDuesRequirement extends Requirement
 {
     public static $name = "Dues";
@@ -19,6 +21,11 @@ class AssociateMemberDuesRequirement extends Requirement
     public function getReports()
     {
         $dues_reports = $this->user->reports()->DuesReports()->get();
+        $semester = Semester::currentSemester();
+        $dues_reports = $dues_reports->filter(function($report) use ($semester){
+            $val = $semester->dateInSemester($report->report_type->report_date);
+            return $val;
+        });
         return $dues_reports;
     }
 

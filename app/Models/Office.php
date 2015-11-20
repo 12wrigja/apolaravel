@@ -13,10 +13,16 @@ class Office extends Model
         'display_order'
     ];
 
+    //Warning: Only to be used
     public function scopeCurrent($query)
     {
         $pivot = $this->users()->getTable();
         return $query->where($pivot . '.semester_id', Semester::currentSemester()->id);
+    }
+
+    public function scopeForSemester($query, $semesterID){
+        $pivot = $this->users()->getTable();
+        return $query->where($pivot . '.semester_id', $semesterID);
     }
 
     public function users()

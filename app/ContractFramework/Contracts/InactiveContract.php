@@ -9,19 +9,13 @@ use APOSite\ContractFramework\Requirements\PledgeMemberPledgeMeetingRequirement;
 use APOSite\ContractFramework\Requirements\PledgeMemberTotalHoursRequirement;
 use APOSite\ContractFramework\Requirements\PledgeMemberInsideHoursRequirement;
 
-class NeophyteContract extends Contract
+class InactiveContract extends Contract
 {
-    public static $name = "Neophyte Contract";
+    public static $name = "Inactive Contract";
 
     public static function getRequirementClasses()
     {
         return [
-            PledgeMemberPledgeMeetingRequirement::class,
-            PledgeMemberChapterMeetingRequirement::class,
-            PledgeMemberTotalHoursRequirement::class,
-            PledgeMemberInsideHoursRequirement::class,
-            PledgeMemberDuesRequirement::class,
-            BrotherhoodHoursRequirement::class
         ];
     }
 

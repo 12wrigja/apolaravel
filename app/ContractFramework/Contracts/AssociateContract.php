@@ -8,13 +8,14 @@
 
 namespace APOSite\ContractFramework\Contracts;
 
-use APOSite\ContractFramework\Requirements\BrotherhoodHoursRequirement;
 use APOSite\ContractFramework\Requirements\AssociateMemberDuesRequirement;
 use APOSite\ContractFramework\Requirements\AssociateMemberInsideHoursRequirement;
+use APOSite\ContractFramework\Requirements\BrotherhoodHoursRequirement;
 
 class AssociateContract extends Contract
 {
     public static $name = "Associate Contract";
+
     public static function getRequirementClasses()
     {
         return [

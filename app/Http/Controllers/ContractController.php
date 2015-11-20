@@ -10,6 +10,7 @@ use APOSite\Models\Semester;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use Exception;
 
 class ContractController extends Controller
 {
@@ -30,7 +31,8 @@ class ContractController extends Controller
      */
     public function index()
     {
-        //
+        $existingContract = LoginController::currentUser()->contractForSemester(null);
+        return view('contracts.sign')->with(compact('existingContract'));
     }
 
     public function manage(ContractManageRequest $request)
@@ -38,10 +40,11 @@ class ContractController extends Controller
         return view('contracts.manage');
     }
 
+    //To use used by membership vp to change contracts, and by pledge ed to advance pledges. NOT for signing contracts
     public function modifyContract(ContractModifyRequest $request)
     {
         $user = LoginController::currentUser();
-        if (AccessController::isMembership($user) || AccessController::isPledgeEducator($user) && !$request->has('contract')) {
+        if (!$request->has('contract') && (AccessController::isMembership($user) || AccessController::isPledgeEducator($user))) {
             //Process bulk transactions
             $brothers = $request->get('brothers');
             $failedBrothers = [];
@@ -66,9 +69,8 @@ class ContractController extends Controller
                 if($this->changeContract($user->id,$request->get('contract'))){
                     return Response::json(['message' => 'OK'], 200);
                 } else {
-                    return Response::json(['errors' => ['general' => ['An error occured signing your contract.']]],500);
+                    return Response::json(['errors' => ['general' => ['An error occurred signing your contract.']]],500);
                 }
-
             } else {
                 return Response::json(['errors' => ['general' => ['Contract signing is not enabled at this time.']]],403);
             }
@@ -80,12 +82,21 @@ class ContractController extends Controller
         //Contract signing is enabled. Sign the given contract for the current semester
         //Check and see if they have already signed a contact for this semester:
         $sem = Semester::currentSemester();
-        $queryBase = DB::table('contract_user')->where('user_id', $user)->where('semester_id', $sem->id);
-        $existing = with(clone $queryBase)->select('contract_id')->get();
+        $existing = DB::table('contract_user')->where('user_id', $user)->where('semester_id', $sem->id)->select('contract_id')->get();
         if (count($existing) > 0) {
-            return with(clone $queryBase)->update(['contract_id'=>$newContract]);
+            try{
+                DB::table('contract_user')->where('user_id', $user)->where('semester_id', $sem->id)->update(['contract_id'=>$newContract]);
+                return true;
+            } catch (Exception $e){
+                return false;
+            }
         } else {
-            return with(clone $queryBase)->insert(['contract_id'=>$newContract]);
+            try{
+                DB::table('contract_user')->insert(['contract_id'=>$newContract,'user_id'=>$user,'semester_id'=>$sem->id]);
+                return true;
+            }catch(Exception $e){
+                return false;
+            }
         }
     }
 }

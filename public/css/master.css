@@ -15,3 +15,7 @@ body {
 .modal-wide {
     width: 850px;
 }
+
+[v-cloak] {
+    display: none;
+}
