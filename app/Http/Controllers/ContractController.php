@@ -99,4 +99,23 @@ class ContractController extends Controller
             }
         }
     }
+
+    public function changeContractSigning(ContractModifyRequest $request){
+        dd("Made it to the right function.");
+        $this->toggleContractSigning();
+        if(!GlobalVariable::ContractSigning()->value && $request->has('markInactive')){
+            //Mark anyone here who should have signed a contract to be inactive
+            $si = GlobalVariable::ShowInactive();
+            $si->value =  ($request->get('markInactive') == 1);
+            $si->save();
+        }
+        return view('contracts.manage');
+    }
+
+    private function toggleContractSigning(){
+        $cs = GlobalVariable::ContractSigning();
+        $cs->value = !$cs->value;
+        dd($cs);
+        $cs->save();
+    }
 }

@@ -69,6 +69,7 @@ Route::get('documents/{filename}',['uses'=>'DocumentController@getDocument','as'
 Route::get('manage/contracts',['uses'=>'ContractController@manage','as'=>'contract_manage']);
 Route::get('contracts',['as'=>'sign_contract','uses'=>'ContractController@index']);
 Route::post('contracts',['uses'=>'ContractController@modifyContract','as'=>'contract_store']);
+Route::post('contracts/change',['as'=>'changeContractSigning','uses'=>'ContractController@changeContractSigning']);
 //Route::get('contracts', ['uses' => 'ContractController@index', 'as' => 'contract_view']);
 //Route::get('contracts/create', ['uses' => 'ContractController@create', 'as' => 'contract_create']);
 //Route::post('contracts', ['uses' => 'ContractController@store', 'as' => 'contract_store']);

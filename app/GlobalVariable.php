@@ -17,4 +17,10 @@ class GlobalVariable extends Model
         $object->value = ($object->value == "1");
         return  $object;
     }
+
+    public static function ShowInactive(){
+        $object = static::find('showInactive')->first();
+        $object->value = ($object->value == "1");
+        return  $object;
+    }
 }

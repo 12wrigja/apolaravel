@@ -2,6 +2,8 @@
 
 namespace APOSite\Models\Users;
 
+use APOSite\ContractFramework\Contracts\AlumniContract;
+use APOSite\GlobalVariable;
 use APOSite\Models\Semester;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query;
@@ -152,7 +154,16 @@ class User extends Model
         $query = $query->where('semester_id', $semester->id);
         $contract = $query->select('contract_id')->first();
         if ($contract == null) {
-            return null;
+            //If this is null, we should see if they have been assigned as an alumni
+            $alumContract = DB::table('contract_user')->where('user_id',$this->id)->orderBy('semester_id','DESC')->first();
+            if($alumContract != null && ($alumContract->contract_id == "Alumni" || $alumContract->contract_id == "Adviser")){
+                return $alumContract->contract_id;
+            }
+            if(GlobalVariable::ShowInactive()->value){
+                return "Inactive";
+            } else {
+                return null;
+            }
         } else {
             return $contract->contract_id;
         }

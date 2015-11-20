@@ -3,6 +3,24 @@
 @section('crud_form')
 
     <h1 class="page-header">Contract Management Tool</h1>
+
+    @if(!\APOSite\GlobalVariable::ContractSigning()->value)
+        {!! Form::open(['route'=>'changeContractSigning']) !!}
+        <div class="form-group">
+            {!! Form::submit('Enable Contract Signing', ['class'=>'btn btn-success']) !!}
+        </div>
+        {!! Form::close() !!}
+    @else
+        {!! Form::open(['route'=>'changeContractSigning']) !!}
+        <div class="form-group">
+            {!! Form::checkbox('markInactive','Mark anyone who didn\'t sign inactive',false) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::submit('Disable Contract Signing', ['class'=>'btn btn-danger']) !!}
+        </div>
+        {!! Form::close() !!}
+    @endif
+
     <p>Below is the contract management tool. You can add in brothers whose contracts you wish to change, and upon
         submitting the form those brother's contracts will instantly be updated to reflect their new status.</p>
     <contract-manager inline-template>
