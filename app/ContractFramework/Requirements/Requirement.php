@@ -57,6 +57,9 @@ abstract class Requirement
     }
 
     public final function getPercentDone(){
+        if($this->getThreshold() == 0){
+            return 100;
+        }
         $ratio = $this->getValue() / $this->getThreshold();
         if($ratio >= 1){
             return 100;

@@ -36,7 +36,7 @@
                 </div>
             @endforeach
         @else
-            <p>There are no requriements for this contract.</p>
+            <p>There are no requirements for this contract.</p>
         @endif
 
     @endif

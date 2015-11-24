@@ -11,6 +11,7 @@ namespace APOSite\ContractFramework\Contracts;
 use APOSite\ContractFramework\Requirements\AssociateMemberDuesRequirement;
 use APOSite\ContractFramework\Requirements\AssociateMemberInsideHoursRequirement;
 use APOSite\ContractFramework\Requirements\BrotherhoodHoursRequirement;
+use APOSite\ContractFramework\Requirements\AssociateMemberChapterMeetingRequirement;
 
 class AssociateContract extends Contract
 {
@@ -21,7 +22,8 @@ class AssociateContract extends Contract
         return [
             AssociateMemberInsideHoursRequirement::class,
             AssociateMemberDuesRequirement::class,
-            BrotherhoodHoursRequirement::class
+            BrotherhoodHoursRequirement::class,
+            AssociateMemberChapterMeetingRequirement::class
         ];
     }
 }
