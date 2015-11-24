@@ -1,5 +1,6 @@
 <?php namespace APOSite\Providers;
 
+use APOSite\GlobalVariable;
 use APOSite\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
@@ -185,6 +186,13 @@ class SSOUserProvider extends ServiceProvider
             $item->text = "Account";
             $item->isHeader = true;
             array_push($menu_items,$item);
+
+            if(GlobalVariable::ContractSigning()->value){
+                $item = new \stdClass();
+                $item->text = "Sign a Contract";
+                $item->url = route('sign_contract');
+                array_push($menu_items,$item);
+            }
 
             //Service report menu item
             $item = new \stdClass();

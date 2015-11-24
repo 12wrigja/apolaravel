@@ -67,6 +67,10 @@ class ContractController extends Controller
             //Process a personal transaction. Check to make sure that contract signing is enabled.
             if (GlobalVariable::ContractSigning()->value) {
                 if($this->changeContract($user->id,$request->get('contract'))){
+                    //Send responses to committees to membership vp
+
+
+
                     return Response::json(['message' => 'OK'], 200);
                 } else {
                     return Response::json(['errors' => ['general' => ['An error occurred signing your contract.']]],500);
@@ -100,22 +104,15 @@ class ContractController extends Controller
         }
     }
 
-    public function changeContractSigning(ContractModifyRequest $request){
-        dd("Made it to the right function.");
-        $this->toggleContractSigning();
-        if(!GlobalVariable::ContractSigning()->value && $request->has('markInactive')){
-            //Mark anyone here who should have signed a contract to be inactive
-            $si = GlobalVariable::ShowInactive();
-            $si->value =  ($request->get('markInactive') == 1);
-            $si->save();
-        }
-        return view('contracts.manage');
-    }
-
-    private function toggleContractSigning(){
+    public function changeContractSigning(ContractManageRequest $request){
         $cs = GlobalVariable::ContractSigning();
-        $cs->value = !$cs->value;
-        dd($cs);
+        $mi = GlobalVariable::ShowInactive();
+        $cs->value = ($request->get('contract_signing') == "1");
+        $mi->value = ($request->get('mark_inactive') == "1");
         $cs->save();
+        $cs->fresh();
+        $mi->save();
+        $mi->fresh();
+        return redirect()->route('contract_manage');
     }
 }

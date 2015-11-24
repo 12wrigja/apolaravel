@@ -17,6 +17,6 @@ class GlobalVariablesSeeder extends Seeder
         //Contract signing variable
         \APOSite\GlobalVariable::create(['key'=>'contract_signing','value'=>'0']);
 
-        \APOSite\GlobalVariable::create(['key'=>'showInactive','value'=>'0']);
+        \APOSite\GlobalVariable::create(['key'=>'show_inactive','value'=>'0']);
     }
 }

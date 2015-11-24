@@ -13,14 +13,14 @@ class GlobalVariable extends Model
     public $timestamps = false;
 
     public static function ContractSigning(){
-        $object = static::find('contract_signing')->first();
-        $object->value = ($object->value == "1");
-        return  $object;
+        return GlobalVariable::whereKey('contract_signing')->first();
     }
 
     public static function ShowInactive(){
-        $object = static::find('showInactive')->first();
-        $object->value = ($object->value == "1");
-        return  $object;
+        return GlobalVariable::whereKey('show_inactive')->first();
+    }
+
+    public function getValueAttribute($value){
+        return ($value == "1");
     }
 }

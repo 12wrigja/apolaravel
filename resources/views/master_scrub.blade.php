@@ -20,6 +20,7 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet"/>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
     {!!Html::style('css/bootstrap-theme.min.css')!!}
     {!! Html::style('css/master.css') !!}
     {!! Html::style('css/mobile-master.css') !!}
@@ -61,6 +62,7 @@
 
 @yield('content')
 {!!Html::script(elixir('js/bundle.js'))!!}
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
 @yield('scripts')
 </body>
 
