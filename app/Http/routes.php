@@ -89,6 +89,15 @@ Route::post('contracts/change',['as'=>'changeContractSigning','uses'=>'ContractC
 //Route::get('contractreqs', ['uses' => 'ContractRequirementController@index', 'as' => 'contractreq_view']);
 //Route::post('contractreqs', ['uses' => 'ContractRequirementController@store', 'as' => 'contractreq_store']);
 
+Route::post('email',function(\APOSite\Http\Requests\SendEmailRequest $request){
+    $user = APOSite\Models\Users\User::find($request->get('to'));
+    $userFullName = $user->getDisplayName();
+    $userId = $user->id;
+    Mail::queue('emails.test',['msg'=>'This is a test message from the website.'],function($message) use ($userId,$userFullName){
+        $message->to($userId.'@case.edu',$userFullName)->subject('Test Message');
+    });
+});
+
 //Route for the homepage
 Route::get('/', array(
     'as' => 'home',
