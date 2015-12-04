@@ -32,7 +32,7 @@ class Office extends Model
 
     public function currentOfficer()
     {
-        return $this->users()->orderBy('semester_id')->first();
+        return $this->users()->orderBy('semester_id','DESC')->first();
     }
 
     public function scopeAllInOrder($query){
