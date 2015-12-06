@@ -13,7 +13,7 @@ class OfficerPageController extends Controller {
 	 */
 	public function index()
 	{
-        $offices = Office::AllInOrder()->get();
+        $offices = Office::AllInOrder()->Active()->get();
         $offices = $offices->filter(function($office){
             return $office->currentOfficer() != null;
         });

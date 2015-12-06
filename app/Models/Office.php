@@ -38,4 +38,8 @@ class Office extends Model
     public function scopeAllInOrder($query){
         return $query->orderBy('display_order','ASC');
     }
+
+    public function scopeActive($query){
+        return $query->whereActive(true);
+    }
 }
