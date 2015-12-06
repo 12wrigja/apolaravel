@@ -92,15 +92,15 @@ class SSOUserProvider extends ServiceProvider
             }
 
             if(AccessController::isFellowship($user)){
-                $item = new \stdClass();
-                $item->isHeader = true;
-                $item->text = "Fellowship Functions";
-                array_push($menu_items,$item);
-
-                $item = new \stdClass();
-                $item->text = "Manage brotherhood reports";
-                $item->url = route('report_manage',['type'=>'brotherhood_reports']);
-                array_push($menu_items, $item);
+//                $item = new \stdClass();
+//                $item->isHeader = true;
+//                $item->text = "Fellowship Functions";
+//                array_push($menu_items,$item);
+//
+//                $item = new \stdClass();
+//                $item->text = "Manage brotherhood reports";
+//                $item->url = route('report_manage',['type'=>'brotherhood_reports']);
+//                array_push($menu_items, $item);
 
             }
             if(AccessController::isTreasurer($user)){
