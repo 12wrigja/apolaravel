@@ -98,6 +98,9 @@ Route::post('email',function(\APOSite\Http\Requests\SendEmailRequest $request){
     });
 });
 
+Route::get('/grilledcheese','GrilledCheeseController@showOrderPage');
+Route::get('/grilledcheese/manage','GrilledCheeseController@showManagementPage');
+
 //Route for the homepage
 Route::get('/', array(
     'as' => 'home',
