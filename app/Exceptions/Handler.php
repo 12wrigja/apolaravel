@@ -3,6 +3,7 @@
 use APOSite\Http\Controllers\LoginController;
 use APOSite\Http\Requests\Request;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Facades\Response;
@@ -40,10 +41,12 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e)
 	{
-
 		if($e instanceof TokenMismatchException && $request->wantsJson()){
 			return Response::json(['error'=>'reload'],401);
 		}
+        if($e instanceof ModelNotFoundException && !$request->wantsJson()){
+            return view('errors.404');
+        }
 		return parent::render($request, $e);
 	}
 
