@@ -15,7 +15,7 @@ class OfficerPageController extends Controller {
 	{
         $offices = Office::AllInOrder()->Active()->get();
         $offices = $offices->filter(function($office){
-            return $office->currentOfficer() != null;
+            return $office->currentOfficers()->count() > 0;
         });
         return view('officers.currentOfficers')->with('offices',$offices);
     }
