@@ -3,12 +3,20 @@
 
 @section('crud_form')
 
-    <h1>Contract Status</h1>
+    @if($user->id == \APOSite\Http\Controllers\LoginController::currentUser()->id)
+        <h1>Contract Status</h1>
+    @else
+        <h1>Contract Status ({{$user->getFullDisplayName()}})</h1>
+    @endif
 
     @if($contract == null)
-        <h4>You have not yet signed a contract.</h4>
-        <p>If you sign a contract during this semester, any hours previously submitted will count toward that
-            contract.</p>
+        @if($user->id != \APOSite\Http\Controllers\LoginController::currentUser()->id)
+            <p>{{$user->getFullDisplayName()}} has not signed a contract this semester.</p>
+        @else
+            <h4>You have not yet signed a contract.</h4>
+            <p>If you sign a contract during this semester, any hours previously submitted will count toward that
+                contract.</p>
+        @endif
     @else
         <h2>Current Contract: {{ $contract::$name }}</h2>
         <h3>Requirements: </h3>
@@ -31,7 +39,6 @@
                         <p>Current: {{ round($requirement->getValue(),2) }},
                             Required: {{ $requirement->getThreshold() }}</p>
                         {!! $requirement->getDetails($user) !!}
-                    </div>
                     @endforeach
                 </div>
             @endforeach
