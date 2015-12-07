@@ -31,20 +31,22 @@
                                 <div class="progress-bar {{$requirement->getPercentDone() == 100 ? 'progress-bar-success' : ''}}"
                                      role="progressbar" aria-valuenow="{{$requirement->getPercentDone()}}"
                                      aria-valuemin="0"
-                                     aria-valuemax="100" <?php echo 'style="width:' . $requirement->getPercentDone() . '%"' ?>
-                                ">
-                                <span class="sr-only">{{$requirement->getPercentDone()}}% Complete</span>
+                                     aria-valuemax="100"
+                                     style="width:{{$requirement->getPercentDone()}}%;">
+                                    <span class="sr-only">{{$requirement->getPercentDone()}}% Complete</span>
+                                </div>
                             </div>
+                            <p>Current: {{ round($requirement->getValue(),2) }},
+                                Required: {{ $requirement->getThreshold() }}</p>
+                            @if($requirement->getValue() > 0)
+                                {!! $requirement->getDetails($user) !!}
+                            @endif
                         </div>
-                        <p>Current: {{ round($requirement->getValue(),2) }},
-                            Required: {{ $requirement->getThreshold() }}</p>
-                        {!! $requirement->getDetails($user) !!}
                     @endforeach
                 </div>
             @endforeach
         @else
             <p>There are no requirements for this contract.</p>
         @endif
-
     @endif
 @endsection
