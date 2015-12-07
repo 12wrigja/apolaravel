@@ -14,7 +14,8 @@
 		"phpunit/phpunit": "~4.0",
 		"phpspec/phpspec": "~2.1",
 		"laracasts/generators": "^1.1",
-		"doctrine/dbal": "^2.5"
+		"doctrine/dbal": "^2.5",
+		"laravelcollective/remote": "^5.1"
 	},
 	"autoload": {
 		"classmap": [

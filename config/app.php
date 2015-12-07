@@ -155,6 +155,9 @@ return [
         //Laracasts Flash Provider
         'Laracasts\Flash\FlashServiceProvider',
 
+		//SSH Remote Provider
+		Collective\Remote\RemoteServiceProvider::class,
+
 	],
 
 	/*
@@ -204,6 +207,7 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 		'Form'      => 'Illuminate\Html\FormFacade',
 		'Html'      => 'Illuminate\Html\HtmlFacade',
+		'SSH' => Collective\Remote\RemoteFacade::class,
 	],
 
 ];
