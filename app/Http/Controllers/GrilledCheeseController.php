@@ -22,7 +22,7 @@ class GrilledCheeseController extends Controller
     }
 
     public function showManagementPage(){
-        return redirect('https://docs.google.com/spreadsheets/d/1MpUXJquPOapz6Kr2Ow187S5TRXc8xpXjrMZQGkYsyH4/edit#gid=1050114767&vpid=A2');
+        return redirect('https://docs.google.com/spreadsheets/d/1MpUXJquPOapz6Kr2Ow187S5TRXc8xpXjrMZQGkYsyH4/edit?usp=sharing');
     }
 
 }
