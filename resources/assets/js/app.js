@@ -91,29 +91,22 @@ var Resources = function () {
             var split = query.toLowerCase().split(' ');
             var first_name = brother.first_name.toLowerCase();
             var last_name = brother.last_name.toLowerCase();
-            var nick_name = '';
-            if(brother.nickname !== undefined){
-                nick_name = brother.nickname.toLowerCase();
-            }
-
-            if (split.length > 1) {
-                //Check the following supported formats:
-                // firstname lastname
-                // nickname lastname
-                if (first_name.indexOf(split[0]) > -1 && last_name.indexOf(split[1]) > -1) {
-                    return brother;
-                } else if (brother.nickname !== undefined && nick_name.indexOf(split[0]) > -1 && last_name.indexOf(split[1]) > -1) {
-                    return brother;
-                } else {
-                    return null;
+            var nick_name = ('nickname' in brother)?brother.nickname:'';
+            var full_name = first_name+' '+((nick_name !== '')?nick_name+' ':'')+last_name;
+            var lastIndex = -1;
+            var match = true;
+            for(var i = 0; i<split.length; i++){
+                if(split[i] === ''){
+                    continue;
                 }
+                var index = full_name.indexOf(split[i]);
+                if(index < 0 || index <= lastIndex){
+                    match = false;
+                    break;
+                }
+                lastIndex = index+split[i].length;
             }
-            //see if the term partially matches the first or last name
-            if (first_name.indexOf(split[0]) > -1) {
-                return brother;
-            } else if (last_name.indexOf(split[0]) > -1) {
-                return brother;
-            } else if (brother.nickname !== undefined && nick_name.indexOf(split[0]) > -1) {
+            if(match){
                 return brother;
             } else {
                 return null;
