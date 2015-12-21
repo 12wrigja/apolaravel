@@ -35,6 +35,9 @@ Vue.filter('not', function (value) {
     return !value;
 });
 
+require('summernote');
+var vuehtmleditor = require("vue-html-editor");
+
 var Resources = function () {
 
     var defaultActions = {
@@ -133,7 +136,8 @@ var main = new Vue({
         'user-search-view': require('./views/users/search.js')(Resources),
         'brother-selector' : require('./components/forms/brother-selector.js')(Resources),
         'contract-manager' : require('./views/contracts/manage.js')(Resources),
-        'contract-signer' : require('./views/contracts/signer.js')(Resources)
+        'contract-signer' : require('./views/contracts/signer.js')(Resources),
+        'vue-html-editor' : vuehtmleditor
     },
 
     filters: {

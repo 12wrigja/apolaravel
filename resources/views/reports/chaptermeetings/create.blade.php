@@ -29,7 +29,20 @@
                     <p class="help-block"></p>
                 </div>
                 <div class="col-sm-10">
-                    {!! Form::textarea('description', null, ['class'=>'form-control','v-model'=>'form.description']) !!}
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#minutesedit" aria-controls="minutesedit" role="tab" data-toggle="tab">Edit</a></li>
+                            <li role="presentation"><a href="#minutesshow" aria-controls="minutesshow" role="tab" data-toggle="tab">Preview</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="minutesedit">
+                                <vue-html-editor model="@{{@ form.description}}"></vue-html-editor>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="minutesshow" style="height:300px; overflow:scroll;">
+                                @{{{ form.description }}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
             </div>
@@ -89,5 +102,7 @@
             </div>
         </div>
     </create_chapter_meeting_form>
+
+
 
 @endsection
