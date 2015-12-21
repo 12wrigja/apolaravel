@@ -176,16 +176,16 @@ module.exports = function (Vue) {
             },
             ready: function () {
                 var that = this;
-                window.onbeforeunload = function () {
-                    if (that.form) {
-                        localStorage.setItem(window.location.href + '|form', JSON.stringify(that.form));
-                    }
-                };
-                var formData = localStorage.getItem(window.location.href + "|form");
-                if (formData && formData != null) {
-                    formData = JSON.parse(formData);
-                    this.form = formData;
-                }
+                //window.onbeforeunload = function () {
+                //    if (that.form) {
+                //        localStorage.setItem(window.location.href + '|form', JSON.stringify(that.form));
+                //    }
+                //};
+                //var formData = localStorage.getItem(window.location.href + "|form");
+                //if (formData && formData != null) {
+                //    formData = JSON.parse(formData);
+                //    this.form = formData;
+                //}
                 //this.setupDebug();
                 this.setupLoading();
                 this.register();

@@ -7,7 +7,7 @@ module.exports = function (Resources) {
                 form: {
                     brothers: [],
                     display_name: '',
-                    description: '',
+                    minutes: '',
                     event_date: ''
                 },
                 users : []
@@ -74,7 +74,7 @@ module.exports = function (Resources) {
                 this.form = {
                     brothers: [],
                     display_name: '',
-                    description: '',
+                    minutes: '',
                     event_date: ''
                 };
             }
