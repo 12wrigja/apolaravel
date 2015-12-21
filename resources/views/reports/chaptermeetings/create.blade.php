@@ -4,22 +4,20 @@
 @section('crud_form')
 
     <h1 class="page-header">Create a Chapter Meeting</h1>
-
     <create_chapter_meeting_form inline-template>
         {!! Form::open(['route'=>['report_store','type'=>'chapter_meetings'],'class'=>'collapse in','v-el'=>'iform'])
         !!}
 
-        @include('reports.brotherhoodreports.form')
+        @include('reports.chaptermeetings.form')
 
-            <br>
-            <br>
+        <br>
+        <br>
 
-            <div class="form-group">
-                {!! Form::submit('Create Chapter Meeting', ['class'=>'btn btn-primary form-control']) !!}
-            </div>
-            <div class="form-group">
-                <div class="btn btn-danger form-control" v-on="click: confirmClearForm()">Clear Form</div>
-            </div>
+        <div class="form-group">
+            {!! Form::submit('Create Chapter Meeting', ['class'=>'btn btn-primary form-control']) !!}
+        </div>
+        <div class="form-group">
+            <div class="btn btn-danger form-control" v-on="click: confirmClearForm()">Clear Form</div>
         </div>
         {!! Form::close() !!}
 
@@ -39,9 +37,5 @@
                 <a class="btn btn-success" href="{{route('home')}}">Return to home</a>
             </div>
         </div>
-        <pre>@{{ form | json }}</pre>
     </create_chapter_meeting_form>
-
-
-
 @endsection
