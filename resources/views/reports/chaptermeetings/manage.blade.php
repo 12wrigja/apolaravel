@@ -6,7 +6,8 @@
         <h1>Manage Chapter Meetings</h1>
 
         <p>Below is the chapter meeting management tool. This can be used to modify the stored minutes or present
-            chapter members at a chapter meeting.</p>
+            chapter members at a chapter meeting. Meetings marked with a red symbol are potential duplicates of
+            meetings, and should probably be merged together using the editing functionality.</p>
 
         <div v-show="reports.data | empty">
             <h4>There are no meetings to display at this time!</h4>
@@ -15,7 +16,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="heading@{{report.id}}">
                     <h4 class="panel-title">
-                        <span v-if="report.potential_duplicate" class="glyphicon glyphicon-warning-sign" aria-hidden="true" style="color:red;"></span>
+                        <span v-if="report.potential_duplicate" class="glyphicon glyphicon-warning-sign"
+                              aria-hidden="true" style="color:red;"></span>
                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                            href="#collapse@{{report.id}}" aria-expanded="false"
                            aria-controls="collapse@{{report.id}}">
