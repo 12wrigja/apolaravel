@@ -136,6 +136,11 @@ class SSOUserProvider extends ServiceProvider
                 array_push($menu_items,$item);
 
                 $item = new \stdClass();
+                $item->text = "Manage Chapter Meetings";
+                $item->url = route('report_manage',['type'=>'chapter_meetings']);
+                array_push($menu_items,$item);
+
+                $item = new \stdClass();
                 $item->text = "Create Exec Meeting";
                 $item->url = route('report_create',['type'=>'exec_meetings']);
                 array_push($menu_items,$item);
