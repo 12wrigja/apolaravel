@@ -16,7 +16,7 @@ $.ajaxSetup({
         'Content-Type': 'application/json'
     }
 });
-require('Select2');
+require('select2');
 //Setup Vue and Vue Resource
 var Vue = require('vue');
 Vue.config.debug = true;
