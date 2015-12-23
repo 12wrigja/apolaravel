@@ -42,10 +42,15 @@ class Handler extends ExceptionHandler {
 	public function render($request, Exception $e)
 	{
 		if($e instanceof TokenMismatchException && $request->wantsJson()){
-			return Response::json(['error'=>'reload'],401);
+			return response()->json(['error'=>'reload'],401);
 		}
-        if($e instanceof ModelNotFoundException && !$request->wantsJson()){
-            return view('errors.404');
+        if($e instanceof ModelNotFoundException){
+			if($request->wantsJson()){
+				return response()->json(['error'=>'Resource Not Found.'],404);
+			} else {
+				return view('errors.404');
+			}
+
         }
 		return parent::render($request, $e);
 	}

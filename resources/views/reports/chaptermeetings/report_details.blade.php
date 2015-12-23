@@ -12,9 +12,12 @@
     </div>
 </div>
 
-<h4>Minutes</h4>
+{{--<h4>Minutes</h4>--}}
 
-<p>@{{{report.minutes}}}</p>
+{{--<div v-if="report.minutes != null"  style="height:300px; overflow:scroll;">--}}
+    {{--<p>@{{{report.minutes}}}</p>--}}
+{{--</div>--}}
+
 
 <h4>Brothers</h4>
 
@@ -26,13 +29,10 @@
 
     </thead>
     <tbody>
-    <tr v-repeat="brother: report.brothers">
+    <tr v-repeat="brother : report.brothers | orderBy 'name'">
         <td>@{{ brother.name }}</td>
         <td>@{{ brother.id }}</td>
         <td>@{{ brother.count_for }}</td>
     </tr>
     </tbody>
 </table>
-
-
-<br>

@@ -4,6 +4,7 @@ use App;
 use Illuminate\Console\AppNamespaceDetectorTrait;
 use APOSite\Http\Controllers\LoginController;
 use APOSite\Http\Requests\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ReadReportRequest extends Request
 {
@@ -25,7 +26,7 @@ class ReadReportRequest extends Request
         try {
             return App::call($this->getAppNamespace() . $this->filterNamespace . $type . '@canRead',['user'=>$user]);
         } catch (\ReflectionException $e) {
-            return false;
+            throw new ModelNotFoundException();
         }
     }
 

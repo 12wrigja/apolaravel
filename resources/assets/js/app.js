@@ -137,7 +137,8 @@ var main = new Vue({
         'brother-selector' : require('./components/forms/brother-selector.js')(Resources),
         'contract-manager' : require('./views/contracts/manage.js')(Resources),
         'contract-signer' : require('./views/contracts/signer.js')(Resources),
-        'vue-html-editor' : vuehtmleditor
+        'vue-html-editor' : vuehtmleditor,
+        'manage_chapter_meetings_form': require('./views/reports/chaptermeetings/manage.js')(Resources),
     },
 
     filters: {

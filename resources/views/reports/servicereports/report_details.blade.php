@@ -68,7 +68,7 @@
 
     </thead>
     <tbody>
-    <tr v-repeat="brother: report.brothers">
+    <tr v-repeat="brother: report.brothers | orderBy 'name'">
         <td>@{{ brother.name }}</td>
         <td>@{{ brother.id }}</td>
         <td>@{{ brother.hours }}</td>

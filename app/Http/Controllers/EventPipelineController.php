@@ -65,7 +65,19 @@ class EventPipelineController extends Controller
             $class = $this->getClass($type);
             $query = $class->getMethod('query')->invoke(null);
             $query = $class->getMethod('applyReportFilters')->invoke(null, $query);
-            $query = $query->orderBy('id', 'DESC');
+            $order = $request->get('order');
+            if($order != null && ($order == 'id' || $order == 'date')){
+                switch($order){
+                    case 'id':
+                        $query = $query->orderBy('id', 'DESC');
+                        break;
+                    case 'date':
+                        $query = $query->orderBy('event_date', 'DESC');
+                        break;
+                    default:
+                        break;
+                }
+            }
             $query = $class->getMethod('applyRowLevelSecurity')->invoke(null, $query, LoginController::currentUser());
             $paginator = $query->paginate(20);
             $queryParams = Input::except('page');
@@ -134,7 +146,7 @@ class EventPipelineController extends Controller
         }
     }
 
-    public function deleteEvent($type, $id)
+    public function deleteEvent(Requests\Users\UserDeleteRequest $request, $type, $id)
     {
         try {
             $report = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
