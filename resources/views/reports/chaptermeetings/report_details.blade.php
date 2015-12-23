@@ -12,11 +12,11 @@
     </div>
 </div>
 
-{{--<h4>Minutes</h4>--}}
+<h4>Minutes</h4>
 
-{{--<div v-if="report.minutes != null"  style="height:300px; overflow:scroll;">--}}
-    {{--<p>@{{{report.minutes}}}</p>--}}
-{{--</div>--}}
+<div v-if="report.minutes != null"  style="height:300px; overflow:scroll;">
+    <p>@{{{report.minutes}}}</p>
+</div>
 
 
 <h4>Brothers</h4>

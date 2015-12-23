@@ -4,7 +4,6 @@
         <div class="col-sm-2 control-label">
             {!! Form::label('event_date','Date') !!}
             <p class="help-block"></p>
-            {{--<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>--}}
         </div>
         <div class="col-sm-10">
             {!! Form::input('date','event_date', null,
@@ -41,7 +40,7 @@
     <h2>Brothers at Meeting</h2>
 
     <p class="help-block"></p>
-    <td><select id="brotherselecter" placeholder="Search for a Brother..." class="form-control"></select></td>
+    <td><select id="brotherselecter" placeholder="Search for a Brother..." class="form-control" style="width: 100%;"></select></td>
     <!-- Brothers listing -->
     <table class="table table-hover">
         <thead>

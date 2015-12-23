@@ -11,7 +11,7 @@
         <div v-show="reports.data | empty">
             <h4>There are no meetings to display at this time!</h4>
         </div>
-        <div v-repeat="report : reports.data | orderBy 'date' -1">
+        <div v-repeat="report : reports.data | orderBy 'event_date' -1">
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="heading@{{report.id}}">
                     <h4 class="panel-title">
@@ -27,7 +27,7 @@
                      aria-labelledby="heading@{{report.id}}">
                     <div class="panel-body">
                         @include('reports.chaptermeetings.report_details')
-                        {{--<div class="btn btn-primary" v-on="click: editReport(report)">Edit</div>--}}
+                        <div class="btn btn-primary" v-on="click: editReport(report)">Edit</div>
                     </div>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                             {!! Form::close() !!}
                         </div>
                         <div class="alert alert-info alert-important collapse" role="alert" v-el="loadingArea">
-                            <h3 class="text-center">Editing Report...</h3>
+                            <h3 class="text-center">Editing Meeting...</h3>
 
                             <div class="progress">
                                 <div class="progress-bar  progress-bar-striped active" role="progressbar"

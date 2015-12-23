@@ -66,17 +66,14 @@ class EventPipelineController extends Controller
             $query = $class->getMethod('query')->invoke(null);
             $query = $class->getMethod('applyReportFilters')->invoke(null, $query);
             $order = $request->get('order');
-            if($order != null && ($order == 'id' || $order == 'date')){
-                switch($order){
-                    case 'id':
-                        $query = $query->orderBy('id', 'DESC');
-                        break;
-                    case 'date':
-                        $query = $query->orderBy('event_date', 'DESC');
-                        break;
-                    default:
-                        break;
-                }
+            switch ($order) {
+                case 'id':
+                default:
+                    $query = $query->orderBy('id', 'DESC');
+                    break;
+                case 'date':
+                    $query = $query->orderBy('event_date', 'DESC');
+                    break;
             }
             $query = $class->getMethod('applyRowLevelSecurity')->invoke(null, $query, LoginController::currentUser());
             $paginator = $query->paginate(20);
@@ -130,8 +127,8 @@ class EventPipelineController extends Controller
     {
         try {
             $report = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
-            $res = $report->update(Input::except(['id','creator_id']));
-            if($res == null || $res) {
+            $res = $report->update(Input::except(['id', 'creator_id']));
+            if ($res == null || $res) {
                 //Return the data in json form
                 $resource = new Item($report, $report->transformer($this->fractal));
                 return $this->fractal->createData($resource)->toJson();

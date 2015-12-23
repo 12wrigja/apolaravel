@@ -32,7 +32,7 @@ class ChapterMeetingTransformer extends TransformerAbstract
         $otherData = [
             'id' => $report->id,
             'href' => route('report_show',['id'=>$report->id,'type'=>'chapter_meetings']),
-            'date' => $report->event_date->toDateString(),
+            'event_date' => $report->event_date->toDateString(),
             'human_date' => $report->event_date->toFormattedDateString(),
             'minutes' => $report->minutes,
             'brothers' => $brothers,
