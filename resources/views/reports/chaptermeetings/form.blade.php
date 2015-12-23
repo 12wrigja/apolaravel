@@ -32,7 +32,6 @@
                 </div>
             </div>
         </div>
-        <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
     </div>
 </div>
 

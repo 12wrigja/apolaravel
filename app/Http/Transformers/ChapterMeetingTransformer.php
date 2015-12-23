@@ -38,7 +38,10 @@ class ChapterMeetingTransformer extends TransformerAbstract
             'brothers' => $brothers,
             'submitter' => ['id'=>$report->creator_id,'display_name'=>User::find($report->creator_id)->fullDisplayName()],
         ];
-        return  $otherData;
+        if(ChapterMeeting::where('event_date',$report->event_date)->count() > 1){
+            $otherData['potential_duplicate'] = true;
+        }
+        return $otherData;
     }
 
 }

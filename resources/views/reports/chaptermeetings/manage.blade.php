@@ -15,6 +15,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="heading@{{report.id}}">
                     <h4 class="panel-title">
+                        <span v-if="report.potential_duplicate" class="glyphicon glyphicon-warning-sign" aria-hidden="true" style="color:red;"></span>
                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                            href="#collapse@{{report.id}}" aria-expanded="false"
                            aria-controls="collapse@{{report.id}}">

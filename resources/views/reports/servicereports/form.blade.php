@@ -26,7 +26,6 @@
             <div class="col-md-4 control-label">
                 {!! Form::label('event_date','Date') !!}
                 <p class="help-block"></p>
-                {{--<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>--}}
             </div>
             <div class="col-md-8">
                 {!! Form::input('date','event_date', null, ['class'=>'form-control','v-model'=>'form.event_date']) !!}
@@ -42,7 +41,6 @@
             <div class="col-md-8">
                 {!! Form::text('location', null, ['class'=>'form-control','v-model'=>'form.location']) !!}
             </div>
-            {{--<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>--}}
         </div>
     </div>
 </div>
