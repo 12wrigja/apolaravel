@@ -30,9 +30,6 @@ Route::delete('/reports/{type}/{id}', ['uses' => 'EventPipelineController@delete
 
 //Routes for the officer pages
 Route::get('officers', ['uses'=>'Officers\OfficerPageController@index','as'=>'officers']);
-Route::get('faq',['as'=>'faq',function(){
-    return view('faq');
-}]);
 Route::get('statistics',['uses'=>'ChapterStatisticsController@chapterStatistics','as'=>'chapterstatistics']);
 Route::get('calendar',['as'=>'calendar',function(){
     return view('tools.calendar');
@@ -44,9 +41,6 @@ Route::get('calendar',['as'=>'calendar',function(){
 Route::delete('/users/{cwruid}', 'UserController@destroy');
 //TODO fix up or verify user management and user search
 //Route::get('/users/manage', 'UserController@manage');
-
-//Route for searching users.
-//Route::get('/users/search', array('uses' => 'UserController@search', 'as' => 'user_search'));
 
 //Routes for displaying all users and individual user profiles
 Route::get('/users', ['uses'=>'UserController@index','as'=>'users']);
@@ -70,24 +64,6 @@ Route::get('manage/contracts',['uses'=>'ContractController@manage','as'=>'contra
 Route::get('contracts',['as'=>'sign_contract','uses'=>'ContractController@index']);
 Route::post('contracts',['uses'=>'ContractController@modifyContract','as'=>'contract_store']);
 Route::post('contracts/change',['as'=>'changeContractSigning','uses'=>'ContractController@changeContractSigning']);
-//Route::get('contracts', ['uses' => 'ContractController@index', 'as' => 'contract_view']);
-//Route::get('contracts/create', ['uses' => 'ContractController@create', 'as' => 'contract_create']);
-//Route::post('contracts', ['uses' => 'ContractController@store', 'as' => 'contract_store']);
-//Route::get('contracts/{id}/edit', ['uses' => 'ContractController@edit', 'as' => 'contract_edit']);
-//Route::put('contracts/{id}', ['uses' => 'ContractController@update', 'as' => 'contract_update']);
-//Route::delete('contracts/{id}', ['uses' => 'ContractController@destroy', 'as' => 'contract_delete']);
-//Route::get('contracts/{id}/', 'ContractController@show')->where('id', '[0-9]+');
-//
-////Route group for Contract Requirements
-//Route::get('contractreqs', ['uses' => 'ContractRequirementController@index', 'as' => 'contractreq_view']);
-//Route::get('contractreqs/create', ['uses' => 'ContractRequirementController@create', 'as' => 'contractreq_create']);
-//Route::post('contractreqs', ['uses' => 'ContractRequirementController@store', 'as' => 'contractreq_store']);
-//Route::get('contractreqs/{id}/edit', ['uses' => 'ContractRequirementController@edit', 'as' => 'contractreq_edit']);
-//Route::put('contractreqs/{id}', ['uses' => 'ContractRequirementController@update', 'as' => 'contractreq_update'])->where('id', '[0-9]+');
-//Route::delete('contractreqs/{id}', ['uses' => 'ContractRequirementController@destroy', 'as' => 'contractreq_delete'])->where('id', '[0-9]+');
-//Route::get('contractreqs/{id}/', 'ContractRequirementController@show')->where('id', '[0-9]+');
-//Route::get('contractreqs', ['uses' => 'ContractRequirementController@index', 'as' => 'contractreq_view']);
-//Route::post('contractreqs', ['uses' => 'ContractRequirementController@store', 'as' => 'contractreq_store']);
 
 Route::post('email',function(\APOSite\Http\Requests\SendEmailRequest $request){
     $user = APOSite\Models\Users\User::find($request->get('to'));
@@ -139,7 +115,6 @@ Route::get('login', array(
         } else {
             return Redirect::route('home');
         }
-
     }
 ));
 
