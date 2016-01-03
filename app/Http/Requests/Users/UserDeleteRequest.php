@@ -1,4 +1,6 @@
-<?php namespace APOSite\Http\Requests\Users;
+<?php
+
+namespace APOSite\Http\Requests\Users;
 
 use APOSite\Http\Controllers\AccessController;
 use APOSite\Http\Requests\Request;

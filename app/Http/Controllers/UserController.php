@@ -166,19 +166,25 @@ class UserController extends Controller
     public function update(UserEditRequest $request, $id)
     {
         $user = User::find($id);
+        $currentUser = LoginController::currentUser();
         if ($user != null) {
-            $attributes = $request->except(['first_name', 'last_name', 'family_id', 'big']);
+            $attributes = $request->except(['id','created_at','updated_at']);
+            $pledgeEditOnly = ['family_id','big','pledge_semester','initiation_semester'];
+            $semesters = ['pledge_semester','graduation_semester','initiation_semester'];
             foreach ($attributes as $key => $value) {
+                if(!AccessController::isPledgeEducator($currentUser) && in_array($key,$pledgeEditOnly)){
+                    abort(403,'You are unable to modify the '.$key.' attribute.');
+                }
+                if(in_array($key,$semesters)){
+                    $attributes[$key] = Semester::SemesterFromText($value['semester'],$value['year'],true)->id;
+                }
                 if ($value == "") {
                     $attributes[$key] = null;
                 }
             }
             $user->fill($attributes);
-            //Construct semester ID number from given info
-            $user->graduation_semester = Semester::SemesterFromText($request->get('semester'), $request->get('year'),
-                true)->id;
             $user->save();
-            return Redirect::route('user_show', ['id' => $user->id]);
+            return response()->json(['status'=>'OK','redirect'=>route('user_show',['cwruid'=>$user->id])]);
         } else {
             throw new NotFoundHttpException("User Not Found!");
         }
