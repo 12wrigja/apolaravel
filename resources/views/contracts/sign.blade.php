@@ -5,9 +5,9 @@
     @if(\APOSite\GlobalVariable::ContractSigning()->value)
         <p>Please select a tab in order to view the requirements for the various contracts. Clicking sign at the bottom
             of the page will sign whatever contract is currently visible.</p>
-        @if($existingContract != null)
-
-        @endif
+        @if($currentUser->initiation_semester == null || $currentUser->initiation_semester->id >= \APOSite\Models\Semester::currentSemester()->id)
+            <p>It appears that you are a pledge this semester! Once you have initiated with APO you will be eligible to sign a contract the semester after. If you have any questions please contact the Pledge Educator at pledge.ed@apo.case.edu</p>
+        @else
         <contract-signer inline-template>
             {!! Form::open(['route'=>['contract_store'],'class'=>'collapse in','v-el'=>'iform'])
         !!}
@@ -218,6 +218,7 @@
                 </div>
             </div>
         </contract-signer>
+        @endif
     @else
         <h3>We're Sorry!</h3>
         <p>Contract signing is not enabled at this time. If you wish to change your contract, please contact the
