@@ -35,31 +35,24 @@ Route::get('calendar',['as'=>'calendar',function(){
     return view('tools.calendar');
 }]);
 
-//Routes for managing the users of the users, including creating and storing users.
-//Route::get('/users/create', 'UserController@create');
-//Route::post('/users', 'UserController@store');
-Route::delete('/users/{cwruid}', 'UserController@destroy');
-//TODO fix up or verify user management and user search
-//Route::get('/users/manage', 'UserController@manage');
-
-//Routes for displaying all users and individual user profiles
-Route::get('/users', ['uses'=>'UserController@index','as'=>'users']);
-Route::get('/users/{cwruid}', ['uses'=>'UserController@show','as'=>'user_show']);
-
-//Routes for allowing users to update their profiles.
 //TODO fix up the user editing system
+Route::get('/users', ['uses'=>'UserController@index','as'=>'users']);
+Route::post('/users',['uses'=>'UserController@store','as'=>'user_store']);
+Route::get('/users/create',['uses'=>'UserController@create','as'=>'user_create']);
 Route::get('/users/{cwruid}/edit', ['uses'=>'UserController@edit','as'=>'user_edit']);
 Route::get('/users/{cwruid}/status', ['uses'=>'UserController@statusPage','as'=>'user_status']);
+Route::get('/users/{cwruid}', ['uses'=>'UserController@show','as'=>'user_show']);
+Route::delete('/users/{cwruid}', 'UserController@destroy');
 Route::put('/users/{cwruid}', ['uses'=>'UserController@update','as'=>'user_update']);
+Route::get('/manage/users',['uses'=>'UserController@manage','as'=>'user_manage']);
 
-Route::get('contracts/progress',['uses'=>'ChapterStatisticsController@contractStatusPage','as'=>'contract_progress']);
-
+//Document viewing.
 Route::get('documents',['uses'=>'DocumentController@index','as'=>'document_list']);
 Route::get('documents/{office}/{filename}',['uses'=>'DocumentController@getOfficeDocument','as'=>'retrieve_office_document']);
 Route::get('documents/{filename}',['uses'=>'DocumentController@getDocument','as'=>'retrieve_document']);
 
-//TODO clean up routing system for contract and requirement data, along w/ models
-//All routes regarding contracts and contract requirements are commented out for the time being as they have not been refactored correctly.
+//Contract and management related routes
+Route::get('contracts/progress',['uses'=>'ChapterStatisticsController@contractStatusPage','as'=>'contract_progress']);
 Route::get('manage/contracts',['uses'=>'ContractController@manage','as'=>'contract_manage']);
 Route::get('contracts',['as'=>'sign_contract','uses'=>'ContractController@index']);
 Route::post('contracts',['uses'=>'ContractController@modifyContract','as'=>'contract_store']);

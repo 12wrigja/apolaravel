@@ -50,8 +50,10 @@ class Handler extends ExceptionHandler {
 			} else {
 				return view('errors.404');
 			}
-
         }
+		if($e->getStatusCode() == 403 && $request->wantsJson()){
+			return response()->json(['error'=>$e->getMessage()],403);
+		}
 		return parent::render($request, $e);
 	}
 

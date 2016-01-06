@@ -34,6 +34,10 @@ module.exports = function (Resources) {
                                 {
                                     text: "Adviser",
                                     value: "Adviser"
+                                },
+                                {
+                                    text: "Inactive",
+                                    value: "Inactive"
                                 }
                             ]
                         }

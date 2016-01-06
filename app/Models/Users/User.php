@@ -2,13 +2,13 @@
 
 namespace APOSite\Models\Users;
 
-use APOSite\ContractFramework\Contracts\AlumniContract;
 use APOSite\GlobalVariable;
 use APOSite\Models\Semester;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class User extends Model
 {
@@ -31,6 +31,8 @@ class User extends Model
         'hometown',
         'family_id'
     ];
+
+    protected $appends = ['contract'];
 
     public function getFullDisplayName()
     {
@@ -57,7 +59,7 @@ class User extends Model
             $semester = Semester::currentSemester();
         }
         $contract_id = $this->ContractTypeForSemester($semester);
-        if($contract_id != null || $contract_id != ""){
+        if ($contract_id != null || $contract_id != "") {
             try {
                 return App::make('APOSite\ContractFramework\Contracts\\' . $contract_id . 'Contract',
                     ['user' => $this, 'semester' => $semester]);
@@ -139,9 +141,10 @@ class User extends Model
         })->whereContractId('Neophyte')->whereSemesterId($semester->id);
     }
 
-    public function scopeIncludeContract($query){
-        return $query->join('contract_user',function($join){
-            $join->on('users.id','=','contract_user.user_id');
+    public function scopeIncludeContract($query)
+    {
+        return $query->join('contract_user', function ($join) {
+            $join->on('users.id', '=', 'contract_user.user_id');
         })->addSelect('contract_id as contract');
     }
 
@@ -155,11 +158,12 @@ class User extends Model
         $contract = $query->select('contract_id')->first();
         if ($contract == null) {
             //If this is null, we should see if they have been assigned as an alumni
-            $alumContract = DB::table('contract_user')->where('user_id',$this->id)->orderBy('semester_id','DESC')->first();
-            if($alumContract != null && ($alumContract->contract_id == "Alumni" || $alumContract->contract_id == "Adviser")){
+            $alumContract = DB::table('contract_user')->where('user_id', $this->id)->orderBy('semester_id',
+                'DESC')->first();
+            if ($alumContract != null && ($alumContract->contract_id == "Alumni" || $alumContract->contract_id == "Adviser")) {
                 return $alumContract->contract_id;
             }
-            if(GlobalVariable::ShowInactive()->value){
+            if (GlobalVariable::ShowInactive()->value) {
                 return "Inactive";
             } else {
                 return null;
@@ -183,4 +187,104 @@ class User extends Model
     {
         return $this->contractForSemester($semester) == "Associate";
     }
+
+    public function changeContract($newContract)
+    {
+        //Contract signing is enabled. Sign the given contract for the current semester
+        //Check and see if they have already signed a contact for this semester:
+        $user = $this->id;
+        $sem = Semester::currentSemester();
+        $existing = DB::table('contract_user')->where('user_id', $user)->where('semester_id',
+            $sem->id)->select('contract_id')->get();
+        if (count($existing) > 0) {
+            try {
+                DB::table('contract_user')->where('user_id', $user)->where('semester_id',
+                    $sem->id)->update(['contract_id' => $newContract]);
+                return true;
+            } catch (\Exception $e) {
+                return false;
+            }
+        } else {
+            try {
+                DB::table('contract_user')->insert([
+                    'contract_id' => $newContract,
+                    'user_id' => $user,
+                    'semester_id' => $sem->id
+                ]);
+                return true;
+            } catch (\Exception $e) {
+                return false;
+            }
+        }
+    }
+
+    public function getContractAttribute()
+    {
+        return $this->ContractTypeForSemester(Semester::currentSemester());
+    }
+
+    public function scopeMatchDatabaseAttributes($query, $attributes)
+    {
+        $appendedFilterable = [];
+        foreach ($attributes as $key => $value) {
+            if (!in_array($key, $this->hidden)) {
+                if (in_array($key, $this->fillable)) {
+                    $query = $query->where($key, $value);
+                } else {
+                    if (in_array($key, $this->appends)) {
+                        $appendedFilterable[$key] = $value;
+                    }
+                }
+            }
+        }
+        return $query;
+    }
+
+    public function scopeMatchAllAttributes($query, $attributes)
+    {
+        $appendedFilterable = [];
+        foreach ($attributes as $key => $value) {
+            if (in_array($key,$this->getFilterableAttributes())) {
+                if (in_array($key, $this->appends)) {
+                    $appendedFilterable[$key] = $value;
+                } else {
+                    $query = $query->where($key, $value);
+                }
+            }
+        }
+        $users = $query->get();
+        foreach ($appendedFilterable as $key => $value) {
+            $users = $users->filter(function ($obj) use ($key, $value) {
+                return $obj->$key == $value;
+            });
+        }
+        return $users;
+    }
+
+    public function validateAttributes($attributes)
+    {
+        foreach ($attributes as $key) {
+            //Test to make sure that all the attributes are valid.
+            if (!in_array($key, $this->getFilterableAttributes())) {
+                $e = new HttpException(422, 'Attribute ' . $key . ' is not a valid attribute.');
+                throw $e;
+            }
+        }
+    }
+
+    public function getValidSearchAttributeKeys($attributes)
+    {
+        foreach ($attributes as $key) {
+            //Test to make sure that all the attributes are valid.
+            if (!in_array($key, $this->getFilterableAttributes())){
+                unset($attributes[$key]);
+            }
+        }
+        return array_keys($attributes);
+    }
+
+    public function getFilterableAttributes(){
+        return array_merge($this->fillable, $this->appends, ['big']);
+    }
+
 }

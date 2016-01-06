@@ -12,13 +12,20 @@ module.exports = function (Resources) {
         },
         data: function () {
             return {
-                storage: []
+                storage: [],
+                loading: true
             }
+        },
+        computed: {
+          notLoading: function(){
+              return ! this.loading;
+          }
         },
         template: require('./brother-selector.template.html'),
         methods: {
             setupUserSearch: function () {
                 var that = this;
+                this.loading = true;
                 var attrs = this.getParamsFromAttributes();
                 Resources.User(this).get({'attrs': attrs}, function (data, status, response) {
                     if (status == 200) {
@@ -37,6 +44,7 @@ module.exports = function (Resources) {
                             }
                             selector.val(null).trigger("change");
                         });
+                        that.loading = false;
                     } else {
                         console.log("error: " + data);
                     }
@@ -92,6 +100,7 @@ module.exports = function (Resources) {
             },
         },
         ready: function () {
+            this.loading = true;
             this.setupUserSearch();
         }
     });

@@ -139,7 +139,9 @@ var main = new Vue({
         'contract-signer' : require('./views/contracts/signer.js')(Resources),
         'vue-html-editor' : vuehtmleditor,
         'manage_chapter_meetings_form': require('./views/reports/chaptermeetings/manage.js')(Resources),
-        'user-profile-editor' : require('./views/users/profile-editor.js')(Resources)
+        'user-profile-editor' : require('./views/users/profile-editor.js')(Resources),
+        'user-create-form' : require('./views/users/create.js')(Resources),
+        'pledge-manager' : require('./views/users/pledge-manager.js')(Resources)
     },
 
     filters: {

@@ -80,6 +80,11 @@ module.exports = function (Vue) {
                                 console.log(error);
                                 instance.renderErrors(error.responseJSON);
                                 instance.setNotLoading();
+                            } else if (error.status == 403){
+                                var errors = {};
+                                errors.general = error.responseJSON.message;
+                                instance.renderErrors(errors);
+                                instance.setNotLoading();
                             } else {
                                 //Probably a critical error here.
                                 console.log(error);
@@ -147,9 +152,10 @@ module.exports = function (Vue) {
                 }
                 ,
                 successFunction: function (data) {
-                    console.log('Default Success Function Called.');
-                }
-                ,
+                    $(this.$$.loadingArea).collapse('hide');
+                    $(this.$$.successArea).collapse({'toggle':false});
+                    $(this.$$.successArea).collapse('show');
+                },
                 minimizeToIDs: function (collection) {
                     var result = [];
                     if ($.isArray(collection)) {
@@ -158,8 +164,10 @@ module.exports = function (Vue) {
                         }
                     }
                     return result;
-                }
-                ,
+                },
+                clearForm: function(){
+                  this.form = {};
+                },
                 startOver: function () {
                     this.clearForm();
                     $(this.$$.loadingArea).collapse('hide');
