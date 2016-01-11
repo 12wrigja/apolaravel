@@ -31,8 +31,13 @@ Route::delete('/reports/{type}/{id}', ['uses' => 'EventPipelineController@delete
 //Routes for the officer pages
 Route::get('officers', ['uses'=>'Officers\OfficerPageController@index','as'=>'officers']);
 Route::get('statistics',['uses'=>'ChapterStatisticsController@chapterStatistics','as'=>'chapterstatistics']);
+
+//Routes for External Tools used by APO
 Route::get('calendar',['as'=>'calendar',function(){
     return view('tools.calendar');
+}]);
+Route::get('drive',['middleware'=>'SSOAuth',function(){
+  return redirect()->away('https://drive.google.com/open?id=0BzPifk8kXJfHOHVYR2szVzJ6dXM');
 }]);
 
 //TODO fix up the user editing system
