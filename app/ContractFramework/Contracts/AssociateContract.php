@@ -23,7 +23,8 @@ class AssociateContract extends Contract
             AssociateMemberInsideHoursRequirement::class,
             AssociateMemberDuesRequirement::class,
             BrotherhoodHoursRequirement::class,
-            AssociateMemberChapterMeetingRequirement::class
+            AssociateMemberChapterMeetingRequirement::class,
+            BrotherhoodHoursRequirement::class
         ];
     }
 }
