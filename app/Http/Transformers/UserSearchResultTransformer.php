@@ -34,14 +34,18 @@ class UserSearchResultTransformer extends TransformerAbstract
             'last_name' => $user->last_name,
             'image' => $user->pictureURL(150),
         ];
-        if (count($this->attributes) == 0 || count($this->attributes) == 1 && $this->attributes[0] == "") {
+        if (count($this->attributes) == 0 || (count($this->attributes) == 1 && $this->attributes[0] == "")) {
             return $base;
         }
         foreach ($this->attributes as $attr) {
-            $value = $user->getAttribute($attr);
-            if ($value != null) {
-                $base[$attr] = $value;
+            $newAttrName = str_replace(" ","",ucwords(str_replace("_"," ",$attr)));
+            $serializeMethodName = 'serialize'.$newAttrName . "Attribute";
+            if(method_exists($user,$serializeMethodName)){
+                $value = $user->$serializeMethodName();
+            } else {
+                $value = $user->getAttribute($attr);
             }
+            $base[$attr] = $value;
         }
         return $base;
     }

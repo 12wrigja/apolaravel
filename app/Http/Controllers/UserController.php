@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
-use PhpSpec\Exception\Exception;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
@@ -52,7 +52,7 @@ class UserController extends Controller
                     $instance->validateAttributes($attributes);
                     $attributes = array_merge($attributes, $baseAttributes);
                 }
-            } catch (Exception $e) {
+            } catch (HTTPException $e) {
                 return response()->json(['error'=>$e->getMessage()],$e->getStatusCode());
             }
             $transformer = new UserSearchResultTransformer($attributes);

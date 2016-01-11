@@ -90,6 +90,22 @@ var Resources = function () {
                 }
             }
         },
+        select2singlesettings: function(data,formatFn){
+            return {
+                data: data,
+                allowClear: true,
+                templateResult: formatFn,
+                templateSelection: formatFn,
+                placeholder: "Select a Brother",
+                matcher: function (params, brother) {
+                    // If there are no search terms, return all of the data
+                    if ($.trim(params.term) === '') {
+                        return brother;
+                    }
+                    return Resources.matchBrother(brother,params.term);
+                }
+            }
+        },
         matchBrother: function (brother, query) {
             var split = query.toLowerCase().split(' ');
             var first_name = brother.first_name.toLowerCase();
@@ -135,6 +151,7 @@ var main = new Vue({
         'piechart': require('./components/graphwidgets/piechart.js')(Resources),
         'user-search-view': require('./views/users/search.js')(Resources),
         'brother-selector' : require('./components/forms/brother-selector.js')(Resources),
+        'single-brother-selector' : require('./components/forms/single-brother-selector.js')(Resources),
         'contract-manager' : require('./views/contracts/manage.js')(Resources),
         'contract-signer' : require('./views/contracts/signer.js')(Resources),
         'vue-html-editor' : vuehtmleditor,

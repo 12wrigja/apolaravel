@@ -8,7 +8,7 @@ Route::pattern('type', '[a-z][a-z_]*');
 //ID pattern for matching against a resource id. Must be a number.
 Route::pattern('id', '[0-9]+');
 //CWRU ID pattern for matching against CWRU ID's
-Route::pattern('cwruid', '[a-z]{3}[0-9]*');
+Route::pattern('cwruid', '[a-z]+[0-9]*');
 
 //Routes for reports
 Route::post('/reports/{type}', ['uses' => 'EventPipelineController@submitEvent', 'as' => 'report_store']);

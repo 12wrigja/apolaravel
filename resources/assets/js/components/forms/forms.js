@@ -141,8 +141,7 @@ module.exports = function (Vue) {
                         var errorBlock = $(parent).find(".help-block");
                         $(errorBlock).text(error[0]);
                     });
-                }
-                ,
+                },
                 cleanupErrors: function () {
                     var formGroups = $(this.$$.iform).find(".form-group.has-error");
                     $.each(formGroups, function (index, group) {
@@ -181,6 +180,13 @@ module.exports = function (Vue) {
                         instance.clearForm();
                     }
                 },
+                fillForm: function(data){
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key) && this.form[key] !== undefined) {
+                            this.form[key] = data[key];
+                        }
+                    }
+                }
             },
             ready: function () {
                 var that = this;

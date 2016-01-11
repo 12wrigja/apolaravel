@@ -11,7 +11,8 @@ module.exports = function (Resources) {
                     description: '',
                     event_date: '',
                     type: '',
-                    location: ''
+                    location: '',
+                    big: ''
                 },
                 users : [],
                 report: [],

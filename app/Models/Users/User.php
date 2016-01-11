@@ -32,7 +32,8 @@ class User extends Model
         'family_id'
     ];
 
-    protected $appends = ['contract'];
+    protected $appends = ['contract','family'];
+    protected $interallyRenamed = ['contract'=>'contract_id'];
 
     public function getFullDisplayName()
     {
@@ -145,7 +146,7 @@ class User extends Model
     {
         return $query->join('contract_user', function ($join) {
             $join->on('users.id', '=', 'contract_user.user_id');
-        })->addSelect('contract_id as contract');
+        });
     }
 
     public function ContractTypeForSemester(Semester $semester)
@@ -287,4 +288,21 @@ class User extends Model
         return array_merge($this->fillable, $this->appends, ['big']);
     }
 
+    public function getFamilyAttribute(){
+        return Family::find($this->family_id);
+    }
+
+    public function serializeBigAttribute(){
+        $big = User::find($this->big);
+        if($big == null){
+            return null;
+        } else {
+            return [
+                'id'=>$big->id,
+                'fist_name'=>$big->first_name,
+                'last_name'=>$big->last_name,
+                'display_name'=>$big->fullDisplayName()
+        ];
+        }
+    }
 }

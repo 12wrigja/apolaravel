@@ -38,7 +38,7 @@ class UserEditRequest extends Request
     public function authorize()
     {
         $pageUser = User::find($this->route('cwruid'));
-        if ($pageUser->id == LoginController::currentUser()->id) {
+        if (($pageUser->id == LoginController::currentUser()->id) || AccessController::isWebmaster(LoginController::currentUser())) {
             return true;
         } elseif ($pageUser->isPledge() && AccessController::isPledgeEducator(LoginController::currentUser())) {
             return true;
