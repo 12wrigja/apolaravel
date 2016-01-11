@@ -3,7 +3,7 @@
 @section('crud_form')
 
     <h1>Pledge Management Tool</h1>
-    <p> Use for tools below to manage pledges on the website. Any questions should be directed to the webmaster.</p>
+    <p> Use these tools below to manage pledges on the website. Any questions should be directed to the webmaster.</p>
     <div class="alert alert-danger alert-important" role="alert">
         <h3 class="text-center">Under Development!</h3>
         <p>This page is currently under development. Editing of Pledge's Bigs and Families is not working, and may cause unexpected errors.</p>

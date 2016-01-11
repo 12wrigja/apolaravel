@@ -172,6 +172,11 @@ class SSOUserProvider extends ServiceProvider
                 $item->text = "View Pledge Contract Progress";
                 $item->url = route('contract_progress');
                 array_push($menu_items, $item);
+
+                $item = new \stdClass();
+                $item->text = "Pledge Management";
+                $item->url = route('user_manage');
+                array_push($menu_items, $item);
             }
 
 
