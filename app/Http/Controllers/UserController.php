@@ -86,7 +86,8 @@ class UserController extends Controller
         $user->first_name = $request->get('first_name');
         $user->last_name = $request->get('last_name');
         $user->id = $request->get('cwru_id');
-
+        $user->pledge_semester = Semester::currentSemester()->id;
+        
         if ($user->save()) {
             //This is super shitty and shouldn't need to be done.
             $user = User::find($request->get('cwru_id'));
@@ -203,8 +204,8 @@ class UserController extends Controller
         $user = User::find($id);
         if ($user != null) {
             User::destroy($id);
-            if($request->wantsJson()){
-                return response()->json(['status'=>'OK']);
+            if ($request->wantsJson()) {
+                return response()->json(['status' => 'OK']);
             }
             return Redirect::to('users/manage')->with('message', 'Successfully deleted the user.');
         } else {
