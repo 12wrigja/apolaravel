@@ -1,12 +1,16 @@
 module.exports = function (Resources) {
     return Resources.Vue.extend({
         props: {
+            brother: {
+                required: true,
+                type: String
+            }
         },
         data: function () {
             return {
                 storage: [],
                 loading: true,
-                brother: null
+                selector: {}
             }
         },
         computed: {
@@ -23,20 +27,17 @@ module.exports = function (Resources) {
                     if (status == 200) {
                         var betterData = [];
                         data['data'].forEach(function(brother){
+                            brother.text = that.formatBrother(brother);
                            betterData[brother.id] = brother;
                         });
-                        console.log(betterData);
                         that.storage = data['data'];
-                        var selector = $(that.$$.selector);
-                        selector.select2(Resources.select2singlesettings(that.storage, that.formatBrother));
-                        selector.on("select2:select", function (e) {
-                            console.log(e.params.data.id);
+                        that.selector = $(that.$$.selector).select2(Resources.select2singlesettings(that.storage, that.formatBrother));
+                        that.selector.on("select2:select", function (e) {
                             if(e.params.data !== undefined){
                                 that.brother = e.params.data.id;
                             } else {
                                 that.brother = null;
                             }
-
                         });
                         that.loading = false;
                     } else {
@@ -55,12 +56,9 @@ module.exports = function (Resources) {
         ready: function () {
             this.loading = true;
             this.setupUserSearch();
-            var that = this;
             this.$watch('brother',function(newVal, oldVal){
-                console.log("Brother changed.");
-                var select2 = $(that.$$.selector);
-                select2.val(newVal).trigger("change");
-            })
+               this.selector.val(newVal).trigger('change');
+            });
         }
     });
 };

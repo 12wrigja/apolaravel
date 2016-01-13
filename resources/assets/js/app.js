@@ -86,6 +86,9 @@ var Resources = function () {
                     if ($.trim(params.term) === '') {
                         return brother;
                     }
+                    if(params.term === brother.id){
+                        return brother;
+                    }
                     return Resources.matchBrother(brother,params.term);
                 }
             }
@@ -94,8 +97,6 @@ var Resources = function () {
             return {
                 data: data,
                 allowClear: true,
-                templateResult: formatFn,
-                templateSelection: formatFn,
                 placeholder: "Select a Brother",
                 matcher: function (params, brother) {
                     // If there are no search terms, return all of the data

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -53,7 +54,7 @@ class UserController extends Controller
                     $attributes = array_merge($attributes, $baseAttributes);
                 }
             } catch (HTTPException $e) {
-                return response()->json(['error'=>$e->getMessage()],$e->getStatusCode());
+                return response()->json(['error' => $e->getMessage()], $e->getStatusCode());
             }
             $transformer = new UserSearchResultTransformer($attributes);
             $resource = new Collection($users, $transformer);
@@ -85,9 +86,19 @@ class UserController extends Controller
         $user->first_name = $request->get('first_name');
         $user->last_name = $request->get('last_name');
         $user->id = $request->get('cwru_id');
-        $user->save();
-        $user->changeContract('Pledge');
-        return response()->json(['status'=>'OK']);
+
+        if ($user->save()) {
+            //This is super shitty and shouldn't need to be done.
+            $user = User::find($request->get('cwru_id'));
+            if ($user->changeContract('Pledge')) {
+                return response()->json(['status' => 'OK']);
+            } else {
+                abort(500, 'Unable to set contract of new user.');
+            }
+        } else {
+            abort(500, 'Unable to successfully create a new user.');
+        }
+
     }
 
     /**
@@ -96,8 +107,10 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function show($id)
-    {
+    public
+    function show(
+        $id
+    ) {
         $user = User::find($id);
         if (Request::wantsJSON()) {
             if ($user != null) {
@@ -121,8 +134,11 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function edit(UserPersonalPageRequest $request, $id)
-    {
+    public
+    function edit(
+        UserPersonalPageRequest $request,
+        $id
+    ) {
         $user = User::find($id);
         if ($user != null) {
             return view('users.profileedit')->with('user', $user);
@@ -137,8 +153,11 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(UserEditRequest $request, $id)
-    {
+    public
+    function update(
+        UserEditRequest $request,
+        $id
+    ) {
         $user = User::find($id);
         $currentUser = LoginController::currentUser();
         if ($user != null) {
@@ -150,7 +169,11 @@ class UserController extends Controller
                     abort(403, 'You are unable to modify the ' . $key . ' attribute.');
                 }
                 if (in_array($key, $semesters)) {
-                    $attributes[$key] = Semester::SemesterFromText($value['semester'], $value['year'], true)->id;
+                    if ($value == 'current') {
+                        $attributes[$key] = Semester::currentSemester()->id;
+                    } else {
+                        $attributes[$key] = Semester::SemesterFromText($value['semester'], $value['year'], true)->id;
+                    }
                 }
                 if ($value == "") {
                     $attributes[$key] = null;
@@ -158,7 +181,9 @@ class UserController extends Controller
             }
             $user->fill($attributes);
             $user->save();
-            return response()->json(['status' => 'OK', 'redirect' => route('user_show', ['cwruid' => $user->id])]);
+            $fractal = new Manager();
+            $item = new Item($user, new UserSearchResultTransformer([]));
+            return $fractal->createData($item)->toJson();
         } else {
             throw new NotFoundHttpException("User Not Found!");
         }
@@ -170,19 +195,27 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function destroy(UserDeleteRequest $request, $id)
-    {
+    public
+    function destroy(
+        UserDeleteRequest $request,
+        $id
+    ) {
         $user = User::find($id);
         if ($user != null) {
             User::destroy($id);
+            if($request->wantsJson()){
+                return response()->json(['status'=>'OK']);
+            }
             return Redirect::to('users/manage')->with('message', 'Successfully deleted the user.');
         } else {
             throw new NotFoundHttpException('User not found');
         }
     }
 
-    private function searchUsers($text)
-    {
+    private
+    function searchUsers(
+        $text
+    ) {
         if ($text != "") {
             $users = User::where('first_name', 'LIKE', $text . '%')->orWhere('last_name', 'LIKE',
                 $text . '%')->orWhere(DB::raw('CONCAT(first_name, " ", last_name)'), 'LIKE',
@@ -195,8 +228,11 @@ class UserController extends Controller
         return $users;
     }
 
-    public function statusPage(UserPersonalPageRequest $request, $id)
-    {
+    public
+    function statusPage(
+        UserPersonalPageRequest $request,
+        $id
+    ) {
         $user = User::find($id);
         if ($user != null) {
             return view('contracts.status')->with('contract', $user->contractForSemester(null))->with('user', $user);

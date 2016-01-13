@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler {
 
@@ -51,7 +52,7 @@ class Handler extends ExceptionHandler {
 				return view('errors.404');
 			}
         }
-		if($e->getStatusCode() == 403 && $request->wantsJson()){
+		if(($e instanceof HttpException) && $e->getStatusCode() == 403 && $request->wantsJson()){
 			return response()->json(['error'=>$e->getMessage()],403);
 		}
 		return parent::render($request, $e);

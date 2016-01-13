@@ -1,8 +1,21 @@
 module.exports = function (Resources) {
 
     return Resources.form.extend({
-
+        props: {
+          formTemplate : {
+              required: false,
+              type: Function
+          }
+        },
         data: function () {
+            if(this.formTemplate !== undefined){
+                return {
+                    form: this.formTemplate(),
+                    users : [],
+                    report: [],
+                    method:'PUT'
+                }
+            }
             return {
                 form: {
                     id: -1,
@@ -103,6 +116,14 @@ module.exports = function (Resources) {
         filters: {
             isFalse: function (val) {
                 return val === '0';
+            }
+        },
+        compile: function(){
+            if(this.formTemplate !== undefined){
+                console.log("Retrieving Form Template!");
+                var template = this.formTemplate();
+                this.$log(template);
+                this.form = template;
             }
         },
         ready: function () {

@@ -56,7 +56,6 @@
         <h3 class="text-center">Success!</h3>
 
         <div class="btn btn-info" v-on="click: startOver()">Create another Pledge</div>
-        <a href="#" class="btn btn-info">View all Pledges</a>
 
     </div>
 

@@ -4,10 +4,6 @@
 
     <h1>Pledge Management Tool</h1>
     <p> Use these tools below to manage pledges on the website. Any questions should be directed to the webmaster.</p>
-    <div class="alert alert-danger alert-important" role="alert">
-        <h3 class="text-center">Under Development!</h3>
-        <p>This page is currently under development. Editing of Pledge's Bigs and Families is not working, and may cause unexpected errors.</p>
-    </div>
     <pledge-manager inline-template>
         <div>
             <ul class="nav nav-tabs" role="tablist">
@@ -19,7 +15,23 @@
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="pledgelist">
-                    <div v-repeat="pledge : pledges.data">
+                    <div v-show="loading">
+                        <div class="alert alert-warning alert-important" role="alert">
+                            <h3 class="text-center">Loading Pledges...</h3>
+
+                            <div class="progress">
+                                <div class="progress-bar  progress-bar-striped active progress-bar-warning" role="progressbar"
+                                     aria-valuenow="100"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-show="noPledges">
+                        <div class="alert alert-warning alert-important" role="alert">
+                            <h3 class="text-center">No Pledges Found</h3>
+                        </div>
+                    </div>
+                    <div v-show="notLoading" v-repeat="pledge : pledges.data">
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="heading@{{pledge.id}}">
                                 <h4 class="panel-title">
@@ -82,7 +94,7 @@
                 </div>
             </div>
         </div>
-        <form_editor inline-template v-ref="editForm">
+        <form_editor inline-template v-ref="editForm" form-template="@{{ getFormTemplate }}">
             <div class="modal fade" v-el="modal">
                 <div class="modal-dialog modal-wide">
                     <div class="modal-content">
@@ -133,7 +145,7 @@
                                         <p class="help-block"></p>
                                     </div>
                                     <div class="col-sm-10">
-                                        <single-brother-selector brother="@{{ form.big.id }}"></single-brother-selector>
+                                        <single-brother-selector brother="@{{@form.big}}"></single-brother-selector>
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +156,7 @@
                                         <p class="help-block"></p>
                                     </div>
                                     <div class="col-sm-10">
-                                        {!! Form::text('family_id', null, ['class'=>'form-control','v-model'=>'form.family_id']) !!}
+                                        {!! Form::select('family_id', APOSite\Models\Users\Family::lists('name','id') ,1, ['class'=>'form-control','v-model'=>'form.family_id']) !!}
                                     </div>
                                 </div>
                             </div>

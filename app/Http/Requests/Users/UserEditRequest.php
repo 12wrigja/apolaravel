@@ -24,6 +24,8 @@ class UserEditRequest extends Request
                 if (is_numeric($year) && in_array($semester, $semesters)) {
                     return true;
                 }
+            } else if ($value == 'current'){
+                return true;
             }
             return false;
         },
@@ -59,7 +61,7 @@ class UserEditRequest extends Request
             'pledge_semester' => 'sometimes|required|semester',
             'initiation_semester' => 'sometimes|required|semester',
             'graduation_semester' => 'sometimes|required|semester',
-            'family_id' => 'sometimes|required|exists:families',
+            'family_id' => 'sometimes|required|exists:families,id',
             'big' => 'sometimes|required|exists:users,id'
         ];
     }

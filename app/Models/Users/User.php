@@ -5,6 +5,7 @@ namespace APOSite\Models\Users;
 use APOSite\GlobalVariable;
 use APOSite\Models\Semester;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,9 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class User extends Model
 {
+
+    use SoftDeletes;
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -29,9 +33,12 @@ class User extends Model
         'minor',
         'graduation_semester',
         'hometown',
-        'family_id'
+        'family_id',
+        'big',
+        'pledge_semester',
+        'initiation_semester'
     ];
-
+    protected $dates = ['deleted_at'];
     protected $appends = ['contract','family'];
     protected $interallyRenamed = ['contract'=>'contract_id'];
 
@@ -176,17 +183,27 @@ class User extends Model
 
     public function isPledge($semester = null)
     {
-        return $this->contractForSemester($semester) == "Pledge";
+        if($semester == null){
+            $semester = Semester::currentSemester();
+        }
+        return $this->ContractTypeForSemester($semester) == "Pledge";
     }
 
     public function isActive($semester = null)
     {
-        return $this->contractForSemester($semester) == "Active";
+        if($semester == null){
+            $semester = Semester::currentSemester();
+        }
+        return $this->ContractTypeForSemester($semester) == "Active";
     }
 
     public function isAssociate($semester = null)
     {
-        return $this->contractForSemester($semester) == "Associate";
+        if($semester == null){
+            $semester = Semester::currentSemester();
+        }
+
+        return $this->ContractTypeForSemester($semester) == "Associate";
     }
 
     public function changeContract($newContract)
@@ -249,7 +266,11 @@ class User extends Model
                 if (in_array($key, $this->appends)) {
                     $appendedFilterable[$key] = $value;
                 } else {
-                    $query = $query->where($key, $value);
+                    if($value == 'null'){
+                        $query = $query->whereNull($key);
+                    } else {
+                        $query = $query->where($key, $value);
+                    }
                 }
             }
         }
