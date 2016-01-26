@@ -78,6 +78,10 @@ Route::get('/grilledcheese/*',function(){
     return redirect()->route('gs');
 });
 
+Route::get('/marchformarfan',['middleware'=>'SSOAuth','as'=>'m4m',function(){
+   return view('marchformarfan.index');
+}]);
+
 //Route for the homepage
 Route::get('/', array(
     'as' => 'home',

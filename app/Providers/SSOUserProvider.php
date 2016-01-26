@@ -228,12 +228,6 @@ class SSOUserProvider extends ServiceProvider
             $item->isHeader = true;
             array_push($menu_items,$item);
 
-            //Service report menu item
-            $item = new \stdClass();
-            $item->text = "View Event Calendar";
-            $item->url = route('calendar');
-            array_push($menu_items,$item);
-
             $item = new \stdClass();
             $item->text = "View APO Documents";
             $item->url = route('document_list');
