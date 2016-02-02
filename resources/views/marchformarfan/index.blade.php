@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-lg-4">
                     <h3>About March for Marfan</h3>
-                    <p>March for Marfan was started 10 years ago by Maya Brown-Zimmerman as a brother of Case Western’s
+                    <p>March for Marfan was started 11 years ago by Maya Brown-Zimmerman as a brother of Case Western’s
                         Alpha Phi Omega-Theta Upsilon chapter. Maya has Marfan Syndrome, and began the march with the
                         help and support of The Marfan Foundation and her chapter. Over the years, several other
                         brothers in Case Western’s chapter have had similar connective tissue disorders, or have had
@@ -64,12 +64,12 @@
                     <h3>When</h3>
                     <p>The race is held on <strong>March 19th, 2016</strong>. Check-in is at <strong>9 AM</strong>, the
                         race begins at <strong>10 AM</strong> and the walk begins at <strong>10:15 AM</strong>. The
-                        event lasts until approximately 12:30 PM. A light breakfast and lunch will be provided.</p>
+                        event lasts until approximately <strong>12:30 PM</strong>. A light breakfast and lunch will be provided.</p>
                     <h3>Where</h3>
-                    <p>The event check-in and activities will take place in Wade Common(marked on the map). Parking can
+                    <p>The event check-in and activities will take place in Wade Commons (marked on the map). Parking can
                         be found in the Lot 46 parking garage, behind the football field off of E 118th St. At the toll
                         booth for Lot 46, mention you are attending March for Marfan and your parking fee will be
-                        covered. For any concerns, please email: marchformarfan@apo.case.edu</p>
+                        covered. For any concerns, please email Jessica Qian and Rachel Webb at {!!Html::mailTo('marchformarfan@apo.case.edu')!!}</p>
                 </div>
                 <div class="col-lg-4">
                     <h3>Map</h3>
@@ -89,31 +89,31 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>Sponsors</h2>
+                    <h2>2016 Sponsors</h2>
                     <hr class="star-primary">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <img src="css/images/logos/tommys.png" class="img-responsive  img-centered" alt="">
-                </div>
-                <div class="col-sm-4">
-                    <img src="css/images/logos/liquidplanet.png" class="img-responsive img-centered" alt="">
-                </div>
-                <div class="col-sm-4">
-                    <img src="css/images/logos/barnesandnoble.png" class="img-responsive  img-centered" alt="">
-                </div>
-                </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <img src="css/images/logos/brueggers.png" class="img-responsive  img-centered" alt="">
-                </div>
-                <div class="col-sm-4">
-                    <img src="css/images/logos/buffalowildwings.png" class="img-responsive  img-centered" alt="">
-                </div>
-                <div class="col-sm-4">
-                    <img src="css/images/logos/fairmount.png" class="img-responsive  img-centered" alt="">
-                </div>
+            {{--<div class="row">--}}
+                {{--<div class="col-sm-4">--}}
+                    {{--<img src="css/images/logos/tommys.png" class="img-responsive  img-centered" alt="">--}}
+                {{--</div>--}}
+                {{--<div class="col-sm-4">--}}
+                    {{--<img src="css/images/logos/liquidplanet.png" class="img-responsive img-centered" alt="">--}}
+                {{--</div>--}}
+                {{--<div class="col-sm-4">--}}
+                    {{--<img src="css/images/logos/barnesandnoble.png" class="img-responsive  img-centered" alt="">--}}
+                {{--</div>--}}
+            {{--</div>--}}
+            {{--<div class="row">--}}
+                {{--<div class="col-sm-4">--}}
+                    {{--<img src="css/images/logos/brueggers.png" class="img-responsive  img-centered" alt="">--}}
+                {{--</div>--}}
+                {{--<div class="col-sm-4">--}}
+                    {{--<img src="css/images/logos/buffalowildwings.png" class="img-responsive  img-centered" alt="">--}}
+                {{--</div>--}}
+                {{--<div class="col-sm-4">--}}
+                    {{--<img src="css/images/logos/fairmount.png" class="img-responsive  img-centered" alt="">--}}
+                {{--</div>--}}
             </div>
         </div>
     </section>
@@ -129,23 +129,38 @@
             <div class="row">
                 <div class="col-lg-4 col-lg-offset-2">
                     <h3>Online</h3>
-                    <p>Online registration can be completed by filling out <a href="https://docs.google.com/spreadsheet/embeddedform?formkey=dGZKTS14RzZCYTU0QXpyTm9zeFpQZVE6MA" target="_blank">this form</a>.</p>
+                    <p>Online registration can be completed by filling out <a
+                                href="https://www.eventbrite.com/e/march-for-marfan-tickets-21163619957?aff=es2"
+                                target="_blank">this form</a>.</p>
                 </div>
                 <div class="col-lg-4">
                     <h3>Mail In</h3>
-                    <p>The Mail-in Registration Form can be downloaded by clicking <a href="{{route('retrieve_document',['filename'=>'mfmregistration2015.pdf'])}}">here</a>. Important Information:
-                        <ul>
-                        <li>Check-in starts at 9:00 AM and goes until 9:50 AM</li>
-                        <li>The event will be held on the campus of Case Western Reserve University on March 19th, 2016</li>
-                        <li>Registration runs until February 28th and is $20 a person (each participant will receive a t-shirt)</li>
-                        <li>Groups of 4 can register for $60 total</li>
-                        <li>Late Registration begins February 29th (late registration participants will not be guaranteed a t-shirt)</li>
-                        <li>Checks can be made out to Alpha Phi Omega and should be mailed along with the registration form to:<br>
+                    <p>The Mail-in Registration Form can be downloaded by clicking <a
+                                href="{{route('retrieve_document',['filename'=>'mfmregistration2016.pdf'])}}">here</a>.
+                        Important Information:
+                    <ul>
+                        <li>Check-in starts at <strong>9:00 AM</strong> and goes until <strong>9:50 AM</strong></li>
+                        <li>The event will be held on the campus of Case Western Reserve University on <strong>March 19th,
+                            2016</strong>
+                        </li>
+                        <li>Registration runs until <strong>February 28th</strong> and is <strong>$20</strong> a person (each participant will receive a
+                            t-shirt)
+                        </li>
+                        <li>Groups of 4 can register for <strong>$60</strong> total</li>
+                        <li>Late Registration begins <strong>February 29th</strong> (late registration participants will not be
+                            guaranteed a t-shirt)
+                        </li>
+                        <li>Checks can be made out to Alpha Phi Omega and should be mailed along with the registration
+                            form to:<br>
                             <br>Jessica Qian<br>
                             2345 Murray Hill Rd. #110B<br>
-                            Cleveland, OH 44106-3937</li><br>
-                        <li>Please send all questions and comments to {!!Html::mailTo('marchformarfan@apo.case.edu')!!}</li>
-                    </ul></p>
+                            Cleveland, OH 44106-3937
+                        </li>
+                        <br>
+                        <li>Please send all questions and comments
+                            to Jessica Qian and Rachel Webb at {!!Html::mailTo('marchformarfan@apo.case.edu')!!}</li>
+                    </ul>
+                    </p>
                 </div>
             </div>
         </div>
