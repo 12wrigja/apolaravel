@@ -7,7 +7,7 @@
                 <div class="col-lg-12">
                     <img class="img-responsive" src="css/images/m4mlogo.png" alt="">
                     <div class="intro-text">
-                        <span class="name">March for Marfan</span>
+                        <span class="name"></span>
                         <hr class="star-light">
                         <span class="skills">An annual 5k race/ 3k walk to raise money and awareness for the Marfan Foundation</span>
                     </div>
