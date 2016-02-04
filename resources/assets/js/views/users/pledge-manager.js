@@ -44,6 +44,8 @@ module.exports = function (Resources) {
                 var editData = Resources.Vue.util.extend({}, pledge);
                 if (editData.big !== null) {
                     editData.big = editData.big.id;
+                } else {
+                    delete editData.big;
                 }
                 if (editData.family !== null) {
                     editData.family_id = editData.family.id;
@@ -51,6 +53,7 @@ module.exports = function (Resources) {
                     editData.family_id = 1;
                 }
                 delete editData.family;
+                delete editData.initiation_semester;
                 this.$.editForm.form = editData;
                 this.$.editForm.form.id = pledge.id;
                 var instance = this;
