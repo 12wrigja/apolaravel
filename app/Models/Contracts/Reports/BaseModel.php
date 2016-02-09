@@ -12,6 +12,7 @@ use APOSite\Models\Contracts\ReportInterface;
 use APOSite\Http\Controllers\LoginController;
 use APOSite\Models\Contracts\Report;
 use APOSite\Models\Semester;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Eloquent;
 use Exception;
@@ -21,6 +22,8 @@ use APOSite\Models\Users\User;
 
 abstract class BaseModel extends Eloquent implements ReportInterface
 {
+    use SoftDeletes;
+
     protected $dates = ['created_at','updated_at','event_date','deleted_at'];
 
     public $errors;

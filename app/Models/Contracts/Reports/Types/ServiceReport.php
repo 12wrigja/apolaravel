@@ -7,15 +7,12 @@ use APOSite\Http\Transformers\ServiceReportTransformer;
 use APOSite\Models\Contracts\Reports\BaseModel;
 use APOSite\Models\Users\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Input;
-use Carbon\Carbon;
 use League\Fractal\Manager;
 use Request;
 
 class ServiceReport extends BaseModel
 {
-    use SoftDeletes;
 
     protected $fillable = [
         'event_name',
