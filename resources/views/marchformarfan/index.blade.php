@@ -36,7 +36,7 @@
                         are affected by Marfan syndrome.</p>
                     <p>Learn more about Marfan Syndrome from The Marfan Foundation <a
                                 href="http://www.marfan.com/">here</a>, or click on their logo below!</p>
-                    <a href="http://www.marfan.com/"><img class="img-responsive text-center hidden-lg"
+                    <a href="http://www.marfan.com/" target="_blank"><img class="img-responsive text-center hidden-lg"
                                                           src="css/images/Marfan Foundation_logo_tag_hires_CMYK.jpg"
                                                           alt="The March for Marfan"></a>
                 </div>
@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div class="col-lg-8 col-lg-offset-2">
-                <a href="http://www.marfan.com/"><img class="img-responsive text-center hidden-md hidden-sm hidden-xs"
+                <a href="http://www.marfan.com/" target="_blank"><img class="img-responsive text-center hidden-md hidden-sm hidden-xs"
                                                       src="css/images/Marfan Foundation_logo_tag_hires_CMYK.jpg"
                                                       alt="The March for Marfan"></a>
             </div>
