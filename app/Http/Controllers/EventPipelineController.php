@@ -143,7 +143,7 @@ class EventPipelineController extends Controller
         }
     }
 
-    public function deleteEvent(Requests\Users\UserDeleteRequest $request, $type, $id)
+    public function deleteEvent(Requests\Reports\ManageReportRequest $request, $type, $id)
     {
         try {
             $report = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
