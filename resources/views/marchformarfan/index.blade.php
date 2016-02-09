@@ -9,7 +9,7 @@
                     <div class="intro-text">
                         <span class="name"></span>
                         <hr class="star-light">
-                        <span class="skills">An annual 5k race/ 3k walk to raise money and awareness for the Marfan Foundation</span>
+                        <span class="skills">An annual 5k race/ 3k walk to raise money and awareness for The Marfan Foundation</span>
                     </div>
                 </div>
             </div>
@@ -34,6 +34,11 @@
                         and tear, which causes internal bleeding and can cause death if not immediately treated. This is
                         the most serious of the many complications Marfan syndrome causes. About 1 in every 5,000 people
                         are affected by Marfan syndrome.</p>
+                    <p>Learn more about Marfan Syndrome from The Marfan Foundation <a
+                                href="http://www.marfan.com/">here</a>, or click on their logo below!</p>
+                    <a href="http://www.marfan.com/"><img class="img-responsive text-center hidden-lg"
+                                                          src="css/images/Marfan Foundation_logo_tag_hires_CMYK.jpg"
+                                                          alt="The March for Marfan"></a>
                 </div>
                 <div class="col-lg-4">
                     <h3>About March for Marfan</h3>
@@ -47,6 +52,11 @@
                         and Maya continues to advise and mentor for the march.
                     </p>
                 </div>
+            </div>
+            <div class="col-lg-8 col-lg-offset-2">
+                <a href="http://www.marfan.com/"><img class="img-responsive text-center hidden-md hidden-sm hidden-xs"
+                                                      src="css/images/Marfan Foundation_logo_tag_hires_CMYK.jpg"
+                                                      alt="The March for Marfan"></a>
             </div>
         </div>
     </section>
@@ -64,12 +74,15 @@
                     <h3>When</h3>
                     <p>The race is held on <strong>March 19th, 2016</strong>. Check-in is at <strong>9 AM</strong>, the
                         race begins at <strong>10 AM</strong> and the walk begins at <strong>10:15 AM</strong>. The
-                        event lasts until approximately <strong>12:30 PM</strong>. A light breakfast and lunch will be provided.</p>
+                        event lasts until approximately <strong>12:30 PM</strong>. A light breakfast and lunch will be
+                        provided.</p>
                     <h3>Where</h3>
-                    <p>The event check-in and activities will take place in Wade Commons (marked on the map). Parking can
+                    <p>The event check-in and activities will take place in Wade Commons (marked on the map). Parking
+                        can
                         be found in the Lot 46 parking garage, behind the football field off of E 118th St. At the toll
                         booth for Lot 46, mention you are attending March for Marfan and your parking fee will be
-                        covered. For any concerns, please email Jessica Qian and Rachel Webb at {!!Html::mailTo('marchformarfan@apo.case.edu')!!}</p>
+                        covered. For any concerns, please email Jessica Qian and Rachel Webb
+                        at {!!Html::mailTo('marchformarfan@apo.case.edu')!!}</p>
                 </div>
                 <div class="col-lg-4">
                     <h3>Map</h3>
@@ -94,27 +107,27 @@
                 </div>
             </div>
             {{--<div class="row">--}}
-                {{--<div class="col-sm-4">--}}
-                    {{--<img src="css/images/logos/tommys.png" class="img-responsive  img-centered" alt="">--}}
-                {{--</div>--}}
-                {{--<div class="col-sm-4">--}}
-                    {{--<img src="css/images/logos/liquidplanet.png" class="img-responsive img-centered" alt="">--}}
-                {{--</div>--}}
-                {{--<div class="col-sm-4">--}}
-                    {{--<img src="css/images/logos/barnesandnoble.png" class="img-responsive  img-centered" alt="">--}}
-                {{--</div>--}}
+            {{--<div class="col-sm-4">--}}
+            {{--<img src="css/images/logos/tommys.png" class="img-responsive  img-centered" alt="">--}}
+            {{--</div>--}}
+            {{--<div class="col-sm-4">--}}
+            {{--<img src="css/images/logos/liquidplanet.png" class="img-responsive img-centered" alt="">--}}
+            {{--</div>--}}
+            {{--<div class="col-sm-4">--}}
+            {{--<img src="css/images/logos/barnesandnoble.png" class="img-responsive  img-centered" alt="">--}}
+            {{--</div>--}}
             {{--</div>--}}
             {{--<div class="row">--}}
-                {{--<div class="col-sm-4">--}}
-                    {{--<img src="css/images/logos/brueggers.png" class="img-responsive  img-centered" alt="">--}}
-                {{--</div>--}}
-                {{--<div class="col-sm-4">--}}
-                    {{--<img src="css/images/logos/buffalowildwings.png" class="img-responsive  img-centered" alt="">--}}
-                {{--</div>--}}
-                {{--<div class="col-sm-4">--}}
-                    {{--<img src="css/images/logos/fairmount.png" class="img-responsive  img-centered" alt="">--}}
-                {{--</div>--}}
-            </div>
+            {{--<div class="col-sm-4">--}}
+            {{--<img src="css/images/logos/brueggers.png" class="img-responsive  img-centered" alt="">--}}
+            {{--</div>--}}
+            {{--<div class="col-sm-4">--}}
+            {{--<img src="css/images/logos/buffalowildwings.png" class="img-responsive  img-centered" alt="">--}}
+            {{--</div>--}}
+            {{--<div class="col-sm-4">--}}
+            {{--<img src="css/images/logos/fairmount.png" class="img-responsive  img-centered" alt="">--}}
+            {{--</div>--}}
+        </div>
         </div>
     </section>
 
@@ -140,14 +153,17 @@
                         Important Information:
                     <ul>
                         <li>Check-in starts at <strong>9:00 AM</strong> and goes until <strong>9:50 AM</strong></li>
-                        <li>The event will be held on the campus of Case Western Reserve University on <strong>March 19th,
-                            2016</strong>
+                        <li>The event will be held on the campus of Case Western Reserve University on <strong>March
+                                19th,
+                                2016</strong>
                         </li>
-                        <li>Registration runs until <strong>February 28th</strong> and is <strong>$20</strong> a person (each participant will receive a
+                        <li>Registration runs until <strong>February 28th</strong> and is <strong>$20</strong> a person
+                            (each participant will receive a
                             t-shirt)
                         </li>
                         <li>Groups of 4 can register for <strong>$60</strong> total</li>
-                        <li>Late Registration begins <strong>February 29th</strong> (late registration participants will not be
+                        <li>Late Registration begins <strong>February 29th</strong> (late registration participants will
+                            not be
                             guaranteed a t-shirt)
                         </li>
                         <li>Checks can be made out to Alpha Phi Omega and should be mailed along with the registration
