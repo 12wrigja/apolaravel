@@ -10,7 +10,11 @@
                 @if(isset($item->isHeader) && $item->isHeader)
                     <li class="dropdown-header">{{$item->text}}</li>
                 @else
-                    <li class="item"><a href="{!! $item->url !!}">{{$item->text}}</a></li>
+                    <li class="item"><a href="{!! $item->url !!}"
+                                        @if(isset($item->external) && $item->external)
+                                        target="_blank"
+                                @endif
+                        >{{$item->text}}</a></li>
                 @endif
             @endforeach
         @endif

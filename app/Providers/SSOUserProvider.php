@@ -197,6 +197,12 @@ class SSOUserProvider extends ServiceProvider
             $item->url = route('report_create',['type'=>'brotherhood_reports']);
             array_push($menu_items,$item);
 
+            $item = new \stdClass();
+            $item->text="Submit Brother of the Week";
+            $item->url = "https://docs.google.com/a/case.edu/forms/d/1spt1Y8Chmh7n8b2FDToSSDPDrsoE2pCMl718wqZ9vpA/viewform";
+            $item->external = true;
+            array_push($menu_items,$item);
+
             //Service report menu item
             $item = new \stdClass();
             $item->text = "Account";
