@@ -29,7 +29,7 @@ module.exports = function (Resources) {
                 //} else if (approved === 'false' && page in this.reports_cache) {
                 //    return this.reports_cache[page];
                 //} else {
-                Resources.ChapterMeeting(this).get({}, {
+                Resources.ExecMeeting(this).get({}, {
                     'page': page,
                     'order': 'date'
                 }, function (data, status, request) {
@@ -43,7 +43,7 @@ module.exports = function (Resources) {
                 });
             },
             editReport: function (report) {
-                this.$.editForm.form = JSON.parse(JSON.stringify(report))
+                this.$.editForm.form = JSON.parse(JSON.stringify(report));
                 this.$.editForm.form.id = report.id;
                 var instance = this;
                 this.$on('successfulEdit', function (updatedReport) {

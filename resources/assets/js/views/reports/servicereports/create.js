@@ -53,7 +53,7 @@ module.exports = function (Resources) {
                 })
             },
             getForm: function () {
-                var newForm = Resources.Vue.util.extend({}, this.form);
+                var newForm = JSON.parse(JSON.stringify(this.form))
                 newForm.off_campus = this.form === '1';
                 var i = newForm.brothers.length;
                 for(var j=0; j<i; j++){

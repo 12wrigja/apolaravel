@@ -3,7 +3,7 @@
     <a class="dropdown-toggle" data-toggle="dropdown" role="button"
        aria-expanded="false">{{$currentUser->first_name}} {{$currentUser->last_name}}
         <span class="caret"></span></a>
-    <ul class="dropdown-menu" role="menu">
+    <ul class="dropdown-menu scrollable-menu" role="menu">
         <li class="item"><a href=""></a></li>
         @if($currentUser->menu_items != null)
             @foreach($currentUser->menu_items as $index=>$item)

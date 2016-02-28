@@ -41,7 +41,7 @@ module.exports = function (Resources) {
                 });
             },
             editPledge: function (pledge) {
-                var editData = Resources.Vue.util.extend({}, pledge);
+                var editData = JSON.parse(JSON.stringify(pledge))
                 if (editData.big !== null) {
                     editData.big = editData.big.id;
                 } else {

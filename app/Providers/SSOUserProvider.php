@@ -51,12 +51,12 @@ class SSOUserProvider extends ServiceProvider
                 array_push($menu_items,$item);
 
                 $item = new \stdClass();
-                $item->text = "Manage service reports";
+                $item->text = "Manage Service Reports";
                 $item->url = route('report_manage',['type'=>'service_reports']);
                 array_push($menu_items, $item);
 
                 $item = new \stdClass();
-                $item->text = "Manage brotherhood reports";
+                $item->text = "Manage Brotherhood Reports";
                 $item->url = route('report_manage',['type'=>'brotherhood_reports']);
                 array_push($menu_items, $item);
 
@@ -89,6 +89,11 @@ class SSOUserProvider extends ServiceProvider
                 $item = new \stdClass();
                 $item->text = "Create Exec Meeting";
                 $item->url = route('report_create',['type'=>'exec_meetings']);
+                array_push($menu_items,$item);
+
+                $item = new \stdClass();
+                $item->text = "Manage Exec Meetings";
+                $item->url = route('report_manage',['type'=>'exec_meetings']);
                 array_push($menu_items,$item);
 
             }
@@ -144,6 +149,11 @@ class SSOUserProvider extends ServiceProvider
                 $item->text = "Create Exec Meeting";
                 $item->url = route('report_create',['type'=>'exec_meetings']);
                 array_push($menu_items,$item);
+
+                $item = new \stdClass();
+                $item->text = "Manage Exec Meetings";
+                $item->url = route('report_manage',['type'=>'exec_meetings']);
+                array_push($menu_items,$item);
             }
 
             if(AccessController::isSergentAtArms($user)){
@@ -187,13 +197,13 @@ class SSOUserProvider extends ServiceProvider
 
             //Service report menu item
             $item = new \stdClass();
-            $item->text = "Submit a service report";
+            $item->text = "Submit a Service Report";
             $item->url = route('report_create',['type'=>'service_reports']);
             array_push($menu_items,$item);
 
             //Service report menu item
             $item = new \stdClass();
-            $item->text = "Submit a brotherhood report";
+            $item->text = "Submit a Brotherhood Report";
             $item->url = route('report_create',['type'=>'brotherhood_reports']);
             array_push($menu_items,$item);
 

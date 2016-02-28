@@ -37,7 +37,7 @@ module.exports = function (Resources) {
                 })
             },
             getForm: function () {
-                var newForm = Resources.Vue.util.extend({}, this.form);
+                var newForm = JSON.parse(JSON.stringify(this.form))
                 newForm.display_name = "Pledge Meeting " + newForm.event_date;
                 return newForm;
             },

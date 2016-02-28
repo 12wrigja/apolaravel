@@ -64,8 +64,7 @@ module.exports = function (Resources) {
               return this.form.id;
             },
             getForm: function () {
-                var newForm = Resources.Vue.util.extend({}, this.form);
-                return newForm;
+                return JSON.parse(JSON.stringify(this.form));
             },
             formatBrother: function(brother){
                 if(brother.nickname !== null && brother.nickname !== undefined){
