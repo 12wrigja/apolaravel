@@ -52,7 +52,7 @@ class ServiceReport extends BaseModel
             'event_date' => ['required', 'date'],
             'brothers' => ['required', 'array'],
             //Rules specific to the service report
-            'location' => ['required', 'min:10'],
+            'location' => ['required'],
             'service_type' => ['required', 'in:chapter,country,community,campus'],
             'project_type' => ['required', 'in:inside,outside'],
             'off_campus' => ['required', 'boolean'],
