@@ -37,8 +37,8 @@
                     <p>Learn more about Marfan Syndrome from The Marfan Foundation <a
                                 href="http://www.marfan.com/">here</a>, or click on their logo below!</p>
                     <a href="http://www.marfan.com/" target="_blank"><img class="img-responsive text-center hidden-lg"
-                                                          src="css/images/Marfan Foundation_logo_tag_hires_CMYK.jpg"
-                                                          alt="The March for Marfan"></a>
+                                                                          src="css/images/Marfan Foundation_logo_tag_hires_CMYK.jpg"
+                                                                          alt="The March for Marfan"></a>
                 </div>
                 <div class="col-lg-4">
                     <h3>About March for Marfan</h3>
@@ -54,9 +54,10 @@
                 </div>
             </div>
             <div class="col-lg-8 col-lg-offset-2">
-                <a href="http://www.marfan.com/" target="_blank"><img class="img-responsive text-center hidden-md hidden-sm hidden-xs"
-                                                      src="css/images/Marfan Foundation_logo_tag_hires_CMYK.jpg"
-                                                      alt="The March for Marfan"></a>
+                <a href="http://www.marfan.com/" target="_blank"><img
+                            class="img-responsive text-center hidden-md hidden-sm hidden-xs"
+                            src="css/images/Marfan Foundation_logo_tag_hires_CMYK.jpg"
+                            alt="The March for Marfan"></a>
             </div>
         </div>
     </section>
@@ -86,7 +87,10 @@
                 </div>
                 <div class="col-lg-4">
                     <h3>Map</h3>
-                    <iframe src="https://www.google.com/maps/d/embed?mid=zcSOOiVtNxQ0.k8caDix0RaCA" width="640"
+                    <p>The starting point for the race is Wade Commons, located at <a
+                                href="https://www.google.com/maps/place/Wade+Commons,+11451+Juniper+Rd,+Cleveland,+OH+44106/@41.5130505,-81.607398,17z/data=!3m1!4b1!4m2!3m1!1s0x8830fb8ac678cabb:0xb1d1e338d803f678"
+                                target="_blank">11451 Juniper Rd, Cleveland, OH 44106</a>, which is also shown on the map below.</p>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2384.9886369007863!2d-81.60703659325259!3d41.51315501384533!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8830fb8ac678cabb%3A0xb1d1e338d803f678!2sWade+Commons%2C+11451+Juniper+Rd%2C+Cleveland%2C+OH+44106!5e0!3m2!1sen!2sus!4v1458011639785" width="640"
                             height="480"></iframe>
                 </div>
                 <div class="col-lg-8 col-lg-offset-2 text-center">
