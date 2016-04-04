@@ -44,7 +44,7 @@
 
         <p class="help-block" for="brothers"></p>
         <td><select id="brotherselecter" placeholder="Search for a Brother..." class="form-control"
-                    style="width:100%"></select></td>
+                    style="width: 100%;"></select></td>
         <!-- Brothers listing -->
         <table class="table table-hover">
             <thead>
@@ -56,7 +56,8 @@
             <tr v-repeat="brother: form.brothers">
                 <td>@{{ brother.name }}</td>
                 <td>
-                {!! Form::select('count_for', ['chapter'=>'Chapter','pledge'=>'Pledge','exec'=>'Exec'], 'exec' ,['class'=>'form-control','v-model'=>'brother.count_for']) !!}
+                {!! Form::select('count_for', ['chapter'=>'Chapter','pledge'=>'Pledge','exec'=>'Exec'], 'pledge' ,['class'=>'form-control','v-model'=>'brother.count_for']) !!}
+                <td>
                 <td>
                     <div class="btn btn-danger" v-on="click: removeBrother(brother)">Remove</div>
                 </td>

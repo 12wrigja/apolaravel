@@ -9,7 +9,7 @@
     "jquery": "^2.1.4",
     "jquery.mousewheel": "^3.1.9",
     "select2": "^4.0.1",
-    "summernote": "^0.7.0",
+    "summernote": "^0.7.3",
     "vue": "^0.12.0",
     "vue-html-editor": "git+https://github.com/12wrigja/vue-html-editor.git",
     "vue-resource": "^0.1.3"

@@ -19,8 +19,10 @@
         <div class="col-sm-10">
             <div>
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#minutesedit" aria-controls="minutesedit" role="tab" data-toggle="tab">Edit</a></li>
-                    <li role="presentation"><a href="#minutesshow" aria-controls="minutesshow" role="tab" data-toggle="tab">Preview</a></li>
+                    <li role="presentation" class="active"><a href="#minutesedit" aria-controls="minutesedit" role="tab"
+                                                              data-toggle="tab">Edit</a></li>
+                    <li role="presentation"><a href="#minutesshow" aria-controls="minutesshow" role="tab"
+                                               data-toggle="tab">Preview</a></li>
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="minutesedit">
@@ -36,27 +38,30 @@
 </div>
 
 <div class="form-horizontal">
-    <h2>Brothers at Meeting</h2>
+    <div class="form-group">
+        <h2>Brothers at Meeting</h2>
 
-    <p class="help-block"></p>
-    <td><select id="brotherselecter" placeholder="Search for a Brother..." class="form-control" style="width: 100%;"></select></td>
-    <!-- Brothers listing -->
-    <table class="table table-hover">
-        <thead>
-        <th>Brother</th>
-        <th>Count For</th>
-        <th></th>
-        </thead>
-        <tbody>
-        <tr v-repeat="brother: form.brothers">
-            <td>@{{ brother.name }}</td>
-            <td>
+        <p class="help-block" for="brothers"></p>
+        <td><select id="brotherselecter" placeholder="Search for a Brother..." class="form-control"
+                    style="width: 100%;"></select></td>
+        <!-- Brothers listing -->
+        <table class="table table-hover">
+            <thead>
+            <th>Brother</th>
+            <th>Count For</th>
+            <th></th>
+            </thead>
+            <tbody>
+            <tr v-repeat="brother: form.brothers">
+                <td>@{{ brother.name }}</td>
+                <td>
                 {!! Form::select('count_for', ['chapter'=>'Chapter','pledge'=>'Pledge','exec'=>'Exec'], 'chapter' ,['class'=>'form-control','v-model'=>'brother.count_for']) !!}
-            <td>
-            <td>
-                <div class="btn btn-danger" v-on="click: removeBrother(brother)">Remove</div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                <td>
+                <td>
+                    <div class="btn btn-danger" v-on="click: removeBrother(brother)">Remove</div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

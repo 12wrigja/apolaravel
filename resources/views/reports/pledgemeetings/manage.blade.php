@@ -3,10 +3,10 @@
 
 @section('crud_form')
     <manage_exec_meetings_form inline-template>
-        <h1>Manage Chapter Meetings</h1>
+        <h1>Manage Pledge Meetings</h1>
 
-        <p>Below is the chapter meeting management tool. This can be used to modify the stored minutes or present
-            chapter members at a chapter meeting. Meetings marked with a red symbol are potential duplicates of
+        <p>Below is the pledge meeting management tool. This can be used to modify the stored minutes or present
+            chapter members and pledges at a pledge meeting. Meetings marked with a red symbol are potential duplicates of
             meetings, and should probably be merged together using the editing functionality.</p>
 
         <div v-show="reports.data | empty">
@@ -21,7 +21,7 @@
                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                            href="#collapse@{{report.id}}" aria-expanded="false"
                            aria-controls="collapse@{{report.id}}">
-                            Chapter Meeting
+                            Pledge Meeting
                             @{{report.human_date}}
                         </a>
                     </h4>
@@ -29,7 +29,7 @@
                 <div id="collapse@{{report.id}}" class="panel-collapse collapse" role="tabpanel"
                      aria-labelledby="heading@{{report.id}}">
                     <div class="panel-body">
-                        @include('reports.chaptermeetings.report_details')
+                        @include('reports.pledgemeetings.report_details')
                         <div class="btn btn-primary" v-on="click: editReport(report)">Edit</div>
                     </div>
                 </div>
@@ -53,11 +53,11 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                         aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Edit Service Report</h4>
+                            <h4 class="modal-title">Edit Pledge Meeting</h4>
                         </div>
                         <div class="modal-body">
-                            {!! Form::open(['route'=>['report_update','type'=>'chapter_meetings','id'=>':id'],'class'=>'collapse in','v-el'=>'iform'])!!}
-                            @include('reports.chaptermeetings.form')
+                            {!! Form::open(['route'=>['report_update','type'=>'pledge_meetings','id'=>':id'],'class'=>'collapse in','v-el'=>'iform'])!!}
+                            @include('reports.pledgemeetings.form')
                             {!! Form::close() !!}
                         </div>
                         <div class="alert alert-info alert-important collapse" role="alert" v-el="loadingArea">

@@ -158,6 +158,7 @@ var main = new Vue({
         'vue-html-editor' : vuehtmleditor,
         'manage_chapter_meetings_form': require('./views/reports/chaptermeetings/manage.js')(Resources),
         'manage_exec_meetings_form': require('./views/reports/execmeetings/manage.js')(Resources),
+        'manage_pledge_meetings_form': require('./views/reports/pledgemeetings/manage.js')(Resources),
         'user-profile-editor' : require('./views/users/profile-editor.js')(Resources),
         'user-create-form' : require('./views/users/create.js')(Resources),
         'pledge-manager' : require('./views/users/pledge-manager.js')(Resources)

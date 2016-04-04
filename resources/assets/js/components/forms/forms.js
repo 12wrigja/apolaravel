@@ -135,7 +135,7 @@ module.exports = function (Vue) {
                 renderErrors: function (jsonErrors) {
                     var instance = this;
                     $.each(jsonErrors, function (fieldName, error) {
-                        var field = $(instance.$$.iform).find('[name="' + fieldName + '"]')[0];
+                        var field = $(instance.$$.iform).find('[for="' + fieldName + '"]')[0];
                         var parent = $(field).closest('.form-group')[0];
                         $(parent).addClass('has-error');
                         var errorBlock = $(parent).find(".help-block");
