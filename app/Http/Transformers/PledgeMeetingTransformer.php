@@ -4,6 +4,7 @@ use APOSite\Models\Contracts\Reports\Types\PledgeMeeting;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\TransformerAbstract;
+use APOSite\Models\Users\User;
 
 class PledgeMeetingTransformer extends TransformerAbstract
 {
@@ -22,17 +23,25 @@ class PledgeMeetingTransformer extends TransformerAbstract
         $brothers->transform(function ($item, $key) {
             $val = $item->pivot;
             unset($val->report_id);
-            unset($val->value);
+            $val->id = $val->user_id;
+            unset($val->user_id);
+            $val->name = $item->getFullDisplayName();
+            $val->count_for = $val->tag;
+            unset($val->tag);
             return $val;
-        });
+        });;
         $otherData = [
             'id' => $report->id,
             'href' => route('report_show',['id'=>$report->id,'type'=>'pledge_meetings']),
             'date' => $report->event_date->toDateString(),
             'human_date' => $report->event_date->toFormattedDateString(),
             'minutes' => $report->minutes,
-            'brothers' => $brothers
+            'brothers' => $brothers,
+            'submitter' => ['id'=>$report->creator_id,'display_name'=>User::find($report->creator_id)->fullDisplayName()]
         ];
+        if(PledgeMeeting::where('event_date',$report->event_date)->count() > 1){
+            $otherData['potential_duplicate'] = true;
+        }
         return  $otherData;
     }
 

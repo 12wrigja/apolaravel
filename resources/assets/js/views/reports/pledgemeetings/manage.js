@@ -29,7 +29,7 @@ module.exports = function (Resources) {
                 //} else if (approved === 'false' && page in this.reports_cache) {
                 //    return this.reports_cache[page];
                 //} else {
-                Resources.ExecMeeting(this).get({}, {
+                Resources.PledgeMeeting(this).get({}, {
                     'page': page,
                     'order': 'date'
                 }, function (data, status, request) {
