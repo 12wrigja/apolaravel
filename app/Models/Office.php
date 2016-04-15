@@ -33,9 +33,9 @@ class Office extends Model
     public function currentOfficers()
     {
         $semester = Semester::currentSemester();
-        $thisSemOfficers = $this->users()->whereSemesterId(Semester::currentSemester()->id)->get();
+        $thisSemOfficers = $this->users()->whereSemesterId($semester->id)->get();
         if($thisSemOfficers->count() == 0){
-            $prevSemOfficers = $this->users()->whereSemesterId($semester->previous())->get();
+            $prevSemOfficers = $this->users()->whereSemesterId($semester->previous()->id)->get();
             return $prevSemOfficers;
         } else {
             return $thisSemOfficers;
