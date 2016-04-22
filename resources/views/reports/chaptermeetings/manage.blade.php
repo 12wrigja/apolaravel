@@ -2,7 +2,7 @@
 
 
 @section('crud_form')
-    <manage_exec_meetings_form inline-template>
+    <manage_chapter_meetings_form inline-template>
         <h1>Manage Chapter Meetings</h1>
 
         <p>Below is the chapter meeting management tool. This can be used to modify the stored minutes or present
@@ -78,5 +78,5 @@
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
         </form_editor>
-    </manage_exec_meetings_form>
+    </manage_chapter_meetings_form>
 @endsection
