@@ -3,7 +3,7 @@
 @section('crud_form')
 
 
-
+    <h1>Statistics for Semester: {{ucwords($semester->semester)}} {{$semester->year}}</h1>
 
     <h2>Service Hours</h2>
     <p>Total Hours: {{$totalHours}}</p>

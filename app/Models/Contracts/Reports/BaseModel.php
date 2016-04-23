@@ -101,6 +101,14 @@ abstract class BaseModel extends Eloquent implements ReportInterface
         }
     }
 
+    public function scopeInSemester($query, $semester){
+        if($semester->end_date == null){
+            return $query->where('event_date','>=',$semester->start_date);
+        } else {
+            return $query->whereBetween('event_date', array($semester->start_date, $semester->end_date));
+        }
+    }
+
     public function setEventDateAttribute($value){
         $this->attributes['event_date'] = new Carbon($value);
     }
