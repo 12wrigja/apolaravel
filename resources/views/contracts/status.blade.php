@@ -18,14 +18,14 @@
                 contract.</p>
         @endif
     @else
-        <h2>Current Contract: {{ $contract::$name }}</h2>
-        <h3>Requirements: </h3>
+        <p>Current Contract: {{ $contract::$name }}</p>
+        <h2>Requirements: </h2>
         @if(count($contract->requirements) > 0)
             @foreach ($contract->requirements->chunk(2) as $chunk)
                 <div class="row">
                     @foreach ($chunk as $requirement)
                         <div class="col-md-6 panel">
-                            <h4>{{$requirement::$name}}</h4>
+                            <h3>{{$requirement::$name}}</h3>
 
                             <div class="progress">
                                 <div class="progress-bar {{$requirement->getPercentDone() == 100 ? 'progress-bar-success' : ''}}"
@@ -39,7 +39,12 @@
                             <p>Current: {{ round($requirement->getValue(),2) }},
                                 Required: {{ $requirement->getThreshold() }}</p>
                             @if($requirement->getValue() > 0)
-                                {!! $requirement->getDetails($user) !!}
+                                <h4 class="text-center">Approved</h4>
+                                {!! $requirement->getDetails(false) !!}
+                            @endif
+                            @if($requirement->getPendingValue() > 0)
+                                <h4 class="text-center">Pending</h4>
+                                {!! $requirement->getDetails(true) !!}
                             @endif
                         </div>
                     @endforeach

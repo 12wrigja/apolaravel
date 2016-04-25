@@ -9,6 +9,7 @@ use APOSite\Models\Users\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Factory as ValidationFactory;
 use APOSite\Http\Requests\Request;
+use APOSite\ContractFramework\Contracts\Contract;
 
 class ContractModifyRequest extends Request
 {
@@ -57,7 +58,13 @@ class ContractModifyRequest extends Request
     public function rules()
     {
         $user = LoginController::currentUser();
-        $contractTypes = 'Active,Associate,Inactive,MemberInAbsentia,Alumni,Advisor,Pledge';
+        $contractTypes = implode(',',Contract::getAllContractTypes()->map(function($item){
+            if($item->version > 1){
+                return $item->contract_name.'V'.$item->version;
+            } else {
+                return $item->contract_name;
+            }
+        })->toArray());
         if (!$this->has('contract') && (AccessController::isMembership($user) || AccessController::isPledgeEducator($user))) {
             //This is a special request from the membership or pledge educators who want to bulk - update contracts.
             if (AccessController::isMembership($user)) {
@@ -82,7 +89,16 @@ class ContractModifyRequest extends Request
                 }
             }
         } else {
-            $base = ['contract' => 'required|in:' . $contractTypes,];
+            if(!AccessController::isMembership($user)){
+                $contractTypes = implode(',',Contract::getCurrentSignableContracts()->map(function($item){
+                    if($item->version > 1){
+                        return $item->contract_name.'V'.$item->version;
+                    } else {
+                        return $item->contract_name;
+                    }
+                    })->toArray());
+            }
+            $base = ['contract' => 'required|in:' . $contractTypes];
             if($this->has('contract')){
                 $contract = $this->get('contract');
                 if($contract == 'Active' || $contract == 'Associate'){

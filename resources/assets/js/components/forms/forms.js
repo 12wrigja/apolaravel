@@ -95,6 +95,9 @@ module.exports = function (Vue) {
                                         textErrorArea.innerHTML = error.responseJSON.errors.message;
                                     } else {
                                         textErrorArea.innerHTML = "An error occured.";
+                                        var newWindow = window.open();
+                                        newWindow.document.write(error.responseText);
+                                        newWindow.document.close();
                                     }
                                     $(instance.$$.loadingArea).collapse('hide');
                                     eA.collapse('show');

@@ -1,4 +1,4 @@
-<table class="table table-hover table-responsive">
+<table class="table table-hover table-responsive table-bordered">
     <thead>
     <tr>
         <th>Event Name</th>

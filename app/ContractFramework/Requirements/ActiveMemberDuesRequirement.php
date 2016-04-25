@@ -10,10 +10,10 @@ namespace APOSite\ContractFramework\Requirements;
 
 use APOSite\Models\Semester;
 
-class ActiveMemberDuesRequirement extends Requirement
+class ActiveMemberDuesRequirement extends DuesBaseRequirement
 {
     public static $name = "Dues";
-    public static $description = "As an Active APO Brother, you are required to pay dues for the semester.";
+    public static $description = "Will pay membership dues by the sixth (6th) chapter meeting of each academic semester or as specifically arranged by the treasurer.";
 
     protected $threshold = 70;
     protected $comparison = 'GEQ';
@@ -39,7 +39,4 @@ class ActiveMemberDuesRequirement extends Requirement
         }
     }
 
-    public function getDetails(){
-        return view('reports.duesreports.dueseventlist')->with('reports',$this->getReports())->with('user',$this->user);
-    }
 }

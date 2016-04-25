@@ -4,7 +4,7 @@ namespace APOSite\ContractFramework\Requirements;
 
 use APOSite\Models\Contracts\Reports\Types\PledgeMeeting;
 
-class PledgeMemberPledgeMeetingRequirement extends Requirement
+class PledgeMemberPledgeMeetingRequirement extends MeetingBasedRequirement
 {
     public static $name = "Pledge Meetings";
     public static $description = "As an APO Pledge, you have to to attend all pledge meetings this semester.";
@@ -50,7 +50,4 @@ class PledgeMemberPledgeMeetingRequirement extends Requirement
         return PledgeMeeting::currentSemester()->count();
     }
 
-    public function getDetails(){
-        return view('reports.meetinglist')->with('reports',$this->getReports());
-    }
 }

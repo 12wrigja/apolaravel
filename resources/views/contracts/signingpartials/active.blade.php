@@ -1,0 +1,1 @@
+@include('contracts.signingpartials.committees')

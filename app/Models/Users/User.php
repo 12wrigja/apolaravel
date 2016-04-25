@@ -10,6 +10,7 @@ use Illuminate\Database\Query;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use APOSite\ContractFramework\Contracts\Contract;
 
 class User extends Model
 {
@@ -69,7 +70,7 @@ class User extends Model
         $contract_id = $this->ContractTypeForSemester($semester);
         if ($contract_id != null || $contract_id != "") {
             try {
-                return App::make('APOSite\ContractFramework\Contracts\\' . $contract_id . 'Contract',
+                return App::make(Contract::ContractHome . $contract_id . 'Contract',
                     ['user' => $this, 'semester' => $semester]);
             } catch (\Exception $e) {
             }

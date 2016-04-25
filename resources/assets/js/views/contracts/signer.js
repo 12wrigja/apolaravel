@@ -75,7 +75,7 @@ module.exports = function (Resources) {
             }
         },
         ready: function(){
-            console.log(this.form.committees);
+            this.form.contract = $('#contracttypelist').find('.active').attr('data-contract-type')
         }
     });
 };

@@ -38,8 +38,4 @@ class PledgeMemberDuesRequirement extends Requirement
             return $reports->last()->pivot->value;
         }
     }
-
-    public function getDetails(){
-        return view('reports.duesreports.dueseventlist')->with('reports',$this->getReports())->with('user',$this->user);
-    }
 }
