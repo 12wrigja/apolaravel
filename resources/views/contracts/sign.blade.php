@@ -41,7 +41,7 @@
                         @endforeach
                     </div>
                 </div>
-                <pre>@{{form | json}}</pre>
+                {{--<pre>@{{form | json}}</pre>--}}
                 <div class="form-group">
                     {!! Form::submit('Sign Contract', ['class'=>'btn btn-primary form-control']) !!}
                 </div>
