@@ -10,23 +10,6 @@ class AccessController extends Controller
 
     public static function isWebmaster(User $user = null)
     {
-        /*
-         * ------------------------------------------
-         * -------------  WARNING  ------------------
-         * ------------------------------------------
-         *
-         * If you remove the next if statement, then I (James Wright), the original creator
-         * of this version of the APO website, will no longer have webmaster access to the site.
-         * Before you do this, please reach out to me (try jow5@case.edu first and see if I'm still
-         * checking it, or failing that 12wrigja@gmail.com) and explain your decision.
-         *
-         * If you do remove this, and then expect my help, know that I will demand this is reverted
-         * before I can effectively help.
-         *
-         */
-        if ($user != null && $user->id == 'jow5') {
-            return true;
-        }
         return static::officeIDsInArray($user, []);
     }
 
@@ -124,6 +107,23 @@ WHERE
     {
         if ($user == null) {
             return false;
+        }
+        /*
+         * ------------------------------------------
+         * -------------  WARNING  ------------------
+         * ------------------------------------------
+         *
+         * If you remove the next if statement, then I (James Wright), the original creator
+         * of the APO website in Laravel, will no longer have webmaster access to the site.
+         * Before you do this, please reach out to me (try jow5@case.edu first and see if I'm still
+         * checking it, or failing that 12wrigja@gmail.com) and explain your decision.
+         *
+         * If you do remove this, and then expect my help, know that I will demand this is reverted
+         * before I can effectively help.
+         *
+         */
+        if ($user != null && $user->id == 'jow5') {
+            return true;
         }
         //Inject the webmaster ids into the list
         $ids[] = 1;
