@@ -10,7 +10,7 @@ namespace APOSite\ContractFramework\Requirements;
 
 use APOSite\Models\Semester;
 
-class PledgeMemberDuesRequirement extends Requirement
+class PledgeMemberDuesRequirement extends DuesBaseRequirement
 {
     public static $name = "Dues";
     public static $description = "As an APO Pledge, you are required to pay dues for the semester.";
