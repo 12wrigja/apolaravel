@@ -126,28 +126,28 @@ class User extends Model
     {
         return $query->join('contract_user', function ($join) {
             $join->on('users.id', '=', 'contract_user.user_id');
-        })->whereContractId('Active')->whereSemesterId($semester->id);
+        })->where('contract_id','LIKE','Active%')->whereSemesterId($semester->id);
     }
 
     public function scopeAssociateForSemester($query, Semester $semester)
     {
         return $query->join('contract_user', function ($join) {
             $join->on('users.id', '=', 'contract_user.user_id');
-        })->whereContractId('Associate')->whereSemesterId($semester->id);
+        })->where('contract_id','LIKE','Associate%')->whereSemesterId($semester->id);
     }
 
     public function scopePledgeForSemester($query, Semester $semester)
     {
         return $query->join('contract_user', function ($join) {
             $join->on('users.id', '=', 'contract_user.user_id');
-        })->whereContractId('Pledge')->whereSemesterId($semester->id);
+        })->where('contract_id','LIKE','Pledge%')->whereSemesterId($semester->id);
     }
 
     public function scopeNeophyteForSemester($query, Semester $semester)
     {
         return $query->join('contract_user', function ($join) {
             $join->on('users.id', '=', 'contract_user.user_id');
-        })->whereContractId('Neophyte')->whereSemesterId($semester->id);
+        })->where('contract_id','LIKE','Neophyte%')->whereSemesterId($semester->id);
     }
 
     public function scopeIncludeContract($query)
