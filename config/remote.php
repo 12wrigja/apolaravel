@@ -30,8 +30,8 @@ return [
         'APO' => [
             'host'      => 'apo.case.edu',
             'username'  => env('APO_SERVER_USERNAME',null),
-            'key'       => env('APO_SERVER_KEY',null),
-            'keyphrase' => env('APO_SERVER_KEY_PASSWORD',null)
+            'key'       => env('APO_SSH_KEY',null),
+            'keyphrase' => env('APO_SSH_PASS',null)
         ],
     ],
 
