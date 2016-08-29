@@ -65,7 +65,16 @@ class EventPipelineController extends Controller
             $class = $this->getClass($type);
             $query = $class->getMethod('query')->invoke(null);
             $query = $class->getMethod('applyReportFilters')->invoke(null, $query);
-            $query = $query->orderBy('id', 'DESC');
+            $order = $request->get('order');
+            switch ($order) {
+                case 'id':
+                default:
+                    $query = $query->orderBy('id', 'DESC');
+                    break;
+                case 'date':
+                    $query = $query->orderBy('event_date', 'DESC');
+                    break;
+            }
             $query = $class->getMethod('applyRowLevelSecurity')->invoke(null, $query, LoginController::currentUser());
             $paginator = $query->paginate(20);
             $queryParams = Input::except('page');
@@ -118,8 +127,8 @@ class EventPipelineController extends Controller
     {
         try {
             $report = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);
-            $res = $report->update(Input::except(['id','creator_id']));
-            if($res == null || $res) {
+            $res = $report->update(Input::except(['id', 'creator_id']));
+            if ($res == null || $res) {
                 //Return the data in json form
                 $resource = new Item($report, $report->transformer($this->fractal));
                 return $this->fractal->createData($resource)->toJson();
@@ -134,7 +143,7 @@ class EventPipelineController extends Controller
         }
     }
 
-    public function deleteEvent($type, $id)
+    public function deleteEvent(Requests\Reports\ManageReportRequest $request, $type, $id)
     {
         try {
             $report = $this->getClass($type)->getMethod('query')->invoke(null)->findOrFail($id);

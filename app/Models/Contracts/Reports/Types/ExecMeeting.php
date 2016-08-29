@@ -36,7 +36,6 @@ class ExecMeeting extends BaseModel
     {
         $rules = [
             //Rules for the core report data
-            'minutes' => ['sometimes', 'required', 'min:40'],
             'event_date' => ['required', 'date'],
             'brothers' => ['required', 'array']
         ];
@@ -55,7 +54,6 @@ class ExecMeeting extends BaseModel
     {
         $rules = [
             //Rules for the core report data
-            'minutes' => ['sometimes', 'required', 'min:40'],
             'event_date' => ['sometimes','required', 'date'],
             'brothers' => ['sometimes','required', 'array']
         ];

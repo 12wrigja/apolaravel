@@ -51,12 +51,12 @@ class SSOUserProvider extends ServiceProvider
                 array_push($menu_items,$item);
 
                 $item = new \stdClass();
-                $item->text = "Manage service reports";
+                $item->text = "Manage Service Reports";
                 $item->url = route('report_manage',['type'=>'service_reports']);
                 array_push($menu_items, $item);
 
                 $item = new \stdClass();
-                $item->text = "Manage brotherhood reports";
+                $item->text = "Manage Brotherhood Reports";
                 $item->url = route('report_manage',['type'=>'brotherhood_reports']);
                 array_push($menu_items, $item);
 
@@ -81,8 +81,19 @@ class SSOUserProvider extends ServiceProvider
                 array_push($menu_items,$item);
 
                 $item = new \stdClass();
+                $item->text = "Manage Chapter Meetings";
+                $item->url = route('report_manage',['type'=>'chapter_meetings']);
+                array_push($menu_items,$item);
+
+
+                $item = new \stdClass();
                 $item->text = "Create Exec Meeting";
                 $item->url = route('report_create',['type'=>'exec_meetings']);
+                array_push($menu_items,$item);
+
+                $item = new \stdClass();
+                $item->text = "Manage Exec Meetings";
+                $item->url = route('report_manage',['type'=>'exec_meetings']);
                 array_push($menu_items,$item);
 
             }
@@ -130,8 +141,18 @@ class SSOUserProvider extends ServiceProvider
                 array_push($menu_items,$item);
 
                 $item = new \stdClass();
+                $item->text = "Manage Chapter Meetings";
+                $item->url = route('report_manage',['type'=>'chapter_meetings']);
+                array_push($menu_items,$item);
+
+                $item = new \stdClass();
                 $item->text = "Create Exec Meeting";
                 $item->url = route('report_create',['type'=>'exec_meetings']);
+                array_push($menu_items,$item);
+
+                $item = new \stdClass();
+                $item->text = "Manage Exec Meetings";
+                $item->url = route('report_manage',['type'=>'exec_meetings']);
                 array_push($menu_items,$item);
             }
 
@@ -158,8 +179,18 @@ class SSOUserProvider extends ServiceProvider
                 array_push($menu_items,$item);
 
                 $item = new \stdClass();
+                $item->text = "Manage Pledge Meetings";
+                $item->url = route('report_manage',['type'=>'pledge_meetings']);
+                array_push($menu_items,$item);
+
+                $item = new \stdClass();
                 $item->text = "View Pledge Contract Progress";
                 $item->url = route('contract_progress');
+                array_push($menu_items, $item);
+
+                $item = new \stdClass();
+                $item->text = "Pledge Management";
+                $item->url = route('user_manage');
                 array_push($menu_items, $item);
             }
 
@@ -171,14 +202,20 @@ class SSOUserProvider extends ServiceProvider
 
             //Service report menu item
             $item = new \stdClass();
-            $item->text = "Submit a service report";
+            $item->text = "Submit a Service Report";
             $item->url = route('report_create',['type'=>'service_reports']);
             array_push($menu_items,$item);
 
             //Service report menu item
             $item = new \stdClass();
-            $item->text = "Submit a brotherhood report";
+            $item->text = "Submit a Brotherhood Report";
             $item->url = route('report_create',['type'=>'brotherhood_reports']);
+            array_push($menu_items,$item);
+
+            $item = new \stdClass();
+            $item->text="Submit Brother of the Week";
+            $item->url = "https://docs.google.com/a/case.edu/forms/d/1spt1Y8Chmh7n8b2FDToSSDPDrsoE2pCMl718wqZ9vpA/viewform";
+            $item->external = true;
             array_push($menu_items,$item);
 
             //Service report menu item
@@ -210,12 +247,6 @@ class SSOUserProvider extends ServiceProvider
             $item = new \stdClass();
             $item->text = "Other";
             $item->isHeader = true;
-            array_push($menu_items,$item);
-
-            //Service report menu item
-            $item = new \stdClass();
-            $item->text = "View Event Calendar";
-            $item->url = route('calendar');
             array_push($menu_items,$item);
 
             $item = new \stdClass();

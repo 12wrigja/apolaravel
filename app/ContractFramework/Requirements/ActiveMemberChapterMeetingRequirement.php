@@ -8,10 +8,10 @@
 
 namespace APOSite\ContractFramework\Requirements;
 
-class ActiveMemberChapterMeetingRequirement extends Requirement
+class ActiveMemberChapterMeetingRequirement extends MeetingBasedRequirement
 {
     public static $name = "Chapter Meetings";
-    public static $description = "As an Active APO Brother, you have to to attend at least 8 chapter meetings each semester.";
+    public static $description = "Will attend at least eight (8) general chapter meetings each chapter semester.";
 
     protected $threshold = 8;
     protected $comparison = 'GEQ';
@@ -50,7 +50,4 @@ class ActiveMemberChapterMeetingRequirement extends Requirement
         return $reports->count();
     }
 
-    public function getDetails(){
-        return view('reports.meetinglist')->with('reports',$this->getReports());
-    }
 }

@@ -21,6 +21,7 @@ abstract class Requirement
     protected $threshold;
     protected $comparison;
     protected $value;
+    protected $pendingValue;
 
     function __construct(User $user, Semester $semester)
     {
@@ -28,7 +29,8 @@ abstract class Requirement
         $this->semester = $semester;
     }
 
-    public function getUser(){
+    public function getUser()
+    {
         return $this->user;
     }
 
@@ -39,32 +41,53 @@ abstract class Requirement
 
     public abstract function getReports();
 
+    public function getPendingReports()
+    {
+        return collect([]);
+    }
+
     public abstract function computeValue();
 
-    public final function getValue(){
-        if($this->value == null){
+    public function computePendingValue()
+    {
+        return 0.0;
+    }
+
+    public final function getValue()
+    {
+        if ($this->value == null) {
             $this->value = $this->computeValue();
         }
         return $this->value;
     }
 
-    public final function getThreshold(){
+    public final function getPendingValue()
+    {
+        if ($this->pendingValue == null) {
+            $this->pendingValue = $this->computePendingValue();
+        }
+        return $this->pendingValue;
+    }
+
+    public final function getThreshold()
+    {
         $threshold = $this->threshold;
-        if(method_exists($this,'getDynamicThreshold')){
+        if (method_exists($this, 'getDynamicThreshold')) {
             $threshold = $this->getDynamicThreshold();
         }
         return $threshold;
     }
 
-    public final function getPercentDone(){
-        if($this->getThreshold() == 0){
+    public final function getPercentDone()
+    {
+        if ($this->getThreshold() == 0) {
             return 100;
         }
         $ratio = $this->getValue() / $this->getThreshold();
-        if($ratio >= 1){
+        if ($ratio >= 1) {
             return 100;
         } else {
-            return intval(floor($ratio*100));
+            return intval(floor($ratio * 100));
         }
     }
 
@@ -90,5 +113,19 @@ abstract class Requirement
         }
     }
 
-    public abstract function getDetails();
+    public static function getMetadata()
+    {
+        return static::$description;
+    }
+
+    public final function getDetails($pending = false)
+    {
+        if ($pending) {
+            return $this->getDetailsView()->with('reports', $this->getPendingReports())->with('user', $this->user);
+        } else {
+            return $this->getDetailsView()->with('reports', $this->getReports())->with('user', $this->user);
+        }
+    }
+
+    public abstract function getDetailsView();
 }

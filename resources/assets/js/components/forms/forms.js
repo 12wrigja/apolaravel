@@ -80,6 +80,11 @@ module.exports = function (Vue) {
                                 console.log(error);
                                 instance.renderErrors(error.responseJSON);
                                 instance.setNotLoading();
+                            } else if (error.status == 403){
+                                var errors = {};
+                                errors.general = error.responseJSON.message;
+                                instance.renderErrors(errors);
+                                instance.setNotLoading();
                             } else {
                                 //Probably a critical error here.
                                 console.log(error);
@@ -90,6 +95,9 @@ module.exports = function (Vue) {
                                         textErrorArea.innerHTML = error.responseJSON.errors.message;
                                     } else {
                                         textErrorArea.innerHTML = "An error occured.";
+                                        var newWindow = window.open();
+                                        newWindow.document.write(error.responseText);
+                                        newWindow.document.close();
                                     }
                                     $(instance.$$.loadingArea).collapse('hide');
                                     eA.collapse('show');
@@ -130,14 +138,13 @@ module.exports = function (Vue) {
                 renderErrors: function (jsonErrors) {
                     var instance = this;
                     $.each(jsonErrors, function (fieldName, error) {
-                        var field = $(instance.$$.iform).find('[name="' + fieldName + '"]')[0];
+                        var field = $(instance.$$.iform).find('[for="' + fieldName + '"]')[0];
                         var parent = $(field).closest('.form-group')[0];
                         $(parent).addClass('has-error');
                         var errorBlock = $(parent).find(".help-block");
                         $(errorBlock).text(error[0]);
                     });
-                }
-                ,
+                },
                 cleanupErrors: function () {
                     var formGroups = $(this.$$.iform).find(".form-group.has-error");
                     $.each(formGroups, function (index, group) {
@@ -147,9 +154,10 @@ module.exports = function (Vue) {
                 }
                 ,
                 successFunction: function (data) {
-                    console.log('Default Success Function Called.');
-                }
-                ,
+                    $(this.$$.loadingArea).collapse('hide');
+                    $(this.$$.successArea).collapse({'toggle':false});
+                    $(this.$$.successArea).collapse('show');
+                },
                 minimizeToIDs: function (collection) {
                     var result = [];
                     if ($.isArray(collection)) {
@@ -158,8 +166,10 @@ module.exports = function (Vue) {
                         }
                     }
                     return result;
-                }
-                ,
+                },
+                clearForm: function(){
+                  this.form = {};
+                },
                 startOver: function () {
                     this.clearForm();
                     $(this.$$.loadingArea).collapse('hide');
@@ -173,19 +183,26 @@ module.exports = function (Vue) {
                         instance.clearForm();
                     }
                 },
+                fillForm: function(data){
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key) && this.form[key] !== undefined) {
+                            this.form[key] = data[key];
+                        }
+                    }
+                }
             },
             ready: function () {
                 var that = this;
-                window.onbeforeunload = function () {
-                    if (that.form) {
-                        localStorage.setItem(window.location.href + '|form', JSON.stringify(that.form));
-                    }
-                };
-                var formData = localStorage.getItem(window.location.href + "|form");
-                if (formData && formData != null) {
-                    formData = JSON.parse(formData);
-                    this.form = formData;
-                }
+                //window.onbeforeunload = function () {
+                //    if (that.form) {
+                //        localStorage.setItem(window.location.href + '|form', JSON.stringify(that.form));
+                //    }
+                //};
+                //var formData = localStorage.getItem(window.location.href + "|form");
+                //if (formData && formData != null) {
+                //    formData = JSON.parse(formData);
+                //    this.form = formData;
+                //}
                 //this.setupDebug();
                 this.setupLoading();
                 this.register();

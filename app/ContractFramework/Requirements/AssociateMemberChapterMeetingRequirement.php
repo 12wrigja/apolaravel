@@ -8,10 +8,10 @@
 
 namespace APOSite\ContractFramework\Requirements;
 
-class AssociateMemberChapterMeetingRequirement extends Requirement
+class AssociateMemberChapterMeetingRequirement extends MeetingBasedRequirement
 {
     public static $name = "Chapter Meetings";
-    public static $description = "As an Associate APO Brother, this requirement is here to keep track of the number of chapter meetings you attend each semester. After you have attended 4, you count for quorum.";
+    public static $description = null;
 
     protected $threshold = 0;
     protected $comparison = 'GEQ';
@@ -48,11 +48,6 @@ class AssociateMemberChapterMeetingRequirement extends Requirement
     {
         $reports = $this->getReports($this->semester);
         return $reports->count();
-    }
-
-    public function getDetails()
-    {
-        return view('reports.meetinglist')->with('reports', $this->getReports());
     }
 
 }

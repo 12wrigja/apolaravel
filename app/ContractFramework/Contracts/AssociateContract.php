@@ -26,4 +26,22 @@ class AssociateContract extends Contract
             AssociateMemberChapterMeetingRequirement::class
         ];
     }
+
+    public static function getOtherSigningRequirements()
+    {
+        return [
+            'Must have been initiated into the brotherhood.',
+            'Must have requested associate membership status and been approved by the Executive Committee.',
+            'Will be permitted to hold office or vote in the next chapter general elections if they have attended at least Four regular chapter meetings during the previous chapter semester and pass membership review (see Section 13), or if they, with approval of the executive committee, have completed a minimum of twenty service hours, serve on one committee and have passed membership review (see Section 13).',
+            'Will have voice but no voting privileges.'
+        ];
+    }
+
+
+    public static function getSigningView()
+    {
+        return view('contracts.signingpartials.active');
+    }
+
+
 }

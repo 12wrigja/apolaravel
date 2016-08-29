@@ -16,7 +16,7 @@ $.ajaxSetup({
         'Content-Type': 'application/json'
     }
 });
-require('Select2');
+require('select2');
 //Setup Vue and Vue Resource
 var Vue = require('vue');
 Vue.config.debug = true;
@@ -34,6 +34,9 @@ Vue.transition('collapse', {
 Vue.filter('not', function (value) {
     return !value;
 });
+
+require('summernote');
+var vuehtmleditor = require("vue-html-editor");
 
 var Resources = function () {
 
@@ -83,6 +86,23 @@ var Resources = function () {
                     if ($.trim(params.term) === '') {
                         return brother;
                     }
+                    if(params.term === brother.id){
+                        return brother;
+                    }
+                    return Resources.matchBrother(brother,params.term);
+                }
+            }
+        },
+        select2singlesettings: function(data,formatFn){
+            return {
+                data: data,
+                allowClear: true,
+                placeholder: "Select a Brother",
+                matcher: function (params, brother) {
+                    // If there are no search terms, return all of the data
+                    if ($.trim(params.term) === '') {
+                        return brother;
+                    }
                     return Resources.matchBrother(brother,params.term);
                 }
             }
@@ -91,29 +111,22 @@ var Resources = function () {
             var split = query.toLowerCase().split(' ');
             var first_name = brother.first_name.toLowerCase();
             var last_name = brother.last_name.toLowerCase();
-            var nick_name = '';
-            if(brother.nickname !== undefined){
-                nick_name = brother.nickname.toLowerCase();
-            }
-
-            if (split.length > 1) {
-                //Check the following supported formats:
-                // firstname lastname
-                // nickname lastname
-                if (first_name.indexOf(split[0]) > -1 && last_name.indexOf(split[1]) > -1) {
-                    return brother;
-                } else if (brother.nickname !== undefined && nick_name.indexOf(split[0]) > -1 && last_name.indexOf(split[1]) > -1) {
-                    return brother;
-                } else {
-                    return null;
+            var nick_name = ('nickname' in brother)?brother.nickname:'';
+            var full_name = first_name+' '+((nick_name !== '')?nick_name+' ':'')+last_name;
+            var lastIndex = -1;
+            var match = true;
+            for(var i = 0; i<split.length; i++){
+                if(split[i] === ''){
+                    continue;
                 }
+                var index = full_name.indexOf(split[i]);
+                if(index < 0 || index <= lastIndex){
+                    match = false;
+                    break;
+                }
+                lastIndex = index+split[i].length;
             }
-            //see if the term partially matches the first or last name
-            if (first_name.indexOf(split[0]) > -1) {
-                return brother;
-            } else if (last_name.indexOf(split[0]) > -1) {
-                return brother;
-            } else if (brother.nickname !== undefined && nick_name.indexOf(split[0]) > -1) {
+            if(match){
                 return brother;
             } else {
                 return null;
@@ -139,8 +152,16 @@ var main = new Vue({
         'piechart': require('./components/graphwidgets/piechart.js')(Resources),
         'user-search-view': require('./views/users/search.js')(Resources),
         'brother-selector' : require('./components/forms/brother-selector.js')(Resources),
+        'single-brother-selector' : require('./components/forms/single-brother-selector.js')(Resources),
         'contract-manager' : require('./views/contracts/manage.js')(Resources),
-        'contract-signer' : require('./views/contracts/signer.js')(Resources)
+        'contract-signer' : require('./views/contracts/signer.js')(Resources),
+        'vue-html-editor' : vuehtmleditor,
+        'manage_chapter_meetings_form': require('./views/reports/chaptermeetings/manage.js')(Resources),
+        'manage_exec_meetings_form': require('./views/reports/execmeetings/manage.js')(Resources),
+        'manage_pledge_meetings_form': require('./views/reports/pledgemeetings/manage.js')(Resources),
+        'user-profile-editor' : require('./views/users/profile-editor.js')(Resources),
+        'user-create-form' : require('./views/users/create.js')(Resources),
+        'pledge-manager' : require('./views/users/pledge-manager.js')(Resources)
     },
 
     filters: {

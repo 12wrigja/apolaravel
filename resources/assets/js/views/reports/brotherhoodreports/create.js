@@ -40,7 +40,7 @@ module.exports = function (Resources) {
                 })
             },
             getForm: function () {
-                var newForm = Resources.Vue.util.extend({}, this.form);
+                var newForm = JSON.parse(JSON.stringify(this.form))
                 return newForm;
             },
             formatBrother: function(brother){

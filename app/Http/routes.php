@@ -8,7 +8,7 @@ Route::pattern('type', '[a-z][a-z_]*');
 //ID pattern for matching against a resource id. Must be a number.
 Route::pattern('id', '[0-9]+');
 //CWRU ID pattern for matching against CWRU ID's
-Route::pattern('cwruid', '[a-z]{3}[0-9]*');
+Route::pattern('cwruid', '[a-z]+[0-9]*');
 
 //Routes for reports
 Route::post('/reports/{type}', ['uses' => 'EventPipelineController@submitEvent', 'as' => 'report_store']);
@@ -30,64 +30,38 @@ Route::delete('/reports/{type}/{id}', ['uses' => 'EventPipelineController@delete
 
 //Routes for the officer pages
 Route::get('officers', ['uses'=>'Officers\OfficerPageController@index','as'=>'officers']);
-Route::get('faq',['as'=>'faq',function(){
-    return view('faq');
-}]);
 Route::get('statistics',['uses'=>'ChapterStatisticsController@chapterStatistics','as'=>'chapterstatistics']);
+
+//Routes for External Tools used by APO
 Route::get('calendar',['as'=>'calendar',function(){
     return view('tools.calendar');
 }]);
+Route::get('drive',['middleware'=>'SSOAuth',function(){
+  return redirect()->away('https://drive.google.com/open?id=0BzPifk8kXJfHOHVYR2szVzJ6dXM');
+}]);
 
-//Routes for managing the users of the users, including creating and storing users.
-//Route::get('/users/create', 'UserController@create');
-//Route::post('/users', 'UserController@store');
-Route::delete('/users/{cwruid}', 'UserController@destroy');
-//TODO fix up or verify user management and user search
-//Route::get('/users/manage', 'UserController@manage');
-
-//Route for searching users.
-//Route::get('/users/search', array('uses' => 'UserController@search', 'as' => 'user_search'));
-
-//Routes for displaying all users and individual user profiles
-Route::get('/users', ['uses'=>'UserController@index','as'=>'users']);
-Route::get('/users/{cwruid}', ['uses'=>'UserController@show','as'=>'user_show']);
-
-//Routes for allowing users to update their profiles.
 //TODO fix up the user editing system
+Route::get('/users', ['uses'=>'UserController@index','as'=>'users']);
+Route::post('/users',['uses'=>'UserController@store','as'=>'user_store']);
+Route::get('/users/create',['uses'=>'UserController@create','as'=>'user_create']);
 Route::get('/users/{cwruid}/edit', ['uses'=>'UserController@edit','as'=>'user_edit']);
 Route::get('/users/{cwruid}/status', ['uses'=>'UserController@statusPage','as'=>'user_status']);
+Route::get('/users/{cwruid}', ['uses'=>'UserController@show','as'=>'user_show']);
+Route::delete('/users/{cwruid}', 'UserController@destroy');
 Route::put('/users/{cwruid}', ['uses'=>'UserController@update','as'=>'user_update']);
+Route::get('/manage/users',['uses'=>'UserController@manage','as'=>'user_manage']);
 
-Route::get('contracts/progress',['uses'=>'ChapterStatisticsController@contractStatusPage','as'=>'contract_progress']);
-
+//Document viewing.
 Route::get('documents',['uses'=>'DocumentController@index','as'=>'document_list']);
 Route::get('documents/{office}/{filename}',['uses'=>'DocumentController@getOfficeDocument','as'=>'retrieve_office_document']);
 Route::get('documents/{filename}',['uses'=>'DocumentController@getDocument','as'=>'retrieve_document']);
 
-//TODO clean up routing system for contract and requirement data, along w/ models
-//All routes regarding contracts and contract requirements are commented out for the time being as they have not been refactored correctly.
+//Contract and management related routes
+Route::get('contracts/progress',['uses'=>'ChapterStatisticsController@contractStatusPage','as'=>'contract_progress']);
 Route::get('manage/contracts',['uses'=>'ContractController@manage','as'=>'contract_manage']);
 Route::get('contracts',['as'=>'sign_contract','uses'=>'ContractController@index']);
 Route::post('contracts',['uses'=>'ContractController@modifyContract','as'=>'contract_store']);
 Route::post('contracts/change',['as'=>'changeContractSigning','uses'=>'ContractController@changeContractSigning']);
-//Route::get('contracts', ['uses' => 'ContractController@index', 'as' => 'contract_view']);
-//Route::get('contracts/create', ['uses' => 'ContractController@create', 'as' => 'contract_create']);
-//Route::post('contracts', ['uses' => 'ContractController@store', 'as' => 'contract_store']);
-//Route::get('contracts/{id}/edit', ['uses' => 'ContractController@edit', 'as' => 'contract_edit']);
-//Route::put('contracts/{id}', ['uses' => 'ContractController@update', 'as' => 'contract_update']);
-//Route::delete('contracts/{id}', ['uses' => 'ContractController@destroy', 'as' => 'contract_delete']);
-//Route::get('contracts/{id}/', 'ContractController@show')->where('id', '[0-9]+');
-//
-////Route group for Contract Requirements
-//Route::get('contractreqs', ['uses' => 'ContractRequirementController@index', 'as' => 'contractreq_view']);
-//Route::get('contractreqs/create', ['uses' => 'ContractRequirementController@create', 'as' => 'contractreq_create']);
-//Route::post('contractreqs', ['uses' => 'ContractRequirementController@store', 'as' => 'contractreq_store']);
-//Route::get('contractreqs/{id}/edit', ['uses' => 'ContractRequirementController@edit', 'as' => 'contractreq_edit']);
-//Route::put('contractreqs/{id}', ['uses' => 'ContractRequirementController@update', 'as' => 'contractreq_update'])->where('id', '[0-9]+');
-//Route::delete('contractreqs/{id}', ['uses' => 'ContractRequirementController@destroy', 'as' => 'contractreq_delete'])->where('id', '[0-9]+');
-//Route::get('contractreqs/{id}/', 'ContractRequirementController@show')->where('id', '[0-9]+');
-//Route::get('contractreqs', ['uses' => 'ContractRequirementController@index', 'as' => 'contractreq_view']);
-//Route::post('contractreqs', ['uses' => 'ContractRequirementController@store', 'as' => 'contractreq_store']);
 
 Route::post('email',function(\APOSite\Http\Requests\SendEmailRequest $request){
     $user = APOSite\Models\Users\User::find($request->get('to'));
@@ -97,6 +71,16 @@ Route::post('email',function(\APOSite\Http\Requests\SendEmailRequest $request){
         $message->to($userId.'@case.edu',$userFullName)->subject('Test Message');
     });
 });
+
+Route::get('/grilledcheese',['uses'=>'GrilledCheeseController@showOrderPage','as'=>'gs']);
+Route::get('/grilledcheese/manage','GrilledCheeseController@showManagementPage');
+Route::get('/grilledcheese/*',function(){
+    return redirect()->route('gs');
+});
+
+Route::get('/marchformarfan',['as'=>'m4m',function(){
+   return view('marchformarfan.index');
+}]);
 
 //Route for the homepage
 Route::get('/', array(
@@ -133,7 +117,6 @@ Route::get('login', array(
         } else {
             return Redirect::route('home');
         }
-
     }
 ));
 

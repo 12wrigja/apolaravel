@@ -8,7 +8,8 @@ module.exports = function (Resources) {
                     brothers: [],
                     display_name: '',
                     description: '',
-                    event_date: ''
+                    event_date: '',
+                    minutes: ''
                 },
                 users : []
             }
@@ -37,7 +38,7 @@ module.exports = function (Resources) {
                 })
             },
             getForm: function () {
-                var newForm = Resources.Vue.util.extend({}, this.form);
+                var newForm = JSON.parse(JSON.stringify(this.form))
                 newForm.display_name = "Exec Board Meeting " + newForm.event_date;
                 return newForm;
             },

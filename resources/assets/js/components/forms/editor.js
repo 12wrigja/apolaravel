@@ -1,8 +1,21 @@
 module.exports = function (Resources) {
 
     return Resources.form.extend({
-
+        props: {
+          formTemplate : {
+              required: false,
+              type: Function
+          }
+        },
         data: function () {
+            if(this.formTemplate !== undefined){
+                return {
+                    form: this.formTemplate(),
+                    users : [],
+                    report: [],
+                    method:'PUT'
+                }
+            }
             return {
                 form: {
                     id: -1,
@@ -11,7 +24,8 @@ module.exports = function (Resources) {
                     description: '',
                     event_date: '',
                     type: '',
-                    location: ''
+                    location: '',
+                    big: ''
                 },
                 users : [],
                 report: [],
@@ -50,8 +64,7 @@ module.exports = function (Resources) {
               return this.form.id;
             },
             getForm: function () {
-                var newForm = Resources.Vue.util.extend({}, this.form);
-                return newForm;
+                return JSON.parse(JSON.stringify(this.form));
             },
             formatBrother: function(brother){
                 if(brother.nickname !== null && brother.nickname !== undefined){
@@ -102,6 +115,14 @@ module.exports = function (Resources) {
         filters: {
             isFalse: function (val) {
                 return val === '0';
+            }
+        },
+        compile: function(){
+            if(this.formTemplate !== undefined){
+                console.log("Retrieving Form Template!");
+                var template = this.formTemplate();
+                this.$log(template);
+                this.form = template;
             }
         },
         ready: function () {

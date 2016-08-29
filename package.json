@@ -4,12 +4,14 @@
     "laravel-elixir": "*"
   },
   "dependencies": {
-    "Select2": "git+https://github.com/select2/select2.git",
     "bootstrap": "^3.3.5",
     "dropzone": "^4.2.0",
     "jquery": "^2.1.4",
     "jquery.mousewheel": "^3.1.9",
+    "select2": "^4.0.1",
+    "summernote": "^0.7.3",
     "vue": "^0.12.0",
+    "vue-html-editor": "git+https://github.com/12wrigja/vue-html-editor.git",
     "vue-resource": "^0.1.3"
   }
 }

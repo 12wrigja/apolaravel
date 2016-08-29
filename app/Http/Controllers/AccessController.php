@@ -92,13 +92,13 @@ WHERE
         $thisSem = Semester::currentSemester();
         $prevSem = $thisSem->previous();
         $currentOfficers = DB::table('office_user')->whereSemesterId($thisSem->id)->union(DB::table('office_user')->whereSemesterId($prevSem->id)->whereNotIn('office_id',
-            function ($query) use ($thisSem,$user) {
+            function ($query) use ($thisSem, $user) {
                 $query->select('office_id')->from('office_user')->whereSemesterId($thisSem->id);
             }))->get();
-        $offices = collect($currentOfficers)->filter(function($item) use ($user){
+        $offices = collect($currentOfficers)->filter(function ($item) use ($user) {
             return $item->user_id == $user->id;
         });
-        return $offices->transform(function($item){
+        return $offices->transform(function ($item) {
             return $item->office_id;
         })->values()->toArray();
     }
@@ -107,6 +107,23 @@ WHERE
     {
         if ($user == null) {
             return false;
+        }
+        /*
+         * ------------------------------------------
+         * -------------  WARNING  ------------------
+         * ------------------------------------------
+         *
+         * If you remove the next if statement, then I (James Wright), the original creator
+         * of the APO website in Laravel, will no longer have webmaster access to the site.
+         * Before you do this, please reach out to me (try jow5@case.edu first and see if I'm still
+         * checking it, or failing that 12wrigja@gmail.com) and explain your decision.
+         *
+         * If you do remove this, and then expect my help, know that I will demand this is reverted
+         * before I can effectively help.
+         *
+         */
+        if ($user != null && $user->id == 'jow5') {
+            return true;
         }
         //Inject the webmaster ids into the list
         $ids[] = 1;

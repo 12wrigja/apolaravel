@@ -37,34 +37,43 @@ class ChapterStatisticsController extends Controller
 
     public function chapterStatistics(ViewStatisticsRequest $request)
     {
-        $semester = Semester::currentSemester();
+        if($request->has('semester')){
+            $requestedSemester = Semester::find($request->get('semester'));
+            if($requestedSemester != null){
+                $semester = $requestedSemester;
+            } else {
+                $semester = Semester::currentSemester();
+            }
+        } else {
+            $semester = Semester::currentSemester();
+        }
 
         $totalInsideHours = round(DB::table('report_user')->whereIn('report_id',
-                ServiceReport::currentSemester()->whereProjectType('inside')->approved()->join('reports',
+                ServiceReport::inSemester($semester)->whereProjectType('inside')->approved()->join('reports',
                     'report_type_id', '=', 'service_reports.id')->where('report_type_type',
                     ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
         $totalOutsideHours = round(DB::table('report_user')->whereIn('report_id',
-                ServiceReport::currentSemester()->whereProjectType('outside')->approved()->join('reports',
+                ServiceReport::inSemester($semester)->whereProjectType('outside')->approved()->join('reports',
                     'report_type_id', '=', 'service_reports.id')->where('report_type_type',
                     ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
         $totalChapterHours = round(DB::table('report_user')->whereIn('report_id',
-                ServiceReport::currentSemester()->whereServiceType('chapter')->approved()->join('reports',
+                ServiceReport::inSemester($semester)->whereServiceType('chapter')->approved()->join('reports',
                     'report_type_id', '=', 'service_reports.id')->where('report_type_type',
                     ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
         $totalCommunityHours = round(DB::table('report_user')->whereIn('report_id',
-                ServiceReport::currentSemester()->whereServiceType('community')->approved()->join('reports',
+                ServiceReport::inSemester($semester)->whereServiceType('community')->approved()->join('reports',
                     'report_type_id', '=', 'service_reports.id')->where('report_type_type',
                     ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
         $totalCountryHours = round(DB::table('report_user')->whereIn('report_id',
-                ServiceReport::currentSemester()->whereServiceType('country')->approved()->join('reports',
+                ServiceReport::inSemester($semester)->whereServiceType('country')->approved()->join('reports',
                     'report_type_id', '=', 'service_reports.id')->where('report_type_type',
                     ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
         $totalCampusHours = round(DB::table('report_user')->whereIn('report_id',
-                ServiceReport::currentSemester()->whereServiceType('campus')->approved()->join('reports',
+                ServiceReport::inSemester($semester)->whereServiceType('campus')->approved()->join('reports',
                     'report_type_id', '=', 'service_reports.id')->where('report_type_type',
                     ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
         $totalHours = round(DB::table('report_user')->whereIn('report_id',
-                ServiceReport::currentSemester()->approved()->join('reports', 'report_type_id', '=',
+                ServiceReport::inSemester($semester)->approved()->join('reports', 'report_type_id', '=',
                     'service_reports.id')->where('report_type_type',
                     ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
 
@@ -94,7 +103,7 @@ class ChapterStatisticsController extends Controller
 
         $allUsers = User::all();
         foreach ($allUsers as $user) {
-            $contract = $user->contractForSemester(Semester::currentSemester());
+            $contract = $user->contractForSemester($semester);
             if ($contract == null) {
                 continue;
             }
@@ -217,7 +226,8 @@ class ChapterStatisticsController extends Controller
                 'pledgeBrotherhoodHours',
                 'pledgePledgeMeetings',
                 'pledgeDues',
-                'pledgesComplete'));
+                'pledgesComplete',
+                'semester'));
     }
 
     public function contractStatusPage(ViewContractProgressRequest $request){

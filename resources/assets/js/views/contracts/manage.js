@@ -34,6 +34,10 @@ module.exports = function (Resources) {
                                 {
                                     text: "Adviser",
                                     value: "Adviser"
+                                },
+                                {
+                                    text: "Inactive",
+                                    value: "Inactive"
                                 }
                             ]
                         }
@@ -44,7 +48,7 @@ module.exports = function (Resources) {
         methods: {
             getForm: function () {
                 var newForm = {};
-                newForm.brothers = Resources.Vue.util.extend({}, this.brothers);
+                newForm.brothers = JSON.parse(JSON.stringify(this.brothers))
                 return newForm;
             },
             successFunction: function (data) {

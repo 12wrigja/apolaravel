@@ -7,7 +7,7 @@ module.exports = function (Resources) {
                 form: {
                     brothers: [],
                     display_name: '',
-                    description: '',
+                    minutes: '',
                     event_date: ''
                 },
                 users : []
@@ -37,7 +37,7 @@ module.exports = function (Resources) {
                 })
             },
             getForm: function () {
-                var newForm = Resources.Vue.util.extend({}, this.form);
+                var newForm = JSON.parse(JSON.stringify(this.form))
                 newForm.display_name = "Chapter Meeting " + newForm.event_date;
                 return newForm;
             },
@@ -74,7 +74,7 @@ module.exports = function (Resources) {
                 this.form = {
                     brothers: [],
                     display_name: '',
-                    description: '',
+                    minutes: '',
                     event_date: ''
                 };
             }

@@ -2,13 +2,36 @@
 
 namespace APOSite\Http\Requests\Users;
 
-use APOSite\Http\Requests\Request;
-use APOSite\Models\Users\User;
-use APOSite\Http\Controllers\LoginController;
 use APOSite\Http\Controllers\AccessController;
+use APOSite\Http\Controllers\LoginController;
+use Illuminate\Validation\Factory as ValidationFactory;
+use APOSite\Models\Users\User;
+use APOSite\Http\Requests\Request;
 
 class UserEditRequest extends Request
 {
+
+    /**
+     * ContractModifyRequest constructor.
+     */
+    public function __construct(ValidationFactory $validationFactory)
+    {
+        $validationFactory->extend('semester', function ($attribute, $value, $parameters, $validator) {
+            if (is_array($value) && array_key_exists('semester', $value) && array_key_exists('year', $value)) {
+                $year = $value['year'];
+                $semester = $value['semester'];
+                $semesters = ['fall', 'spring'];
+                if (is_numeric($year) && in_array($semester, $semesters)) {
+                    return true;
+                }
+            } else if ($value == 'current'){
+                return true;
+            }
+            return false;
+        },
+            ":attribute is not a valid semester");
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -17,9 +40,7 @@ class UserEditRequest extends Request
     public function authorize()
     {
         $pageUser = User::find($this->route('cwruid'));
-        if ($pageUser->id == LoginController::currentUser()->id) {
-            return true;
-        } elseif (AccessController::isMembership(LoginController::currentUser())) {
+        if (($pageUser->id == LoginController::currentUser()->id) || AccessController::isWebmaster(LoginController::currentUser())) {
             return true;
         } elseif ($pageUser->isPledge() && AccessController::isPledgeEducator(LoginController::currentUser())) {
             return true;
@@ -36,10 +57,12 @@ class UserEditRequest extends Request
     public function rules()
     {
         return [
-            'semester'=>'sometimes|required|in:fall,spring',
-            'year'=>'sometimes|required|integer|min:1000',
-            'email'=>'sometimes|email',
-            'phone_number'=>'sometimes|numeric'
+            'email' => 'sometimes|required|email',
+            'pledge_semester' => 'sometimes|required|semester',
+            'initiation_semester' => 'sometimes|required|semester',
+            'graduation_semester' => 'sometimes|required|semester',
+            'family_id' => 'sometimes|required|exists:families,id',
+            'big' => 'sometimes|required|exists:users,id'
         ];
     }
 }

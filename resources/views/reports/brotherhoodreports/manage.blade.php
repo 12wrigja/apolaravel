@@ -15,7 +15,7 @@
         <div class="tab-content">
             <div id="newReports" class="tab-pane fade in active">
                 <div v-show="reports.data | empty">
-                    <h4>There are no new service reports to display at this time!</h4>
+                    <h4>There are no new brotherhood reports to display at this time!</h4>
                 </div>
                 <div v-repeat="report : reports.data">
                     <div class="panel panel-default">
@@ -49,7 +49,7 @@
             </div>
             <div id="approvedReports" class="tab-pane fade">
                 <div v-show="approved.data | empty">
-                    <h4>There are no approved service reports to display at this time!</h4>
+                    <h4>There are no approved brotherhood reports to display at this time!</h4>
                 </div>
                 <div v-repeat="report : approved.data">
                     <div class="panel panel-default">

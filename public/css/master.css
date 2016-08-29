@@ -12,10 +12,20 @@ body {
     }
 }
 
-.modal-wide {
-    width: 850px;
+@media (min-width:768px){
+    .modal-wide {
+        min-width: 600px;
+        max-width: 850px;
+        width: auto;
+    }
 }
 
 [v-cloak] {
     display: none;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 500px;
+    overflow-x: hidden;
 }

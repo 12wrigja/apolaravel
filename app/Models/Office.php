@@ -30,9 +30,16 @@ class Office extends Model
         return $this->belongsToMany('APOSite\Models\Users\User')->withPivot('semester_id', 'alt_text');
     }
 
-    public function currentOfficer()
+    public function currentOfficers()
     {
-        return $this->users()->orderBy('semester_id','DESC')->first();
+        $semester = Semester::currentSemester();
+        $thisSemOfficers = $this->users()->whereSemesterId($semester->id)->get();
+        if($thisSemOfficers->count() == 0){
+            $prevSemOfficers = $this->users()->whereSemesterId($semester->previous()->id)->get();
+            return $prevSemOfficers;
+        } else {
+            return $thisSemOfficers;
+        }
     }
 
     public function scopeAllInOrder($query){

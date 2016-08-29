@@ -10,7 +10,7 @@ namespace APOSite\ContractFramework\Requirements;
 
 use APOSite\Models\Semester;
 
-class PledgeMemberDuesRequirement extends Requirement
+class PledgeMemberDuesRequirement extends DuesBaseRequirement
 {
     public static $name = "Dues";
     public static $description = "As an APO Pledge, you are required to pay dues for the semester.";
@@ -37,9 +37,5 @@ class PledgeMemberDuesRequirement extends Requirement
         } else {
             return $reports->last()->pivot->value;
         }
-    }
-
-    public function getDetails(){
-        return view('reports.duesreports.dueseventlist')->with('reports',$this->getReports())->with('user',$this->user);
     }
 }

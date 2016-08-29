@@ -21,7 +21,10 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet"/>
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
-    {!!Html::style('css/bootstrap-theme.min.css')!!}
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet">
+    {!!Html::style('css/summernote.css')!!}
+    {!!Html::style('css/bootstrap_flatly.min.css')!!}
     {!! Html::style('css/master.css') !!}
     {!! Html::style('css/mobile-master.css') !!}
     {!! Html::style('css/dropzone.css') !!}
@@ -50,9 +53,8 @@
                 @else
                     <li class="dropdown pull-right">
 
-                        <a href="{!! route('login',['redirect_url'=>Request::url()]) !!}" style="color:#777; margin-top: 5px;"
-                           class="dropdown-toggle"><span
-                                    class="glyphicon glyphicon-user"></span><b> Login</b></a>
+                        <a href="{!! route('login',['redirect_url'=>Request::url()]) !!}"
+                           class="dropdown-toggle">Login</a>
                     </li>
                 @endif
             </ul>

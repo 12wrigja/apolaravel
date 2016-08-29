@@ -8,10 +8,10 @@
 
 namespace APOSite\ContractFramework\Requirements;
 
-class ActiveMemberPledgeMeetingRequirement extends Requirement
+class ActiveMemberPledgeMeetingRequirement extends MeetingBasedRequirement
 {
     public static $name = "Pledge Meetings";
-    public static $description = "As an Active APO Brother, you have to to attend at least 1 pledge meetings each semester.";
+    public static $description = "Will attend at least one pledge meeting each chapter semester, unless excused by the Executive Committee.";
 
     protected $threshold = 1;
     protected $comparison = 'GEQ';
@@ -50,7 +50,4 @@ class ActiveMemberPledgeMeetingRequirement extends Requirement
         return $reports->count();
     }
 
-    public function getDetails(){
-        return view('reports.meetinglist')->with('reports',$this->getReports());
-    }
 }

@@ -1,5 +1,6 @@
 <?php namespace APOSite\Http\Controllers;
 
+use APOSite\Http\Requests\Users\UserCreateRequest;
 use APOSite\Http\Requests\Users\UserDeleteRequest;
 use APOSite\Http\Requests\Users\UserEditRequest;
 use APOSite\Http\Requests\Users\UserPersonalPageRequest;
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
-use PhpSpec\Exception\Exception;
+use League\Fractal\Resource\Item;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
@@ -33,39 +35,26 @@ class UserController extends Controller
     public function index()
     {
         if (Request::wantsJson()) {
+            //Find users from query
             $users = null;
-            if (Request::has('search') && Request::get('search')) {
-                //Handle a search here.
-                $query = Request::get('query');
-                if ($query == null) {
-                    $query = '';
-                }
-                $users = $this->searchUsers($query);
-            } else {
-                $users = $this->searchUsers("");
-            }
-            try {
 
+            $searchKeys = Input::except('attrs');
+            $users = User::MatchAllAttributes($searchKeys);
+
+            //Add in attributes to the results
+            $instance = new User;
+            $baseAttributes = $instance->getValidSearchAttributeKeys($searchKeys);
+            try {
                 $attributes = Input::get('attrs');
                 if ($attributes == null) {
-                    $users = $users->get();
-                    $attributes = [];
+                    $attributes = $baseAttributes;
                 } else {
                     $attributes = explode(',', $attributes);
-                    foreach ($attributes as $attribute) {
-                        $sanitiedAttributeName = str_replace('_', '', ucwords($attribute));
-                        $methodNam = 'scopeInclude' . $sanitiedAttributeName;
-                        if (method_exists(new User(), $methodNam)) {
-                            $users = $users->{'Include' . $sanitiedAttributeName}();
-                        } else {
-                            $users = $users->addSelect($sanitiedAttributeName);
-                        }
-                    }
-                    $users = $users->get();
+                    $instance->validateAttributes($attributes);
+                    $attributes = array_merge($attributes, $baseAttributes);
                 }
-            } catch (Exception $e) {
-                return Response::json(['message' => 'Unable to process your request. Please check your attribute names and try again.'],
-                    422);
+            } catch (HTTPException $e) {
+                return response()->json(['error' => $e->getMessage()], $e->getStatusCode());
             }
             $transformer = new UserSearchResultTransformer($attributes);
             $resource = new Collection($users, $transformer);
@@ -81,9 +70,9 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function manage()
     {
-        return View::make('users.create');
+        return view('users.pledge_management');
     }
 
     /**
@@ -91,29 +80,26 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(UserCreateRequest $request)
     {
-        $rules = array(
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'cwruID' => 'required|unique:tblmembers',
-            'status' => 'required|numeric'
-        );
-        $messages = array(
-            'cwruID.unique' => 'The :attribute is already registered.'
-        );
-        $validator = Validator::make(Input::all(), $rules, $messages);
-        if ($validator->fails()) {
-            return Redirect::to('users/create')->withErrors($validator)->withInput(Input::except('password'));
+        $user = new User();
+        $user->first_name = $request->get('first_name');
+        $user->last_name = $request->get('last_name');
+        $user->id = $request->get('cwru_id');
+        $user->pledge_semester = Semester::currentSemester()->id;
+        
+        if ($user->save()) {
+            //This is super shitty and shouldn't need to be done.
+            $user = User::find($request->get('cwru_id'));
+            if ($user->changeContract('Pledge')) {
+                return response()->json(['status' => 'OK']);
+            } else {
+                abort(500, 'Unable to set contract of new user.');
+            }
         } else {
-            $user = new User();
-            $user->firstName = Input::get('firstName');
-            $user->lastName = Input::get('lastName');
-            $user->cwruID = Input::get('cwruID');
-            $user->status = Input::get('status');
-            $user->save();
-            return Redirect::to('users/mange')->with('message', 'Successfully created the user.');
+            abort(500, 'Unable to successfully create a new user.');
         }
+
     }
 
     /**
@@ -122,8 +108,10 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function show($id)
-    {
+    public
+    function show(
+        $id
+    ) {
         $user = User::find($id);
         if (Request::wantsJSON()) {
             if ($user != null) {
@@ -147,8 +135,11 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function edit(UserPersonalPageRequest $request, $id)
-    {
+    public
+    function edit(
+        UserPersonalPageRequest $request,
+        $id
+    ) {
         $user = User::find($id);
         if ($user != null) {
             return view('users.profileedit')->with('user', $user);
@@ -163,22 +154,37 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(UserEditRequest $request, $id)
-    {
+    public
+    function update(
+        UserEditRequest $request,
+        $id
+    ) {
         $user = User::find($id);
+        $currentUser = LoginController::currentUser();
         if ($user != null) {
-            $attributes = $request->except(['first_name', 'last_name', 'family_id', 'big']);
+            $attributes = $request->except(['id', 'created_at', 'updated_at']);
+            $pledgeEditOnly = ['family_id', 'big', 'pledge_semester', 'initiation_semester'];
+            $semesters = ['pledge_semester', 'graduation_semester', 'initiation_semester'];
             foreach ($attributes as $key => $value) {
+                if (!AccessController::isPledgeEducator($currentUser) && in_array($key, $pledgeEditOnly)) {
+                    abort(403, 'You are unable to modify the ' . $key . ' attribute.');
+                }
+                if (in_array($key, $semesters)) {
+                    if ($value == 'current') {
+                        $attributes[$key] = Semester::currentSemester()->id;
+                    } else {
+                        $attributes[$key] = Semester::SemesterFromText($value['semester'], $value['year'], true)->id;
+                    }
+                }
                 if ($value == "") {
                     $attributes[$key] = null;
                 }
             }
             $user->fill($attributes);
-            //Construct semester ID number from given info
-            $user->graduation_semester = Semester::SemesterFromText($request->get('semester'), $request->get('year'),
-                true)->id;
             $user->save();
-            return Redirect::route('user_show', ['id' => $user->id]);
+            $fractal = new Manager();
+            $item = new Item($user, new UserSearchResultTransformer([]));
+            return $fractal->createData($item)->toJson();
         } else {
             throw new NotFoundHttpException("User Not Found!");
         }
@@ -190,19 +196,27 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function destroy(UserDeleteRequest $request, $id)
-    {
+    public
+    function destroy(
+        UserDeleteRequest $request,
+        $id
+    ) {
         $user = User::find($id);
         if ($user != null) {
             User::destroy($id);
+            if ($request->wantsJson()) {
+                return response()->json(['status' => 'OK']);
+            }
             return Redirect::to('users/manage')->with('message', 'Successfully deleted the user.');
         } else {
             throw new NotFoundHttpException('User not found');
         }
     }
 
-    private function searchUsers($text)
-    {
+    private
+    function searchUsers(
+        $text
+    ) {
         if ($text != "") {
             $users = User::where('first_name', 'LIKE', $text . '%')->orWhere('last_name', 'LIKE',
                 $text . '%')->orWhere(DB::raw('CONCAT(first_name, " ", last_name)'), 'LIKE',
@@ -215,8 +229,11 @@ class UserController extends Controller
         return $users;
     }
 
-    public function statusPage(UserPersonalPageRequest $request, $id)
-    {
+    public
+    function statusPage(
+        UserPersonalPageRequest $request,
+        $id
+    ) {
         $user = User::find($id);
         if ($user != null) {
             return view('contracts.status')->with('contract', $user->contractForSemester(null))->with('user', $user);

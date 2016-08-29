@@ -20,12 +20,15 @@ abstract class Request extends FormRequest
      */
     public abstract function rules();
 
+    /**
+     * @return mixed
+     */
     public function forbiddenResponse()
     {
         if($this->wantsJson()){
-            return Request::json(['error'=>'403','message'=>'You are not authorized to do that action.']);
+            return response()->json(['error'=>'403','message'=>'You are not authorized to do that action.'],403);
         } else {
-            return Redirect::route('error_show',['id'=>403]);
+            return response()->view('errors.403');
         }
     }
 

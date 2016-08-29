@@ -18,7 +18,9 @@ class UserPersonalPageRequest extends Request
     public function authorize()
     {
         $pageUser = User::find($this->route('cwruid'));
-        if ($pageUser->id == LoginController::currentUser()->id) {
+        if($pageUser == null){
+            return true;
+        } else if ($pageUser->id == LoginController::currentUser()->id) {
             return true;
         } elseif (AccessController::isMembership(LoginController::currentUser())) {
             return true;
@@ -34,8 +36,7 @@ class UserPersonalPageRequest extends Request
      *
      * @return array
      */
-    public
-    function rules()
+    public function rules()
     {
         return [];
     }

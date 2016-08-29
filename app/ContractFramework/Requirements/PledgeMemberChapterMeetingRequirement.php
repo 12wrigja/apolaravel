@@ -8,7 +8,7 @@
 
 namespace APOSite\ContractFramework\Requirements;
 
-class PledgeMemberChapterMeetingRequirement extends Requirement
+class PledgeMemberChapterMeetingRequirement extends MeetingBasedRequirement
 {
     public static $name = "Chapter Meetings";
     public static $description = "As an APO Pledge, you have to to attend at least 2 chapter meetings this semester.";
@@ -50,7 +50,4 @@ class PledgeMemberChapterMeetingRequirement extends Requirement
         return $reports->count();
     }
 
-    public function getDetails(){
-        return view('reports.meetinglist')->with('reports',$this->getReports());
-    }
 }

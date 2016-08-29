@@ -30,4 +30,21 @@ class ActiveContract extends Contract
             BrotherhoodHoursRequirement::class
         ];
     }
+
+    public static function getOtherSigningRequirements() {
+        return [
+            'Must have been initiated into the brotherhood.',
+            'Will be active on at least one (1) standing committee each chapter semester.',
+            'Will have full voting privileges and ability to hold any elected or appointed office.',
+            'Will hold no more then one elected office at a time.',
+            'Must be in good academic standing as defined by the University.'
+        ];
+    }
+
+    public static function getSigningView()
+    {
+        return view('contracts.signingpartials.active');
+    }
+
+
 }
