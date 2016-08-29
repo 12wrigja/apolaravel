@@ -61,7 +61,7 @@ class UpdateDatabase extends Command
 		//Some error prevention here - check and make sure the path is valid.
 
 		$remoteFileName = $fileName;
-		$exportCommand = 'mysqldump -u '.env('DB_USERNAME',null).' -p'.env('DB_PASSWORD',null).' '.env('APO_SERVER_DATABASE',null).' > ' . $fileName;
+		$exportCommand = 'mysqldump -u '.env('APO_SERVER_DB_USERNAME',null).' -p'.env('APO_SERVER_DB_PASSWORD',null).' '.env('APO_SERVER_DATABASE',null).' > ' . $fileName;
 		$this->info('Exporting database on server...');
 		SSH::into('APO')->run([
 		    'cd '.$dumpLoc,
