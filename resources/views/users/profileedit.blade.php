@@ -4,7 +4,7 @@
     <div class="container">
         <h1>Editing Profile</h1>
         <a href="{{route('user_show',['id'=>$user->id])}}" class="btn btn-primary">Return to Profile (Don't Save)</a>
-        <user-profile-editor inline-template>
+        <user-profile-editor inline-template user_id="{{$user->id}}">
             {!!  Form::open(['route'=>['user_update','cwruid'=>$user->id],'role'=>'form','class'=>'form-horizontal collapse in','method'=>'PUT','v-el'=>'iform'])  !!}
             <h3 class="text-center">About You</h3>
 

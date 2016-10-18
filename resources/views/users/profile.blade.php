@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                <img src="{{$user->pictureURL()}}" class="ui image">
+                <img src="{{$user->pictureURL()}}" class="img-responsive profile-img">
             </div>
             <div class="col-sm-6">
                 <div>
