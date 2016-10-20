@@ -39,6 +39,9 @@ Route::get('calendar',['as'=>'calendar',function(){
 Route::get('drive',['middleware'=>'SSOAuth',function(){
   return redirect()->away('https://drive.google.com/open?id=0BzPifk8kXJfHOHVYR2szVzJ6dXM');
 }]);
+Route::get('rush',['as'=>'rush',function(){
+    return redirect()->away('http://us10.campaign-archive2.com/home/?u=5b2f75849cd559d84139bbab3&id=50120b9c97');
+}]);
 
 //TODO fix up the user editing system
 Route::get('/users', ['uses'=>'UserController@index','as'=>'users']);
