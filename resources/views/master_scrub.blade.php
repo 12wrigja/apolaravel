@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="google-site-verification" content="9r2l5dvlDlYAziJiMFjYdptQXaB1O5V4-m7RtLzR_Pk" />
+<meta name="google-site-verification" content="iNtgLefQhRIGdDa_1f_T1eyV3NAT7C5ENBGC90O08mg" />
     <!-- Standard Meta -->
     <meta charset="utf-8"/>
     <meta name="viewport"
