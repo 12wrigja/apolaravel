@@ -145,7 +145,7 @@
                 </div>
             </div>
 
-/*
+<!--
             <div class="row">
                 <div class="col-lg-4 col-lg-offset-2">
                     <h3>Online</h3>
@@ -186,7 +186,7 @@
                     </p>
                 </div>
             </div>
-*/
+-->
         </div>
     </section>
 
