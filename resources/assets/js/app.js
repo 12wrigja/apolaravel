@@ -131,7 +131,8 @@ var Resources = function () {
             } else {
                 return null;
             }
-        }
+        },
+        getFromMetadata: getFromMetadata
     }
 }();
 module.exports = Resources;
