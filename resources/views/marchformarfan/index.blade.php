@@ -73,7 +73,7 @@
             <div class="row">
                 <div class="col-lg-4 col-lg-offset-2">
                     <h3>When</h3>
-                    <p>The race is held on <strong>March 19th, 2016</strong>. Check-in is at <strong>9 AM</strong>, the
+                    <p>The race is held on <strong>March 26th, 2016</strong>. Check-in is at <strong>9 AM</strong>, the
                         race begins at <strong>10 AM</strong> and the walk begins at <strong>10:15 AM</strong>. The
                         event lasts until approximately <strong>12:30 PM</strong>. A light breakfast and lunch will be
                         provided.</p>
@@ -82,7 +82,7 @@
                         can
                         be found in the Lot 46 parking garage, behind the football field off of E 118th St. At the toll
                         booth for Lot 46, mention you are attending March for Marfan and your parking fee will be
-                        covered. For any concerns, please email Jessica Qian and Rachel Webb
+                        covered. For any concerns, please email Joseph Thiel
                         at {!!Html::mailTo('marchformarfan@apo.case.edu')!!}</p>
                 </div>
                 <div class="col-lg-4">
@@ -141,8 +141,11 @@
                 <div class="col-lg-12 text-center">
                     <h2>Registration</h2>
                     <hr class="star-light">
+                    <h3>Coming soon!</h3>
                 </div>
             </div>
+
+<!--
             <div class="row">
                 <div class="col-lg-4 col-lg-offset-2">
                     <h3>Online</h3>
@@ -183,6 +186,7 @@
                     </p>
                 </div>
             </div>
+-->
         </div>
     </section>
 
