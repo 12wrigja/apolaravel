@@ -42,6 +42,9 @@ Route::get('drive',['middleware'=>'SSOAuth',function(){
 Route::get('rush',['as'=>'rush',function(){
     return redirect()->away('http://us10.campaign-archive2.com/home/?u=5b2f75849cd559d84139bbab3&id=50120b9c97');
 }]);
+Route::get('talenttwist',['as'=>'talenttwist',function(){
+    return redirect()->away('http://www.facebook.com/events/535265626666670/');
+}]);
 
 //TODO fix up the user editing system
 Route::get('/users', ['uses'=>'UserController@index','as'=>'users']);
