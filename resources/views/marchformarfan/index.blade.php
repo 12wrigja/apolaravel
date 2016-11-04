@@ -141,7 +141,15 @@
                 <div class="col-lg-12 text-center">
                     <h2>Registration</h2>
                     <hr class="star-light">
-                    <h3>Coming soon!</h3>
+                    <div>
+                        <a href="{!!URL::to('images/uploads/Cleveland17_flyer-3.pdf')!!}">
+                    {!! HTML::image('images/uploads/Cleveland17_flyer-3.png')!!}
+                        </a>
+                    </div>
+                    <h3>
+                    {!! HTML::link('https://give.marfan.org/cleveland/events/2017-cleveland-walk-for-victory/e88347','Register
+                    here!') !!}
+                    </h3>
                 </div>
             </div>
 
