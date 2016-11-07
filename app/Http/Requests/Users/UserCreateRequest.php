@@ -4,7 +4,6 @@ namespace APOSite\Http\Requests\Users;
 
 use APOSite\Http\Controllers\AccessController;
 use APOSite\Http\Controllers\LoginController;
-
 use APOSite\Http\Requests\Request;
 
 class UserCreateRequest extends Request

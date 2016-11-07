@@ -95,7 +95,7 @@ WHERE
             function ($query) use ($thisSem, $user) {
                 $query->select('office_id')->from('office_user')->whereSemesterId($thisSem->id);
             }))->get();
-        $offices = collect($currentOfficers)->filter(function ($item) use ($user) {
+        $offices = $currentOfficers->filter(function ($item) use ($user) {
             return $item->user_id == $user->id;
         });
         return $offices->transform(function ($item) {

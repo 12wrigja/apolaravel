@@ -87,7 +87,7 @@ class UserController extends Controller
         $user->last_name = $request->get('last_name');
         $user->id = $request->get('cwru_id');
         $user->pledge_semester = Semester::currentSemester()->id;
-        
+
         if ($user->save()) {
             //This is super shitty and shouldn't need to be done.
             $user = User::find($request->get('cwru_id'));
@@ -108,10 +108,7 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public
-    function show(
-        $id
-    ) {
+    public function show($id) {
         $user = User::find($id);
         if (Request::wantsJSON()) {
             if ($user != null) {
@@ -123,7 +120,7 @@ class UserController extends Controller
         }
         if ($user != null) {
             $big = User::find($user->big);
-            return View::make('users.profile')->with(compact('user', 'big'));
+            return view('users.profile')->with(compact('user', 'big'));
         } else {
             throw new NotFoundHttpException("User Not Found!");
         }

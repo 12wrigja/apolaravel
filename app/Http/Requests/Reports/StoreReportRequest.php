@@ -2,10 +2,10 @@
 
 namespace APOSite\Http\Requests\Reports;
 
-use App;
-use Illuminate\Console\AppNamespaceDetectorTrait;
 use APOSite\Http\Controllers\LoginController;
 use APOSite\Http\Requests\Request;
+use App;
+use Illuminate\Console\AppNamespaceDetectorTrait;
 
 class StoreReportRequest extends Request
 {
@@ -24,7 +24,8 @@ class StoreReportRequest extends Request
         $type = $this->route('type');
         $user = LoginController::currentUser();
         try {
-            return App::call($this->getAppNamespace() . $this->filterNamespace . $this->snakeToCamelCase($type) . '@canStore', ['user' => $user]);
+            return App::call($this->getAppNamespace() . $this->filterNamespace . $this->snakeToCamelCase($type) . '@canStore',
+                ['user' => $user]);
         } catch (\ReflectionException $e) {
             return false;
         }

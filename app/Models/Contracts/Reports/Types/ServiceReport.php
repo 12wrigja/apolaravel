@@ -79,10 +79,10 @@ class ServiceReport extends BaseModel
     public function updateRules()
     {
         $createRules = $this->createRules();
-        foreach($createRules as $key=>$rule){
-            array_push($createRules[$key],'sometimes');
+        foreach ($createRules as $key => $rule) {
+            array_push($createRules[$key], 'sometimes');
         }
-        return array_merge($createRules,[
+        return array_merge($createRules, [
             'approved' => ['sometimes', 'required', 'boolean']
         ]);
     }
@@ -165,7 +165,8 @@ class ServiceReport extends BaseModel
         }
     }
 
-    public function canManage(User $user){
+    public function canManage(User $user)
+    {
         return AccessController::isMembership($user);
     }
 

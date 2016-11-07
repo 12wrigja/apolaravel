@@ -3,7 +3,6 @@
 @section('content')
 
     <div class="container" id="crud_form_container">
-        @include('flash::message')
         @yield('crud_form')
     </div>
 @endsection

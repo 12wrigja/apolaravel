@@ -1,9 +1,9 @@
 <?php namespace APOSite\Http\Transformers;
 
 
+use APOSite\Models\Contracts\Reports\Types\DuesReport;
 use League\Fractal\Manager;
 use League\Fractal\TransformerAbstract;
-use APOSite\Models\Contracts\Reports\Types\DuesReport;
 
 class DuesReportTransformer extends TransformerAbstract
 {
@@ -27,7 +27,7 @@ class DuesReportTransformer extends TransformerAbstract
         });
         $otherData = [
             'id' => $report->id,
-            'href' => route('report_show',['id'=>$report->id,'type'=>'service_reports']),
+            'href' => route('report_show', ['id' => $report->id, 'type' => 'service_reports']),
             'report_date' => $report->report_date->toDateString(),
             'human_date' => $report->report_date->toFormattedDateString(),
             'submitter' => $report->creator_id,

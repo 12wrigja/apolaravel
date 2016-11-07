@@ -18,16 +18,18 @@ class UserPersonalPageRequest extends Request
     public function authorize()
     {
         $pageUser = User::find($this->route('cwruid'));
-        if($pageUser == null){
-            return true;
-        } else if ($pageUser->id == LoginController::currentUser()->id) {
-            return true;
-        } elseif (AccessController::isMembership(LoginController::currentUser())) {
-            return true;
-        } elseif ($pageUser->isPledge() && AccessController::isPledgeEducator(LoginController::currentUser())) {
+        if ($pageUser == null) {
             return true;
         } else {
-            return false;
+            if ($pageUser->id == LoginController::currentUser()->id) {
+                return true;
+            } elseif (AccessController::isMembership(LoginController::currentUser())) {
+                return true;
+            } elseif ($pageUser->isPledge() && AccessController::isPledgeEducator(LoginController::currentUser())) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

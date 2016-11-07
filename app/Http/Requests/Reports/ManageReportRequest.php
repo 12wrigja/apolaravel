@@ -1,9 +1,9 @@
 <?php namespace APOSite\Http\Requests\Reports;
 
-use App;
-use Illuminate\Console\AppNamespaceDetectorTrait;
 use APOSite\Http\Controllers\LoginController;
 use APOSite\Http\Requests\Request;
+use App;
+use Illuminate\Console\AppNamespaceDetectorTrait;
 
 class ManageReportRequest extends Request
 {
@@ -23,7 +23,8 @@ class ManageReportRequest extends Request
         $type = $this->snakeToCamelCase($type);
         $user = LoginController::currentUser();
         try {
-            return App::call($this->getAppNamespace() . $this->filterNamespace . $type . '@canManage',['user'=>$user]);
+            return App::call($this->getAppNamespace() . $this->filterNamespace . $type . '@canManage',
+                ['user' => $user]);
         } catch (\ReflectionException $e) {
             return false;
         }

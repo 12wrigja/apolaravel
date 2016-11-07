@@ -1,11 +1,13 @@
-<?php namespace APOSite\Http\Controllers;
+<?php
 
-use Illuminate\Foundation\Bus\DispatchesCommands;
+namespace APOSite\Http\Controllers;
+
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
-abstract class Controller extends BaseController {
-
-	use DispatchesCommands, ValidatesRequests;
-
+class Controller extends BaseController
+{
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }

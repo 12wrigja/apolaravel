@@ -11,16 +11,18 @@ namespace APOSite\Http\Requests;
 
 class StoreContractRequirementRequest extends Request
 {
-    public function authorize(){
+    public function authorize()
+    {
         return true;
     }
 
-    public function rules(){
+    public function rules()
+    {
         $rules = [
-            'display_name'=>['required','min:10'],
-            'description'=>['required','min:40'],
-            'threshold'=>['required','integer'],
-            'comparison'=>['required','in:EQ,NEQ,GEQ,GT,LT,LEQ']
+            'display_name' => ['required', 'min:10'],
+            'description' => ['required', 'min:40'],
+            'threshold' => ['required', 'integer'],
+            'comparison' => ['required', 'in:EQ,NEQ,GEQ,GT,LT,LEQ']
         ];
         return $rules;
     }

@@ -91,7 +91,7 @@ class DocumentController extends Controller
             return $nextChar != '.';
         });
         if ($baseDir != null) {
-            $pattern = '#^'.$baseDir."#";
+            $pattern = '#^' . $baseDir . "#";
             $collection = $collection->transform(function ($filename) use ($pattern) {
                 return preg_replace($pattern, '', $filename);
             });
@@ -99,13 +99,13 @@ class DocumentController extends Controller
         $collection = $collection->transform(function ($filepath) {
             $lastpos = strripos($filepath, '/');
             $filename = null;
-            if($lastpos === false){
+            if ($lastpos === false) {
                 $filename = $filepath;
                 return ['fullpath' => $filepath, 'filename' => $filename];
             } else {
-                $office = substr($filepath,0,$lastpos);
+                $office = substr($filepath, 0, $lastpos);
                 $filename = substr($filepath, $lastpos + 1);
-                return ['fullpath' => $filepath, 'filename' => $filename, 'office'=>$office];
+                return ['fullpath' => $filepath, 'filename' => $filename, 'office' => $office];
             }
 
         });

@@ -5,8 +5,8 @@ namespace APOSite\Http\Middleware;
 use APOSite\Http\Controllers\AccessController;
 use APOSite\Models\Users\User;
 use Closure;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class UserSpoofingMiddleware
 {
@@ -34,12 +34,12 @@ class UserSpoofingMiddleware
             } else {
                 //Spoofer is the webmaster
                 //If there is a name there, use that so long as it isn't the word Off.
-                if($spoofUserID != null){
-                    if($spoofUserID == 'off'){
-                        $this->setSpoofing($spoofingUser->id,$request);
+                if ($spoofUserID != null) {
+                    if ($spoofUserID == 'off') {
+                        $this->setSpoofing($spoofingUser->id, $request);
                         Session::forget('spoofusername');
                     } else {
-                        $this->setSpoofing($spoofUserID,$request);
+                        $this->setSpoofing($spoofUserID, $request);
                     }
                 }
                 return $next($request);
@@ -54,7 +54,7 @@ class UserSpoofingMiddleware
         }
     }
 
-    private function setSpoofing($username,$request)
+    private function setSpoofing($username, $request)
     {
         $user = User::find($username);
         if ($user != null) {

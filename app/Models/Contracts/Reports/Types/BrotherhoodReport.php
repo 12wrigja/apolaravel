@@ -43,10 +43,10 @@ class BrotherhoodReport extends BaseModel
     public function updateRules()
     {
         $createRules = $this->createRules();
-        foreach($createRules as $key=>$rule){
-            array_push($createRules[$key],'sometimes');
+        foreach ($createRules as $key => $rule) {
+            array_push($createRules[$key], 'sometimes');
         }
-        $allRules =  array_merge($createRules,[
+        $allRules = array_merge($createRules, [
             'approved' => ['sometimes', 'required', 'boolean']
         ]);
         return $allRules;
@@ -72,7 +72,7 @@ class BrotherhoodReport extends BaseModel
 
     public function canUpdate(User $user)
     {
-        if ($user != null && AccessController::isMembership($user)){
+        if ($user != null && AccessController::isMembership($user)) {
             return true;
         } else {
             return false;

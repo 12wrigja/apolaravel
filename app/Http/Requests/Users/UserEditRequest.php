@@ -4,9 +4,9 @@ namespace APOSite\Http\Requests\Users;
 
 use APOSite\Http\Controllers\AccessController;
 use APOSite\Http\Controllers\LoginController;
-use Illuminate\Validation\Factory as ValidationFactory;
-use APOSite\Models\Users\User;
 use APOSite\Http\Requests\Request;
+use APOSite\Models\Users\User;
+use Illuminate\Validation\Factory as ValidationFactory;
 
 class UserEditRequest extends Request
 {
@@ -24,8 +24,10 @@ class UserEditRequest extends Request
                 if (is_numeric($year) && in_array($semester, $semesters)) {
                     return true;
                 }
-            } else if ($value == 'current'){
-                return true;
+            } else {
+                if ($value == 'current') {
+                    return true;
+                }
             }
             return false;
         },

@@ -8,23 +8,23 @@
 
 namespace APOSite\Models\Contracts\Reports;
 
-use APOSite\Models\Contracts\ReportInterface;
 use APOSite\Http\Controllers\LoginController;
 use APOSite\Models\Contracts\Report;
+use APOSite\Models\Contracts\ReportInterface;
 use APOSite\Models\Semester;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
+use APOSite\Models\Users\User;
+use Carbon\Carbon;
 use Eloquent;
 use Exception;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
-use APOSite\Models\Users\User;
 
 abstract class BaseModel extends Eloquent implements ReportInterface
 {
     use SoftDeletes;
 
-    protected $dates = ['created_at','updated_at','event_date','deleted_at'];
+    protected $dates = ['created_at', 'updated_at', 'event_date', 'deleted_at'];
 
     public $errors;
 
@@ -42,7 +42,7 @@ abstract class BaseModel extends Eloquent implements ReportInterface
         $specific->core()->save($coreEvent);
         $brothers = $attributes['brothers'];
         if ($brothers != null) {
-            BaseModel::updateBrothers($specific,$coreEvent,$brothers);
+            BaseModel::updateBrothers($specific, $coreEvent, $brothers);
         }
         $coreEvent->save();
         $specific->save();
@@ -51,7 +51,8 @@ abstract class BaseModel extends Eloquent implements ReportInterface
         return $specific;
     }
 
-    private static function updateBrothers($specific, $coreEvent, $brothers){
+    private static function updateBrothers($specific, $coreEvent, $brothers)
+    {
         foreach ($brothers as $index => $brother) {
             try {
                 $value = $specific->computeValue($brother);
@@ -83,43 +84,48 @@ abstract class BaseModel extends Eloquent implements ReportInterface
                 $this->setAttribute($key, $value);
             }
         }
-        if(array_key_exists('brothers',$attributes)){
+        if (array_key_exists('brothers', $attributes)) {
             //Re-sync all brothers attached to this event.
             $core = $this->core;
             $core->linkedUsers()->detach();
-            BaseModel::updateBrothers($this,$core,$attributes['brothers']);
+            BaseModel::updateBrothers($this, $core, $attributes['brothers']);
         }
         return $this->save();
     }
 
-    public function scopeCurrentSemester($query){
+    public function scopeCurrentSemester($query)
+    {
         $semester = Semester::currentSemester();
-        if($semester->end_date == null){
-            return $query->where('event_date','>=',$semester->start_date);
+        if ($semester->end_date == null) {
+            return $query->where('event_date', '>=', $semester->start_date);
         } else {
             return $query->whereBetween('event_date', array($semester->start_date, $semester->end_date));
         }
     }
 
-    public function scopeInSemester($query, $semester){
-        if($semester->end_date == null){
-            return $query->where('event_date','>=',$semester->start_date);
+    public function scopeInSemester($query, $semester)
+    {
+        if ($semester->end_date == null) {
+            return $query->where('event_date', '>=', $semester->start_date);
         } else {
             return $query->whereBetween('event_date', array($semester->start_date, $semester->end_date));
         }
     }
 
-    public function setEventDateAttribute($value){
+    public function setEventDateAttribute($value)
+    {
         $this->attributes['event_date'] = new Carbon($value);
     }
 
-    public function getValueForUser(User $user){
-        $pivotData = $brothers = $this->core->linkedUsers()->where('user_id',$user->id)->first();
+    public function getValueForUser(User $user)
+    {
+        $pivotData = $brothers = $this->core->linkedUsers()->where('user_id', $user->id)->first();
         return $pivotData->pivot->value;
     }
 
-    public function getTagForUser(User $user){
-        $pivotData = $brothers = $this->core->linkedUsers()->where('user_id',$user->id)->first();
+    public function getTagForUser(User $user)
+    {
+        $pivotData = $brothers = $this->core->linkedUsers()->where('user_id', $user->id)->first();
         return $pivotData->pivot->tag;
     }
 }

@@ -9,10 +9,10 @@
 namespace APOSite\ContractFramework\Contracts;
 
 use APOSite\ContractFramework\Requirements\ActiveMemberChapterMeetingRequirement;
+use APOSite\ContractFramework\Requirements\ActiveMemberDuesRequirement;
+use APOSite\ContractFramework\Requirements\ActiveMemberInsideHoursRequirement;
 use APOSite\ContractFramework\Requirements\ActiveMemberPledgeMeetingRequirement;
 use APOSite\ContractFramework\Requirements\ActiveMemberTotalHoursRequirement;
-use APOSite\ContractFramework\Requirements\ActiveMemberInsideHoursRequirement;
-use APOSite\ContractFramework\Requirements\ActiveMemberDuesRequirement;
 use APOSite\ContractFramework\Requirements\BrotherhoodHoursRequirement;
 
 class ActiveContract extends Contract
@@ -31,7 +31,8 @@ class ActiveContract extends Contract
         ];
     }
 
-    public static function getOtherSigningRequirements() {
+    public static function getOtherSigningRequirements()
+    {
         return [
             'Must have been initiated into the brotherhood.',
             'Will be active on at least one (1) standing committee each chapter semester.',

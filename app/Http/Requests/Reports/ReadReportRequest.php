@@ -1,9 +1,9 @@
 <?php namespace APOSite\Http\Requests\Reports;
 
-use App;
-use Illuminate\Console\AppNamespaceDetectorTrait;
 use APOSite\Http\Controllers\LoginController;
 use APOSite\Http\Requests\Request;
+use App;
+use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ReadReportRequest extends Request
@@ -24,7 +24,7 @@ class ReadReportRequest extends Request
         $type = $this->snakeToCamelCase($type);
         $user = LoginController::currentUser();
         try {
-            return App::call($this->getAppNamespace() . $this->filterNamespace . $type . '@canRead',['user'=>$user]);
+            return App::call($this->getAppNamespace() . $this->filterNamespace . $type . '@canRead', ['user' => $user]);
         } catch (\ReflectionException $e) {
             throw new ModelNotFoundException();
         }

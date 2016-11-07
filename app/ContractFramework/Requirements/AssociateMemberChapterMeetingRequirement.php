@@ -16,6 +16,12 @@ class AssociateMemberChapterMeetingRequirement extends MeetingBasedRequirement
     protected $threshold = 0;
     protected $comparison = 'GEQ';
 
+    public function computeValue()
+    {
+        $reports = $this->getReports($this->semester);
+        return $reports->count();
+    }
+
     public function getReports()
     {
         $semester = $this->semester;
@@ -42,12 +48,6 @@ class AssociateMemberChapterMeetingRequirement extends MeetingBasedRequirement
         });
 
         return $chapter_meetings->merge($exec_meetings)->merge($pledge_meetings);
-    }
-
-    public function computeValue()
-    {
-        $reports = $this->getReports($this->semester);
-        return $reports->count();
     }
 
 }

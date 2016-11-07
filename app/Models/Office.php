@@ -20,21 +20,22 @@ class Office extends Model
         return $query->where($pivot . '.semester_id', Semester::currentSemester()->id);
     }
 
-    public function scopeForSemester($query, $semesterID){
-        $pivot = $this->users()->getTable();
-        return $query->where($pivot . '.semester_id', $semesterID);
-    }
-
     public function users()
     {
         return $this->belongsToMany('APOSite\Models\Users\User')->withPivot('semester_id', 'alt_text');
+    }
+
+    public function scopeForSemester($query, $semesterID)
+    {
+        $pivot = $this->users()->getTable();
+        return $query->where($pivot . '.semester_id', $semesterID);
     }
 
     public function currentOfficers()
     {
         $semester = Semester::currentSemester();
         $thisSemOfficers = $this->users()->whereSemesterId($semester->id)->get();
-        if($thisSemOfficers->count() == 0){
+        if ($thisSemOfficers->count() == 0) {
             $prevSemOfficers = $this->users()->whereSemesterId($semester->previous()->id)->get();
             return $prevSemOfficers;
         } else {
@@ -42,11 +43,13 @@ class Office extends Model
         }
     }
 
-    public function scopeAllInOrder($query){
-        return $query->orderBy('display_order','ASC');
+    public function scopeAllInOrder($query)
+    {
+        return $query->orderBy('display_order', 'ASC');
     }
 
-    public function scopeActive($query){
+    public function scopeActive($query)
+    {
         return $query->whereActive(true);
     }
 }

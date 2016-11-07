@@ -8,12 +8,12 @@
 
 namespace APOSite\ContractFramework\Contracts;
 
+use APOSite\ContractFramework\Requirements\ActiveMemberBrotherhoodHoursRequirement;
 use APOSite\ContractFramework\Requirements\ActiveMemberChapterMeetingRequirement;
+use APOSite\ContractFramework\Requirements\ActiveMemberDuesRequirement;
+use APOSite\ContractFramework\Requirements\ActiveMemberInsideHoursRequirement;
 use APOSite\ContractFramework\Requirements\ActiveMemberPledgeMeetingRequirement;
 use APOSite\ContractFramework\Requirements\ActiveMemberTotalHoursRequirement;
-use APOSite\ContractFramework\Requirements\ActiveMemberInsideHoursRequirement;
-use APOSite\ContractFramework\Requirements\ActiveMemberDuesRequirement;
-use APOSite\ContractFramework\Requirements\ActiveMemberBrotherhoodHoursRequirement;
 
 class ActiveV2Contract extends ActiveContract
 {

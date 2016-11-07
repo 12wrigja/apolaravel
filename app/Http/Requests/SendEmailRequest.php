@@ -4,7 +4,6 @@ namespace APOSite\Http\Requests;
 
 use APOSite\Http\Controllers\AccessController;
 use APOSite\Http\Controllers\LoginController;
-use APOSite\Http\Requests\Request;
 
 class SendEmailRequest extends Request
 {
@@ -26,7 +25,7 @@ class SendEmailRequest extends Request
     public function rules()
     {
         return [
-            'to'=>'required|exists:users,id'
+            'to' => 'required|exists:users,id'
         ];
     }
 }

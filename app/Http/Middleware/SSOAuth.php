@@ -32,7 +32,7 @@ class SSOAuth
             }
         }
         if (User::find($username) == null) {
-            return view('errors.401')->with('message', 'You do not have permission to access this page.');
+            return response()->view('errors.401', ['message' => 'You do not have permission to access this page.'], 401);
         } else {
             return $next($request);
         }

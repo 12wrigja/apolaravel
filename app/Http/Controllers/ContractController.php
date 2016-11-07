@@ -36,7 +36,7 @@ class ContractController extends Controller
         $signableContracts = Contract::getCurrentSignableContracts();
         $signableContracts->transform(function ($item) {
 
-            if($item->version > 1){
+            if ($item->version > 1) {
                 $contractVersionCode = $item->contract_name . 'V' . $item->version;
             } else {
                 $contractVersionCode = $item->contract_name;
