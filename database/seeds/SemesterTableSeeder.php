@@ -10,8 +10,8 @@ class SemesterTableSeeder extends Seeder
     {
         $year = 2016;
         $time = 25;
-        for ($i = 0; $i < $time; $i++) {
-            $currentYear = $year - $i;
+        for ($i = -$time; $i < $time; $i++) {
+            $currentYear = $year + $i;
             $semester = new Semester;
             $semester->id = $currentYear << 1;
             $semester->year = $currentYear;

@@ -14,40 +14,7 @@ class OldContractStatusSeeder extends Seeder
      */
     public function run()
     {
-        $oldUsers = DB::connection('apo')->table('tblmembers')->select('cwruID as id', 'status')->get();
-        Eloquent::reguard();
-        DB::statement("SET foreign_key_checks=0");
-        DB::table('contract_user')->truncate();
-        DB::statement("SET foreign_key_checks=1");
-
-        DB::beginTransaction();
-        $semester = Semester::currentSemester();
-        $map = [];
-        $oldStatuses = DB::connection('apo')->table('tblstatus')->select('id', 'status')->get();
-        foreach ($oldStatuses as $oldStatus) {
-            $map[$oldStatus->id] = $this->convertStatus($oldStatus->status);
-        }
-        foreach ($oldUsers as $oldUser) {
-            $user = User::find($oldUser->id);
-            if ($oldUser->status != null) {
-                if(!array_key_exists($oldUser->status,$map)){
-                    $contract = "Inactive";
-                } else {
-                    $contract = $map[$oldUser->status];
-                }
-                DB::table('contract_user')->insert([
-                    'user_id' => $user->id,
-                    'contract_id' => $contract,
-                    'semester_id' => $semester->id
-                ]);
-            }
-        }
-        DB::commit();
-        Eloquent::unguard();
+	$this->command->error("OldContractStatusSeeder not implemented.");
     }
 
-    private function convertStatus($status)
-    {
-        return str_replace(' ', '', ucwords($status));
-    }
 }
