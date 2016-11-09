@@ -1,6 +1,9 @@
 <?php
 use APOSite\Http\Controllers\LoginController;
 use APOSite\Models\CarouselItem;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\View;
 
 //Patterns for the various routes.
 //Type pattern for the various report types that can exist.
