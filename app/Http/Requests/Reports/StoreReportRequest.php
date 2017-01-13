@@ -22,9 +22,10 @@ class StoreReportRequest extends Request
     public function authorize()
     {
         $type = $this->route('type');
+        $type = $this->snakeToCamelCase($type);
         $user = LoginController::currentUser();
         try {
-            return App::call($this->getAppNamespace() . $this->filterNamespace . $this->snakeToCamelCase($type) . '@canStore',
+            return App::call($this->getAppNamespace() . $this->filterNamespace . $type . '@canStore',
                 ['user' => $user]);
         } catch (\ReflectionException $e) {
             return false;
