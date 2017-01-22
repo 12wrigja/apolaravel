@@ -45,6 +45,9 @@ Route::get('rush',['as'=>'rush',function(){
 Route::get('talenttwist',['as'=>'talenttwist',function(){
     return redirect()->away('http://www.facebook.com/events/535265626666670/');
 }]);
+Route::get('sectionals',['as'=>'sectionals',function(){
+    return redirect()->away('https://aposectionals.com/');
+}]);
 
 //TODO fix up the user editing system
 Route::get('/users', ['uses'=>'UserController@index','as'=>'users']);
