@@ -73,7 +73,7 @@
             <div class="row">
                 <div class="col-lg-4 col-lg-offset-2">
                     <h3>When</h3>
-                    <p>The race is held on <strong>March 26th, 2016</strong>. Check-in is at <strong>9 AM</strong>, the
+                    <p>The race is held on <strong>March 26th, 2017</strong>. Check-in is at <strong>9 AM</strong>, the
                         race begins at <strong>10 AM</strong> and the walk begins at <strong>10:15 AM</strong>. The
                         event lasts until approximately <strong>12:30 PM</strong>. A light breakfast and lunch will be
                         provided.</p>
@@ -106,7 +106,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>2016 Sponsors</h2>
+                    <h2>2017 Sponsors</h2>
                     <hr class="star-primary">
                 </div>
             </div>
@@ -152,49 +152,6 @@
                     </h3>
                 </div>
             </div>
-
-<!--
-            <div class="row">
-                <div class="col-lg-4 col-lg-offset-2">
-                    <h3>Online</h3>
-                    <p>Online registration can be completed by filling out <a
-                                href="https://www.eventbrite.com/e/march-for-marfan-tickets-21163619957?aff=es2"
-                                target="_blank">this form</a>.</p>
-                </div>
-                <div class="col-lg-4">
-                    <h3>Mail In</h3>
-                    <p>The Mail-in Registration Form can be downloaded by clicking <a
-                                href="{{route('retrieve_document',['filename'=>'mfmregistration2016.pdf'])}}">here</a>.
-                        Important Information:
-                    <ul>
-                        <li>Check-in starts at <strong>9:00 AM</strong> and goes until <strong>9:50 AM</strong></li>
-                        <li>The event will be held on the campus of Case Western Reserve University on <strong>March
-                                19th,
-                                2016</strong>
-                        </li>
-                        <li>Registration runs until <strong>February 28th</strong> and is <strong>$20</strong> a person
-                            (each participant will receive a
-                            t-shirt)
-                        </li>
-                        <li>Groups of 4 can register for <strong>$60</strong> total</li>
-                        <li>Late Registration begins <strong>February 29th</strong> (late registration participants will
-                            not be
-                            guaranteed a t-shirt)
-                        </li>
-                        <li>Checks can be made out to Alpha Phi Omega and should be mailed along with the registration
-                            form to:<br>
-                            <br>Jessica Qian<br>
-                            2345 Murray Hill Rd. #110B<br>
-                            Cleveland, OH 44106-3937
-                        </li>
-                        <br>
-                        <li>Please send all questions and comments
-                            to Jessica Qian and Rachel Webb at {!!Html::mailTo('marchformarfan@apo.case.edu')!!}</li>
-                    </ul>
-                    </p>
-                </div>
-            </div>
--->
         </div>
     </section>
 
