@@ -7,7 +7,6 @@ use APOSite\Interfaces\SSOService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
 class LoginController extends Controller
@@ -33,9 +32,7 @@ class LoginController extends Controller
      * to login) then we redirect to the $redirectTo URI.
      */
 
-    use AuthenticatesUsers {
-        sendLoginResponse as originalLoginResponse;
-    }
+    use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -111,12 +108,6 @@ class LoginController extends Controller
     {
         return View::make('errors.401',['error'=>'Sorry! It seems you\'re trying that too often! Try again 
         in a bit.']);
-    }
-
-    protected function sendLoginResponse(Request $request)
-    {
-        Session::forget('login_error');
-        return $this->originalLoginResponse($request);
     }
 
 }

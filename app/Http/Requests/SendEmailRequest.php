@@ -3,7 +3,7 @@
 namespace APOSite\Http\Requests;
 
 use APOSite\Http\Controllers\AccessController;
-use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 
 class SendEmailRequest extends Request
 {
@@ -14,7 +14,7 @@ class SendEmailRequest extends Request
      */
     public function authorize()
     {
-        return AccessController::isWebmaster(LoginController::currentUser());
+        return AccessController::isWebmaster(Auth::user());
     }
 
     /**

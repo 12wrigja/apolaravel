@@ -2,7 +2,7 @@
 
 namespace APOSite\Http\Requests\Reports;
 
-use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 use APOSite\Http\Requests\Request;
 use App;
 use Illuminate\Console\AppNamespaceDetectorTrait;
@@ -23,7 +23,7 @@ class StoreReportRequest extends Request
     {
         $type = $this->route('type');
         $type = $this->snakeToCamelCase($type);
-        $user = LoginController::currentUser();
+        $user = Auth::user();
         try {
             return App::call($this->getAppNamespace() . $this->filterNamespace . $type . '@canStore',
                 ['user' => $user]);

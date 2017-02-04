@@ -4,7 +4,7 @@ namespace APOSite\Http\Requests\Contracts;
 
 use APOSite\ContractFramework\Contracts\Contract;
 use APOSite\Http\Controllers\AccessController;
-use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 use APOSite\Http\Requests\Request;
 use APOSite\Models\Semester;
 use APOSite\Models\Users\User;
@@ -46,8 +46,7 @@ class ContractModifyRequest extends Request
      */
     public function authorize()
     {
-        $user = LoginController::currentUser();
-        return $user != null;
+        return Auth::check();
     }
 
     /**
@@ -57,7 +56,7 @@ class ContractModifyRequest extends Request
      */
     public function rules()
     {
-        $user = LoginController::currentUser();
+        $user = Auth::user();
         $contractTypes = implode(',', Contract::getAllContractTypes()->map(function ($item) {
             if ($item->version > 1) {
                 return $item->contract_name . 'V' . $item->version;

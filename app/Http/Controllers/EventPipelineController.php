@@ -12,6 +12,7 @@ use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
+use Illuminate\Support\Facades\Auth;
 
 class EventPipelineController extends Controller
 {
@@ -25,7 +26,7 @@ class EventPipelineController extends Controller
     function __construct()
     {
         $this->fractal = new Manager();
-        $this->middleware('SSOAuth');
+        $this->middleware('auth');
     }
 
     public function showEvent(ReadReportRequest $request, $type, $id)
@@ -33,7 +34,7 @@ class EventPipelineController extends Controller
         try {
             $class = $this->getClass($type);
             $query = $class->getMethod('query')->invoke(null);
-            $query = $class->getMethod('applyRowLevelSecurity')->invoke(null, $query, LoginController::currentUser());
+            $query = $class->getMethod('applyRowLevelSecurity')->invoke(null, $query, Auth::user());
             $event = $query->findOrFail($id);
             $transformer = $event->transformer($this->fractal);
             if ($transformer != null) {
@@ -75,7 +76,7 @@ class EventPipelineController extends Controller
                     $query = $query->orderBy('event_date', 'DESC');
                     break;
             }
-            $query = $class->getMethod('applyRowLevelSecurity')->invoke(null, $query, LoginController::currentUser());
+            $query = $class->getMethod('applyRowLevelSecurity')->invoke(null, $query, Auth::user());
             $paginator = $query->paginate(20);
             $queryParams = Input::except('page');
             foreach ($queryParams as $key => $value) {

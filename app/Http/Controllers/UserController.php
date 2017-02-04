@@ -12,18 +12,17 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\View;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     function __construct()
     {
-        $this->middleware('SSOAuth');
+        $this->middleware('auth');
     }
 
 
@@ -151,14 +150,10 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public
-    function update(
-        UserEditRequest $request,
-        $id
-    ) {
-        $user = User::find($id);
-        $currentUser = LoginController::currentUser();
-        if ($user != null) {
+    public function update(UserEditRequest $request, $id) {
+        $userToUpdate = User::find($id);
+        $currentUser = Auth::user();
+        if ($userToUpdate != null) {
             $attributes = $request->except(['id', 'created_at', 'updated_at']);
             $pledgeEditOnly = ['family_id', 'big', 'pledge_semester', 'initiation_semester'];
             $semesters = ['pledge_semester', 'graduation_semester', 'initiation_semester'];
@@ -177,10 +172,10 @@ class UserController extends Controller
                     $attributes[$key] = null;
                 }
             }
-            $user->fill($attributes);
-            $user->save();
+            $userToUpdate->fill($attributes);
+            $userToUpdate->save();
             $fractal = new Manager();
-            $item = new Item($user, new UserSearchResultTransformer([]));
+            $item = new Item($userToUpdate, new UserSearchResultTransformer([]));
             return $fractal->createData($item)->toJson();
         } else {
             throw new NotFoundHttpException("User Not Found!");

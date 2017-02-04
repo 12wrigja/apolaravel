@@ -7,6 +7,7 @@ use APOSite\Models\ImageEntry;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 
 class ImageController extends Controller
 {
@@ -29,7 +30,7 @@ class ImageController extends Controller
 
         $i = new ImageEntry();
         $i->path = $filename;
-        $i->uploader = LoginController::currentUser()->id;
+        $i->uploader = Auth::id();
         $i->save();
         return $i;
     }

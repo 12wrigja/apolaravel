@@ -16,7 +16,7 @@
                         <div class="col-md-10">
                             <h1>{{$user->fullDisplayName()}}</h1>
                         </div>
-                        @if($user->id == \APOSite\Http\Controllers\LoginController::currentUser()->id || \APOSite\Http\Controllers\AccessController::isWebmaster(\APOSite\Http\Controllers\LoginController::currentUser()))
+                        @if($user->id == $currentUser->id || \APOSite\Http\Controllers\AccessController::isWebmaster($currentUser))
                             <div class="col-md-2">
                                 <br>
                                 <a href="{{route('user_edit',['id'=>$user->id])}}" class="btn btn-primary">Edit

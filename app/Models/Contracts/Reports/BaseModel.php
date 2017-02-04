@@ -8,7 +8,7 @@
 
 namespace APOSite\Models\Contracts\Reports;
 
-use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 use APOSite\Models\Contracts\Report;
 use APOSite\Models\Contracts\ReportInterface;
 use APOSite\Models\Semester;
@@ -31,7 +31,7 @@ abstract class BaseModel extends Eloquent implements ReportInterface
     public static function create(array $attributes = [])
     {
         DB::beginTransaction();
-        $user = LoginController::currentUser();
+        $user = Auth::user();
         if (!isset($attributes['creator_id'])) {
             $attributes['creator_id'] = $user->id;
         }

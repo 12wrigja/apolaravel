@@ -2,7 +2,7 @@
 
 use APOSite\GlobalVariable;
 use APOSite\Http\Controllers\AccessController;
-use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 use APOSite\Models\Users\User;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
@@ -18,9 +18,8 @@ class SSOUserProvider extends ServiceProvider
     public function boot(Request $request)
     {
         view()->composer('*', function ($view) {
-            $user = LoginController::currentUser();
-            if ($user != null) {
-                $user = $this->AddMenuItems($user);
+            if (Auth::check()) {
+                $user = $this->AddMenuItems(Auth::user());
             }
             return $view->with('currentUser', $user);
         });
@@ -207,24 +206,26 @@ class SSOUserProvider extends ServiceProvider
             $item->url = route('report_create', ['type' => 'service_reports']);
             array_push($menu_items, $item);
 
-            //Service report menu item
+            // Service report menu item
             $item = new \stdClass();
             $item->text = "Submit a Brotherhood Report";
             $item->url = route('report_create', ['type' => 'brotherhood_reports']);
             array_push($menu_items, $item);
 
+            // Brother of the week form
             $item = new \stdClass();
             $item->text = "Submit Brother of the Week";
             $item->url = "https://docs.google.com/a/case.edu/forms/d/1spt1Y8Chmh7n8b2FDToSSDPDrsoE2pCMl718wqZ9vpA/viewform";
             $item->external = true;
             array_push($menu_items, $item);
 
-            //Service report menu item
+            // Service report menu item
             $item = new \stdClass();
             $item->text = "Account";
             $item->isHeader = true;
             array_push($menu_items, $item);
 
+            // Contract signing.
             if (GlobalVariable::ContractSigning()->value) {
                 $item = new \stdClass();
                 $item->text = "Sign a Contract";
@@ -232,19 +233,19 @@ class SSOUserProvider extends ServiceProvider
                 array_push($menu_items, $item);
             }
 
-            //Service report menu item
+            // Service report menu item
             $item = new \stdClass();
             $item->text = "View Profile";
             $item->url = route('user_show', ['id' => $user->id]);
             array_push($menu_items, $item);
 
-            //Service report menu item
+            // Service report menu item
             $item = new \stdClass();
             $item->text = "View Contract";
             $item->url = route('user_status', ['id' => $user->id]);
             array_push($menu_items, $item);
 
-            //Service report menu item
+            // Service report menu item
             $item = new \stdClass();
             $item->text = "Other";
             $item->isHeader = true;

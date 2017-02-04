@@ -12,7 +12,7 @@ class GrilledCheeseController extends Controller
      */
     function __construct()
     {
-        $this->middleware('SSOAuth', ['only' => 'showManagementPage']);
+        $this->middleware('auth', ['only' => 'showManagementPage']);
     }
 
     public function showOrderPage()

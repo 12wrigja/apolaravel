@@ -3,7 +3,7 @@
 namespace APOSite\Http\Requests\Users;
 
 use APOSite\Http\Controllers\AccessController;
-use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 use APOSite\Http\Requests\Request;
 use APOSite\Models\Users\User;
 
@@ -21,11 +21,11 @@ class UserPersonalPageRequest extends Request
         if ($pageUser == null) {
             return true;
         } else {
-            if ($pageUser->id == LoginController::currentUser()->id) {
+            if ($pageUser->id == Auth::user()->id) {
                 return true;
-            } elseif (AccessController::isMembership(LoginController::currentUser())) {
+            } elseif (AccessController::isMembership(Auth::user())) {
                 return true;
-            } elseif ($pageUser->isPledge() && AccessController::isPledgeEducator(LoginController::currentUser())) {
+            } elseif ($pageUser->isPledge() && AccessController::isPledgeEducator(Auth::user())) {
                 return true;
             } else {
                 return false;

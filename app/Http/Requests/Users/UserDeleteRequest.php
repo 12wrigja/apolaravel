@@ -3,7 +3,7 @@
 namespace APOSite\Http\Requests\Users;
 
 use APOSite\Http\Controllers\AccessController;
-use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 use APOSite\Http\Requests\Request;
 use APOSite\Models\Users\User;
 
@@ -18,10 +18,10 @@ class UserDeleteRequest extends Request
     public function authorize()
     {
         $user = User::find($this->route('cwruid'));
-        if ($user->isPledge() && AccessController::isPledgeEducator(LoginController::currentUser())) {
+        if ($user->isPledge() && AccessController::isPledgeEducator(Auth::user())) {
             return true;
         } else {
-            return AccessController::isWebmaster(LoginController::currentUser());
+            return AccessController::isWebmaster(Auth::user());
         }
     }
 

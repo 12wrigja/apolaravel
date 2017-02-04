@@ -3,7 +3,7 @@
 namespace APOSite\Http\Requests\Users;
 
 use APOSite\Http\Controllers\AccessController;
-use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 use APOSite\Http\Requests\Request;
 
 class UserCreateRequest extends Request
@@ -16,7 +16,7 @@ class UserCreateRequest extends Request
      */
     public function authorize()
     {
-        $user = LoginController::currentUser();
+        $user = Auth::user();
         return AccessController::isWebmaster($user) || AccessController::isPledgeEducator($user);
     }
 

@@ -1,5 +1,5 @@
 <?php
-use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 use APOSite\Models\CarouselItem;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
@@ -25,7 +25,7 @@ Route::get('calendar', [
     }
 ]);
 Route::get('drive', [
-    'middleware' => 'SSOAuth',
+    'middleware' => 'auth',
     function () {
         return redirect()->away('https://drive.google.com/open?id=0BzPifk8kXJfHOHVYR2szVzJ6dXM');
     }

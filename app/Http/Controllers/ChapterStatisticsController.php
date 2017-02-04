@@ -21,6 +21,7 @@ use APOSite\Http\Requests\Reports\ViewStatisticsRequest;
 use APOSite\Models\Contracts\Reports\Types\ServiceReport;
 use APOSite\Models\Semester;
 use APOSite\Models\Users\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ChapterStatisticsController extends Controller
@@ -32,7 +33,7 @@ class ChapterStatisticsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('SSOAuth');
+        $this->middleware('auth');
     }
 
     public function chapterStatistics(ViewStatisticsRequest $request)
@@ -232,19 +233,22 @@ class ChapterStatisticsController extends Controller
 
     public function contractStatusPage(ViewContractProgressRequest $request)
     {
-        $pledgeBrothers = User::PledgeForSemester(Semester::currentSemester())->orderBy('first_name',
+        $signedInUser = Auth::user();
+        $currentSemester = Semester::currentSemester();
+        $pledgeBrothers = User::PledgeForSemester($currentSemester)->orderBy('first_name',
             'ASC')->orderBy('last_name', 'ASC')->get();
-        if (AccessController::isMembership(LoginController::currentUser())) {
-            $activeBrothers = User::ActiveForSemester(Semester::currentSemester())->orderBy('first_name',
+        if (AccessController::isMembership($signedInUser)) {
+            $activeBrothers = User::ActiveForSemester($currentSemester)->orderBy('first_name',
                 'ASC')->orderBy('last_name', 'ASC')->get();
-            $associateBrothers = User::AssociateForSemester(Semester::currentSemester())->orderBy('first_name',
+            $associateBrothers = User::AssociateForSemester($currentSemester)->orderBy('first_name',
                 'ASC')->orderBy('last_name', 'ASC')->get();
             return view('tools.contractstatus')->with(compact('activeBrothers', 'associateBrothers', 'pledgeBrothers'));
         } else {
-            if (AccessController::isPledgeEducator(LoginController::currentUser())) {
+            if (AccessController::isPledgeEducator($signedInUser)) {
                 return view('tools.contractstatus_pledges')->with(compact('pledgeBrothers'));
             } else {
                 //Do something here if stuff is all messed up.
+                abort(403);
             }
         }
     }

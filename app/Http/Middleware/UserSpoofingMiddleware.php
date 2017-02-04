@@ -19,39 +19,43 @@ class UserSpoofingMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        return $next($request);
+        // TODO (jameswr): update this to work with the new auth system.
+
+
         //Setup data
-        $spoofUserID = $request->get('spoof');
-        $spoofingUser = User::find(Session::get('spoofusername'));
-        $currentUser = User::find(Session::get('username'));
-        if ($spoofingUser == null && !AccessController::isWebmaster($currentUser)) {
-            Session::forget('spoofusername');
-            return $next($request);
-        }
-        if ($spoofingUser != null) {
-            if (!AccessController::isWebmaster($spoofingUser)) {
-                Session::flush();
-                return \Redirect::route('home');
-            } else {
-                //Spoofer is the webmaster
-                //If there is a name there, use that so long as it isn't the word Off.
-                if ($spoofUserID != null) {
-                    if ($spoofUserID == 'off') {
-                        $this->setSpoofing($spoofingUser->id, $request);
-                        Session::forget('spoofusername');
-                    } else {
-                        $this->setSpoofing($spoofUserID, $request);
-                    }
-                }
-                return $next($request);
-            }
-        } else {
-            if (AccessController::isWebmaster($currentUser)) {
-                //Start spoofing
-                Session::put('spoofusername', $currentUser->id);
-                $this->setSpoofing($spoofUserID, $request);
-                return $next($request);
-            }
-        }
+//        $spoofUserID = $request->get('spoof');
+//        $spoofingUser = User::find(Session::get('spoofusername'));
+//        $currentUser = User::find(Session::get('username'));
+//        if ($spoofingUser == null && !AccessController::isWebmaster($currentUser)) {
+//            Session::forget('spoofusername');
+//            return $next($request);
+//        }
+//        if ($spoofingUser != null) {
+//            if (!AccessController::isWebmaster($spoofingUser)) {
+//                Session::flush();
+//                return \Redirect::route('home');
+//            } else {
+//                //Spoofer is the webmaster
+//                //If there is a name there, use that so long as it isn't the word Off.
+//                if ($spoofUserID != null) {
+//                    if ($spoofUserID == 'off') {
+//                        $this->setSpoofing($spoofingUser->id, $request);
+//                        Session::forget('spoofusername');
+//                    } else {
+//                        $this->setSpoofing($spoofUserID, $request);
+//                    }
+//                }
+//                return $next($request);
+//            }
+//        } else {
+//            if (AccessController::isWebmaster($currentUser)) {
+//                //Start spoofing
+//                Session::put('spoofusername', $currentUser->id);
+//                $this->setSpoofing($spoofUserID, $request);
+//                return $next($request);
+//            }
+//        }
     }
 
     private function setSpoofing($username, $request)
