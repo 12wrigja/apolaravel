@@ -4,6 +4,7 @@ namespace APOSite\Http\Controllers\Auth;
 
 use APOSite\Interfaces\SSOService;
 use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Http\Request;
 
 class CaseSSOService implements SSOService
@@ -24,12 +25,17 @@ class CaseSSOService implements SSOService
 
     public function credentialsFromRequest(Request $request, $redirectBackRoute)
     {
-        $url = 'https://login.case.edu/cas/validate?ticket=' . $request->get('ticket') . '&service=' . $redirectBackRoute;
-        $output = $this->guzzle->get($url)->getBody();
-        $output = preg_split("/(\n|;)/", $output);
         $username = null;
-        if ($output [0] == 'yes') {
-            $username = $output [1];
+        try {
+            $url = 'https://login.case.edu/cas/validate?ticket=' . $request->get('ticket') . '&service=' . $redirectBackRoute;
+            $output = $this->guzzle->get($url)->getBody();
+            $output = preg_split("/(\n|;)/", $output);
+            if ($output [0] == 'yes') {
+                $username = $output [1];
+            }
+        } catch (ConnectException $e){
+            // Logging here for exceptions when connection to CWRU SSO Service.
+            abort(500, 'Unable to connect to Case SSO Service.');
         }
         return ['id' => $username];
     }

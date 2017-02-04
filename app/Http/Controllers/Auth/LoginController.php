@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 class LoginController extends Controller
 {
@@ -57,6 +58,11 @@ class LoginController extends Controller
         $this->signOnService = $signOnService;
     }
 
+    /**
+     * @param Request $request Current request
+     * @return \Illuminate\Http\Response Either redirect to the SSO sign in page, or process the
+     * return back to the sign-in page.
+     */
     public function showLoginForm(Request $request)
     {
         if ($this->signOnService->isRequestFromSSOServiceCallback($request)) {
@@ -67,11 +73,26 @@ class LoginController extends Controller
         }
     }
 
+    /**
+     * Validates an incoming login request. This bootstraps to the SSO Service to validate the
+     * request has whatever the Sign On Service needs to validate a login (e.g. a ticket). This
+     * method is only entered into if the SSO Service believes that the current request could be
+     * the callback (determined using SSOService#isRequestFromSSOServiceCallback).
+     *
+     * @param Request $request The current request being processed.
+     */
     protected function validateLogin(Request $request)
     {
         $this->validate($request, $this->signOnService->getSSOCallbackValidationRules($request));
     }
 
+    /**
+     * @param Request $request The callback request.
+     * @return array An array of credentials containing an 'id' key and any other keys that might
+     * be needed later by the SSO Service to validate the callback against the SSO Service. One
+     * caveat is that the 'password' key cannot be used as this is reserved by Laravel's auth
+     * system.
+     */
     protected function credentials(Request $request)
     {
         $credentialArray = $this->signOnService->credentialsFromRequest($request, route('login'));
@@ -83,12 +104,13 @@ class LoginController extends Controller
 
     protected function sendFailedLoginResponse(Request $request)
     {
-        return redirect()->route('error_show',['id'=>401]);
+        return View::make('errors.401');
     }
 
     protected function sendLockoutResponse(Request $request)
     {
-        return redirect()->route('error_show',['id'=>401, 'error'=>'Sorry! It seems you\'re trying that too often! Try again in a bit.']);
+        return View::make('errors.401',['error'=>'Sorry! It seems you\'re trying that too often! Try again 
+        in a bit.']);
     }
 
     protected function sendLoginResponse(Request $request)
