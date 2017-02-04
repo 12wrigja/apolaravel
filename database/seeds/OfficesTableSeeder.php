@@ -7,6 +7,6 @@ class OfficesTableSeeder extends Seeder
 {
     public function run()
     {
-	$this->command->error("OfficesTableSeeder not implemented.");
+        factory(Office::class, 10)->create();
     }
 }
