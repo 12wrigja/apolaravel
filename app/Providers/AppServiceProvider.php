@@ -2,6 +2,8 @@
 
 namespace APOSite\Providers;
 
+use APOSite\Interfaces\SSOService;
+use APOSite\Http\Controllers\Auth\CaseSSOService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(SSOService::class, CaseSSOService::class);
     }
 }

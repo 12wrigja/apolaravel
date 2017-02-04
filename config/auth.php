@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => APOSite\User::class,
+            'model' => APOSite\Models\Users\User::class,
         ],
 
         // 'users' => [

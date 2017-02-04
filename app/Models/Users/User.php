@@ -5,17 +5,59 @@ namespace APOSite\Models\Users;
 use APOSite\ContractFramework\Contracts\Contract;
 use APOSite\GlobalVariable;
 use APOSite\Models\Semester;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class User extends Model
+
+class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
 
     use SoftDeletes;
+    use Notifiable;
+    use Authenticatable, Authorizable;
+
+    // BEGIN Authorization Changes
+
+    // Setup the primary key as non-incrementing - it's a user's CWRU ID, which is not a number.
+    public $incrementing = false;
+
+    // Set their internal Auth password as nothing. Auth is handled by SSO - we simply need to check the tickets upon
+    // return. See LoginController for details.
+    public function getAuthPassword()
+    {
+        return bcrypt('');
+    }
+
+    // Disable remember me functionality. We don't rename the remember me token functionality because who knows where
+    // else this is used....
+    public function getRememberToken()
+    {
+        return null; // Using Remember Me is not supported on this site;
+    }
+
+    public function setRememberToken($value)
+    {
+        return null; // Using Remember Me is not supported on this site;
+    }
+
+    public function setAttribute($key, $value)
+    {
+        $isRememberMeTokenAttribute = ($key == $this->getRememberTokenName());
+        if (!$isRememberMeTokenAttribute) {
+            return parent::setAttribute($key, $value);
+        }
+        return $this;
+    }
+
+    // END Authorization Changes
 
     protected $fillable = [
         'first_name',
@@ -42,7 +84,7 @@ class User extends Model
     protected $dates = ['deleted_at'];
     protected $appends = ['contract', 'family'];
     protected $interallyRenamed = ['contract' => 'contract_id'];
-    public $incrementing = false;
+
 
     public function getFullDisplayName()
     {

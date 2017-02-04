@@ -10,7 +10,7 @@
 				</div>
 				<div class="col-sm-8">
 					<h1 class="ui inverted header">Authorization Error!</h1>
-					<p class="inverted">We are sorry - you need to be signed in to access that page.</p>
+					<p class="inverted">{{$error or 'We\'re sorry - you need to be a member of APO Theta Upsilon to view this page.'}}</p>
 				</div>
 			</div>
 		</div>

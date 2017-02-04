@@ -17,7 +17,7 @@ class SemesterTableSeeder extends Seeder
         $previousStartDate = null;
         for ($i = 0; $i<$time; $i++) {
             $currentYear = floor($startYear + $i);
-            $this->command->info('Year: '+$currentYear);
+            $this->command->info('Year: '.$currentYear);
             if($previousStartDate == null){
                 $previousStartDate = Carbon::parse($currentYear.'-01-01');
             }

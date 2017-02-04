@@ -93,39 +93,26 @@ Route::post('login/debug', function () {
     return LoginController::debugLogin();
 });
 
-//Route for logging out
-Route::get('/logout', [
-    'as' => 'logout',
-    function () {
-        LoginController::logout();
-        if (Input::has('redirect_url')) {
-            return Redirect::to(Input::get('redirect_url'));
-        } else {
-            return Redirect::route('home');
-        }
+// Routes for logging in and out. Copied from Laravel source.
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('logout','Auth\LoginController@logout')->name('logout');
+Route::get('whoami', function(){
+    if(Auth::check()){
+        return Auth::id();
+    } else {
+        return 'Not Signed in.';
     }
-]);
-
-//Route for logging in and checking login
-Route::get('login', array(
-    'as' => 'login',
-    'middleware' => 'SSOAuth',
-    function () {
-        if (session()->has('redirect_url')) {
-            $redirect_url = session('redirect_url');
-            session()->forget('redirect_ur');
-            return redirect($redirect_url);
-        } else {
-            return Redirect::route('home');
-        }
-    }
-));
+});
 
 Route::get('{id}', [
     'as' => 'error_show',
     function ($id) {
         try {
-            return view('errors.' . $id);
+            if(request()->has('error')){
+                return view('errors.' . $id)->with('error',request()->get('error'));
+            } else {
+                return view('errors.' . $id);
+            }
         } catch (Exception $e) {
             return Redirect::route('error_show', ['id' => '404']);
         }
