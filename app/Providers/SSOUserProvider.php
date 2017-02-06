@@ -20,8 +20,10 @@ class SSOUserProvider extends ServiceProvider
         view()->composer('*', function ($view) {
             if (Auth::check()) {
                 $user = $this->AddMenuItems(Auth::user());
+                return $view->with('currentUser', $user);
+            } else {
+                return $view;
             }
-            return $view->with('currentUser', $user);
         });
     }
 
@@ -260,6 +262,7 @@ class SSOUserProvider extends ServiceProvider
             $item = new \stdClass();
             $item->text = "Logout";
             $item->url = route('logout');
+            $item->method = "post";
             array_push($menu_items, $item);
 
             $user->menu_items = $menu_items;

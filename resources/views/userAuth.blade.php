@@ -10,11 +10,25 @@
                 @if(isset($item->isHeader) && $item->isHeader)
                     <li class="dropdown-header">{{$item->text}}</li>
                 @else
-                    <li class="item"><a href="{!! $item->url !!}"
-                                        @if(isset($item->external) && $item->external)
-                                        target="_blank"
-                                @endif
-                        >{{$item->text}}</a></li>
+                    <li class="item">
+                        @if(isset($item->method) && $item->method != 'get')
+                            {!! Form::open(['url'=>$item->url, 'method'=>$item->method,
+                            'id'=>str_replace('/\s+/','',$item->text).'-form'])  !!}
+                            {!! Form::close() !!}
+                            <a href="{!! $item->url !!}"
+                               onclick="event.preventDefault();
+                                       document.getElementById('{!! str_replace('/\s+/','',$item->text).'-form' !!}').submit()"
+                            >{{$item->text}}</a>
+                        @else
+                            <a href="{!! $item->url !!}"
+                               @if(isset($item->external) && $item->external)
+                               target="_blank"
+                                    @endif
+                            >
+                                {{$item->text}}
+                            </a>
+                        @endif
+                    </li>
                 @endif
             @endforeach
         @endif

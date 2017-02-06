@@ -88,11 +88,6 @@ Route::get('/', array('as' => 'home', function () {
     }
 ));
 
-////Route for logging in when debugging the application
-Route::post('login/debug', function () {
-    return LoginController::debugLogin();
-});
-
 // Routes for logging in and out. Copied from Laravel source.
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('logout','Auth\LoginController@logout')->name('logout');
@@ -100,7 +95,7 @@ Route::get('whoami', function(){
     if(Auth::check()){
         return Auth::id();
     } else {
-        return 'Not Signed in.';
+        abort(401);
     }
 });
 
@@ -108,13 +103,9 @@ Route::get('{id}', [
     'as' => 'error_show',
     function ($id) {
         try {
-            if(request()->has('error')){
-                return view('errors.' . $id)->with('error',request()->get('error'));
-            } else {
-                return view('errors.' . $id);
-            }
+            return view('errors.' . $id);
         } catch (Exception $e) {
-            return Redirect::route('error_show', ['id' => '404']);
+            return view('errors.500');
         }
     }
 ]);

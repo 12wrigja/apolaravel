@@ -7,7 +7,7 @@ use APOSite\Interfaces\SSOService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -32,7 +32,9 @@ class LoginController extends Controller
      * to login) then we redirect to the $redirectTo URI.
      */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        sendLoginResponse as originalLoginResponse;
+    }
 
     /**
      * Where to redirect users after login.
@@ -93,7 +95,6 @@ class LoginController extends Controller
     protected function credentials(Request $request)
     {
         $credentialArray = $this->signOnService->credentialsFromRequest($request, route('login'));
-        unset($credentialArray['password']);
         $request->merge($credentialArray);
         $id = $credentialArray['id'];
         return isset($id) ? ['id' => $id, 'password' => ''] : [];
@@ -101,13 +102,21 @@ class LoginController extends Controller
 
     protected function sendFailedLoginResponse(Request $request)
     {
-        return View::make('errors.401');
+        return redirect()->to('401');
     }
 
     protected function sendLockoutResponse(Request $request)
     {
-        return View::make('errors.401',['error'=>'Sorry! It seems you\'re trying that too often! Try again 
-        in a bit.']);
+        Session::put('login_error', 'Sorry! It seems you\'re trying that too often! Try again 
+        in a bit.');
+        return redirect()->to('401');
     }
+
+    protected function sendLoginResponse(Request $request)
+    {
+        Session::forget('login_error');
+        return $this->originalLoginResponse($request);
+    }
+
 
 }
