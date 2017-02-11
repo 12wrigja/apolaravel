@@ -147,14 +147,15 @@ return [
 		'APOSite\Providers\RouteServiceProvider',
 
 		//Forms and HTML macro provider
-		'Illuminate\Html\HtmlServiceProvider',
+		'Collective\Html\HtmlServiceProvider',
 
         //SSO User Binding provider
         'APOSite\Providers\SSOUserProvider',
 
         //Laracasts Flash Provider
         'Laracasts\Flash\FlashServiceProvider',
-
+		//Google Drive Provider.
+		'APOSite\Providers\GoogleDriveServiceProvider'
 	],
 
 	/*
@@ -202,8 +203,8 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
-		'Form'      => 'Illuminate\Html\FormFacade',
-		'Html'      => 'Illuminate\Html\HtmlFacade',
+		'Form'      => 'Collective\Html\FormFacade',
+		'Html'      => 'Collective\Html\HtmlFacade',
 	],
 
 ];

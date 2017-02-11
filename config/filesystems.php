@@ -28,7 +28,7 @@ return [
 	|
 	*/
 
-	'cloud' => 's3',
+	'cloud' => 'google',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -56,13 +56,12 @@ return [
 			'bucket' => 'your-bucket',
 		],
 
-		'rackspace' => [
-			'driver'    => 'rackspace',
-			'username'  => 'your-username',
-			'key'       => 'your-key',
-			'container' => 'your-container',
-			'endpoint'  => 'https://identity.api.rackspacecloud.com/v2.0/',
-			'region'    => 'IAD',
+		'google' => [
+			'driver'    => 'google',
+			'clientId'  => env('GOOGLE_DRIVE_CLIENT_ID'),
+			'clientSecret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),
+			'refreshToken' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
+			'folderId'  => env('GOOGLE_DRIVE_FOLDER_ID')
 		],
 
 	],
