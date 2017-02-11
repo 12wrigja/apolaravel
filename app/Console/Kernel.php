@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected $commands = [
 		'APOSite\Console\Commands\Inspire',
-        'APOSite\Console\Commands\ReportCreator'
+        	'APOSite\Console\Commands\BackupToDrive',
 	];
 
 	/**
@@ -23,8 +23,7 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected function schedule(Schedule $schedule)
 	{
-		$schedule->command('inspire')
-				 ->hourly();
+		$schedule->command('db:backup')->daily();
 	}
 
 }
