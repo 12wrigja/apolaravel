@@ -121,6 +121,8 @@ class BackupToDrive extends Command {
         $localFileContents = Storage::disk('local')->get($backupFileName);
         Storage::disk('google')->put($backupFileName, $localFileContents);
 
-        $this->info('Remote back started.');
+        $this->info('Remote backup complete.');
+
+        Storage::disk('local')->delete($backupFileName);
     }
 }
