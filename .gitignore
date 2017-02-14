@@ -9,6 +9,8 @@
 .DS_Store
 /public/js
 /public/build
+/storage/oauth-public.key
+/storage/oauth-private.key
 
 #PHPStorm stuff
 ### PhpStorm ###

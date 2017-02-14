@@ -162,7 +162,12 @@ var main = new Vue({
         'manage_pledge_meetings_form': require('./views/reports/pledgemeetings/manage.js')(Resources),
         'user-profile-editor' : require('./views/users/profile-editor.js')(Resources),
         'user-create-form' : require('./views/users/create.js')(Resources),
-        'pledge-manager' : require('./views/users/pledge-manager.js')(Resources)
+        'pledge-manager' : require('./views/users/pledge-manager.js')(Resources),
+        // These are for the OAuth token system. However, we are currently not using a Vue version that is compatible,
+        // so they remain disabled.
+        // 'passport-clients': require('./views/components/passport/Clients.vue'),
+        // 'passport-authorized-clients' : require('./views/components/passport/AuthorizedClients.vue'),
+        // 'passport-personal-access-tokens' : require('./views/components/passport/PersonalAccessTokens.vue')
     },
 
     filters: {

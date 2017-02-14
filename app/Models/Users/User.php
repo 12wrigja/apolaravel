@@ -14,12 +14,13 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Laravel\Passport\HasApiTokens;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-
+    use HasApiTokens;
     use SoftDeletes;
     use Notifiable;
     use Authenticatable, Authorizable;

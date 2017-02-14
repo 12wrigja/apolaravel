@@ -188,7 +188,11 @@ return [
 		Collective\Html\HtmlServiceProvider::class,
 
 		//Google Drive Provider.
-		APOSite\Providers\GoogleDriveServiceProvider::class
+		APOSite\Providers\GoogleDriveServiceProvider::class,
+
+        // Passport
+        // https://laravel.com/docs/5.3/passport
+        Laravel\Passport\PassportServiceProvider::class
     ],
 
     /*
