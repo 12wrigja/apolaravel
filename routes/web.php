@@ -129,13 +129,13 @@ Route::delete('/reports/{type}/{id}', ['uses' => 'EventPipelineController@delete
 //});
 
 
-//TODO fix up the user editing system
+// Search page for users
 Route::get('/users', ['uses' => 'UserController@index', 'as' => 'users']);
-Route::post('/users', ['uses' => 'UserController@store', 'as' => 'user_store']);
+// Creationg page for users
 Route::get('/users/create', ['uses' => 'UserController@create', 'as' => 'user_create']);
+// Profile Editing page for users
 Route::get('/users/{cwruid}/edit', ['uses' => 'UserController@edit', 'as' => 'user_edit']);
+// Contract status page
 Route::get('/users/{cwruid}/status', ['uses' => 'UserController@statusPage', 'as' => 'user_status']);
-Route::get('/users/{cwruid}', ['uses' => 'UserController@show', 'as' => 'user_show']);
-Route::delete('/users/{cwruid}', 'UserController@destroy');
-Route::put('/users/{cwruid}', ['uses' => 'UserController@update', 'as' => 'user_update']);
+// Management Page
 Route::get('/manage/users', ['uses' => 'UserController@manage', 'as' => 'user_manage']);

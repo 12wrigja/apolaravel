@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use APOSite\Models\Users\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 
 abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
@@ -29,6 +30,15 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         return $app;
     }
+
+    protected function setUp() {
+        parent::setUp();
+        Artisan::call('db:seed',['--class'=>SemesterTableSeeder::class]);
+//        App::make(SemesterTableSeeder::class)->run();
+//        App::make(GlobalVariablesSeeder::class)->run();
+//        App::make(OfficesTableSeeder::class)->run();
+    }
+
 
     public function buildWebmasterUser() {
         $webmaster = $this->buildUser("webmaster", "Web", "Master");
@@ -62,7 +72,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
     // This is used to simulate the requests that users actually do.
     // Eventually this is where we would add in OAuth token headers.
-    public function callAPIMethod($method, $uri, $data, $as=null){
-
+    public function callAPIMethod($method, $uri, $api_key=null, $data=[]){
+        $this->json($method, $uri, $data, ['Authorization'=>'Bearer '.$api_key]);
     }
 }

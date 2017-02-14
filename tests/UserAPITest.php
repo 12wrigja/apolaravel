@@ -1,9 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class UserAPITest extends TestCase
 {
+    use DatabaseMigrations;
+
     /**
      * A basic test example.
      *
@@ -12,6 +15,20 @@ class UserAPITest extends TestCase
     public function testIndexNeedsAuthentication()
     {
         $this->assertFalse(Auth::check());
-        $this->json('GET','/api/v1/users');
+        $this->callAPIMethod('GET','/api/v1/users');
+        $this->seeJsonStructure(['error']);
+    }
+
+    public function testIndexWithAuth()
+    {
+        $this->assertFalse(Auth::check());
+        $user = $this->buildFakerUser('jow5','James','Wright');
+        $user->save();
+        $this->signInAs($user->id);
+        $token = $user->createToken('test-token')->accessToken;
+        $this->callAPIMethod('GET','/api/v1/users', $token);
+
+        dd($this->response->content());
+        $this->seeJsonStructure(['data']);
     }
 }
