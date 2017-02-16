@@ -4,6 +4,8 @@ use APOSite\Models\Users\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Passport\ClientRepository;
+use Illuminate\Support\Facades\DB;
 
 abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
@@ -34,9 +36,26 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     protected function setUp() {
         parent::setUp();
         Artisan::call('db:seed',['--class'=>SemesterTableSeeder::class]);
+
 //        App::make(SemesterTableSeeder::class)->run();
 //        App::make(GlobalVariablesSeeder::class)->run();
 //        App::make(OfficesTableSeeder::class)->run();
+
+        // Setup a Personal Access Token Client
+        $this->setUpPersonalAccessAPI();
+    }
+
+    public function setUpPersonalAccessAPI() {
+        $clientRepository = new ClientRepository();
+        $client = $clientRepository->createPersonalAccessClient(null,
+                                                                'Test Personal Access Client',
+                                                                $this->baseUrl);
+
+        DB::table('oauth_personal_access_clients')->insert([
+                                                               'client_id'  => $client->id,
+                                                               'created_at' => new DateTime,
+                                                               'updated_at' => new DateTime,
+                                                           ]);
     }
 
 

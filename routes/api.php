@@ -19,12 +19,14 @@ Route::group(['prefix' => 'v1'],
 
         // Read
         Route::get('/users', ['uses' => 'API\UserAPIController@index', 'as' => 'api.users'])
-            ->middleware('scope:view-profile,edit-profile');
-        Route::get('/users/{cwruid}', ['uses' => 'UserController@show', 'as' => 'user_show'])->middleware('scope:view-profile,edit-profile');
+             ->middleware('scope:view-profile,edit-profile');
+
+        Route::get('/users/{cwruid}', ['uses' => 'UserController@show', 'as' => 'user_show'])
+             ->middleware('scope:view-profile,edit-profile');
 
         // Update
         Route::put('/users/{cwruid}', ['uses' => 'UserController@update', 'as' => 'user_update'])
-            ->middleware('scope:edit-profile');
+             ->middleware('scope:edit-profile');
 
         // Delete
         Route::delete('/users/{cwruid}', 'UserController@destroy');

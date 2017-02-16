@@ -25,10 +25,8 @@ class UserAPITest extends TestCase
         $user = $this->buildFakerUser('jow5','James','Wright');
         $user->save();
         $this->signInAs($user->id);
-        $token = $user->createToken('test-token')->accessToken;
+        $token = $user->createToken('test-token',['view-profile'])->accessToken;
         $this->callAPIMethod('GET','/api/v1/users', $token);
-
-        dd($this->response->content());
         $this->seeJsonStructure(['data']);
     }
 }
