@@ -2,6 +2,7 @@
 
 namespace APOSite\Providers;
 
+use APOSite\Http\Controllers\API\UserAPIController;
 use Carbon\Carbon;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
@@ -27,12 +28,13 @@ class AuthServiceProvider extends ServiceProvider {
         Passport::ignoreMigrations();
         Passport::routes();
         Passport::tokensExpireIn(Carbon::now()->addDays(1));
-        Passport::tokensCan([
-                                'view-profile'           => 'View your user profile and profiles of other APO members.',
-                                'edit-profile'           => 'View and edit your user profile.',
-                                'view-service-reports'   => 'View service report data.',
-                                'manage-service-reports' => 'Create and delete service reports as you.',
-                                'view-contract-status'   => 'View contract status.',
-                            ]);
+        Passport::tokensCan(array_merge([
+
+                                            'view-service-reports'   => 'View service report data.',
+                                            'manage-service-reports' => 'Create and delete service reports as you.',
+                                            'view-contract-status'   => 'View contract status.',
+                                        ],
+                                        UserAPIController::$SCOPE_VIEW_PROFILE,
+                                        UserAPIController::$SCOPE_EDIT_PROFILE));
     }
 }

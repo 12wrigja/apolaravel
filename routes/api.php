@@ -15,23 +15,24 @@ Route::group(['prefix' => 'v1'],
         // Users API
 
         // Create
-        Route::post('/users', ['uses' => 'UserController@store', 'as' => 'user_store']);
+        Route::post('/users', ['uses' => 'API\UserAPIController@store', 'as' => 'user_store']);
 
         // Read
         Route::get('/users', ['uses' => 'API\UserAPIController@index', 'as' => 'api.users'])
              ->middleware('scope:view-profile,edit-profile');
 
-        Route::get('/users/{cwruid}', ['uses' => 'UserController@show', 'as' => 'user_show'])
+        Route::get('/users/{cwruid}', ['uses' => 'API\UserAPIController@show', 'as' => 'user_show'])
              ->middleware('scope:view-profile,edit-profile');
 
         // Update
-        Route::put('/users/{cwruid}', ['uses' => 'UserController@update', 'as' => 'user_update'])
+        Route::put('/users/{cwruid}',
+                   ['uses' => 'API\UserAPIController@update', 'as' => 'user_update'])
              ->middleware('scope:edit-profile');
 
         // Delete
-        Route::delete('/users/{cwruid}', 'UserController@destroy');
+        Route::delete('/users/{cwruid}', 'API\UserAPIController@destroy');
 
         // Contract Status
         Route::get('/users/{cwruid}/status',
-                   ['uses' => 'UserController@statusPage', 'as' => 'user_status']);
+                   ['uses' => 'API\UserAPIController@statusPage', 'as' => 'user_status']);
     });

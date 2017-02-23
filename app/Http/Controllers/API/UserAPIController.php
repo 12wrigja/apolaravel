@@ -2,26 +2,30 @@
 
 namespace APOSite\Http\Controllers\API;
 
+use APOSite\Http\Controllers\Controller;
 use APOSite\Http\Requests\Users\UserCreateRequest;
 use APOSite\Http\Requests\Users\UserDeleteRequest;
 use APOSite\Http\Requests\Users\UserEditRequest;
-use APOSite\Http\Requests\Users\UserPersonalPageRequest;
 use APOSite\Http\Transformers\UserSearchResultTransformer;
 use APOSite\Models\Semester;
 use APOSite\Models\Users\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use APOSite\Http\Controllers\Controller;
 
 class UserAPIController extends Controller {
+
+    public static $SCOPE_VIEW_PROFILE = [
+        'view-profile' => 'View your user profile and profiles of other APO members.',
+    ];
+    public static $SCOPE_EDIT_PROFILE = [
+        'edit-profile' => 'View and edit your user profile.',
+    ];
 
     /**
      * Display a listing of the resource.
@@ -54,15 +58,6 @@ class UserAPIController extends Controller {
         $resource = new Collection($users, $transformer);
         $fractal = new Manager();
         return $fractal->createData($resource)->toJson();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function manage() {
-        return view('users.pledge_management');
     }
 
     /**
@@ -99,36 +94,14 @@ class UserAPIController extends Controller {
      */
     public function show($id) {
         $user = User::find($id);
-        if (Request::wantsJSON()) {
-            if ($user != null) {
-                return $user;
-            } else {
-                //TODO update this json response to be formatted the same as the others.
-                return response('User not found.', 404);
-            }
-        }
         if ($user != null) {
-            $big = User::find($user->big);
-            return view('users.profile')->with(compact('user', 'big'));
+            $transformer = new UserSearchResultTransformer($attributes);
+            $resource = new Item($user, $transformer);
+            $fractal = new Manager();
+            return $fractal->createData($resource)->toJson();
         } else {
-            throw new NotFoundHttpException("User Not Found!");
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function edit(UserPersonalPageRequest $request,
-                         $id) {
-        $user = User::find($id);
-        if ($user != null) {
-            return view('users.profileedit')->with('user', $user);
-        } else {
-            throw new NotFoundHttpException("User Not Found!");
+            //TODO update this json response to be formatted the same as the others.
+            return response('User not found.', 404);
         }
     }
 
@@ -195,39 +168,27 @@ class UserAPIController extends Controller {
             throw new NotFoundHttpException('User not found');
         }
     }
-
-    private function searchUsers($text) {
-        if ($text != "") {
-            $users = User::where('first_name', 'LIKE', $text . '%')
-                         ->orWhere('last_name',
-                                   'LIKE',
-                                   $text . '%')
-                         ->orWhere(DB::raw('CONCAT(first_name, " ", last_name)'),
-                                   'LIKE',
-                                   $text . '%')
-                         ->orderBy('first_name', 'ASC')
-                         ->orderBy('last_name', 'ASC');
-        } else {
-            $users = User::query();
-        }
-        $users =
-            $users->orderBy('first_name', 'ASC')->orderBy('last_name', 'ASC')->select('first_name',
-                                                                                      'last_name',
-                                                                                      'nickname',
-                                                                                      'id');
-        return $users;
-    }
-
-    public function statusPage(UserPersonalPageRequest $request,
-                               $id) {
-        $user = User::find($id);
-        if ($user != null) {
-            return view('contracts.status')
-                ->with('contract', $user->contractForSemester(null))
-                ->with('user', $user);
-        } else {
-            throw new NotFoundHttpException('User not found');
-        }
-    }
+//
+//    private function searchUsers($text) {
+//        if ($text != "") {
+//            $users = User::where('first_name', 'LIKE', $text . '%')
+//                         ->orWhere('last_name',
+//                                   'LIKE',
+//                                   $text . '%')
+//                         ->orWhere(DB::raw('CONCAT(first_name, " ", last_name)'),
+//                                   'LIKE',
+//                                   $text . '%')
+//                         ->orderBy('first_name', 'ASC')
+//                         ->orderBy('last_name', 'ASC');
+//        } else {
+//            $users = User::query();
+//        }
+//        $users =
+//            $users->orderBy('first_name', 'ASC')->orderBy('last_name', 'ASC')->select('first_name',
+//                                                                                      'last_name',
+//                                                                                      'nickname',
+//                                                                                      'id');
+//        return $users;
+//    }
 
 }

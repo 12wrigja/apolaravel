@@ -82,10 +82,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'pledge_semester',
         'initiation_semester'
     ];
-    protected $dates = ['deleted_at'];
-    protected $appends = ['contract', 'family'];
-    protected $interallyRenamed = ['contract' => 'contract_id'];
 
+    // Attributes that are to be cast into Carbon Dates
+    protected $dates = ['deleted_at'];
+
+    // Attributes that are to be appended to JSON representations of these models.
+    protected $appends = ['contract', 'family'];
+
+    // Attributes that are renamed internally to be something else.
+    protected $interallyRenamed = ['contract' => 'contract_id'];
 
     public function getFullDisplayName()
     {
@@ -284,23 +289,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function getContractAttribute()
     {
         return $this->ContractTypeForSemester(Semester::currentSemester());
-    }
-
-    public function scopeMatchDatabaseAttributes($query, $attributes)
-    {
-        $appendedFilterable = [];
-        foreach ($attributes as $key => $value) {
-            if (!in_array($key, $this->hidden)) {
-                if (in_array($key, $this->fillable)) {
-                    $query = $query->where($key, $value);
-                } else {
-                    if (in_array($key, $this->appends)) {
-                        $appendedFilterable[$key] = $value;
-                    }
-                }
-            }
-        }
-        return $query;
     }
 
     public function scopeMatchAllAttributes($query, $attributes)

@@ -4,8 +4,8 @@ use APOSite\Models\Users\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Passport\ClientRepository;
 use Illuminate\Support\Facades\DB;
+use Laravel\Passport\ClientRepository;
 
 abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
@@ -92,6 +92,11 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     // This is used to simulate the requests that users actually do.
     // Eventually this is where we would add in OAuth token headers.
     public function callAPIMethod($method, $uri, $api_key=null, $data=[]){
+        $this->refreshApplication();
         $this->json($method, $uri, $data, ['Authorization'=>'Bearer '.$api_key]);
+    }
+
+    public function scopeKey($scopeArray) {
+        return array_keys($scopeArray)[0];
     }
 }
