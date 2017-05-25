@@ -26,27 +26,33 @@ class Report extends Model
         return $this->belongsToMany('APOSite\Models\Users\User')->withPivot('value', 'tag');
     }
 
-    public function scopeServiceReports($query){
+    public function scopeServiceReports($query)
+    {
         return $query->whereReportTypeType(ServiceReport::class);
     }
 
-    public function scopeBrotherhoodReports($query){
+    public function scopeBrotherhoodReports($query)
+    {
         return $query->whereReportTypeType(BrotherhoodReport::class);
     }
 
-    public function scopeChapterMeetings($query){
+    public function scopeChapterMeetings($query)
+    {
         return $query->whereReportTypeType(ChapterMeeting::class);
     }
 
-    public function scopePledgeMeetings($query){
+    public function scopePledgeMeetings($query)
+    {
         return $query->whereReportTypeType(PledgeMeeting::class);
     }
 
-    public function scopeExecMeetings($query){
+    public function scopeExecMeetings($query)
+    {
         return $query->whereReportTypeType(ExecMeeting::class);
     }
 
-    public function scopeDuesReports($query){
+    public function scopeDuesReports($query)
+    {
         return $query->whereReportTypeType(DuesReport::class);
     }
 

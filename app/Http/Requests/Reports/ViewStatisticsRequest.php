@@ -1,7 +1,7 @@
 <?php namespace APOSite\Http\Requests\Reports;
 
 use APOSite\Http\Controllers\AccessController;
-use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 use APOSite\Http\Requests\Request;
 
 class ViewStatisticsRequest extends Request
@@ -14,7 +14,10 @@ class ViewStatisticsRequest extends Request
      */
     public function authorize()
     {
-        $user = LoginController::currentUser();
+        if(!Auth::check()){
+            return false;
+        }
+        $user = Auth::user();
         return AccessController::isMembership($user);
     }
 

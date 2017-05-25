@@ -2,14 +2,14 @@
 
 namespace APOSite\Http\Requests\Contracts;
 
+use APOSite\ContractFramework\Contracts\Contract;
 use APOSite\Http\Controllers\AccessController;
-use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
+use APOSite\Http\Requests\Request;
 use APOSite\Models\Semester;
 use APOSite\Models\Users\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Factory as ValidationFactory;
-use APOSite\Http\Requests\Request;
-use APOSite\ContractFramework\Contracts\Contract;
 
 class ContractModifyRequest extends Request
 {
@@ -46,8 +46,7 @@ class ContractModifyRequest extends Request
      */
     public function authorize()
     {
-        $user = LoginController::currentUser();
-        return $user != null;
+        return Auth::check();
     }
 
     /**
@@ -57,10 +56,10 @@ class ContractModifyRequest extends Request
      */
     public function rules()
     {
-        $user = LoginController::currentUser();
-        $contractTypes = implode(',',Contract::getAllContractTypes()->map(function($item){
-            if($item->version > 1){
-                return $item->contract_name.'V'.$item->version;
+        $user = Auth::user();
+        $contractTypes = implode(',', Contract::getAllContractTypes()->map(function ($item) {
+            if ($item->version > 1) {
+                return $item->contract_name . 'V' . $item->version;
             } else {
                 return $item->contract_name;
             }
@@ -89,24 +88,25 @@ class ContractModifyRequest extends Request
                 }
             }
         } else {
-            if(!AccessController::isMembership($user)){
-                $contractTypes = implode(',',Contract::getCurrentSignableContracts()->map(function($item){
-                    if($item->version > 1){
-                        return $item->contract_name.'V'.$item->version;
+            if (!AccessController::isMembership($user)) {
+                $contractTypes = implode(',', Contract::getCurrentSignableContracts()->map(function ($item) {
+                    if ($item->version > 1) {
+                        return $item->contract_name . 'V' . $item->version;
                     } else {
                         return $item->contract_name;
                     }
-                    })->toArray());
+                })->toArray());
             }
             $base = ['contract' => 'required|in:' . $contractTypes];
-            if($this->has('contract')){
+            if ($this->has('contract')) {
                 $contract = $this->get('contract');
-                if($contract == 'Active' || $contract == 'Associate'){
+                if ($contract == 'Active' || $contract == 'Associate') {
                     //Rules go here to validate that we are getting in committe rankings.
-                    $base = array_merge($base,['committees'=>['required','array']]);
-                }
-                else if ($contract == "Inactive"){
-                    $base = array_merge($base,['reason'=>'required|string']);
+                    $base = array_merge($base, ['committees' => ['required', 'array']]);
+                } else {
+                    if ($contract == "Inactive") {
+                        $base = array_merge($base, ['reason' => 'required|string']);
+                    }
                 }
             }
             return $base;

@@ -33,12 +33,15 @@ class ServiceReportTransformer extends TransformerAbstract
         });
         $otherData = [
             'id' => $report->id,
-            'href' => route('report_show',['id'=>$report->id,'type'=>'service_reports']),
+            'href' => route('report_show', ['id' => $report->id, 'type' => 'service_reports']),
             'event_name' => $report->event_name,
             'description' => $report->description,
             'event_date' => $report->event_date->toDateString(),
             'human_date' => $report->event_date->toFormattedDateString(),
-            'submitter' => ['id'=>$report->creator_id,'display_name'=>User::find($report->creator_id)->fullDisplayName()],
+            'submitter' => [
+                'id' => $report->creator_id,
+                'display_name' => User::find($report->creator_id)->fullDisplayName()
+            ],
             'project_type' => $report->project_type,
             'service_type' => $report->service_type,
             'location' => $report->location,

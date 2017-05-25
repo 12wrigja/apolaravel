@@ -4,7 +4,7 @@ namespace APOSite\Http\Controllers;
 
 use APOSite\ContractFramework\Contracts\Contract;
 use APOSite\GlobalVariable;
-use APOSite\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 use APOSite\Http\Requests\Contracts\ContractManageRequest;
 use APOSite\Http\Requests\Contracts\ContractModifyRequest;
 use APOSite\Models\Semester;
@@ -21,7 +21,7 @@ class ContractController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('SSOAuth');
+        $this->middleware('auth');
     }
 
 
@@ -32,11 +32,11 @@ class ContractController extends Controller
      */
     public function index()
     {
-        $existingContract = LoginController::currentUser()->contractForSemester(null);
+        $existingContract = Auth::user()->contractForSemester(null);
         $signableContracts = Contract::getCurrentSignableContracts();
         $signableContracts->transform(function ($item) {
 
-            if($item->version > 1){
+            if ($item->version > 1) {
                 $contractVersionCode = $item->contract_name . 'V' . $item->version;
             } else {
                 $contractVersionCode = $item->contract_name;
@@ -59,7 +59,7 @@ class ContractController extends Controller
     //To use used by membership vp to change contracts, and by pledge ed to advance pledges. NOT for signing contracts
     public function modifyContract(ContractModifyRequest $request)
     {
-        $user = LoginController::currentUser();
+        $user = Auth::user();
         if (!$request->has('contract') && (AccessController::isMembership($user) || AccessController::isPledgeEducator($user))) {
             //Process bulk transactions
             $brothers = $request->get('brothers');

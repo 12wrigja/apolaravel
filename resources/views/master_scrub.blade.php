@@ -50,7 +50,7 @@
         <div id="navbarCollapse" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 @yield('nav_menu_items')
-                @if($currentUser != null)
+                @if(isset($currentUser))
                     @include('userAuth')
                 @else
                     <li class="dropdown pull-right">

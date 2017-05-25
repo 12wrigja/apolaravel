@@ -20,7 +20,7 @@ class BrotherhoodHoursRequirement extends EventBasedRequirement
     {
         $service_reports = $this->user->reports()->BrotherhoodReports()->get();
         $semester = $this->semester;
-        $service_reports = $service_reports->filter(function($report) use ($semester){
+        $service_reports = $service_reports->filter(function ($report) use ($semester) {
             $val = $semester->dateInSemester($report->report_type->event_date);
             $val = $val && $report->report_type->approved;
             return $val;
@@ -32,7 +32,7 @@ class BrotherhoodHoursRequirement extends EventBasedRequirement
     {
         $service_reports = $this->user->reports()->BrotherhoodReports()->get();
         $semester = $this->semester;
-        $service_reports = $service_reports->filter(function($report) use ($semester){
+        $service_reports = $service_reports->filter(function ($report) use ($semester) {
             $val = $semester->dateInSemester($report->report_type->event_date);
             $val = $val && !$report->report_type->approved;
             return $val;

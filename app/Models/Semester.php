@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Semester extends Model
 {
-    protected $dates = ['start_date','end_date'];
+    protected $dates = ['start_date', 'end_date'];
 
     public static function currentSemester()
     {
@@ -23,6 +23,25 @@ class Semester extends Model
         })->orderBy('start_date', 'DESC')->first();
     }
 
+    public static function SemesterFromText($semester, $year, $shouldCreate = false)
+    {
+        $base = $year << 1;
+        if ($semester == 'fall') {
+            $base += 1;
+        }
+        $sem = static::find($base);
+        if ($sem == null && $shouldCreate) {
+            $newSem = new Semester();
+            $newSem->id = $base;
+            $newSem->semester = $semester;
+            $newSem->year = $year;
+            $newSem->save();
+            return $newSem;
+        } else {
+            return $sem;
+        }
+    }
+
     public function next()
     {
         return Semester::find($this->id + 1);
@@ -33,37 +52,21 @@ class Semester extends Model
         return Semester::find($this->id - 1);
     }
 
-    public function dateInSemester(Carbon $date){
+    public function dateInSemester(Carbon $date)
+    {
         $start = $this->start_date;
         $end = $this->end_date;
-        if($start == null && $end == null){
+        if ($start == null && $end == null) {
             return false;
         } else {
             $gate = true;
-            if($start != null){
+            if ($start != null) {
                 $gate = $gate && $start <= $date;
-            } if($end != null){
+            }
+            if ($end != null) {
                 $gate = $gate && $end >= $date;
             }
             return $gate;
-        }
-    }
-
-    public static function SemesterFromText($semester, $year, $shouldCreate = false){
-        $base = $year << 1;
-        if($semester == 'fall'){
-            $base += 1;
-        }
-        $sem = static::find($base);
-        if($sem == null && $shouldCreate){
-            $newSem = new Semester();
-            $newSem->id = $base;
-            $newSem->semester = $semester;
-            $newSem->year = $year;
-            $newSem->save();
-            return $newSem;
-        } else {
-            return $sem;
         }
     }
 }

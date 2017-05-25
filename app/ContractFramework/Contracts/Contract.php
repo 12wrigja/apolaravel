@@ -70,12 +70,12 @@ abstract class Contract
 
     public static final function getCurrentSignableContracts()
     {
-        return collect(DB::table('contracts')->where('display_order', '>=', 0)->orderBy('display_order', 'asc')->get());
+        return DB::table('contracts')->where('display_order', '>=', 0)->orderBy('display_order', 'asc')->get();
     }
 
     public static final function getAllContractTypes()
     {
-        return collect(DB::table('contracts')->orderBy('display_order', 'asc')->get());
+        return DB::table('contracts')->orderBy('display_order', 'asc')->get();
     }
 
     public static function getOtherSigningRequirements()

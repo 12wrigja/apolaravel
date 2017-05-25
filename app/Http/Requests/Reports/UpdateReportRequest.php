@@ -1,8 +1,8 @@
 <?php namespace APOSite\Http\Requests\Reports;
 
+use APOSite\Http\Requests\Request;
 use App;
 use Illuminate\Console\AppNamespaceDetectorTrait;
-use APOSite\Http\Requests\Request;
 
 class UpdateReportRequest extends Request
 {

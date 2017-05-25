@@ -9,6 +9,8 @@
 .DS_Store
 /public/js
 /public/build
+/storage/oauth-public.key
+/storage/oauth-private.key
 
 #PHPStorm stuff
 ### PhpStorm ###
@@ -58,3 +60,5 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
+.phpstorm.meta.php
+_ide_helper.php

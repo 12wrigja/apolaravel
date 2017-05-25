@@ -1,10 +1,10 @@
 <?php namespace APOSite\Http\Transformers;
 
-use APOSite\Models\Contracts\Reports\Types\ExecMeeting;
-use League\Fractal\Manager;
 use APOSite\Http\Requests\Users;
-use League\Fractal\TransformerAbstract;
+use APOSite\Models\Contracts\Reports\Types\ExecMeeting;
 use APOSite\Models\Users\User;
+use League\Fractal\Manager;
+use League\Fractal\TransformerAbstract;
 
 class ExecMeetingTransformer extends TransformerAbstract
 {
@@ -32,14 +32,17 @@ class ExecMeetingTransformer extends TransformerAbstract
         });;
         $otherData = [
             'id' => $report->id,
-            'href' => route('report_show',['id'=>$report->id,'type'=>'chapter_meetings']),
+            'href' => route('report_show', ['id' => $report->id, 'type' => 'chapter_meetings']),
             'event_date' => $report->event_date->toDateString(),
             'human_date' => $report->event_date->toFormattedDateString(),
             'minutes' => $report->minutes,
             'brothers' => $brothers,
-            'submitter' => ['id'=>$report->creator_id,'display_name'=>User::find($report->creator_id)->fullDisplayName()],
+            'submitter' => [
+                'id' => $report->creator_id,
+                'display_name' => User::find($report->creator_id)->fullDisplayName()
+            ],
         ];
-        if(ExecMeeting::where('event_date',$report->event_date)->count() > 1){
+        if (ExecMeeting::where('event_date', $report->event_date)->count() > 1) {
             $otherData['potential_duplicate'] = true;
         }
         return $otherData;

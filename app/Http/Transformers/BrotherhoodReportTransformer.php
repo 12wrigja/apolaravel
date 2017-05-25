@@ -1,10 +1,10 @@
 <?php namespace APOSite\Http\Transformers;
 
 use APOSite\Models\Contracts\Reports\Types\BrotherhoodReport;
+use APOSite\Models\Users\User;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\TransformerAbstract;
-use APOSite\Models\Users\User;
 
 class BrotherhoodReportTransformer extends TransformerAbstract
 {
@@ -33,12 +33,15 @@ class BrotherhoodReportTransformer extends TransformerAbstract
         });
         $otherData = [
             'id' => $report->id,
-            'href' => route('report_show',['id'=>$report->id,'type'=>'service_reports']),
+            'href' => route('report_show', ['id' => $report->id, 'type' => 'service_reports']),
             'event_name' => $report->event_name,
             'description' => $report->description,
             'event_date' => $report->event_date->toDateString(),
             'human_date' => $report->event_date->toFormattedDateString(),
-            'submitter' => ['id'=>$report->creator_id,'display_name'=>User::find($report->creator_id)->fullDisplayName()],
+            'submitter' => [
+                'id' => $report->creator_id,
+                'display_name' => User::find($report->creator_id)->fullDisplayName()
+            ],
             'location' => $report->location,
             'type' => $report->type,
             'submission_date' => $report->created_at->toDateTimeString(),

@@ -3,10 +3,10 @@
 namespace APOSite\Http\Requests\Users;
 
 use APOSite\Http\Controllers\AccessController;
-use APOSite\Http\Controllers\LoginController;
-use Illuminate\Validation\Factory as ValidationFactory;
-use APOSite\Models\Users\User;
+use Illuminate\Support\Facades\Auth;
 use APOSite\Http\Requests\Request;
+use APOSite\Models\Users\User;
+use Illuminate\Validation\Factory as ValidationFactory;
 
 class UserEditRequest extends Request
 {
@@ -24,8 +24,10 @@ class UserEditRequest extends Request
                 if (is_numeric($year) && in_array($semester, $semesters)) {
                     return true;
                 }
-            } else if ($value == 'current'){
-                return true;
+            } else {
+                if ($value == 'current') {
+                    return true;
+                }
             }
             return false;
         },
@@ -39,10 +41,14 @@ class UserEditRequest extends Request
      */
     public function authorize()
     {
+        if (!Auth::check()){
+            return false;
+        }
+        $signedInUser = Auth::user();
         $pageUser = User::find($this->route('cwruid'));
-        if (($pageUser->id == LoginController::currentUser()->id) || AccessController::isWebmaster(LoginController::currentUser())) {
+        if (($pageUser->id === $signedInUser->id) || AccessController::isWebmaster($signedInUser)) {
             return true;
-        } elseif ($pageUser->isPledge() && AccessController::isPledgeEducator(LoginController::currentUser())) {
+        } elseif ($pageUser->isPledge() && AccessController::isPledgeEducator($signedInUser)) {
             return true;
         } else {
             return false;

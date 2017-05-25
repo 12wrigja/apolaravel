@@ -2,20 +2,63 @@
 
 namespace APOSite\Models\Users;
 
+use APOSite\ContractFramework\Contracts\Contract;
 use APOSite\GlobalVariable;
 use APOSite\Models\Semester;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Laravel\Passport\HasApiTokens;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use APOSite\ContractFramework\Contracts\Contract;
 
-class User extends Model
+
+class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-
+    use HasApiTokens;
     use SoftDeletes;
+    use Notifiable;
+    use Authenticatable, Authorizable;
+
+    // BEGIN Authorization Changes
+
+    // Setup the primary key as non-incrementing - it's a user's CWRU ID, which is not a number.
+    public $incrementing = false;
+
+    // Set their internal Auth password as nothing. Auth is handled by SSO - we simply need to check the tickets upon
+    // return. See LoginController for details.
+    public function getAuthPassword()
+    {
+        return bcrypt('');
+    }
+
+    // Disable remember me functionality. We don't rename the remember me token functionality because who knows where
+    // else this is used....
+    public function getRememberToken()
+    {
+        return null; // Using Remember Me is not supported on this site;
+    }
+
+    public function setRememberToken($value)
+    {
+        return null; // Using Remember Me is not supported on this site;
+    }
+
+    public function setAttribute($key, $value)
+    {
+        $isRememberMeTokenAttribute = ($key == $this->getRememberTokenName());
+        if (!$isRememberMeTokenAttribute) {
+            return parent::setAttribute($key, $value);
+        }
+        return $this;
+    }
+
+    // END Authorization Changes
 
     protected $fillable = [
         'first_name',
@@ -39,9 +82,15 @@ class User extends Model
         'pledge_semester',
         'initiation_semester'
     ];
+
+    // Attributes that are to be cast into Carbon Dates
     protected $dates = ['deleted_at'];
-    protected $appends = ['contract','family'];
-    protected $interallyRenamed = ['contract'=>'contract_id'];
+
+    // Attributes that are to be appended to JSON representations of these models.
+    protected $appends = ['contract', 'family'];
+
+    // Attributes that are renamed internally to be something else.
+    protected $interallyRenamed = ['contract' => 'contract_id'];
 
     public function getFullDisplayName()
     {
@@ -126,28 +175,28 @@ class User extends Model
     {
         return $query->join('contract_user', function ($join) {
             $join->on('users.id', '=', 'contract_user.user_id');
-        })->where('contract_id','LIKE','Active%')->whereSemesterId($semester->id);
+        })->where('contract_id', 'LIKE', 'Active%')->whereSemesterId($semester->id);
     }
 
     public function scopeAssociateForSemester($query, Semester $semester)
     {
         return $query->join('contract_user', function ($join) {
             $join->on('users.id', '=', 'contract_user.user_id');
-        })->where('contract_id','LIKE','Associate%')->whereSemesterId($semester->id);
+        })->where('contract_id', 'LIKE', 'Associate%')->whereSemesterId($semester->id);
     }
 
     public function scopePledgeForSemester($query, Semester $semester)
     {
         return $query->join('contract_user', function ($join) {
             $join->on('users.id', '=', 'contract_user.user_id');
-        })->where('contract_id','LIKE','Pledge%')->whereSemesterId($semester->id);
+        })->where('contract_id', 'LIKE', 'Pledge%')->whereSemesterId($semester->id);
     }
 
     public function scopeNeophyteForSemester($query, Semester $semester)
     {
         return $query->join('contract_user', function ($join) {
             $join->on('users.id', '=', 'contract_user.user_id');
-        })->where('contract_id','LIKE','Neophyte%')->whereSemesterId($semester->id);
+        })->where('contract_id', 'LIKE', 'Neophyte%')->whereSemesterId($semester->id);
     }
 
     public function scopeIncludeContract($query)
@@ -184,7 +233,7 @@ class User extends Model
 
     public function isPledge($semester = null)
     {
-        if($semester == null){
+        if ($semester == null) {
             $semester = Semester::currentSemester();
         }
         return $this->ContractTypeForSemester($semester) == "Pledge";
@@ -192,7 +241,7 @@ class User extends Model
 
     public function isActive($semester = null)
     {
-        if($semester == null){
+        if ($semester == null) {
             $semester = Semester::currentSemester();
         }
         return $this->ContractTypeForSemester($semester) == "Active";
@@ -200,7 +249,7 @@ class User extends Model
 
     public function isAssociate($semester = null)
     {
-        if($semester == null){
+        if ($semester == null) {
             $semester = Semester::currentSemester();
         }
 
@@ -242,32 +291,15 @@ class User extends Model
         return $this->ContractTypeForSemester(Semester::currentSemester());
     }
 
-    public function scopeMatchDatabaseAttributes($query, $attributes)
-    {
-        $appendedFilterable = [];
-        foreach ($attributes as $key => $value) {
-            if (!in_array($key, $this->hidden)) {
-                if (in_array($key, $this->fillable)) {
-                    $query = $query->where($key, $value);
-                } else {
-                    if (in_array($key, $this->appends)) {
-                        $appendedFilterable[$key] = $value;
-                    }
-                }
-            }
-        }
-        return $query;
-    }
-
     public function scopeMatchAllAttributes($query, $attributes)
     {
         $appendedFilterable = [];
         foreach ($attributes as $key => $value) {
-            if (in_array($key,$this->getFilterableAttributes())) {
+            if (in_array($key, $this->getFilterableAttributes())) {
                 if (in_array($key, $this->appends)) {
                     $appendedFilterable[$key] = $value;
                 } else {
-                    if($value == 'null'){
+                    if ($value == 'null') {
                         $query = $query->whereNull($key);
                     } else {
                         $query = $query->where($key, $value);
@@ -299,32 +331,35 @@ class User extends Model
     {
         foreach ($attributes as $key) {
             //Test to make sure that all the attributes are valid.
-            if (!in_array($key, $this->getFilterableAttributes())){
+            if (!in_array($key, $this->getFilterableAttributes())) {
                 unset($attributes[$key]);
             }
         }
         return array_keys($attributes);
     }
 
-    public function getFilterableAttributes(){
+    public function getFilterableAttributes()
+    {
         return array_merge($this->fillable, $this->appends, ['big']);
     }
 
-    public function getFamilyAttribute(){
+    public function getFamilyAttribute()
+    {
         return Family::find($this->family_id);
     }
 
-    public function serializeBigAttribute(){
+    public function serializeBigAttribute()
+    {
         $big = User::find($this->big);
-        if($big == null){
+        if ($big == null) {
             return null;
         } else {
             return [
-                'id'=>$big->id,
-                'fist_name'=>$big->first_name,
-                'last_name'=>$big->last_name,
-                'display_name'=>$big->fullDisplayName()
-        ];
+                'id' => $big->id,
+                'fist_name' => $big->first_name,
+                'last_name' => $big->last_name,
+                'display_name' => $big->fullDisplayName()
+            ];
         }
     }
 }

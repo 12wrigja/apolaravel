@@ -8,12 +8,10 @@
 
 namespace APOSite\ContractFramework\Requirements;
 
-use APOSite\Models\Semester;
-use APOSite\Models\Users\User;
-
 abstract class EventBasedRequirement extends Requirement
 {
-    public final function getDetailsView(){
+    public final function getDetailsView()
+    {
         return view('reports.eventlist');
     }
 
@@ -21,8 +19,8 @@ abstract class EventBasedRequirement extends Requirement
     {
         $service_reports = $this->getReports($this->semester);
         $value = 0;
-        foreach($service_reports as $report){
-            if($report->report_type->approved){
+        foreach ($service_reports as $report) {
+            if ($report->report_type->approved) {
                 $value += $report->pivot->value;
             }
         }
@@ -33,8 +31,8 @@ abstract class EventBasedRequirement extends Requirement
     {
         $service_reports = $this->getPendingReports($this->semester);
         $value = 0;
-        foreach($service_reports as $report){
-            if(!$report->report_type->approved){
+        foreach ($service_reports as $report) {
+            if (!$report->report_type->approved) {
                 $value += $report->pivot->value;
             }
         }

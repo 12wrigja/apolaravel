@@ -2,9 +2,8 @@
 
 namespace APOSite\Http\Controllers;
 
-use APOSite\Http\Requests;
 use APOSite\Models\Users\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,7 +26,7 @@ class DocumentController extends Controller
 
     public function index()
     {
-        return view('tools.document_list')->with('files', $this->listFilesForUser(LoginController::currentUser()));
+        return view('tools.document_list')->with('files', $this->listFilesForUser(Auth::user()));
     }
 
     public function getDocument($filename)
@@ -40,7 +39,7 @@ class DocumentController extends Controller
             return $this->buildFileResponse($unsecuredFilePath, $filename);
         } else {
             //You have to be signed in for this part.
-            if (LoginController::currentUser() != null) {
+            if (Auth::check()) {
                 //We are logged in as someone. Therefore, they can access documents in the secured folder
                 //, plus any documents that they might have access to as an exec member.
                 if ($this->disk->exists($securedFilePath)) {
@@ -53,14 +52,16 @@ class DocumentController extends Controller
 
     public function getOfficeDocument($office, $filename)
     {
-        $user = LoginController::currentUser();
-        if ($user != null && AccessController::isExecMember($user)) {
-            //Check and see if the file is in the directories that are accessible to that user.
-            $folderNames = AccessController::getAccessibleFoldersForUser($user);
-            if (in_array($office, $folderNames)) {
-                $filePath = $this->sDocuments . $office . '/' . $filename;
-                if ($this->disk->exists($filePath)) {
-                    return $this->buildFileResponse($filePath, $filename);
+        if (Auth::check()) {
+            $user = Auth::user();
+            if (AccessController::isExecMember($user)) {
+                //Check and see if the file is in the directories that are accessible to that user.
+                $folderNames = AccessController::getAccessibleFoldersForUser($user);
+                if (in_array($office, $folderNames)) {
+                    $filePath = $this->sDocuments . $office . '/' . $filename;
+                    if ($this->disk->exists($filePath)) {
+                        return $this->buildFileResponse($filePath, $filename);
+                    }
                 }
             }
         }
@@ -91,7 +92,7 @@ class DocumentController extends Controller
             return $nextChar != '.';
         });
         if ($baseDir != null) {
-            $pattern = '#^'.$baseDir."#";
+            $pattern = '#^' . $baseDir . "#";
             $collection = $collection->transform(function ($filename) use ($pattern) {
                 return preg_replace($pattern, '', $filename);
             });
@@ -99,13 +100,13 @@ class DocumentController extends Controller
         $collection = $collection->transform(function ($filepath) {
             $lastpos = strripos($filepath, '/');
             $filename = null;
-            if($lastpos === false){
+            if ($lastpos === false) {
                 $filename = $filepath;
                 return ['fullpath' => $filepath, 'filename' => $filename];
             } else {
-                $office = substr($filepath,0,$lastpos);
+                $office = substr($filepath, 0, $lastpos);
                 $filename = substr($filepath, $lastpos + 1);
-                return ['fullpath' => $filepath, 'filename' => $filename, 'office'=>$office];
+                return ['fullpath' => $filepath, 'filename' => $filename, 'office' => $office];
             }
 
         });

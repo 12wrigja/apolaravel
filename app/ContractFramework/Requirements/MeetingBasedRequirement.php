@@ -8,12 +8,10 @@
 
 namespace APOSite\ContractFramework\Requirements;
 
-use APOSite\Models\Semester;
-use APOSite\Models\Users\User;
-
 abstract class MeetingBasedRequirement extends Requirement
 {
-    public final function getDetailsView(){
+    public final function getDetailsView()
+    {
         return view('reports.meetinglist');
     }
 }

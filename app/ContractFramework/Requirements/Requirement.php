@@ -29,6 +29,11 @@ abstract class Requirement
         $this->semester = $semester;
     }
 
+    public static function getMetadata()
+    {
+        return static::$description;
+    }
+
     public function getUser()
     {
         return $this->user;
@@ -37,58 +42,6 @@ abstract class Requirement
     public final function isComplete()
     {
         return $this->compareAgainstThreshold($this->getValue());
-    }
-
-    public abstract function getReports();
-
-    public function getPendingReports()
-    {
-        return collect([]);
-    }
-
-    public abstract function computeValue();
-
-    public function computePendingValue()
-    {
-        return 0.0;
-    }
-
-    public final function getValue()
-    {
-        if ($this->value == null) {
-            $this->value = $this->computeValue();
-        }
-        return $this->value;
-    }
-
-    public final function getPendingValue()
-    {
-        if ($this->pendingValue == null) {
-            $this->pendingValue = $this->computePendingValue();
-        }
-        return $this->pendingValue;
-    }
-
-    public final function getThreshold()
-    {
-        $threshold = $this->threshold;
-        if (method_exists($this, 'getDynamicThreshold')) {
-            $threshold = $this->getDynamicThreshold();
-        }
-        return $threshold;
-    }
-
-    public final function getPercentDone()
-    {
-        if ($this->getThreshold() == 0) {
-            return 100;
-        }
-        $ratio = $this->getValue() / $this->getThreshold();
-        if ($ratio >= 1) {
-            return 100;
-        } else {
-            return intval(floor($ratio * 100));
-        }
     }
 
     private final function compareAgainstThreshold($value)
@@ -113,9 +66,49 @@ abstract class Requirement
         }
     }
 
-    public static function getMetadata()
+    public final function getThreshold()
     {
-        return static::$description;
+        $threshold = $this->threshold;
+        if (method_exists($this, 'getDynamicThreshold')) {
+            $threshold = $this->getDynamicThreshold();
+        }
+        return $threshold;
+    }
+
+    public final function getValue()
+    {
+        if ($this->value == null) {
+            $this->value = $this->computeValue();
+        }
+        return $this->value;
+    }
+
+    public abstract function computeValue();
+
+    public final function getPendingValue()
+    {
+        if ($this->pendingValue == null) {
+            $this->pendingValue = $this->computePendingValue();
+        }
+        return $this->pendingValue;
+    }
+
+    public function computePendingValue()
+    {
+        return 0.0;
+    }
+
+    public final function getPercentDone()
+    {
+        if ($this->getThreshold() == 0) {
+            return 100;
+        }
+        $ratio = $this->getValue() / $this->getThreshold();
+        if ($ratio >= 1) {
+            return 100;
+        } else {
+            return intval(floor($ratio * 100));
+        }
     }
 
     public final function getDetails($pending = false)
@@ -128,4 +121,11 @@ abstract class Requirement
     }
 
     public abstract function getDetailsView();
+
+    public function getPendingReports()
+    {
+        return collect([]);
+    }
+
+    public abstract function getReports();
 }

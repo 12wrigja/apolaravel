@@ -14,8 +14,8 @@ use League\Fractal\Manager;
 class ExecMeeting extends BaseModel
 {
 
-    protected $fillable = ['minutes','event_date','creator_id'];
-    protected $dates = ['event_date','created_at','updated_at','deleted_at'];
+    protected $fillable = ['minutes', 'event_date', 'creator_id'];
+    protected $dates = ['event_date', 'created_at', 'updated_at', 'deleted_at'];
 
     public function transformer(Manager $manager)
     {
@@ -29,7 +29,7 @@ class ExecMeeting extends BaseModel
 
     public function getTag(array $brotherData)
     {
-        return array_key_exists('count_for',$brotherData)?$brotherData['count_for']:'exec';
+        return array_key_exists('count_for', $brotherData) ? $brotherData['count_for'] : 'exec';
     }
 
     public function createRules()
@@ -43,7 +43,7 @@ class ExecMeeting extends BaseModel
         if (Request::has('brothers')) {
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
-                $extraRules['brothers.' . $index . '.count_for'] = ['sometimes','required','in:chapter,pledge,exec'];
+                $extraRules['brothers.' . $index . '.count_for'] = ['sometimes', 'required', 'in:chapter,pledge,exec'];
             }
         }
         $newRules = array_merge($rules, $extraRules);
@@ -54,14 +54,14 @@ class ExecMeeting extends BaseModel
     {
         $rules = [
             //Rules for the core report data
-            'event_date' => ['sometimes','required', 'date'],
-            'brothers' => ['sometimes','required', 'array']
+            'event_date' => ['sometimes', 'required', 'date'],
+            'brothers' => ['sometimes', 'required', 'array']
         ];
         $extraRules = [];
         if (Request::has('brothers')) {
             foreach (Request::get('brothers') as $index => $brother) {
                 $extraRules['brothers.' . $index . '.id'] = ['required', 'exists:users,id'];
-                $extraRules['brothers.' . $index . '.count_for'] = ['sometimes','required','in:chapter,pledge,exec'];
+                $extraRules['brothers.' . $index . '.count_for'] = ['sometimes', 'required', 'in:chapter,pledge,exec'];
             }
         }
         $newRules = array_merge($rules, $extraRules);
@@ -84,7 +84,8 @@ class ExecMeeting extends BaseModel
         return AccessController::isSecretary($user) || AccessController::isMembership($user);
     }
 
-    public function canManage(User $user){
+    public function canManage(User $user)
+    {
         return AccessController::isMembership($user) || AccessController::isSecretary($user);
     }
 
@@ -111,6 +112,6 @@ class ExecMeeting extends BaseModel
 
     public function updatable()
     {
-        return ['event_date', 'brothers','minutes'];
+        return ['event_date', 'brothers', 'minutes'];
     }
 }

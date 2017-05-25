@@ -58,10 +58,10 @@ class ReportCreator extends Command
 //        Artisan::call($migrationCommand);
 
         //Create report model class from stub
-        $modelStub = $this->files->get('./../../'.$this->reportStub);
+        $modelStub = $this->files->get('./../../' . $this->reportStub);
         $name = ucwords(camel_case($class));
-        $modelStub = str_replace('{{class}}',$name,$modelStub);
-        $this->files->put(__DIR__.'/../'.$this->reportFolder.$name,$modelStub);
+        $modelStub = str_replace('{{class}}', $name, $modelStub);
+        $this->files->put(__DIR__ . '/../' . $this->reportFolder . $name, $modelStub);
     }
 
     private function snakeToCamelCase($val)

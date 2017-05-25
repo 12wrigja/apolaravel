@@ -1,16 +1,15 @@
 @extends('templates.crud_template')
 
-
 @section('crud_form')
 
-    @if($user->id == \APOSite\Http\Controllers\LoginController::currentUser()->id)
+    @if($user->id == $currentUser->id)
         <h1>Contract Status</h1>
     @else
         <h1>Contract Status ({{$user->getFullDisplayName()}})</h1>
     @endif
 
     @if($contract == null)
-        @if($user->id != \APOSite\Http\Controllers\LoginController::currentUser()->id)
+        @if($user->id != $currentUser->id)
             <p>{{$user->getFullDisplayName()}} has not signed a contract this semester.</p>
         @else
             <h4>You have not yet signed a contract.</h4>

@@ -2,7 +2,7 @@
 
 namespace APOSite\Http\Requests;
 
-use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 
 class ImageStoreRequest extends Request
 {
@@ -13,7 +13,7 @@ class ImageStoreRequest extends Request
      */
     public function authorize()
     {
-        return LoginController::currentUser() != null;
+        return Auth::check();
     }
 
     /**
@@ -24,7 +24,7 @@ class ImageStoreRequest extends Request
     public function rules()
     {
         return [
-            'image'=>'required|mimes:jpg,jpeg,png'
+            'image' => 'required|mimes:jpg,jpeg,png'
         ];
     }
 }

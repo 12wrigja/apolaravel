@@ -2,10 +2,12 @@
 
 use APOSite\Models\ServiceReport;
 
-class SiteStatisticsController extends Controller {
+class SiteStatisticsController extends Controller
+{
 
-	public static function logRequest($reequest){
-		
-	}
+    public static function logRequest($reequest)
+    {
+
+    }
 
 }

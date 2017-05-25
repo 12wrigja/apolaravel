@@ -13,7 +13,6 @@ class IdifyCarouselItemImages extends Migration
      */
     public function up()
     {
-        DB::table('carousel_items')->truncate();
         Schema::table('carousel_items',function(Blueprint $table){
             $table->integer('background_image')->unsigned()->change();
             $table->foreign('background_image')->references('id')->on('image_entries');

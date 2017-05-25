@@ -3,7 +3,7 @@
 namespace APOSite\Http\Requests\Contracts;
 
 use APOSite\Http\Controllers\AccessController;
-use APOSite\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 use APOSite\Http\Requests\Request;
 
 class ContractManageRequest extends Request
@@ -15,8 +15,7 @@ class ContractManageRequest extends Request
      */
     public function authorize()
     {
-        $user = LoginController::currentUser();
-        return AccessController::isMembership($user);
+        return Auth::check() && AccessController::isMembership(Auth::user());
     }
 
     /**

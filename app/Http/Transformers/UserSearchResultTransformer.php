@@ -38,9 +38,9 @@ class UserSearchResultTransformer extends TransformerAbstract
             return $base;
         }
         foreach ($this->attributes as $attr) {
-            $newAttrName = str_replace(" ","",ucwords(str_replace("_"," ",$attr)));
-            $serializeMethodName = 'serialize'.$newAttrName . "Attribute";
-            if(method_exists($user,$serializeMethodName)){
+            $newAttrName = str_replace(" ", "", ucwords(str_replace("_", " ", $attr)));
+            $serializeMethodName = 'serialize' . $newAttrName . "Attribute";
+            if (method_exists($user, $serializeMethodName)) {
                 $value = $user->$serializeMethodName();
             } else {
                 $value = $user->getAttribute($attr);
