@@ -9,7 +9,7 @@ class SemesterTableSeeder extends Seeder
     public function run()
     {
         // Start in $year
-        $year = 2016;
+        $year = \Carbon\Carbon::now()->year;
         // And generate fake semester data for $time years around it (split evenly, rounded down)
         $time = 25;
 
