@@ -30,31 +30,30 @@ class UserAPIController extends Controller {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Response | string
      */
     public function index() {
-        //Find users from query
-        $users = null;
-
+        // Retrieve the input attributes to search on.
         $searchKeys = Input::except('attrs');
+        // Retrieve the extra attributes that are explicitly requested in the response
+        $extraAttributes = Input::get('attrs');
+
+        // Validate the search attributes. This will throw an exception if any key is invalid.
+        $instance = new User();
+        $searchFilterAttributes = $instance->validateSearchAttributes(array_keys($searchKeys));
         $users = User::MatchAllAttributes($searchKeys);
 
-        //Add in attributes to the results
-        $instance = new User;
-        $baseAttributes = $instance->getValidSearchAttributeKeys($searchKeys);
-        try {
-            $attributes = Input::get('attrs');
-            if ($attributes == null) {
-                $attributes = $baseAttributes;
-            } else {
-                $attributes = explode(',', $attributes);
-                $instance->validateAttributes($attributes);
-                $attributes = array_merge($attributes, $baseAttributes);
-            }
-        } catch (HTTPException $e) {
-            return response()->json(['error' => $e->getMessage()], $e->getStatusCode());
+        // Compute the set of attributes to add in to the response.
+        // If a filter was made, include that attribute in the response.
+        if ($extraAttributes == null) {
+            $extraAttributes = $searchFilterAttributes;
+        } else {
+            $extraAttributes = explode(',', $extraAttributes);
+            $instance->validateSearchAttributes($extraAttributes);
+            $extraAttributes = array_merge($extraAttributes, $searchFilterAttributes);
         }
-        $transformer = new UserSearchResultTransformer($attributes);
+
+        $transformer = new UserSearchResultTransformer($extraAttributes);
         $resource = new Collection($users, $transformer);
         $fractal = new Manager();
         return $fractal->createData($resource)->toJson();

@@ -12,7 +12,8 @@ use Laravel\Passport\Exceptions\MissingScopeException;
 use Illuminate\Support\Facades\Auth;
 
 
-class Handler extends ExceptionHandler {
+class Handler extends ExceptionHandler
+{
 
     /**
      * A list of the exception types that should not be reported.
@@ -37,7 +38,8 @@ class Handler extends ExceptionHandler {
      *
      * @return void
      */
-    public function report(Exception $exception) {
+    public function report(Exception $exception)
+    {
         parent::report($exception);
     }
 
@@ -45,22 +47,23 @@ class Handler extends ExceptionHandler {
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \Exception               $exception
+     * @param  \Exception $exception
      *
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception) {
+    public function render($request, Exception $exception)
+    {
         if ($exception instanceof MissingScopeException) {
             ;
             return response()->json([
-                                        'error' => 'Token is not authorized for scope(s): ' .
-                                                   '[' .
-                                                   join(', ', $exception->scopes()) .
-                                                   ']' .
-                                                   '\n' .
-                                                   'Token scopes: [' .
-                                                   join(', ',Auth::user()->token()->scopes).']',
-                                    ]);
+                'error' => 'Token is not authorized for scope(s): ' .
+                    '[' .
+                    join(', ', $exception->scopes()) .
+                    ']' .
+                    '\n' .
+                    'Token scopes: [' .
+                    join(', ', Auth::user()->token()->scopes) . ']',
+            ]);
         }
         if ($exception instanceof TokenMismatchException && $request->wantsJson()) {
             return response()->json(['error' => 'reload'], 401);
@@ -78,18 +81,22 @@ class Handler extends ExceptionHandler {
         ) {
             return response()->json(['error' => $exception->getMessage()], 403);
         }
+        if ($request->wantsJson()) {
+            return response()->json(['error' => $exception->getMessage()], 403);
+        }
         return parent::render($request, $exception);
     }
 
     /**
      * Convert an authentication exception into an unauthenticated response.
      *
-     * @param  \Illuminate\Http\Request                 $request
+     * @param  \Illuminate\Http\Request $request
      * @param  \Illuminate\Auth\AuthenticationException $exception
      *
      * @return \Illuminate\Http\Response
      */
-    protected function unauthenticated($request, AuthenticationException $exception) {
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
