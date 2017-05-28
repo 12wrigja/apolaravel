@@ -28,7 +28,7 @@ class UserAPIController extends Controller {
         'edit-profile' => 'View and edit your user profile.',
     ];
     public static $SCOPE_MANAGE_USERS = [
-        'manage-users' => 'Create and delete APO members. Only useful for the Webmaster(s), Membership VP(s), and Pledge Educator(s)'
+        'manage-users' => 'Create and delete APO members. Only useful for the Webmaster(s) and Pledge Educator(s).'
     ];
 
     /**
@@ -42,8 +42,6 @@ class UserAPIController extends Controller {
         // Retrieve the extra attributes that are explicitly requested in the response
         $extraAttributes = Input::get('attrs');
 
-        // Validate the search attributes. This will throw an exception if any key is invalid.
-//        $instance = new User();
         $searchFilterAttributes = array_keys($searchKeys);
         $users = User::MatchAllAttributes($searchKeys);
 
@@ -75,7 +73,6 @@ class UserAPIController extends Controller {
         $user->pledge_semester = Semester::currentSemester()->id;
 
         if ($user->save()) {
-            //This is super shitty and shouldn't need to be done.
             $user->fresh();
             if ($user->changeContract('Pledge')) {
                 return response()->json(['status' => 'OK']);

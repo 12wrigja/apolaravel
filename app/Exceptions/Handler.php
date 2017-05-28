@@ -53,42 +53,49 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // Requests failing due to invalid OAuth Token Scoping.
         if ($exception instanceof MissingScopeException) {
-            ;
             return response()->json([
+                'status' => 401,
                 'error' => [
                     'token' => [
                         'message' => 'Token is only authorized for scope(s): ' .
                             '[' . join(', ', Auth::user()->token()->scopes) . ']',
-                        'valid-scopes' => join(', ', $exception->scopes()),
+                        'valid-scopes' => $exception->scopes()
                     ]
                 ]
-            ]);
+            ], 401);
         }
+        // Requests failing because the CSRF Token doesn't match up.
         if ($exception instanceof TokenMismatchException && $request->wantsJson()) {
-            return response()->json(['error' => 'reload'], 401);
+            return response()->json(['status' => 401, 'error' => 'reload'], 401);
         }
+        // Requests failing because the model can't be bound.
+        // Ex: /users/zzzzzzzzz/ would cause this, as there is nobody with that case id
         if ($exception instanceof ModelNotFoundException) {
             if ($request->wantsJson()) {
-                return response()->json(['error' => 'Resource Not Found.'], 404);
+                return response()->json(['status' => 404, 'error' => 'Resource Not Found.'], 404);
             } else {
                 return response(404)->view('errors.404');
             }
         }
-        // For responses where validation fails due to auth issues.
+        // Requests where validation fails due to auth issues.
         if (($exception instanceof ValidationException) &&
             $exception->response->getStatusCode() == 403 &&
             $request->wantsJson()
         ) {
-            return response()->json(['error' => ['authorization' => $exception->getMessage()]], 403);
+            return response()->json(['status' => 403, 'error' => ['authorization' => $exception->getMessage()]], 403);
         }
-        // Responses where the validation fails due to rules failing.
+        // Requests where validation fails due to rules failing.
         if (($exception instanceof ValidationException) &&
             $exception->response->getStatusCode() == 422 &&
             $request->wantsJson()
         ) {
-            return response()->json(['error' => ['validation' => $exception->validator->getMessageBag()->toArray()]],
-                403);
+            return response()->json([
+                'status' => 422,
+                'error' => ['validation' => $exception->validator->getMessageBag()->toArray()]
+            ],
+                422);
         }
         return parent::render($request, $exception);
     }

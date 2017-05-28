@@ -317,23 +317,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $users;
     }
 
-    public function validateSearchAttributes($attributes)
-    {
-        $invalidAttributes = [];
-        foreach ($attributes as $key) {
-            //Test to make sure that all the attributes are valid.
-            if (!in_array($key, $this->getFilterableAttributes())) {
-                array_push($invalidAttributes, 'Attribute ' . $key . ' is not a valid attribute.');
-            }
-        }
-        if (count($invalidAttributes) > 0) {
-            $e = new ValidationException(422, join(PHP_EOL, $invalidAttributes));
-            throw $e;
-        } else {
-            return $attributes;
-        }
-    }
-
     public function getFilterableAttributes()
     {
         return array_merge($this->fillable, $this->appends, ['big']);
