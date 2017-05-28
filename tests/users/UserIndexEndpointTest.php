@@ -24,7 +24,7 @@ class UserIndexEndpointTest extends TestCase
 
     public function testIndexWorksOnlyWithViewOrEditProfileScope()
     {
-        $user = $this->buildFakerUser('jow5', 'James', 'Wright');
+        $user = $this->buildFakerUser('jow6', 'James', 'Wright');
         $user->save();
         $this->signInAs($user->id);
 
@@ -50,7 +50,7 @@ class UserIndexEndpointTest extends TestCase
 
     public function testIndexListsUserDefaultData()
     {
-        $user = $this->buildFakerUser('jow5', 'James', 'Wright');
+        $user = $this->buildFakerUser('jow6', 'James', 'Wright');
         $user->save();
         $this->signInAs($user->id);
 
@@ -63,12 +63,12 @@ class UserIndexEndpointTest extends TestCase
         $this->seeJsonEquals([
             'data' => [
                 '0' => [
-                    'id' => 'jow5',
+                    'id' => 'jow6',
                     'first_name' => 'James',
                     'last_name' => 'Wright',
                     'display_name' => 'James Wright',
                     'image' => 'http://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=150&d=mm',
-                    'href' => 'http://localhost/api/v1/users/jow5'
+                    'href' => 'http://localhost/api/v1/users/jow6'
                 ]
             ]
         ]);
@@ -76,7 +76,7 @@ class UserIndexEndpointTest extends TestCase
 
     public function testIndexDisplaysDefaultDataForAllUsers()
     {
-        $user = $this->buildFakerUser('jow5', 'James', 'Wright');
+        $user = $this->buildFakerUser('jow6', 'James', 'Wright');
         $user->save();
         $this->signInAs($user->id);
 
@@ -105,7 +105,7 @@ class UserIndexEndpointTest extends TestCase
 
     public function testIndexDisplaysAdditionalRequestedData()
     {
-        $user = $this->buildFakerUser('jow5', 'James', 'Wright');
+        $user = $this->buildFakerUser('jow6', 'James', 'Wright');
         $user->save();
         $this->signInAs($user->id);
 
@@ -135,7 +135,7 @@ class UserIndexEndpointTest extends TestCase
 
     public function testIndexFailsOnInvalidSearchKey()
     {
-        $user = $this->buildFakerUser('jow5', 'James', 'Wright');
+        $user = $this->buildFakerUser('jow6', 'James', 'Wright');
         $user->save();
         $this->signInAs($user->id);
 
@@ -155,7 +155,7 @@ class UserIndexEndpointTest extends TestCase
 
     public function testIndexCanRestrictOnAttributeExactValues()
     {
-        $user = $this->buildFakerUser('jow5', 'James', 'Wright');
+        $user = $this->buildFakerUser('jow6', 'James', 'Wright');
         $user->save();
         $user1 = $this->buildFakerUser('abc', 'Alice', 'Wright');
         $user1->save();
@@ -170,12 +170,12 @@ class UserIndexEndpointTest extends TestCase
         $this->seeJsonEquals([
             'data' => [
                 '0' => [
-                    'id' => 'jow5',
+                    'id' => 'jow6',
                     'first_name' => 'James',
                     'last_name' => 'Wright',
                     'display_name' => 'James Wright',
                     'image' => 'http://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=150&d=mm',
-                    'href' => 'http://localhost/api/v1/users/jow5'
+                    'href' => 'http://localhost/api/v1/users/jow6'
                 ]
             ]
         ]);
@@ -183,7 +183,7 @@ class UserIndexEndpointTest extends TestCase
 
     public function testIndexAttributeSearchIsCaseInsensitive()
     {
-        $user = $this->buildFakerUser('jow5', 'James', 'Wright');
+        $user = $this->buildFakerUser('jow6', 'James', 'Wright');
         $user->save();
         $user1 = $this->buildFakerUser('abc', 'Alice', 'Wright');
         $user1->save();
@@ -198,12 +198,12 @@ class UserIndexEndpointTest extends TestCase
         $this->seeJsonEquals([
             'data' => [
                 '0' => [
-                    'id' => 'jow5',
+                    'id' => 'jow6',
                     'first_name' => 'James',
                     'last_name' => 'Wright',
                     'display_name' => 'James Wright',
                     'image' => 'http://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=150&d=mm',
-                    'href' => 'http://localhost/api/v1/users/jow5'
+                    'href' => 'http://localhost/api/v1/users/jow6'
                 ]
             ]
         ]);
@@ -211,7 +211,7 @@ class UserIndexEndpointTest extends TestCase
 
     public function testIndexSearchByNondefaultAttributeIncludesAttributeInResponse()
     {
-        $user = $this->buildFakerUser('jow5', 'James', 'Wright');
+        $user = $this->buildFakerUser('jow6', 'James', 'Wright');
         $user->address="501 Park Place";
         $user->save();
         $user1 = $this->buildFakerUser('abc', 'Alice', 'Wright');
@@ -229,12 +229,12 @@ class UserIndexEndpointTest extends TestCase
         $this->seeJsonEquals([
             'data' => [
                 '0' => [
-                    'id' => 'jow5',
+                    'id' => 'jow6',
                     'first_name' => 'James',
                     'last_name' => 'Wright',
                     'display_name' => 'James Wright',
                     'image' => 'http://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=150&d=mm',
-                    'href' => 'http://localhost/api/v1/users/jow5',
+                    'href' => 'http://localhost/api/v1/users/jow6',
                     'address' => '501 Park Place',
                 ]
             ]
