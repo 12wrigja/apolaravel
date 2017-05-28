@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\ClientRepository;
+use APOSite\Models\Office;
+use APOSite\Models\Semester;
 
 abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
@@ -61,13 +63,24 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     }
 
 
-    public function buildWebmasterUser()
+    public function buildFakerUserInOffices($id, ...$officeIds)
     {
-        $webmaster = $this->buildUser("webmaster", "Web", "Master");
+        $officeHolder = $this->buildFakerUser($id, "Office", "Holder");
+        $officeHolder->save();
 
-        // Do the thing to make this user a webmaster.
+        // Do the thing to make this user be in those office ID's.
+        foreach ($officeIds as $oId) {
+            $office = Office::find($oId);
+            if($office == null) {
+                $office = factory(Office::class)->make([
+                    'id'=>$oId
+                ]);
+                $office->save();
+            }
+            $office->users()->sync([$officeHolder->id => ['semester_id' => Semester::currentSemester()->id]]);
+        }
 
-        return $webmaster;
+        return $officeHolder;
     }
 
     public function buildUser($id, $first_name, $last_name)

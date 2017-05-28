@@ -43,7 +43,7 @@ class UserIndexEndpointTest extends TestCase
             if ($validScopes->contains($scope)) {
                 $this->seeJsonStructure(['data']);
             } else {
-                $this->seeJsonStructure(['error']);
+                $this->seeJsonStructure(['error'=>['token']]);
             }
         }
     }
@@ -150,7 +150,7 @@ class UserIndexEndpointTest extends TestCase
         $this->callAPIMethod('GET', '/api/v1/users?aatrs=address', $token);
 
         // Default data is id, href (object link), display_name, first_name, last_name, image
-        $this->seeJsonStructure(['error']);
+        $this->seeJsonStructure(['error'=>['validation'=>['aatrs']]]);
     }
 
     public function testIndexCanRestrictOnAttributeExactValues()
@@ -212,10 +212,10 @@ class UserIndexEndpointTest extends TestCase
     public function testIndexSearchByNondefaultAttributeIncludesAttributeInResponse()
     {
         $user = $this->buildFakerUser('jow6', 'James', 'Wright');
-        $user->address="501 Park Place";
+        $user->address = "501 Park Place";
         $user->save();
         $user1 = $this->buildFakerUser('abc', 'Alice', 'Wright');
-        $user->address="504 Parc Place";
+        $user->address = "504 Parc Place";
         $user1->save();
 
         $this->signInAs($user->id);

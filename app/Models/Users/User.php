@@ -14,6 +14,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Laravel\Passport\HasApiTokens;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -84,7 +85,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     // Attributes that are to be cast into Carbon Dates
-    protected $dates = ['deleted_at'];
+    protected $dates = ['created_at','updated_at','deleted_at'];
 
     // Attributes that are to be appended to JSON representations of these models.
     protected $appends = ['contract', 'family'];
@@ -326,7 +327,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             }
         }
         if (count($invalidAttributes) > 0) {
-            $e = new HttpException(422, join(PHP_EOL, $invalidAttributes));
+            $e = new ValidationException(422, join(PHP_EOL, $invalidAttributes));
             throw $e;
         } else {
             return $attributes;

@@ -6,6 +6,7 @@ use APOSite\Http\Controllers\Controller;
 use APOSite\Http\Requests\Users\UserCreateRequest;
 use APOSite\Http\Requests\Users\UserDeleteRequest;
 use APOSite\Http\Requests\Users\UserEditRequest;
+use APOSite\Http\Requests\Users\UserIndexRequest;
 use APOSite\Http\Transformers\UserSearchResultTransformer;
 use APOSite\Models\Semester;
 use APOSite\Models\Users\User;
@@ -26,21 +27,24 @@ class UserAPIController extends Controller {
     public static $SCOPE_EDIT_PROFILE = [
         'edit-profile' => 'View and edit your user profile.',
     ];
+    public static $SCOPE_MANAGE_USERS = [
+        'manage-users' => 'Create and delete APO members. Only useful for the Webmaster(s), Membership VP(s), and Pledge Educator(s)'
+    ];
 
     /**
      * Display a listing of the resource.
      *
      * @return Response | string
      */
-    public function index() {
+    public function index(UserIndexRequest $request) {
         // Retrieve the input attributes to search on.
         $searchKeys = Input::except('attrs');
         // Retrieve the extra attributes that are explicitly requested in the response
         $extraAttributes = Input::get('attrs');
 
         // Validate the search attributes. This will throw an exception if any key is invalid.
-        $instance = new User();
-        $searchFilterAttributes = $instance->validateSearchAttributes(array_keys($searchKeys));
+//        $instance = new User();
+        $searchFilterAttributes = array_keys($searchKeys);
         $users = User::MatchAllAttributes($searchKeys);
 
         // Compute the set of attributes to add in to the response.
@@ -49,7 +53,6 @@ class UserAPIController extends Controller {
             $extraAttributes = $searchFilterAttributes;
         } else {
             $extraAttributes = explode(',', $extraAttributes);
-            $instance->validateSearchAttributes($extraAttributes);
             $extraAttributes = array_merge($extraAttributes, $searchFilterAttributes);
         }
 
@@ -73,7 +76,7 @@ class UserAPIController extends Controller {
 
         if ($user->save()) {
             //This is super shitty and shouldn't need to be done.
-            $user = User::find($request->get('cwru_id'));
+            $user->fresh();
             if ($user->changeContract('Pledge')) {
                 return response()->json(['status' => 'OK']);
             } else {

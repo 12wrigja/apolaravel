@@ -56,13 +56,13 @@ class Handler extends ExceptionHandler
         if ($exception instanceof MissingScopeException) {
             ;
             return response()->json([
-                'error' => 'Token is not authorized for scope(s): ' .
-                    '[' .
-                    join(', ', $exception->scopes()) .
-                    ']' .
-                    '\n' .
-                    'Token scopes: [' .
-                    join(', ', Auth::user()->token()->scopes) . ']',
+                'error' => [
+                    'token' => [
+                        'message' => 'Token is only authorized for scope(s): ' .
+                            '[' . join(', ', Auth::user()->token()->scopes) . ']',
+                        'valid-scopes' => join(', ', $exception->scopes()),
+                    ]
+                ]
             ]);
         }
         if ($exception instanceof TokenMismatchException && $request->wantsJson()) {
@@ -75,14 +75,20 @@ class Handler extends ExceptionHandler
                 return response(404)->view('errors.404');
             }
         }
+        // For responses where validation fails due to auth issues.
         if (($exception instanceof ValidationException) &&
-            $exception->getStatusCode() == 403 &&
+            $exception->response->getStatusCode() == 403 &&
             $request->wantsJson()
         ) {
-            return response()->json(['error' => $exception->getMessage()], 403);
+            return response()->json(['error' => ['authorization' => $exception->getMessage()]], 403);
         }
-        if ($request->wantsJson()) {
-            return response()->json(['error' => $exception->getMessage()], 403);
+        // Responses where the validation fails due to rules failing.
+        if (($exception instanceof ValidationException) &&
+            $exception->response->getStatusCode() == 422 &&
+            $request->wantsJson()
+        ) {
+            return response()->json(['error' => ['validation' => $exception->validator->getMessageBag()->toArray()]],
+                403);
         }
         return parent::render($request, $exception);
     }
