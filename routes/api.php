@@ -26,7 +26,7 @@ Route::group(['prefix' => 'v1'],
             ['uses' => 'API\UserAPIController@update', 'as' => 'user_update'])
             ->middleware('scope:edit-profile');
         // Delete
-        Route::delete('/users/{cwruid}', 'API\UserAPIController@destroy');
+        Route::delete('/users/{cwruid}', 'API\UserAPIController@destroy')->middleware('scope:manage-users');
         // Contract Status
         Route::get('/users/{cwruid}/status',
             ['uses' => 'API\UserAPIController@statusPage', 'as' => 'user_status']);

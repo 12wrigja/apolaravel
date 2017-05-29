@@ -26,7 +26,6 @@ class UserIndexEndpointTest extends TestCase
     {
         $user = $this->buildFakerUser('jow6', 'James', 'Wright');
         $user->save();
-        $this->signInAs($user->id);
 
         $validScopes = collect([
             $this->scopeKey(UserAPI::$SCOPE_VIEW_PROFILE),
@@ -52,7 +51,6 @@ class UserIndexEndpointTest extends TestCase
     {
         $user = $this->buildFakerUser('jow6', 'James', 'Wright');
         $user->save();
-        $this->signInAs($user->id);
 
         $scope = UserAPI::$SCOPE_VIEW_PROFILE;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
@@ -78,7 +76,6 @@ class UserIndexEndpointTest extends TestCase
     {
         $user = $this->buildFakerUser('jow6', 'James', 'Wright');
         $user->save();
-        $this->signInAs($user->id);
 
         $scope = UserAPI::$SCOPE_VIEW_PROFILE;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
@@ -107,7 +104,6 @@ class UserIndexEndpointTest extends TestCase
     {
         $user = $this->buildFakerUser('jow6', 'James', 'Wright');
         $user->save();
-        $this->signInAs($user->id);
 
         $scope = UserAPI::$SCOPE_VIEW_PROFILE;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
@@ -137,7 +133,6 @@ class UserIndexEndpointTest extends TestCase
     {
         $user = $this->buildFakerUser('jow6', 'James', 'Wright');
         $user->save();
-        $this->signInAs($user->id);
 
         $scope = UserAPI::$SCOPE_VIEW_PROFILE;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
@@ -159,7 +154,6 @@ class UserIndexEndpointTest extends TestCase
         $user->save();
         $user1 = $this->buildFakerUser('abc', 'Alice', 'Wright');
         $user1->save();
-        $this->signInAs($user->id);
 
         $scope = UserAPI::$SCOPE_VIEW_PROFILE;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
@@ -187,7 +181,6 @@ class UserIndexEndpointTest extends TestCase
         $user->save();
         $user1 = $this->buildFakerUser('abc', 'Alice', 'Wright');
         $user1->save();
-        $this->signInAs($user->id);
 
         $scope = UserAPI::$SCOPE_VIEW_PROFILE;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
@@ -217,8 +210,6 @@ class UserIndexEndpointTest extends TestCase
         $user1 = $this->buildFakerUser('abc', 'Alice', 'Wright');
         $user->address = "504 Parc Place";
         $user1->save();
-
-        $this->signInAs($user->id);
 
         $scope = UserAPI::$SCOPE_VIEW_PROFILE;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;

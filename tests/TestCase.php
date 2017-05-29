@@ -39,10 +39,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     {
         parent::setUp();
         Artisan::call('db:seed', ['--class' => SemesterTableSeeder::class]);
-
-//        App::make(SemesterTableSeeder::class)->run();
-//        App::make(GlobalVariablesSeeder::class)->run();
-//        App::make(OfficesTableSeeder::class)->run();
+        Artisan::call('db:seed', ['--class' => GlobalVariablesSeeder::class]);
 
         // Setup a Personal Access Token Client
         $this->setUpPersonalAccessAPI();
