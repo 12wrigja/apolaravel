@@ -79,7 +79,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'graduation_semester',
         'hometown',
         'family_id',
-        'big',
+        'big_id',
         'pledge_semester',
         'initiation_semester'
     ];
@@ -88,10 +88,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $dates = ['created_at','updated_at','deleted_at'];
 
     // Attributes that are to be appended to JSON representations of these models.
-    protected $appends = ['contract', 'family'];
-
-    // Attributes that are renamed internally to be something else.
-    protected $interallyRenamed = ['contract' => 'contract_id'];
+    protected $appends = ['contract', 'big', 'family'];
 
     public function getFullDisplayName()
     {
@@ -164,7 +161,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function family()
     {
-        return Family::find($this->family_id);
+        return $this->belongsTo(Family::class);
+    }
+
+    public function big()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function littles() {
+        return $this->hasMany(User::class, 'big_id');
     }
 
     public function lifetimeHours()
@@ -322,20 +328,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return array_merge($this->fillable, $this->appends, ['big']);
     }
 
-    public function getFamilyAttribute()
-    {
-        return Family::find($this->family_id);
-    }
-
     public function serializeBigAttribute()
     {
-        $big = User::find($this->big);
+        $big = $this->big;
         if ($big == null) {
             return null;
         } else {
             return [
                 'id' => $big->id,
-                'fist_name' => $big->first_name,
+                'first_name' => $big->first_name,
                 'last_name' => $big->last_name,
                 'display_name' => $big->fullDisplayName()
             ];

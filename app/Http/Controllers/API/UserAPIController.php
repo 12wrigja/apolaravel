@@ -63,7 +63,7 @@ class UserAPIController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @return Response
+     * @return Response | string
      */
     public function store(UserCreateRequest $request) {
         $user = new User();
@@ -89,12 +89,12 @@ class UserAPIController extends Controller {
      *
      * @param int $id
      *
-     * @return Response
+     * @return Response | string
      */
     public function show($id) {
         $user = User::find($id);
         if ($user != null) {
-            $transformer = new UserSearchResultTransformer($attributes);
+            $transformer = new UserSearchResultTransformer($user->getFilterableAttributes());
             $resource = new Item($user, $transformer);
             $fractal = new Manager();
             return $fractal->createData($resource)->toJson();
@@ -109,7 +109,7 @@ class UserAPIController extends Controller {
      *
      * @param int $id
      *
-     * @return Response
+     * @return Response | string
      */
     public function update(UserEditRequest $request, $id) {
         $userToUpdate = User::find($id);
@@ -167,27 +167,5 @@ class UserAPIController extends Controller {
             throw new NotFoundHttpException('User not found');
         }
     }
-//
-//    private function searchUsers($text) {
-//        if ($text != "") {
-//            $users = User::where('first_name', 'LIKE', $text . '%')
-//                         ->orWhere('last_name',
-//                                   'LIKE',
-//                                   $text . '%')
-//                         ->orWhere(DB::raw('CONCAT(first_name, " ", last_name)'),
-//                                   'LIKE',
-//                                   $text . '%')
-//                         ->orderBy('first_name', 'ASC')
-//                         ->orderBy('last_name', 'ASC');
-//        } else {
-//            $users = User::query();
-//        }
-//        $users =
-//            $users->orderBy('first_name', 'ASC')->orderBy('last_name', 'ASC')->select('first_name',
-//                                                                                      'last_name',
-//                                                                                      'nickname',
-//                                                                                      'id');
-//        return $users;
-//    }
 
 }

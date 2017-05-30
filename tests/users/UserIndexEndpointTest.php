@@ -10,11 +10,6 @@ class UserIndexEndpointTest extends TestCase
 
     use DatabaseMigrations;
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
     public function testIndexNeedsAuthentication()
     {
         $this->assertFalse(Auth::check());
