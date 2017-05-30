@@ -28,13 +28,9 @@ class AuthServiceProvider extends ServiceProvider {
         Passport::ignoreMigrations();
         Passport::routes();
         Passport::tokensExpireIn(Carbon::now()->addDays(1));
-        Passport::tokensCan(array_merge([
-
-                                            'view-service-reports'   => 'View service report data.',
-                                            'manage-service-reports' => 'Create and delete service reports as you.',
-                                            'view-contract-status'   => 'View contract status.',
-                                        ],
-                                        UserAPIController::$SCOPE_VIEW_PROFILE,
-                                        UserAPIController::$SCOPE_EDIT_PROFILE));
+        Passport::tokensCan(array_merge(UserAPIController::$SCOPE_VIEW_PROFILE,
+                                        UserAPIController::$SCOPE_EDIT_PROFILE,
+                                        UserAPIController::$SCOPE_MANAGE_USERS));
     }
+
 }

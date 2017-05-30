@@ -14,6 +14,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Laravel\Passport\HasApiTokens;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -78,19 +79,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'graduation_semester',
         'hometown',
         'family_id',
-        'big',
+        'big_id',
         'pledge_semester',
         'initiation_semester'
     ];
 
     // Attributes that are to be cast into Carbon Dates
-    protected $dates = ['deleted_at'];
+    protected $dates = ['created_at','updated_at','deleted_at'];
 
     // Attributes that are to be appended to JSON representations of these models.
-    protected $appends = ['contract', 'family'];
-
-    // Attributes that are renamed internally to be something else.
-    protected $interallyRenamed = ['contract' => 'contract_id'];
+    protected $appends = ['contract', 'big', 'family'];
 
     public function getFullDisplayName()
     {
@@ -163,7 +161,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function family()
     {
-        return Family::find($this->family_id);
+        return $this->belongsTo(Family::class);
+    }
+
+    public function big()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function littles() {
+        return $this->hasMany(User::class, 'big_id');
     }
 
     public function lifetimeHours()
@@ -316,47 +323,20 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $users;
     }
 
-    public function validateAttributes($attributes)
-    {
-        foreach ($attributes as $key) {
-            //Test to make sure that all the attributes are valid.
-            if (!in_array($key, $this->getFilterableAttributes())) {
-                $e = new HttpException(422, 'Attribute ' . $key . ' is not a valid attribute.');
-                throw $e;
-            }
-        }
-    }
-
-    public function getValidSearchAttributeKeys($attributes)
-    {
-        foreach ($attributes as $key) {
-            //Test to make sure that all the attributes are valid.
-            if (!in_array($key, $this->getFilterableAttributes())) {
-                unset($attributes[$key]);
-            }
-        }
-        return array_keys($attributes);
-    }
-
     public function getFilterableAttributes()
     {
         return array_merge($this->fillable, $this->appends, ['big']);
     }
 
-    public function getFamilyAttribute()
-    {
-        return Family::find($this->family_id);
-    }
-
     public function serializeBigAttribute()
     {
-        $big = User::find($this->big);
+        $big = $this->big;
         if ($big == null) {
             return null;
         } else {
             return [
                 'id' => $big->id,
-                'fist_name' => $big->first_name,
+                'first_name' => $big->first_name,
                 'last_name' => $big->last_name,
                 'display_name' => $big->fullDisplayName()
             ];

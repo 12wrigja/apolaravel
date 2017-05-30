@@ -39,7 +39,7 @@ $factory->define(APOSite\Models\Users\User::class, function (Faker\Generator $fa
         'initiation_semester' => $semesterIds[1],
         'graduation_semester' => $semesterIds[2],
         'family_id' => null,
-        'big' => $bigId,
+        'big_id' => $bigId,
         'biography' => $faker->paragraph,
         'join_reason' => $faker->paragraph,
         'major' => $faker->text(255),

@@ -9,6 +9,7 @@
 namespace APOSite\Http\Transformers;
 
 use APOSite\Models\Users\User;
+use Illuminate\Support\Str;
 use League\Fractal\TransformerAbstract;
 
 class UserSearchResultTransformer extends TransformerAbstract
@@ -38,6 +39,10 @@ class UserSearchResultTransformer extends TransformerAbstract
             return $base;
         }
         foreach ($this->attributes as $attr) {
+            if (Str::endsWith($attr, '_id')) {
+                $attr = rtrim($attr, '_id');
+            }
+            
             $newAttrName = str_replace(" ", "", ucwords(str_replace("_", " ", $attr)));
             $serializeMethodName = 'serialize' . $newAttrName . "Attribute";
             if (method_exists($user, $serializeMethodName)) {

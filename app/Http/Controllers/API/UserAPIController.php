@@ -6,6 +6,7 @@ use APOSite\Http\Controllers\Controller;
 use APOSite\Http\Requests\Users\UserCreateRequest;
 use APOSite\Http\Requests\Users\UserDeleteRequest;
 use APOSite\Http\Requests\Users\UserEditRequest;
+use APOSite\Http\Requests\Users\UserIndexRequest;
 use APOSite\Http\Transformers\UserSearchResultTransformer;
 use APOSite\Models\Semester;
 use APOSite\Models\Users\User;
@@ -26,35 +27,34 @@ class UserAPIController extends Controller {
     public static $SCOPE_EDIT_PROFILE = [
         'edit-profile' => 'View and edit your user profile.',
     ];
+    public static $SCOPE_MANAGE_USERS = [
+        'manage-users' => 'Create and delete APO members. Only useful for the Webmaster(s) and Pledge Educator(s).'
+    ];
 
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Response | string
      */
-    public function index() {
-        //Find users from query
-        $users = null;
-
+    public function index(UserIndexRequest $request) {
+        // Retrieve the input attributes to search on.
         $searchKeys = Input::except('attrs');
+        // Retrieve the extra attributes that are explicitly requested in the response
+        $extraAttributes = Input::get('attrs');
+
+        $searchFilterAttributes = array_keys($searchKeys);
         $users = User::MatchAllAttributes($searchKeys);
 
-        //Add in attributes to the results
-        $instance = new User;
-        $baseAttributes = $instance->getValidSearchAttributeKeys($searchKeys);
-        try {
-            $attributes = Input::get('attrs');
-            if ($attributes == null) {
-                $attributes = $baseAttributes;
-            } else {
-                $attributes = explode(',', $attributes);
-                $instance->validateAttributes($attributes);
-                $attributes = array_merge($attributes, $baseAttributes);
-            }
-        } catch (HTTPException $e) {
-            return response()->json(['error' => $e->getMessage()], $e->getStatusCode());
+        // Compute the set of attributes to add in to the response.
+        // If a filter was made, include that attribute in the response.
+        if ($extraAttributes == null) {
+            $extraAttributes = $searchFilterAttributes;
+        } else {
+            $extraAttributes = explode(',', $extraAttributes);
+            $extraAttributes = array_merge($extraAttributes, $searchFilterAttributes);
         }
-        $transformer = new UserSearchResultTransformer($attributes);
+
+        $transformer = new UserSearchResultTransformer($extraAttributes);
         $resource = new Collection($users, $transformer);
         $fractal = new Manager();
         return $fractal->createData($resource)->toJson();
@@ -63,7 +63,7 @@ class UserAPIController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @return Response
+     * @return Response | string
      */
     public function store(UserCreateRequest $request) {
         $user = new User();
@@ -73,8 +73,7 @@ class UserAPIController extends Controller {
         $user->pledge_semester = Semester::currentSemester()->id;
 
         if ($user->save()) {
-            //This is super shitty and shouldn't need to be done.
-            $user = User::find($request->get('cwru_id'));
+            $user->fresh();
             if ($user->changeContract('Pledge')) {
                 return response()->json(['status' => 'OK']);
             } else {
@@ -90,12 +89,12 @@ class UserAPIController extends Controller {
      *
      * @param int $id
      *
-     * @return Response
+     * @return Response | string
      */
     public function show($id) {
         $user = User::find($id);
         if ($user != null) {
-            $transformer = new UserSearchResultTransformer($attributes);
+            $transformer = new UserSearchResultTransformer($user->getFilterableAttributes());
             $resource = new Item($user, $transformer);
             $fractal = new Manager();
             return $fractal->createData($resource)->toJson();
@@ -110,7 +109,7 @@ class UserAPIController extends Controller {
      *
      * @param int $id
      *
-     * @return Response
+     * @return Response | string
      */
     public function update(UserEditRequest $request, $id) {
         $userToUpdate = User::find($id);
@@ -168,27 +167,5 @@ class UserAPIController extends Controller {
             throw new NotFoundHttpException('User not found');
         }
     }
-//
-//    private function searchUsers($text) {
-//        if ($text != "") {
-//            $users = User::where('first_name', 'LIKE', $text . '%')
-//                         ->orWhere('last_name',
-//                                   'LIKE',
-//                                   $text . '%')
-//                         ->orWhere(DB::raw('CONCAT(first_name, " ", last_name)'),
-//                                   'LIKE',
-//                                   $text . '%')
-//                         ->orderBy('first_name', 'ASC')
-//                         ->orderBy('last_name', 'ASC');
-//        } else {
-//            $users = User::query();
-//        }
-//        $users =
-//            $users->orderBy('first_name', 'ASC')->orderBy('last_name', 'ASC')->select('first_name',
-//                                                                                      'last_name',
-//                                                                                      'nickname',
-//                                                                                      'id');
-//        return $users;
-//    }
 
 }
