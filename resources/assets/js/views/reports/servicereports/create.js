@@ -13,7 +13,7 @@ module.exports = function (Resources) {
                     off_campus: '',
                     project_type: '',
                     service_type: '',
-                    travel_time: '',
+                    travel_time: 0
                 },
                 users : []
             }
@@ -53,8 +53,13 @@ module.exports = function (Resources) {
                 })
             },
             getForm: function () {
-                var newForm = JSON.parse(JSON.stringify(this.form))
-                newForm.off_campus = this.form === '1';
+                var newForm = JSON.parse(JSON.stringify(this.form));
+                newForm.off_campus = this.form.off_campus === '1';
+                if (this.form.project_type === 'inside' && newForm.off_campus) {
+                    newForm.travel_time = this.form.travel_time;
+                } else {
+                    newForm.travel_time = 0;
+                }
                 var i = newForm.brothers.length;
                 for(var j=0; j<i; j++){
                     newForm.brothers[j].is_driver = newForm.brothers[j].is_driver === '1';

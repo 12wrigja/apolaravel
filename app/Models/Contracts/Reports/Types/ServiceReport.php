@@ -9,7 +9,7 @@ use APOSite\Models\Users\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Input;
 use League\Fractal\Manager;
-use Request;
+use Illuminate\Support\Facades\Request;
 
 class ServiceReport extends BaseModel
 {
@@ -56,7 +56,7 @@ class ServiceReport extends BaseModel
             'service_type' => ['required', 'in:chapter,country,community,campus'],
             'project_type' => ['required', 'in:inside,outside'],
             'off_campus' => ['required', 'boolean'],
-            'travel_time' => ['required_if:off_campus,true', 'integer']
+            'travel_time' => ['sometimes','integer', 'required_if:off_campus,true']
         ];
         $extraRules = [];
         if (Request::has('brothers')) {

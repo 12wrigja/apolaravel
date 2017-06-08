@@ -78,12 +78,10 @@ module.exports = function (Vue) {
                                 window.location.reload();
                             } else if (error.status == 422) {
                                 console.log(error);
-                                instance.renderErrors(error.responseJSON);
+                                instance.renderErrors(error.responseJSON.error.validation);
                                 instance.setNotLoading();
                             } else if (error.status == 403){
-                                var errors = {};
-                                errors.general = error.responseJSON.message;
-                                instance.renderErrors(errors);
+                                instance.renderErrors(error.responseJSON.error);
                                 instance.setNotLoading();
                             } else {
                                 //Probably a critical error here.

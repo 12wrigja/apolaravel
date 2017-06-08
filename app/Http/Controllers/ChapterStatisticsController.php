@@ -52,31 +52,31 @@ class ChapterStatisticsController extends Controller
         $totalInsideHours = round(DB::table('report_user')->whereIn('report_id',
                 ServiceReport::inSemester($semester)->whereProjectType('inside')->approved()->join('reports',
                     'report_type_id', '=', 'service_reports.id')->where('report_type_type',
-                    ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
+                    ServiceReport::class)->select('reports.id')->pluck('reports.id')->toArray())->sum('value') / 60, 2);
         $totalOutsideHours = round(DB::table('report_user')->whereIn('report_id',
                 ServiceReport::inSemester($semester)->whereProjectType('outside')->approved()->join('reports',
                     'report_type_id', '=', 'service_reports.id')->where('report_type_type',
-                    ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
+                    ServiceReport::class)->select('reports.id')->pluck('reports.id')->toArray())->sum('value') / 60, 2);
         $totalChapterHours = round(DB::table('report_user')->whereIn('report_id',
                 ServiceReport::inSemester($semester)->whereServiceType('chapter')->approved()->join('reports',
                     'report_type_id', '=', 'service_reports.id')->where('report_type_type',
-                    ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
+                    ServiceReport::class)->select('reports.id')->pluck('reports.id')->toArray())->sum('value') / 60, 2);
         $totalCommunityHours = round(DB::table('report_user')->whereIn('report_id',
                 ServiceReport::inSemester($semester)->whereServiceType('community')->approved()->join('reports',
                     'report_type_id', '=', 'service_reports.id')->where('report_type_type',
-                    ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
+                    ServiceReport::class)->select('reports.id')->pluck('reports.id')->toArray())->sum('value') / 60, 2);
         $totalCountryHours = round(DB::table('report_user')->whereIn('report_id',
                 ServiceReport::inSemester($semester)->whereServiceType('country')->approved()->join('reports',
                     'report_type_id', '=', 'service_reports.id')->where('report_type_type',
-                    ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
+                    ServiceReport::class)->select('reports.id')->pluck('reports.id')->toArray())->sum('value') / 60, 2);
         $totalCampusHours = round(DB::table('report_user')->whereIn('report_id',
                 ServiceReport::inSemester($semester)->whereServiceType('campus')->approved()->join('reports',
                     'report_type_id', '=', 'service_reports.id')->where('report_type_type',
-                    ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
+                    ServiceReport::class)->select('reports.id')->pluck('reports.id')->toArray())->sum('value') / 60, 2);
         $totalHours = round(DB::table('report_user')->whereIn('report_id',
                 ServiceReport::inSemester($semester)->approved()->join('reports', 'report_type_id', '=',
                     'service_reports.id')->where('report_type_type',
-                    ServiceReport::class)->select('reports.id')->lists('reports.id')->toArray())->sum('value') / 60, 2);
+                    ServiceReport::class)->select('reports.id')->pluck('reports.id')->toArray())->sum('value') / 60, 2);
 
         $totalActiveContracts = User::activeForSemester($semester)->count();
         $totalPledgeContracts = User::pledgeForSemester($semester)->count();

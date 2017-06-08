@@ -14,8 +14,7 @@ use APOSite\Models\Contracts\ReportInterface;
 use APOSite\Models\Semester;
 use APOSite\Models\Users\User;
 use Carbon\Carbon;
-use Eloquent;
-use Exception;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -37,8 +36,8 @@ abstract class BaseModel extends Eloquent implements ReportInterface
         }
         $specific = new static($attributes);
         $coreEvent = new Report();
-        $coreEvent->save();
         $specific->save();
+//        $coreEvent->save();
         $specific->core()->save($coreEvent);
         $brothers = $attributes['brothers'];
         if ($brothers != null) {
@@ -76,7 +75,7 @@ abstract class BaseModel extends Eloquent implements ReportInterface
         return $this->core->id;
     }
 
-    public function update(array $attributes = [])
+    public function update(array $attributes = [], array $options = [])
     {
         $updatable = method_exists($this, 'updatable') ? $this->updatable() : array();
         foreach ($attributes as $key => $value) {
@@ -90,7 +89,7 @@ abstract class BaseModel extends Eloquent implements ReportInterface
             $core->linkedUsers()->detach();
             BaseModel::updateBrothers($this, $core, $attributes['brothers']);
         }
-        return $this->save();
+        return $this->save($options);
     }
 
     public function scopeCurrentSemester($query)

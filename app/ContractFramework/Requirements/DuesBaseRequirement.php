@@ -8,6 +8,8 @@
 
 namespace APOSite\ContractFramework\Requirements;
 
+use APOSite\Models\Semester;
+
 abstract class DuesBaseRequirement extends Requirement
 {
     public final function getDetailsView()

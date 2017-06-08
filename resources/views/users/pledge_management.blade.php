@@ -156,7 +156,7 @@
                                         <p class="help-block"></p>
                                     </div>
                                     <div class="col-sm-10">
-                                        {!! Form::select('family_id', APOSite\Models\Users\Family::lists('name','id') ,1, ['class'=>'form-control','v-model'=>'form.family_id']) !!}
+                                        {!! Form::select('family_id', APOSite\Models\Users\Family::pluck('name','id') ,1, ['class'=>'form-control','v-model'=>'form.family_id']) !!}
                                     </div>
                                 </div>
                             </div>

@@ -4,7 +4,7 @@ namespace APOSite\Http\Requests\Reports;
 
 use Illuminate\Support\Facades\Auth;
 use APOSite\Http\Requests\Request;
-use App;
+use Illuminate\Support\Facades\App;
 use Illuminate\Console\AppNamespaceDetectorTrait;
 
 class StoreReportRequest extends Request

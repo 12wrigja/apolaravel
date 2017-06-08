@@ -9,6 +9,7 @@ class GlobalVariable extends Model
     public $timestamps = false;
     protected $fillable = ['key', 'value'];
     protected $primaryKey = 'key';
+    public $incrementing = false;
 
     public static function ContractSigning()
     {

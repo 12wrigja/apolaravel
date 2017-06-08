@@ -141,7 +141,7 @@ WHERE
         if ($user != null) {
             if (static::isWebmaster($user)) {
                 $folders = [];
-                $offices = Office::all()->lists('display_name');
+                $offices = Office::all()->pluck('display_name');
                 foreach ($offices as $office) {
                     $folders[$office] = static::cleanFolderName(str_replace(' ', '',
                         str_replace('-', '', strtolower($office))));
@@ -149,7 +149,7 @@ WHERE
                 return $folders;
             } else {
                 $folders = [];
-                $offices = $user->offices()->current()->get()->lists('display_name');
+                $offices = $user->offices()->current()->get()->pluck('display_name');
                 foreach ($offices as $office) {
                     $folders[$office] = static::cleanFolderName(str_replace(' ', '',
                         str_replace('-', '', strtolower($office))));

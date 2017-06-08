@@ -100,9 +100,10 @@
 </div>
 <div class="form-group form-row">
     <h2>Brothers in Report</h2>
-
-    <p name="brothers" class="help-block"></p>
-    <select id="brotherselecter" placeholder="Search for a Brother..." class="form-control" style="width: 100%;"></select>
+    <div class="form-group">
+        <label for="brothers" class="help-block"></label>
+        <select id="brotherselecter" placeholder="Search for a Brother..." class="form-control" style="width: 100%;"></select>
+    </div>
     <!-- Brothers listing -->
     <table class="table table-hover">
         <thead>
