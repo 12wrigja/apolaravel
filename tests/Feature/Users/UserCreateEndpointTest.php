@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Feature\Users;
+
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use APOSite\Http\Controllers\API\UserAPIController as UserAPI;
 use APOSite\Models\Users\User;
+use Tests\TestCase;
 
 class UserCreateEndpointTest extends TestCase
 {
@@ -17,12 +20,12 @@ class UserCreateEndpointTest extends TestCase
         $scope = UserAPI::$SCOPE_MANAGE_USERS;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
 
-        $this->callAPIMethod('POST', '/api/v1/users', $token, [
+        $response = $this->callAPIMethod('POST', '/api/v1/users', $token, [
             'cwru_id'=>'jow7',
             'first_name' => 'Jimmy',
             'last_name' => 'Wright',
         ]);
-        $this->seeJsonStructure(['error']);
+        $response->assertJsonStructure(['error']);
     }
 
     public function testCreateUsersRequiresManageUsersScope()
@@ -40,12 +43,12 @@ class UserCreateEndpointTest extends TestCase
             return array_merge($initial, $nextItem);
         }, []);
         foreach ($scopeTokenMap as $scope => $token) {
-            $this->callAPIMethod('POST', '/api/v1/users', $token, [
+            $response = $this->callAPIMethod('POST', '/api/v1/users', $token, [
                 'cwru_id' => 'jow7',
                 'first_name' => 'Jimmy',
                 'last_name' => 'Wright',
             ]);
-            $this->seeJsonStructure(['error'=>['token']]);
+            $response->assertJsonStructure(['error'=>['token']]);
         }
     }
 
@@ -57,8 +60,8 @@ class UserCreateEndpointTest extends TestCase
         $scope = UserAPI::$SCOPE_MANAGE_USERS;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
 
-        $this->callAPIMethod('POST', '/api/v1/users', $token, []);
-        $this->seeJsonStructure(['error'=>['validation'=>['cwru_id','first_name','last_name']]]);
+        $response = $this->callAPIMethod('POST', '/api/v1/users', $token, []);
+        $response->assertJsonStructure(['error'=>['validation'=>['cwru_id','first_name','last_name']]]);
     }
 
     public function testCreatingUserAsWebmasterMakesThemAPledge()
@@ -69,12 +72,12 @@ class UserCreateEndpointTest extends TestCase
         $scope = UserAPI::$SCOPE_MANAGE_USERS;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
 
-        $this->callAPIMethod('POST', '/api/v1/users', $token, [
+        $response = $this->callAPIMethod('POST', '/api/v1/users', $token, [
             'cwru_id' => 'jow7',
             'first_name' => 'Jimmy',
             'last_name' => 'Wright',
         ]);
-        $this->seeJsonStructure(['status']); // TODO(12wrigja): change the creation responses to return something useful?
+        $response->assertJsonStructure(['status']); // TODO(12wrigja): change the creation responses to return something useful?
 
         $jimmy = User::find('jow7');
         $this->assertEquals('Pledge', $jimmy->contract);
@@ -88,8 +91,8 @@ class UserCreateEndpointTest extends TestCase
         $scope = UserAPI::$SCOPE_MANAGE_USERS;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
 
-        $this->callAPIMethod('POST', '/api/v1/users', $token, []);
-        $this->seeJsonStructure(['error'=>['validation'=>['cwru_id','first_name','last_name']]]);
+        $response = $this->callAPIMethod('POST', '/api/v1/users', $token, []);
+        $response->assertJsonStructure(['error'=>['validation'=>['cwru_id','first_name','last_name']]]);
     }
 
     public function testCreatingUserAsPledgeEducatorMakesThemAPledge()
@@ -100,12 +103,12 @@ class UserCreateEndpointTest extends TestCase
         $scope = UserAPI::$SCOPE_MANAGE_USERS;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
 
-        $this->callAPIMethod('POST', '/api/v1/users', $token, [
+        $response = $this->callAPIMethod('POST', '/api/v1/users', $token, [
             'cwru_id' => 'jow7',
             'first_name' => 'Jimmy',
             'last_name' => 'Wright',
         ]);
-        $this->seeJsonStructure(['status']); // TODO(12wrigja): change the creation responses to return something useful?
+        $response->assertJsonStructure(['status']); // TODO(12wrigja): change the creation responses to return something useful?
 
         $jimmy = User::find('jow7');
         $this->assertEquals('Pledge', $jimmy->contract);

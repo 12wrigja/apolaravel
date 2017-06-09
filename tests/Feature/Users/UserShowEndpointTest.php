@@ -1,9 +1,12 @@
 <?php
 
+namespace Tests\Feature\Users;
+
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use APOSite\Http\Controllers\API\UserAPIController as UserAPI;
 use Illuminate\Support\Facades\Auth;
 use APOSite\Models\Users\Family;
+use Tests\TestCase;
 
 class UserShowEndpointTest extends TestCase
 {
@@ -13,8 +16,8 @@ class UserShowEndpointTest extends TestCase
     public function testIndexNeedsAuthentication()
     {
         $this->assertFalse(Auth::check());
-        $this->callAPIMethod('GET', '/api/v1/users');
-        $this->seeJsonStructure(['error']);
+        $response = $this->callAPIMethod('GET', '/api/v1/users');
+        $response->assertJsonStructure(['error']);
     }
 
     public function testShowEndpointRequiresViewOrEditProfileScopes()
@@ -33,11 +36,11 @@ class UserShowEndpointTest extends TestCase
             return array_merge($initial, $nextItem);
         }, []);
         foreach ($scopeTokenMap as $scope => $token) {
-            $this->callAPIMethod('GET', '/api/v1/users/jow6', $token);
+            $response = $this->callAPIMethod('GET', '/api/v1/users/jow6', $token);
             if ($validScopes->contains($scope)) {
-                $this->seeJsonStructure(['data']);
+                $response->assertJsonStructure(['data']);
             } else {
-                $this->seeJsonStructure(['error' => ['token']]);
+                $response->assertJsonStructure(['error' => ['token']]);
             }
         }
     }
@@ -61,9 +64,9 @@ class UserShowEndpointTest extends TestCase
         $scope = UserAPI::$SCOPE_VIEW_PROFILE;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
 
-        $this->callAPIMethod('GET', '/api/v1/users/jow6', $token);
-        $this->assertResponseOk();
-        $this->seeJsonStructure([
+        $response = $this->callAPIMethod('GET', '/api/v1/users/jow6', $token);
+        $response->assertSuccessful();
+        $response->assertJsonStructure([
             'data' => [
                 'first_name',
                 'last_name',

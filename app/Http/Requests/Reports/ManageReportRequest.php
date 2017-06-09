@@ -2,13 +2,13 @@
 
 use Illuminate\Support\Facades\Auth;
 use APOSite\Http\Requests\Request;
-use App;
-use Illuminate\Console\AppNamespaceDetectorTrait;
+use Illuminate\Support\Facades\App;
+use Illuminate\Console\DetectsApplicationNamespace;
 
 class ManageReportRequest extends Request
 {
 
-    use AppNamespaceDetectorTrait;
+    use DetectsApplicationNamespace;
 
     protected $filterNamespace = "Models\\Contracts\\Reports\\Types\\";
 

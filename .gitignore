@@ -9,8 +9,11 @@
 .DS_Store
 /public/js
 /public/build
+/public/hot
 /storage/oauth-public.key
 /storage/oauth-private.key
+/.vagrant
+npm-debug.log
 
 #PHPStorm stuff
 ### PhpStorm ###

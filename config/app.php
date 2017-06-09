@@ -166,13 +166,17 @@ return [
         /*
          * Package Service Providers...
          */
+        /*
+         * Tinker (art tinker)
+         */
+        Laravel\Tinker\TinkerServiceProvider::class,
 
         /*
          * Application Service Providers...
          */
         APOSite\Providers\AppServiceProvider::class,
         APOSite\Providers\AuthServiceProvider::class,
-        // APOSite\Providers\BroadcastServiceProvider::class,
+        APOSite\Providers\BroadcastServiceProvider::class,
         APOSite\Providers\EventServiceProvider::class,
         APOSite\Providers\RouteServiceProvider::class,
 
@@ -182,16 +186,21 @@ return [
 		APOSite\Providers\SSOUserProvider::class,
 
 		/*
-		 * Laravel Collective Provider
+		 * Laravel Collective HTML and Forms Provider
 		 * https://laravelcollective.com
 		 */
 		Collective\Html\HtmlServiceProvider::class,
 
-		//Google Drive Provider.
+		/*
+		 * Google Drive Flysystem Driver Provider.
+		 * https://github.com/nao-pon/flysystem-google-drive
+		 */
 		APOSite\Providers\GoogleDriveServiceProvider::class,
 
-        // Passport
-        // https://laravel.com/docs/5.3/passport
+        /*
+         * Laravel Passport
+         * https://laravel.com/docs/5.4/passport
+         */
         Laravel\Passport\PassportServiceProvider::class
     ],
 
@@ -211,6 +220,7 @@ return [
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
         'Blade' => Illuminate\Support\Facades\Blade::class,
+        'Broadcast' => Illuminate\Support\Facades\Broadcast::class,
         'Bus' => Illuminate\Support\Facades\Bus::class,
         'Cache' => Illuminate\Support\Facades\Cache::class,
         'Config' => Illuminate\Support\Facades\Config::class,

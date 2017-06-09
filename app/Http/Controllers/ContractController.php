@@ -4,6 +4,8 @@ namespace APOSite\Http\Controllers;
 
 use APOSite\ContractFramework\Contracts\Contract;
 use APOSite\GlobalVariable;
+use APOSite\Mail\ContractSigned;
+use APOSite\Mail\ContractSignResults;
 use Illuminate\Support\Facades\Auth;
 use APOSite\Http\Requests\Contracts\ContractManageRequest;
 use APOSite\Http\Requests\Contracts\ContractModifyRequest;
@@ -112,18 +114,20 @@ class ContractController extends Controller
                     if ($newContract == 'Inactive') {
                         $reason = $request->get('reason');
                     }
-                    Mail::queue('emails.contracts.contract_signed',
-                        compact('contractName', 'userFullName', 'semesterText', 'committees', 'reason', 'userId'),
-                        function ($message) use ($userId, $userFullName, $semesterText) {
-                            $message->to($userId . '@case.edu',
-                                $userFullName)->subject('Contract Signed for ' . $semesterText);
-                        });
-                    Mail::queue('emails.contracts.contract_sign_results',
-                        compact('contractName', 'userFullName', 'semesterText', 'committees', 'reason', 'userId'),
-                        function ($message) use ($userId, $userFullName, $semesterText) {
-                            $message->to('membership@apo.case.edu',
-                                $userFullName)->subject('Contract Signed for ' . $userFullName . ' (' . $userId . ') ' . $semesterText);
-                        });
+                    Mail::to($userId . '@case.edu')->queue(new ContractSigned($userId, $userFullName, $contractName, $semesterText, $committees, $reason));
+//                    Mail::queue('emails.contracts.contract_signed',
+//                        compact('contractName', 'userFullName', 'semesterText', 'committees', 'reason', 'userId'),
+//                        function ($message) use ($userId, $userFullName, $semesterText) {
+//                            $message->to(,
+//                                $userFullName)->subject('Contract Signed for ' . $semesterText);
+//                        });
+//                    Mail::queue('emails.contracts.contract_sign_results',
+//                        compact('contractName', 'userFullName', 'semesterText', 'committees', 'reason', 'userId'),
+//                        function ($message) use ($userId, $userFullName, $semesterText) {
+//                            $message->to('membership@apo.case.edu',
+//                                $userFullName)->subject('Contract Signed for ' . $userFullName . ' (' . $userId . ') ' . $semesterText);
+//                        });
+                    Mail::to('membership@apo.case.edu')->queue(new ContractSignResults($userId, $userFullName, $contractName, $semesterText, $committees, $reason));
                     return Response::json(['message' => 'OK'], 200);
                 } else {
                     return Response::json(['errors' => ['general' => ['An error occurred signing your contract.']]],

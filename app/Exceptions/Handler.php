@@ -3,6 +3,7 @@
 namespace APOSite\Exceptions;
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -80,10 +81,7 @@ class Handler extends ExceptionHandler
             }
         }
         // Requests where validation fails due to auth issues.
-        if (($exception instanceof ValidationException) &&
-            $exception->response->getStatusCode() == 403 &&
-            $request->wantsJson()
-        ) {
+        if (($exception instanceof AuthorizationException) && $request->wantsJson()) {
             return response()->json(['status' => 403, 'error' => ['authorization' => $exception->getMessage()]], 403);
         }
         // Requests where validation fails due to rules failing.
@@ -113,6 +111,6 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
-        return redirect()->guest('login');
+        return redirect()->guest(route('login'));
     }
 }

@@ -1,13 +1,13 @@
 <?php namespace APOSite\Http\Requests\Reports;
 
 use APOSite\Http\Requests\Request;
-use App;
-use Illuminate\Console\AppNamespaceDetectorTrait;
+use Illuminate\Support\Facades\App;
+use Illuminate\Console\DetectsApplicationNamespace;
 
 class UpdateReportRequest extends Request
 {
 
-    use AppNamespaceDetectorTrait;
+    use DetectsApplicationNamespace;
 
     protected $filterNamespace = "Models\\Contracts\\Reports\\Types\\";
 

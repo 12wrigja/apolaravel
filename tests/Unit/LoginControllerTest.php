@@ -1,32 +1,38 @@
 <?php
 
+namespace Tests\Unit;
+
 use APOSite\Http\Controllers\Auth\LoginController;
 use APOSite\Interfaces\SSOService;
 use APOSite\Models\Users\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit_Framework_Assert as PHPUnit;
+use Tests\TestCase;
+use Mockery;
+use ReflectionClass;
 
 class LoginControllerTest extends TestCase {
 
     use DatabaseMigrations;
 
-    public function assertRedirectedToStartsWith($uri, $with = []) {
-        PHPUnit::assertInstanceOf('Illuminate\Http\RedirectResponse', $this->response);
+    public function assertRedirectedToStartsWith(TestResponse $response, $uri, $with = []) {
+        PHPUnit::assertInstanceOf('Illuminate\Http\RedirectResponse', $response->baseResponse);
 
         PHPUnit::assertStringStartsWith($this->app['url']->to($uri),
-                                        $this->response->headers->get('Location'));
+                                        $response->baseResponse->headers->get('Location'));
 
-        $this->assertSessionHasAll($with);
+        $response->assertSessionHasAll($with);
 
         return $this;
     }
 
     public function testAuthMiddlewareDirectsToSSOIfNotLoggedIn() {
         self::assertFalse(Auth::check());
-        $this->call('GET', route('login'));
-        $this->assertRedirectedToStartsWith('https://login.case.edu/');
+        $response = $this->call('GET', route('login'));
+        $this->assertRedirectedToStartsWith($response,'https://login.case.edu/');
     }
 
     public function testAuthMiddlewareBuildsCredentialsCorrectly() {
@@ -134,8 +140,8 @@ class LoginControllerTest extends TestCase {
         $ssoServiceMock->shouldReceive('isRequestFromSSOServiceCallback')
                        ->times(1)
                        ->andReturn(false);
-        $this->call('GET', route('login'));
-        $this->assertRedirectedToStartsWith($fakeSSOURL);
+        $response = $this->call('GET', route('login'));
+        $this->assertRedirectedToStartsWith($response, $fakeSSOURL);
 
         // We've been redirected. Let's then call the callback with a ticket
         $ticket = "afaketicketforthefakeuser.";
@@ -161,7 +167,9 @@ class LoginControllerTest extends TestCase {
         $this->assertEquals($fakeUser->id, $loggedInUser->id);
 
         // Do a last minute check to see exactly who is logged in.
-        $this->visit('/whoami')->see($fakeUser->id);
+        $response = $this->get('/whoami');
+        $response->assertSuccessful();
+        $response->assertSee($fakeUser->id);
     }
 
     public function testAuthMiddlewareEndToEndWithInvalidUser() {
@@ -184,8 +192,8 @@ class LoginControllerTest extends TestCase {
         $ssoServiceMock->shouldReceive('isRequestFromSSOServiceCallback')
                        ->times(1)
                        ->andReturn(false);
-        $this->call('GET', route('login'));
-        $this->assertRedirectedToStartsWith($fakeSSOURL);
+        $response = $this->call('GET', route('login'));
+        $this->assertRedirectedToStartsWith($response, $fakeSSOURL);
 
         // We've been redirected. Let's then call the callback with a ticket
         $ticket = "afaketicketforthefakeuser.";
@@ -205,9 +213,9 @@ class LoginControllerTest extends TestCase {
 
         // Let's actually do the callback from the SSO Service now, and see that we get don't get
         // logged in.
-        $this->call('GET', route('login'), ['ticket' => $ticket]);
+        $response = $this->call('GET', route('login'), ['ticket' => $ticket]);
         $this->assertFalse(Auth::check());
-        $this->assertRedirectedTo('401');
+        $response->assertRedirect('401');
     }
 
 }

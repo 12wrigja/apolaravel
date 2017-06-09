@@ -117,9 +117,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $contract_id = $this->ContractTypeForSemester($semester);
         if ($contract_id != null || $contract_id != "") {
             try {
-                return App::make(Contract::ContractHome . $contract_id . 'Contract',
+                return App::makeWith(Contract::ContractHome . $contract_id . 'Contract',
                     ['user' => $this, 'semester' => $semester]);
             } catch (\Exception $e) {
+                return 'O SHIT REAL BROKEN';
             }
         }
         return null;

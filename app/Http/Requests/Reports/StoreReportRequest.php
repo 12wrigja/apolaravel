@@ -5,12 +5,12 @@ namespace APOSite\Http\Requests\Reports;
 use Illuminate\Support\Facades\Auth;
 use APOSite\Http\Requests\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Console\AppNamespaceDetectorTrait;
+use Illuminate\Console\DetectsApplicationNamespace;
 
 class StoreReportRequest extends Request
 {
 
-    use AppNamespaceDetectorTrait;
+    use DetectsApplicationNamespace;
 
     protected $filterNamespace = "Models\\Contracts\\Reports\\Types\\";
 

@@ -1,8 +1,12 @@
 <?php
 
+namespace Tests\Feature\Users;
+
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use APOSite\Http\Controllers\API\UserAPIController as UserAPI;
 use APOSite\Models\Users\User;
+use Tests\TestCase;
+use Laravel\Passport\Passport;
 
 class UserDeleteEndpointTest extends TestCase
 {
@@ -23,8 +27,8 @@ class UserDeleteEndpointTest extends TestCase
         $scope = UserAPI::$SCOPE_MANAGE_USERS;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
 
-        $this->callAPIMethod('DELETE', '/api/v1/users/jow7', $token);
-        $this->seeJsonStructure(['error']);
+        $response = $this->callAPIMethod('DELETE', '/api/v1/users/jow7', $token);
+        $response->assertJsonStructure(['error']);
 
         $jimmy = User::find('jow7');
         $this->assertNotNull($jimmy);
@@ -40,7 +44,7 @@ class UserDeleteEndpointTest extends TestCase
         $jimmy = User::find('jow7');
         $this->assertNotNull($jimmy);
 
-        $allScopes = collect(\Laravel\Passport\Passport::scopeIds());
+        $allScopes = collect(Passport::scopeIds());
         $allScopes = $allScopes->filter(function($scope) {
             return $scope != $this->scopeKey(UserAPI::$SCOPE_MANAGE_USERS);
         });
@@ -50,8 +54,8 @@ class UserDeleteEndpointTest extends TestCase
             return array_merge($initial, $nextItem);
         }, []);
         foreach ($scopeTokenMap as $scope => $token) {
-            $this->callAPIMethod('DELETE', '/api/v1/users/jow7', $token);
-            $this->seeJsonStructure(['error'=>['token']]);
+            $response = $this->callAPIMethod('DELETE', '/api/v1/users/jow7', $token);
+            $response->assertJsonStructure(['error'=>['token']]);
         }
     }
 
@@ -68,9 +72,9 @@ class UserDeleteEndpointTest extends TestCase
         $scope = UserAPI::$SCOPE_MANAGE_USERS;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
 
-        $this->callAPIMethod('DELETE', '/api/v1/users/jow7', $token);
-        $this->assertResponseOk();
-        $this->seeJsonStructure(['status']);
+        $response = $this->callAPIMethod('DELETE', '/api/v1/users/jow7', $token);
+        $response->assertSuccessful();
+        $response->assertJsonStructure(['status']);
 
         $jimmy = User::find('jow7');
         $this->assertNull($jimmy);
@@ -93,9 +97,9 @@ class UserDeleteEndpointTest extends TestCase
         $scope = UserAPI::$SCOPE_MANAGE_USERS;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
 
-        $this->callAPIMethod('DELETE', '/api/v1/users/jow7', $token);
-        $this->assertResponseOk();
-        $this->seeJsonStructure(['status']);
+        $response = $this->callAPIMethod('DELETE', '/api/v1/users/jow7', $token);
+        $response->assertSuccessful();
+        $response->assertJsonStructure(['status']);
 
         $jimmy1 = User::find('jow7');
         $this->assertNull($jimmy1);

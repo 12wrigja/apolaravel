@@ -13,7 +13,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'APOSite\Events\SomeEvent' => [
+        'APOSite\Events\Event' => [
             'APOSite\Listeners\EventListener',
         ],
     ];

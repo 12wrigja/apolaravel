@@ -4,7 +4,7 @@ use APOSite\Http\Requests;
 use APOSite\Http\Requests\Reports\ReadReportRequest;
 use APOSite\Http\Requests\Reports\StoreReportRequest;
 use APOSite\Http\Requests\Reports\UpdateReportRequest;
-use Illuminate\Console\AppNamespaceDetectorTrait;
+use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 class EventPipelineController extends Controller
 {
 
-    use AppNamespaceDetectorTrait;
+    use DetectsApplicationNamespace;
 
     protected $filterNamespace = "Models\\Contracts\\Reports\\Types\\";
 

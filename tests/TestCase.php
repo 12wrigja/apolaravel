@@ -1,7 +1,13 @@
 <?php
 
+namespace Tests;
+
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use APOSite\Models\Users\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+
+use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -9,9 +15,9 @@ use Laravel\Passport\ClientRepository;
 use APOSite\Models\Office;
 use APOSite\Models\Semester;
 
-abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
+abstract class TestCase extends BaseTestCase
 {
-
+    use CreatesApplication;
     use DatabaseMigrations;
 
     /**
@@ -21,25 +27,11 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     protected $baseUrl = 'http://localhost';
 
-    /**
-     * Creates the application.
-     *
-     * @return \Illuminate\Foundation\Application
-     */
-    public function createApplication()
-    {
-        $app = require __DIR__ . '/../bootstrap/app.php';
-
-        $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
-
-        return $app;
-    }
-
     protected function setUp()
     {
         parent::setUp();
-        Artisan::call('db:seed', ['--class' => SemesterTableSeeder::class]);
-        Artisan::call('db:seed', ['--class' => GlobalVariablesSeeder::class]);
+        Artisan::call('db:seed', ['--class' => 'SemesterTableSeeder']);
+        Artisan::call('db:seed', ['--class' => 'GlobalVariablesSeeder']);
 
         // Setup a Personal Access Token Client
         $this->setUpPersonalAccessAPI();
@@ -54,8 +46,8 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         DB::table('oauth_personal_access_clients')->insert([
             'client_id' => $client->id,
-            'created_at' => new DateTime,
-            'updated_at' => new DateTime,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
     }
 
@@ -100,21 +92,25 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         ]);
     }
 
-    public function signInAs($id)
-    {
-        Auth::once(['id' => $id, 'password' => '']);
-        $this->assertTrue(Auth::check());
-    }
-
-    // This is used to simulate the requests that users actually do.
-    // Eventually this is where we would add in OAuth token headers.
+    /** This is used to simulate the API requests that users actually do.
+     * @param $method string method for the call, such as GET, POST, PUT, PATCH, DELETE, etc
+     * @param $uri string The URI to use. This should probably be a fully specified URL, such as /api/v1/users
+     * @param string|null $api_key The API OAuth2 Access Token to use when making this request.
+     * @param array $data The data to send in the body of the request, transformed into JSON.
+     *
+     * @return TestResponse The response from the method call.
+     */
     public function callAPIMethod($method, $uri, $api_key = null, $data = [])
     {
         $this->refreshApplication();
         $this->assertFalse(Auth::check(), 'We are authorized before sending an API method call. This is not correct, and will invalidate th results of the test.');
-        $this->json($method, $uri, $data, ['Authorization' => 'Bearer ' . $api_key]);
+        return $this->json($method, $uri, $data, ['Authorization' => 'Bearer ' . $api_key]);
     }
 
+    /** Converts a Scope (defined on a controller, such as the UserAPIController) into it's key used to identify it.
+     * @param $scopeArray array The scope object. For example, UserAPIController::$SCOPE_VIEW_PROFILE
+     * @return string The ID of the scope.
+     */
     public function scopeKey($scopeArray)
     {
         return array_keys($scopeArray)[0];

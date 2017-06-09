@@ -1,9 +1,12 @@
 <?php
 
+namespace Tests\Feature\Users;
+
 use APOSite\Http\Controllers\API\UserAPIController as UserAPI;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Auth;
 use APOSite\Models\Users\User;
+use Tests\TestCase;
 
 class UserIndexEndpointTest extends TestCase
 {
@@ -13,8 +16,8 @@ class UserIndexEndpointTest extends TestCase
     public function testIndexNeedsAuthentication()
     {
         $this->assertFalse(Auth::check());
-        $this->callAPIMethod('GET', '/api/v1/users');
-        $this->seeJsonStructure(['error']);
+        $response = $this->callAPIMethod('GET', '/api/v1/users');
+        $response->assertJsonStructure(['error']);
     }
 
     public function testIndexWorksOnlyWithViewOrEditProfileScope()
@@ -33,11 +36,11 @@ class UserIndexEndpointTest extends TestCase
             return array_merge($initial, $nextItem);
         }, []);
         foreach ($scopeTokenMap as $scope => $token) {
-            $this->callAPIMethod('GET', '/api/v1/users', $token);
+            $response = $this->callAPIMethod('GET', '/api/v1/users', $token);
             if ($validScopes->contains($scope)) {
-                $this->seeJsonStructure(['data']);
+                $response->assertJsonStructure(['data']);
             } else {
-                $this->seeJsonStructure(['error'=>['token']]);
+                $response->assertJsonStructure(['error'=>['token']]);
             }
         }
     }
@@ -50,10 +53,10 @@ class UserIndexEndpointTest extends TestCase
         $scope = UserAPI::$SCOPE_VIEW_PROFILE;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
 
-        $this->callAPIMethod('GET', '/api/v1/users', $token);
+        $response = $this->callAPIMethod('GET', '/api/v1/users', $token);
 
         // Default data is id, href (object link), display_name, first_name, last_name, image
-        $this->seeJsonEquals([
+        $response->assertExactJson([
             'data' => [
                 '0' => [
                     'id' => 'jow6',
@@ -78,10 +81,10 @@ class UserIndexEndpointTest extends TestCase
         // Make some more users
         factory(User::class, 5)->create();
 
-        $this->callAPIMethod('GET', '/api/v1/users', $token);
+        $response = $this->callAPIMethod('GET', '/api/v1/users', $token);
 
         // Default data is id, href (object link), display_name, first_name, last_name, image
-        $this->seeJsonStructure([
+        $response->assertJsonStructure([
             'data' => [
                 '*' => [
                     'id',
@@ -106,10 +109,10 @@ class UserIndexEndpointTest extends TestCase
         // Make some more users
         factory(User::class, 5)->create();
 
-        $this->callAPIMethod('GET', '/api/v1/users?attrs=address', $token);
+        $response = $this->callAPIMethod('GET', '/api/v1/users?attrs=address', $token);
 
         // Default data is id, href (object link), display_name, first_name, last_name, image
-        $this->seeJsonStructure([
+        $response->assertJsonStructure([
             'data' => [
                 '*' => [
                     'id',
@@ -137,10 +140,10 @@ class UserIndexEndpointTest extends TestCase
 
         // Note in this call, we deliberately mis-spell attrs, and so it is interpreted as a search filter. User's don't
         // have an 'aatrs' attribute, so the query will fail.
-        $this->callAPIMethod('GET', '/api/v1/users?aatrs=address', $token);
+        $response = $this->callAPIMethod('GET', '/api/v1/users?aatrs=address', $token);
 
         // Default data is id, href (object link), display_name, first_name, last_name, image
-        $this->seeJsonStructure(['error'=>['validation'=>['aatrs']]]);
+        $response->assertJsonStructure(['error'=>['validation'=>['aatrs']]]);
     }
 
     public function testIndexCanRestrictOnAttributeExactValues()
@@ -153,10 +156,10 @@ class UserIndexEndpointTest extends TestCase
         $scope = UserAPI::$SCOPE_VIEW_PROFILE;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
 
-        $this->callAPIMethod('GET', '/api/v1/users?first_name=James', $token);
+        $response = $this->callAPIMethod('GET', '/api/v1/users?first_name=James', $token);
 
         // Default data is id, href (object link), display_name, first_name, last_name, image
-        $this->seeJsonEquals([
+        $response->assertExactJson([
             'data' => [
                 '0' => [
                     'id' => 'jow6',
@@ -180,10 +183,10 @@ class UserIndexEndpointTest extends TestCase
         $scope = UserAPI::$SCOPE_VIEW_PROFILE;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
 
-        $this->callAPIMethod('GET', '/api/v1/users?first_name=james', $token);
+        $response = $this->callAPIMethod('GET', '/api/v1/users?first_name=james', $token);
 
         // Default data is id, href (object link), display_name, first_name, last_name, image
-        $this->seeJsonEquals([
+        $response->assertExactJson([
             'data' => [
                 '0' => [
                     'id' => 'jow6',
@@ -209,10 +212,10 @@ class UserIndexEndpointTest extends TestCase
         $scope = UserAPI::$SCOPE_VIEW_PROFILE;
         $token = $user->createToken('test_token', [$this->scopeKey($scope)])->accessToken;
 
-        $this->callAPIMethod('GET', '/api/v1/users?address=501%20park%20place', $token);
+        $response = $this->callAPIMethod('GET', '/api/v1/users?address=501%20park%20place', $token);
 
         // Default data is id, href (object link), display_name, first_name, last_name, image
-        $this->seeJsonEquals([
+        $response->assertExactJson([
             'data' => [
                 '0' => [
                     'id' => 'jow6',
