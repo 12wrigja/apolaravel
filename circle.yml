@@ -13,7 +13,7 @@ dependencies:
     - "vendor"
     - "node_modules"
   override:
-    - composer install --quiet
+    - composer install --quiet:
         timeout: 240
     - php artisan key:generate
     - php artisan passport:keys
