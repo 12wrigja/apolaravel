@@ -1,0 +1,32 @@
+machine:
+  php:
+    version: 7.1.0
+  mysql:
+    version: 5.7.17
+
+checkout:
+  post:
+    - cp .env.example .env
+
+dependencies:
+  cache_directories:
+    - "vendor"
+    - "node_modules"
+  override:
+    - composer install --quiet
+        timeout: 240
+    - php artisan key:generate
+    - php artisan passport:keys
+
+database:
+  override:
+    - mysql -u ubuntu -e "create schema testing"
+
+test:
+  pre:
+    - DB_DATABASE=circle_test
+    - DB_USERNAME=ubuntu
+    - DB_PASSWORD=
+  override:
+    - vendor/bin/phpunit
+
