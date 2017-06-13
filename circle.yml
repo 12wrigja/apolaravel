@@ -11,9 +11,8 @@ checkout:
 dependencies:
   cache_directories:
     - "vendor"
-    - "node_modules"
   override:
-    - composer install --quiet:
+    - composer install:
         timeout: 240
     - php artisan key:generate
     - php artisan passport:keys
@@ -24,6 +23,7 @@ database:
 
 test:
   pre:
+    - DB_HOST=127.0.0.1
     - DB_DATABASE=circle_test
     - DB_USERNAME=ubuntu
     - DB_PASSWORD=
