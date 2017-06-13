@@ -238,7 +238,7 @@ class SSOUserProvider extends ServiceProvider
             // Service report menu item
             $item = new \stdClass();
             $item->text = "View Profile";
-            $item->url = route('user_show', ['id' => $user->id]);
+            $item->url = route('user_show', ['cwruid' => $user->id]);
             array_push($menu_items, $item);
 
             // Service report menu item

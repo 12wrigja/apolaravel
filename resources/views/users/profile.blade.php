@@ -49,8 +49,8 @@
                             Unknown
                     @endif
                     <p>Family:
-                        @if($user->family() != null)
-                            {{$user->family()->name}}
+                        @if($user->family != null)
+                            {{$user->family->name}}
                         @else
                             Unknown
                         @endif

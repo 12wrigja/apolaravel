@@ -7,7 +7,8 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
 
-class AuthServiceProvider extends ServiceProvider {
+class AuthServiceProvider extends ServiceProvider
+{
 
     /**
      * The policy mappings for the application.
@@ -23,14 +24,17 @@ class AuthServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
         $this->registerPolicies();
         Passport::ignoreMigrations();
         Passport::routes();
         Passport::tokensExpireIn(Carbon::now()->addDays(1));
-        Passport::tokensCan(array_merge(UserAPIController::$SCOPE_VIEW_PROFILE,
-                                        UserAPIController::$SCOPE_EDIT_PROFILE,
-                                        UserAPIController::$SCOPE_MANAGE_USERS));
+        Passport::tokensCan(array_merge(
+            UserAPIController::$SCOPE_VIEW_PROFILE,
+            UserAPIController::$SCOPE_EDIT_PROFILE,
+            UserAPIController::$SCOPE_MANAGE_USERS,
+            UserAPIController::$SCOPE_VIEW_CONTRACT));
     }
 
 }

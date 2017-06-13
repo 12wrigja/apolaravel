@@ -37,7 +37,6 @@ class ContractController extends Controller
         $existingContract = Auth::user()->contractForSemester(null);
         $signableContracts = Contract::getCurrentSignableContracts();
         $signableContracts->transform(function ($item) {
-
             if ($item->version > 1) {
                 $contractVersionCode = $item->contract_name . 'V' . $item->version;
             } else {

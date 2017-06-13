@@ -128,10 +128,11 @@ Route::delete('/reports/{type}/{id}', ['uses' => 'EventPipelineController@delete
 //   return view('tools.bannermanagement');
 //});
 
-
+// View profile page
+Route::get('/users/{cwruid}', ['uses' => 'UserController@show', 'as' => 'user_show']);
 // Search page for users
 Route::get('/users', ['uses' => 'UserController@index', 'as' => 'users']);
-// Creationg page for users
+// Creation page for users
 Route::get('/users/create', ['uses' => 'UserController@create', 'as' => 'user_create']);
 // Profile Editing page for users
 Route::get('/users/{cwruid}/edit', ['uses' => 'UserController@edit', 'as' => 'user_edit']);

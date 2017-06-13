@@ -28,6 +28,10 @@ abstract class Contract
         $this->requirements = collect($this->requirements);
     }
 
+    public function getSemesterID() {
+        return $this->semester->id;
+    }
+
     public static function getRequirementClasses()
     {
         return [];

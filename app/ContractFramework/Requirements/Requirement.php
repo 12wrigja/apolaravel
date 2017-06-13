@@ -83,6 +83,10 @@ abstract class Requirement
         return $this->value;
     }
 
+    public final function getComparison(){
+        return $this->comparison;
+    }
+
     public abstract function computeValue();
 
     public final function getPendingValue()

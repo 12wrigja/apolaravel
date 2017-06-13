@@ -43,8 +43,8 @@ class UserController extends Controller {
     public function show($id) {
         $user = User::find($id);
         if ($user != null) {
-            $big = User::find($user->big);
-            return response()->view('users.profile')->with(compact('user', 'big'));
+            $big = $user->big;
+            return response()->view('users.profile',['user'=>$user, 'big'=>$big]);
         } else {
             throw new NotFoundHttpException("User Not Found!");
         }

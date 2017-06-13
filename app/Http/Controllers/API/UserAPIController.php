@@ -7,6 +7,8 @@ use APOSite\Http\Requests\Users\UserCreateRequest;
 use APOSite\Http\Requests\Users\UserDeleteRequest;
 use APOSite\Http\Requests\Users\UserEditRequest;
 use APOSite\Http\Requests\Users\UserIndexRequest;
+use APOSite\Http\Requests\Users\UserPersonalPageRequest;
+use APOSite\Http\Transformers\UserContractStatusTransformer;
 use APOSite\Http\Transformers\UserSearchResultTransformer;
 use APOSite\Models\Semester;
 use APOSite\Models\Users\User;
@@ -19,7 +21,8 @@ use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class UserAPIController extends Controller {
+class UserAPIController extends Controller
+{
 
     public static $SCOPE_VIEW_PROFILE = [
         'view-profile' => 'View your user profile and profiles of other APO members.',
@@ -30,13 +33,17 @@ class UserAPIController extends Controller {
     public static $SCOPE_MANAGE_USERS = [
         'manage-users' => 'Create and delete APO members. Only useful for the Webmaster(s) and Pledge Educator(s).'
     ];
+    public static $SCOPE_VIEW_CONTRACT = [
+        'view-contract' => 'View data about your past and current contracts. This is also required for the Pledge Ed and Membership VP\'s to access contract status data of other members.'
+    ];
 
     /**
      * Display a listing of the resource.
      *
      * @return Response | string
      */
-    public function index(UserIndexRequest $request) {
+    public function index(UserIndexRequest $request)
+    {
         // Retrieve the input attributes to search on.
         $searchKeys = Input::except('attrs');
         // Retrieve the extra attributes that are explicitly requested in the response
@@ -65,7 +72,8 @@ class UserAPIController extends Controller {
      *
      * @return Response | string
      */
-    public function store(UserCreateRequest $request) {
+    public function store(UserCreateRequest $request)
+    {
         $user = new User();
         $user->first_name = $request->get('first_name');
         $user->last_name = $request->get('last_name');
@@ -91,7 +99,8 @@ class UserAPIController extends Controller {
      *
      * @return Response | string
      */
-    public function show($id) {
+    public function show($id)
+    {
         $user = User::find($id);
         if ($user != null) {
             $transformer = new UserSearchResultTransformer($user->getFilterableAttributes());
@@ -111,7 +120,8 @@ class UserAPIController extends Controller {
      *
      * @return Response | string
      */
-    public function update(UserEditRequest $request, $id) {
+    public function update(UserEditRequest $request, $id)
+    {
         $userToUpdate = User::find($id);
         $currentUser = Auth::user();
         if ($userToUpdate != null) {
@@ -129,8 +139,8 @@ class UserAPIController extends Controller {
                         $attributes[$key] = Semester::currentSemester()->id;
                     } else {
                         $attributes[$key] = Semester::SemesterFromText($value['semester'],
-                                                                       $value['year'],
-                                                                       true)->id;
+                            $value['year'],
+                            true)->id;
                     }
                 }
                 if ($value == "") {
@@ -154,8 +164,8 @@ class UserAPIController extends Controller {
      *
      * @return Response
      */
-    public function destroy(UserDeleteRequest $request,
-                            $id) {
+    public function destroy(UserDeleteRequest $request, $id)
+    {
         $user = User::find($id);
         if ($user != null) {
             User::destroy($id);
@@ -168,4 +178,20 @@ class UserAPIController extends Controller {
         }
     }
 
+    public function contractStatus(UserPersonalPageRequest $request, $id)
+    {
+        $user = User::find($id);
+        if ($user != null) {
+            $contract = $user->contractForSemester(Semester::currentSemester());
+            if ($contract != null) {
+                $fractal = new Manager();
+                $item = new Item($contract, new UserContractStatusTransformer());
+                return $fractal->createData($item)->toJson();
+            } else {
+                return response()->json(['data' => 'unknown']);
+            }
+        } else {
+            throw new NotFoundHttpException('User not found');
+        }
+    }
 }

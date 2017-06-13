@@ -29,7 +29,7 @@ class UserSearchResultTransformer extends TransformerAbstract
     {
         $base = [
             'id' => $user->id,
-            'href' => route('user_show', ['id' => $user->id]),
+            'href' => route('api.user', ['id' => $user->id]),
             'display_name' => $user->getFullDisplayName(),
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
