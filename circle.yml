@@ -22,11 +22,10 @@ database:
     - mysql -u ubuntu -e "create schema testing"
 
 test:
-  pre:
-    - DB_HOST=127.0.0.1
-    - DB_DATABASE=circle_test
-    - DB_USERNAME=ubuntu
-    - DB_PASSWORD=
   override:
-    - vendor/bin/phpunit
-
+    - vendor/bin/phpunit:
+        environment:
+          DB_HOST=127.0.0.1
+          DB_DATABASE=circle_test
+          DB_USERNAME=ubuntu
+          DB_PASSWORD=
