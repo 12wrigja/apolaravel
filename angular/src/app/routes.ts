@@ -1,6 +1,8 @@
+import {NgModule} from '@angular/core';
 import {Route, Router, RouterModule} from '@angular/router';
 
 import {HomepageComponent} from './homepage/homepage.component';
+import {NeedsAuthGuard} from './services/NeedsAuthGuard';
 import {UserlistComponent} from './userlist/userlist.component';
 
 const routes: Route[] = [
@@ -12,7 +14,15 @@ const routes: Route[] = [
   {
     path: 'users',
     component: UserlistComponent,
+    canActivate: [],  // NeedsAuthGuard],
   }
 ];
 
-export const ROUTES_MODULE = RouterModule.forRoot(routes);
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [
+    RouterModule,
+  ]
+})
+export class AppRoutesModule {
+}

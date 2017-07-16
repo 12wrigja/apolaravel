@@ -10,7 +10,7 @@ import {UserlistComponent} from './userlist.component';
 @NgModule({
   declarations: [UserlistComponent],
   exports: [UserlistComponent],
-  imports: [RouterModule, APIModule, FormsModule, CommonModule]
+  imports: [APIModule, FormsModule, CommonModule, RouterModule]
 })
 export class UserlistModule {
 }

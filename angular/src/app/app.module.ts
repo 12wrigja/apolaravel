@@ -5,7 +5,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {HomepageModule} from './homepage/homepage.module';
-import {ROUTES_MODULE} from './routes';
+import {AppRoutesModule} from './routes';
 import {APIModule} from './services/API.module';
 import {UserlistModule} from './userlist/userlist.module';
 
@@ -17,7 +17,7 @@ import {UserlistModule} from './userlist/userlist.module';
     BrowserModule,
     FormsModule,
     APIModule,
-    ROUTES_MODULE,
+    AppRoutesModule,
     HomepageModule,
     UserlistModule,
     CommonModule,
