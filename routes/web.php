@@ -90,8 +90,8 @@ use Illuminate\Support\Facades\Request;
 //));
 //
 //// Routes for logging in and out. Copied from Laravel source.
-//Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-//Route::post('logout','Auth\LoginController@logout')->name('logout');
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('logout','Auth\LoginController@logout')->name('logout');
 //Route::get('whoami', function(){
 //    if(Auth::check()){
 //        return Auth::id();
