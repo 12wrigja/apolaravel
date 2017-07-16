@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import {NgModule} from '@angular/core';
+import {HttpModule} from '@angular/http';
 
-import {UserAPI} from './UserAPI.service';
 import {APOAPI} from './APOAPI.service';
+import {UserAPI} from './UserAPI.service';
 
-@NgModule({imports: [
-        HttpModule
-    ],
-    providers: [
-        UserAPI,
-        APOAPI,
-    ]
+@NgModule({
+  imports: [HttpModule],
+  providers: [
+    UserAPI,
+    APOAPI,
+  ]
 })
-export class APIModule { }
+export class APIModule {
+}
