@@ -67,7 +67,8 @@ class LoginController extends Controller
         if ($this->signOnService->isRequestFromSSOServiceCallback($request)) {
             return $this->login($request);
         } else {
-            $url = $this->signOnService->getSSOLoginRedirectURL(route('login'));
+            $clientRedirectURL = $request->get('redirect');
+            $url = $this->signOnService->getSSOLoginRedirectURL(route('login', ['clientredirect'=>$clientRedirectURL]));
             return Redirect::away($url);
         }
     }
@@ -94,7 +95,8 @@ class LoginController extends Controller
      */
     protected function credentials(Request $request)
     {
-        $credentialArray = $this->signOnService->credentialsFromRequest($request, route('login'));
+        $clientRedirectURL = $request->get('clientredirect');
+        $credentialArray = $this->signOnService->credentialsFromRequest($request, route('login', ['clientredirect'=>$clientRedirectURL]));
         $request->merge($credentialArray);
         $id = $credentialArray['id'];
         return isset($id) ? ['id' => $id, 'password' => ''] : [];
@@ -118,5 +120,12 @@ class LoginController extends Controller
         return $this->originalLoginResponse($request);
     }
 
+    protected function redirectTo() {
+        if (request()->has('clientredirect')) {
+            return request()->get('clientredirect');
+        } else {
+            return '/';
+        }
+    }
 
 }

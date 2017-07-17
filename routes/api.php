@@ -43,4 +43,9 @@ Route::group(['prefix' => 'v1'],
                 'uses' => 'API\UserAPIController@contractStatus',
                 'as' => 'api.user_status'
             ])->middleware('scope:view-contract');
+
+        // WhoAmI
+        Route::get('/whoami', function() {
+            return response()->json(['data'=>Auth::id()]);
+        });
     });

@@ -1,0 +1,7 @@
+<h1>
+  Users
+</h1>
+<div [innerHtml]="latestError | async"></div>
+<p *ngFor="let user of allUsers | async">
+  {{user.firstName}}
+</p>

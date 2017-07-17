@@ -84,6 +84,9 @@ class Handler extends ExceptionHandler
         if (($exception instanceof AuthorizationException) && $request->wantsJson()) {
             return response()->json(['status' => 403, 'error' => ['authorization' => $exception->getMessage()]], 403);
         }
+        if (($exception instanceof AuthenticationException) && $request->wantsJson()) {
+            return response()->json(['status'=>401, 'error' => ['authentication' => $exception->getMessage()]], 401);
+        }
         // Requests where validation fails due to rules failing.
         if (($exception instanceof ValidationException) &&
             $exception->response->getStatusCode() == 422 &&
@@ -94,6 +97,11 @@ class Handler extends ExceptionHandler
                 'error' => ['validation' => $exception->validator->getMessageBag()->toArray()]
             ],
                 422);
+        }
+        if($request->wantsJson()) {
+            return response()->json([
+                'error' => 'An unknown error occurred.',
+            ], 500);
         }
         return parent::render($request, $exception);
     }

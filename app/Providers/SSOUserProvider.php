@@ -19,8 +19,8 @@ class SSOUserProvider extends ServiceProvider
     {
         view()->composer('*', function ($view) {
             if (Auth::check()) {
-                $user = $this->AddMenuItems(Auth::user());
-                return $view->with('currentUser', $user);
+//                $user = $this->AddMenuItems(Auth::user());
+                return $view; //->with('currentUser', $user);
             } else {
                 return $view;
             }
