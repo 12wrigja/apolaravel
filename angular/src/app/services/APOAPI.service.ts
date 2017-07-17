@@ -47,6 +47,14 @@ export class APOAPI {
         .map((resp: any) => resp as APIResponse);
   }
 
+  unauth(): Observable<void> {
+    const headers = new Headers();
+    headers.append('X-CSRF-TOKEN', this.xsrfToken);
+    headers.append('X-Requested-With', 'XMLHttpRequest');
+    return this.http.post('/logout', [], new RequestOptions({headers}))
+        .map(() => null);
+  }
+
   private requestOptions(): RequestOptions {
     const headers = new Headers();
     headers.append('content-type', 'application/json');

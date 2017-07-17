@@ -5,6 +5,7 @@
   <title>Blank</title>
   <base href="/">
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="auth" content="{{Auth::check() ? Auth::id() : ''}}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>

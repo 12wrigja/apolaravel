@@ -14,7 +14,7 @@ const routes: Route[] = [
   {
     path: 'users',
     component: UserlistComponent,
-    canActivate: [],  // NeedsAuthGuard],
+    canActivate: [NeedsAuthGuard],
   }
 ];
 
