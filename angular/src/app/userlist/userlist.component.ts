@@ -17,6 +17,9 @@ import {User, UserAPI, UserListAPIResponse} from '../services/UserAPI.service';
 export class UserlistComponent implements OnInit {
   allUsers: Observable<User[]>;
   latestError: Subject<SafeHtml>;
+  filter: string;
+  filteredUsers: Observable<User[]>
+
 
   constructor(
       private readonly userAPI: UserAPI, private readonly ds: DomSanitizer) {
@@ -33,5 +36,6 @@ export class UserlistComponent implements OnInit {
               this.latestError.next(this.ds.bypassSecurityTrustHtml(error));
               return Observable.empty();
             });
+    this.filteredUsers = this.allUsers;
   }
 }

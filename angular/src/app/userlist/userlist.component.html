@@ -1,7 +1,8 @@
 <h1>
   Users
 </h1>
+<input [(ngModel)]="filter" placeholder="search" />
 <div [innerHtml]="latestError | async"></div>
-<p *ngFor="let user of allUsers | async">
-  {{user.firstName}}
+<p *ngFor="let user of filteredUsers | async">
+  {{user.displayName}}
 </p>

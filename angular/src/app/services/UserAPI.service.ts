@@ -26,13 +26,15 @@ export class UserAPI {
   getWhoAmI(): Observable<string> {
     return this.whoAmICache;
   }
-}
+  }
 
 
 export interface User {
   id: string;
   href: string;
   firstName: string;
-}
+  lastNme: string;
+  displayName: string;
+  }
 
 export interface UserListAPIResponse { data: User[], }
