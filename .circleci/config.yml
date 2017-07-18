@@ -1,0 +1,31 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: php:7.1
+        environment:
+          DB_HOST=127.0.01
+      - image: mysql:latest
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD=yes
+          MYSQL_DATABASE=homestead
+          MYSQL_USER=homestead
+          MYSQL_PASSWORD=secret
+    working_directory: ~/laravel
+    steps:
+      - checkout
+      - run: composer self-update
+      - restore_cache:
+         keys:
+           - composer-v1-{{ checksum "composer.json" }}
+           - composer-v1-
+      - run: composer install -n --prefer-dist
+      - save_cache:
+         key: composer-v1-{{ checksum "composer.json" }}
+         paths:
+           - vendor
+      - run: cp .env.example .env
+      - run: php artisan key:generate
+      - run: php artisan passport:keys
+      - run: ./vendor/bin/phpunit
