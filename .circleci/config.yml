@@ -14,8 +14,10 @@ jobs:
           MYSQL_PASSWORD=secret
     working_directory: ~/laravel
     steps:
+      - run: apt-get update
+      - run: apt-get install curl nano
+      - run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
       - checkout
-      - run: composer self-update
       - restore_cache:
          keys:
            - composer-v1-{{ checksum "composer.json" }}
