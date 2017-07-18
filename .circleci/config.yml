@@ -15,7 +15,7 @@ jobs:
     working_directory: ~/laravel
     steps:
       - run: apt-get update
-      - run: apt-get install -y curl nano git php7-mysql
+      - run: apt-get install -y curl nano git php-mysql
       - run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
       - checkout
       - restore_cache:
