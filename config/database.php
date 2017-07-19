@@ -69,6 +69,12 @@ return [
             'engine' => null,
         ],
 
+        'testing_sqlite' => [
+            'driver' => 'sqlite',
+            'database' => storage_path() .'/'. env('DB_TESTING_DATABASE', 'database.sqlite'),
+            'prefix' => '',
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

@@ -5,17 +5,11 @@ jobs:
     docker:
       - image: php:7.1
         environment:
-          DB_HOST=127.0.01
-      - image: mysql:latest
-        environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD=yes
-          MYSQL_DATABASE=homestead
-          MYSQL_USER=homestead
-          MYSQL_PASSWORD=secret
+          DB_CONNECTION=testing_sqlite
     working_directory: ~/laravel
     steps:
       - run: apt-get update
-      - run: apt-get install -y curl nano git php-mysql
+      - run: apt-get install -y curl nano git
       - run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
       - checkout
       - restore_cache:

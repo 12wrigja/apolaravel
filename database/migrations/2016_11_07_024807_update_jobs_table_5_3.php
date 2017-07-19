@@ -19,7 +19,7 @@ class UpdateJobsTable53 extends Migration
         });
 
         Schema::table('failed_jobs', function (Blueprint $table) {
-            $table->longText('exception')->after('payload');
+            $table->longText('exception')->after('payload')->default('');
         });
     }
 
